@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace EntitiesRN
 {
-    class SaleMan
+    class SaleManEntity
     {
         [Required]
-        public string Id { get; set; }
+        public string SaleManId { get; set; }
         public string Name { get; set; }
         public string QuantityOfDevice { get; set; }
+
+        //Relation with Device 
+        public ICollection<DeviceEntity> Devices { get; set; }
     }
 }

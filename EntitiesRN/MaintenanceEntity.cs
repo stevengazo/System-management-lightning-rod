@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EntitiesRN
 {
-    class Maintenance
+    class MaintenanceEntity
     {
-        public string Id { get; set; }
+        public string MaintenanceId { get; set; }
         public DateTime MaintenanceDate { get; set; }
         public string StatusOfDevice { get; set; }
         public float SpatOhms { get; set; }
@@ -17,6 +17,10 @@ namespace EntitiesRN
         public float Ampers { get; set; }
         public string TechnicianName { get; set; }
         public string ReportId { get; set; }
+
+        //Relation With Device 
+        public string DeviceId { get; set; }
+        public DeviceEntity Device { get; set; }
 
     }
 }

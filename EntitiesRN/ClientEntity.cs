@@ -7,10 +7,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EntitiesRN
 {
-    class Client
+    class ClientEntity
     {
         [Required]
-        public string Id { get; set; }
+        public string ClientId { get; set; }
         public string Name { get; set; }
+
+        //Relation with Device
+        public ICollection<DeviceEntity> Devices { get; set; }
+
     }
 }
