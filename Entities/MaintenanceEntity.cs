@@ -9,6 +9,7 @@ namespace Entities
 {
    public  class MaintenanceEntity
     {
+        [Key]
         public string MaintenanceId { get; set; }
         public DateTime MaintenanceDate { get; set; }
         public string StatusOfDevice { get; set; }

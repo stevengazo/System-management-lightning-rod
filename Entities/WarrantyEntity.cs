@@ -10,6 +10,7 @@ namespace Entities
    public class WarrantyEntity
     {
         [Required]
+        [Key]
         public string Id { get; set; }
         public DateTime DateSend { get; set; }
         public DateTime DateReceived { get; set; }       

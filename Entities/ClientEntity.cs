@@ -10,7 +10,8 @@ namespace Entities
     public class ClientEntity
     {
         [Required]
-        public string ClientId { get; set; }
+        [Key]
+        public string Id { get; set; }
         public string Name { get; set; }
 
         //Relation with Device

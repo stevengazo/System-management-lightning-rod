@@ -10,6 +10,7 @@ namespace Entities
     public class DeviceEntity
     {
         [Required]
+        [Key]
         //SerialNumber
         public string DeviceId { get; set; }
         public string Alias { get; set; }

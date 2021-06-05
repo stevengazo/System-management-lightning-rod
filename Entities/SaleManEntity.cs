@@ -10,6 +10,7 @@ namespace Entities
  public   class SaleManEntity
     {
         [Required]
+        [Key]
         public string SaleManId { get; set; }
         public string Name { get; set; }
         public string QuantityOfDevice { get; set; }

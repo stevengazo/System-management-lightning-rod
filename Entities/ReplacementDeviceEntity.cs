@@ -10,6 +10,7 @@ namespace Entities
    public class ReplacementDeviceEntity
     {
         [Required]
+        [Key]
         public string ReplacementDeviceId { get; set; }
         public string NewSerieDevice { get; set; }
         public string Notes { get; set; }
