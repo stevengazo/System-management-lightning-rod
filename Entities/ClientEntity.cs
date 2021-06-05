@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace EntitiesRN
+namespace Entities
 {
-    class ClientEntity
+    public class ClientEntity
     {
         [Required]
         public string ClientId { get; set; }

@@ -5,20 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntitiesRN
+namespace Entities
 {
-    class DeviceEntity
+    public class DeviceEntity
     {
         [Required]
-        [StringLength(25)]
         //SerialNumber
-        public string  DeviceId { get; set; }
-        [StringLength(30)]
+        public string DeviceId { get; set; }
         public string Alias { get; set; }
         public float Longitude { get; set; }
         public float Latitude { get; set; }
-        [StringLength(20)]        
-        public string Country { get; set; }       
+        public string Country { get; set; }
         public DateTime InstallationDate { get; set; }
         public string MaintenanceMonth { get; set; }
         public string Type { get; set; }
@@ -39,8 +36,6 @@ namespace EntitiesRN
         // Relation with Warranty
         public ICollection<WarrantyEntity> Warranties { get; set; }
 
-        // Relation With Device 
-        public ICollection<ReplacementDeviceEntity> Replacements { get; set; }
         // Relation With Device 
         public ICollection<ReplacementDeviceEntity> Replacements { get; set; }
     }

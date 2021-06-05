@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace EntitiesRN
+namespace Entities
 {
-    class MaintenanceEntity
+   public  class MaintenanceEntity
     {
         public string MaintenanceId { get; set; }
         public DateTime MaintenanceDate { get; set; }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntitiesRN
+namespace Entities
 {
-    class SaleManEntity
+ public   class SaleManEntity
     {
         [Required]
         public string SaleManId { get; set; }

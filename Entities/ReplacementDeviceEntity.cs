@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntitiesRN
+namespace Entities
 {
-    class ReplacementDeviceEntity
+   public class ReplacementDeviceEntity
     {
         [Required]
         public string ReplacementDeviceId { get; set; }
