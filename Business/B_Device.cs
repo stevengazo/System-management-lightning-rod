@@ -47,7 +47,20 @@ namespace Business
             }
         }
 
-
+        /// <summary>
+        /// Delete Device from the table Devices 
+        /// </summary>
+        /// <param name="oDevice">Object to remove</param>
+        public void DeleteDevice( DeviceEntity oDevice)
+        {
+            using( var DB = new RayosNoDataContext())
+            {
+                var query = DB.Devices.LastOrDefault(d => d.DeviceId == oDevice.DeviceId);
+                DB.Devices.Remove(query);
+                DB.SaveChanges();
+            }
+        }
         
+       
     }
 }
