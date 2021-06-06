@@ -1,0 +1,23 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+<EditForm Model="@oClient">
+    <div class="form-group">
+        <label>Nombre del cliente</label>
+        <InputText @bind-Value="oClient.Name" class="form-control"></InputText>
+    </div>
+    <input type="button" value="Registar Cliente" @onclick="SaveClient" />
+</EditForm>
+
+@code{
+    ClientEntity oClient = new ClientEntity();
+
+
+    private void SaveClient()
+    {
+        oClient.Id = Guid.NewGuid().ToString();
+        B_Client.CreateClient(oClient);
+        Nav.NavigateTo("client/list");
+    }
+}

@@ -1,0 +1,38 @@
+﻿@using Entities;
+@using Business;
+
+
+<div>
+    <table class="table table-light table-sm table-bordered"  >
+        <thead>
+            <tr>
+                <td> Numero de Serie</td>
+                <td> Alias</td>
+                <td> Fecha de Instalación</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Devices)
+            {
+                <tr>
+                    <td> @obj.DeviceId</td>
+                    <td> @obj.Alias</td>
+                    <td> @obj.InstallationDate</td>
+                    <td> <a href="device/update/@obj.DeviceId"> Modificar</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+@code { 
+    List<DeviceEntity> Devices = new List<DeviceEntity>();
+    protected override async Task OnInitializedAsync()
+    {
+        Devices = B_Device.ListOfDevices();
+    }
+
+}

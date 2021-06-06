@@ -1,0 +1,40 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+<table class="table table-bordered table-hover table-sm" >
+    <thead>
+        <tr>
+            <td> Referencia</td>
+            <td> Nombre</td>
+            <td> </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Clients)
+        {
+            <tr>
+                <td> @obj.Id </td>
+                <td> @obj.Name </td>
+                <td> <a href="client/update/@obj.Id"> Modificar</a></td>
+                <td> <a href="/page/delete/@obj.Id"> Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code{
+    List<ClientEntity> Clients = new List<ClientEntity>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Clients = B_Client.ListOfClients();
+    }
+}
+
+
+
+
