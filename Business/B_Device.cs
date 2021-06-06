@@ -8,13 +8,21 @@ using DataAccess;
 
 namespace Business
 {
-    public class B_Device
+    public static class B_Device
     {
+
+        public static DeviceEntity DeviceById(string id)
+        {
+            using (var Db = new RayosNoDataContext())
+            {
+                return Db.Devices.ToList().LastOrDefault(D=>D.DeviceId==id);
+            }
+        }
         /// <summary>
         /// Consult and return all the Devices in the Database
         /// </summary>
         /// <returns>Return a list of Devices</returns>
-        public List<DeviceEntity> ListOfDevices()
+        public static List<DeviceEntity> ListOfDevices()
         {
             using (var Db = new RayosNoDataContext())
             {
@@ -25,7 +33,7 @@ namespace Business
         /// Create a new Device object
         /// </summary>
         /// <param name="oDevice">Object type Device</param>
-        public void CreateDevice( DeviceEntity oDevice)
+        public static void CreateDevice( DeviceEntity oDevice)
         {
             using(var Db = new RayosNoDataContext())
             {
@@ -38,7 +46,7 @@ namespace Business
         /// Update a attributes of a Device in the database
         /// </summary>
         /// <param name="oDevice">Objet type Device</param>
-        public void UpdateDevice( DeviceEntity oDevice)
+        public static void UpdateDevice( DeviceEntity oDevice)
         {
             using (var Db = new RayosNoDataContext())
             {
@@ -51,7 +59,7 @@ namespace Business
         /// Delete Device from the table Devices 
         /// </summary>
         /// <param name="oDevice">Object to remove</param>
-        public void DeleteDevice( DeviceEntity oDevice)
+        public static void DeleteDevice( DeviceEntity oDevice)
         {
             using( var DB = new RayosNoDataContext())
             {

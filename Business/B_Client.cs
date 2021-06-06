@@ -8,14 +8,20 @@ using DataAccess;
 
 namespace Business
 {
-    public class B_Client
+    public static class B_Client
     {
-
+        public static ClientEntity ClientById(string id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                return DB.Clients.ToList().LastOrDefault(C=>C.Id == id);
+            }
+        }
         /// <summary>
         /// Return the list of Clients in the DB
         /// </summary>
         /// <returns></returns>
-        public List<ClientEntity> ListOfClients()
+        public static List<ClientEntity> ListOfClients()
         {
             using (var DB = new RayosNoDataContext())
             {
@@ -26,7 +32,7 @@ namespace Business
         /// Create a new Client in the table Clients
         /// </summary>
         /// <param name="oClient">Objet Type ClientEntity</param>
-        public void CreateClient(ClientEntity oClient)
+        public static void  CreateClient(ClientEntity oClient)
         {
             using(var DB =  new RayosNoDataContext())
             {
@@ -39,7 +45,7 @@ namespace Business
         /// Update an existant client in the Table Clients
         /// </summary>
         /// <param name="oClient">Object to Update</param>
-        public void UpdateClient(ClientEntity oClient)
+        public static void UpdateClient(ClientEntity oClient)
         {
             using (var DB = new RayosNoDataContext())
             {
@@ -52,7 +58,7 @@ namespace Business
         /// Consult if the Client to delete have dependences and Delete the Object
         /// </summary>
         /// <param name="oClient">Client to delete</param>
-        public void RemoteClient(ClientEntity oClient)
+        public  static    void RemoteClient(ClientEntity oClient)
         {
             var BandDependence = HaveDependence(oClient);
             if( !BandDependence)
@@ -70,18 +76,18 @@ namespace Business
         /// </summary>
         /// <param name="oClient">Client to consult</param>
         /// <returns>True if the exist dependence, False if not exist dependences</returns>
-        public bool HaveDependence(ClientEntity oClient)
+        public  static bool  HaveDependence(ClientEntity oClient)
         {
             using (var DB = new RayosNoDataContext())
             {
                 var query = DB.Devices.Where(D => D.ClientId == oClient.Id);
-                if( query  != null)
+                if( query.Count() == 0)
                 {
-                    return true;
+                    return false; 
                 }
                 else
                 {
-                    return false;
+                    return true;
                 }
             }
         }

@@ -8,16 +8,16 @@ using DataAccess;
 
 namespace Business
 {
-    public class B_SaleMan
+    public static class B_SaleMan
     {
-        public List<SaleManEntity> ListOfSaleMans()
+        public  static List<SaleManEntity> ListOfSaleMans()
         {
             using(var DB = new RayosNoDataContext())
             {
                 return DB.Salemans.ToList();
             }
         }
-        public void CreateSaleMan(SaleManEntity oSaleMan)
+        public  static void CreateSaleMan(SaleManEntity oSaleMan)
         {
             using (var DB = new RayosNoDataContext())
             {
@@ -26,7 +26,7 @@ namespace Business
             }
         }
 
-        public void UpdateSaleMan(SaleManEntity oSaleMan)
+        public static void UpdateSaleMan(SaleManEntity oSaleMan)
         {
             using (var DB = new RayosNoDataContext())
             {
@@ -34,7 +34,7 @@ namespace Business
                 DB.SaveChanges();
             }
         }
-        public void DeleteSaleMan(SaleManEntity oSaleMan)
+        public  static void DeleteSaleMan(SaleManEntity oSaleMan)
         {
             bool BandDependece = HaveDependence(oSaleMan);
             if (!BandDependece)
@@ -47,7 +47,7 @@ namespace Business
             }
 
         }        
-        public bool HaveDependence( SaleManEntity oSaleMan)
+        public static bool HaveDependence( SaleManEntity oSaleMan)
         {
             using (var Db = new RayosNoDataContext())
             {
