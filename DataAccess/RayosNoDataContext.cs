@@ -25,5 +25,17 @@ namespace DataAccess
                 options.UseSqlServer("Server=(Local);Database=RNTesting;User Id=TestingUserDb; Password=TestingUserDb1");
             }
         }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            DeviceEntity oDevice = new DeviceEntity { DeviceId = Guid.NewGuid().ToString(), Alias = "Prueba" };
+            ClientEntity oClient = new ClientEntity { Id = Guid.NewGuid().ToString(), Name = "Prueba" };
+            SaleManEntity oSaleMan =  new SaleManEntity { SaleManId = Guid.NewGuid().ToString(), Name = "Prueba" };
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ClientEntity>().HasData(oClient);            
+            modelBuilder.Entity<SaleManEntity>().HasData(oSaleMan);
+            modelBuilder.Entity<DeviceEntity>().HasData(oDevice);
+        }
     }
 }
