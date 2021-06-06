@@ -25,7 +25,8 @@ namespace Business
         {
             using (var DB = new RayosNoDataContext())
             {
-                return DB.Clients.ToList();
+                IEnumerable<ClientEntity> aux = DB.Clients.ToList().OrderBy(C=>C.Name);
+                return aux.ToList();
             }
         }
         /// <summary>

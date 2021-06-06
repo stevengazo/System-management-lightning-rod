@@ -2,7 +2,7 @@
 @using Business;
 @inject NavigationManager Nav;
 
-<table class="table table-bordered table-hover table-sm" >
+<table class="table table-bordered table-hover table-light" >
     <thead>
         <tr>
             <td> Referencia</td>
@@ -17,7 +17,7 @@
                 <td> @obj.Id </td>
                 <td> @obj.Name </td>
                 <td> <a href="client/update/@obj.Id"> Modificar</a></td>
-                <td> <a href="/page/delete/@obj.Id"> Eliminar</a></td>
+                <td> <a href="/client/delete/@obj.Id"> Eliminar</a></td>
             </tr>
         }
     </tbody>

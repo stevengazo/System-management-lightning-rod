@@ -10,11 +10,20 @@ namespace Business
 {
     public static class B_SaleMan
     {
+            public static SaleManEntity SaleManById(string id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+               
+                return DB.Salemans.ToList().LastOrDefault(S=>S.SaleManId == id);
+            }
+        }
         public  static List<SaleManEntity> ListOfSaleMans()
         {
             using(var DB = new RayosNoDataContext())
             {
-                return DB.Salemans.ToList();
+                IEnumerable<SaleManEntity> aux =  DB.Salemans.ToList().OrderBy(S => S.Name);
+                return aux.ToList();
             }
         }
         public  static void CreateSaleMan(SaleManEntity oSaleMan)
@@ -47,12 +56,17 @@ namespace Business
             }
 
         }        
+        /// <summary>
+        /// Verificate if exists dependences in others tables
+        /// </summary>
+        /// <param name="oSaleMan">Object with dependences</param>
+        /// <returns>True if exist dependences, False if not exist dependences</returns>
         public static bool HaveDependence( SaleManEntity oSaleMan)
         {
             using (var Db = new RayosNoDataContext())
-            {
+            {  
                 var query = Db.Devices.Where(D => D.SaleManId == oSaleMan.SaleManId);
-                if( query == null)
+                if ( query.Count() == 0)
                 {
                     return false;
                 }

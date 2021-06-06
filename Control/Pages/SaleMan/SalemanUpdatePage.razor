@@ -1,0 +1,21 @@
+﻿@page "/saleman/update/{SaleManId}"
+
+
+<div>
+    <h2 class="text-center">Actualizar Vendedor</h2>
+    <hr />
+    <a href="saleman/list"> Regresar a la lista de vendedores</a>
+    <hr />
+    <SaleManUpdateComponet id="@SaleManId.ToString()"/>
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string SaleManId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        SaleManId = SaleManId;
+    }
+}
