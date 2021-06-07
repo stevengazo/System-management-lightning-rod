@@ -1,0 +1,37 @@
+﻿@using Entities;
+@using Business;
+
+@inject NavigationManager Nav;
+
+
+<div class=" text-center">
+    <h3>¿Deseas borrar el registro de mantenimiento del equipo @oMaintenance.DeviceId?</h3>
+    <p> Verifica que el registro que estas a punto de eliminar sea el adecuado</p>
+    <input type="button" class="btn-danger" value="Deseo eliminar el Registro" @onclick="DeleteMaintenance" />
+    <input type="button" class="btn-light" value="Regresar a lista de Mantenimientos" @onclick="BackLink" />    
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+    MaintenanceEntity oMaintenance = new MaintenanceEntity();
+
+    private void DeleteMaintenance()
+    {
+        B_Maintenance.Delete(oMaintenance);
+        BackLink();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        oMaintenance = B_Maintenance.MaintenanceById(id);
+    }
+
+    private void BackLink()
+    {
+        Nav.NavigateTo("maintenance/list");
+    }
+
+
+}

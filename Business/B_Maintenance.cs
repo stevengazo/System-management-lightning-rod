@@ -5,20 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities;
 using DataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business
 {
-    public class B_Maintenance
+    public static class B_Maintenance
     {
+        public static MaintenanceEntity MaintenanceById(string id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                return DB.Maintenances.Include(D=>D.Device).ToList().LastOrDefault(M => M.MaintenanceId == id);   
+            }
+        }
         /// <summary>
         /// Return the list of Maintenance
         /// </summary>
         /// <returns>List of Maintenance</returns>
-        public List<MaintenanceEntity> ListOfMaintenance()
+        public  static List<MaintenanceEntity> ListOfMaintenance()
         {
             using ( var DB = new RayosNoDataContext())
             {
-                return DB.Maintenances.ToList();
+                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M=>M.DeviceId);
+                return aux.ToList();
             }
         }
 
@@ -26,7 +35,7 @@ namespace Business
         /// Create a new Maintenance
         /// </summary>
         /// <param name="oMaintenance">New object to insert</param>
-        public void Create(MaintenanceEntity oMaintenance)
+        public  static void Create(MaintenanceEntity oMaintenance)
         {
             using( var  DB = new RayosNoDataContext())
             {
@@ -39,7 +48,7 @@ namespace Business
         /// Update an exist Maintenance in the table Maintenances
         /// </summary>
         /// <param name="oMaintenance"></param>
-        public void Update ( MaintenanceEntity oMaintenance)
+        public static void Update ( MaintenanceEntity oMaintenance)
         {
             using (var DB = new RayosNoDataContext())
             {
@@ -51,7 +60,7 @@ namespace Business
         /// Delete an exist Maintenace
         /// </summary>
         /// <param name="oMaintenance"></param>
-        public void Delete ( MaintenanceEntity oMaintenance)
+        public static void Delete ( MaintenanceEntity oMaintenance)
         {
             using(var DB = new RayosNoDataContext())
             {

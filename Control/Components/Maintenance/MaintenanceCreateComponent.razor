@@ -1,0 +1,64 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+
+
+<EditForm Model="oMaintenance">
+    <div class="form-group">
+        <label>Fecha de Mantenimiento</label>
+        <InputDate class="form-control" @bind-Value="oMaintenance.MaintenanceDate"></InputDate>
+    </div>
+    <div class="form-group">
+        <label> Estado del dispositivo</label>
+        <InputTextArea class="form-control" @bind-Value="oMaintenance.StatusOfDevice"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label> Resistencia de la malla</label>
+        <InputNumber class="form-control" @bind-Value="oMaintenance.SpatOhms"></InputNumber>
+    </div>
+    <div class="form-group">
+        <label>Resistencia de las Semiesferas del Dispositivo</label>
+        <InputNumber class="form-control" @bind-Value="oMaintenance.DeviceOhms"></InputNumber>
+    </div>
+    <div class="form-group">
+        <label>Transferencia de Cargas</label>
+        <InputNumber class="form-control" @bind-Value="oMaintenance.Ampers"></InputNumber>
+    </div>
+    <div class="form-group">
+        <label>Nombre del Técnico</label>
+        <InputText class="form-control" @bind-Value="oMaintenance.TechnicianName"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Numero de Informe</label>
+        <InputText class="form-control" @bind-Value="oMaintenance.ReportId"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Numero de Informe</label>
+        <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId" >
+            <option value="0"> Seleccione un equipo...</option>
+            @foreach (var Device in Devices)
+	        {       
+	            <option value="@Device.DeviceId"> @Device.DeviceId - @Device.Alias </option>	 
+	        }
+        </InputSelect>   
+    </div>
+
+</EditForm>
+<input type="button" value="Registrar Mantenimiento" class="btn-primary" @onclick ="SaveMaintenance"/>
+
+@code{
+    MaintenanceEntity oMaintenance = new MaintenanceEntity();
+    List<DeviceEntity> Devices = new List<DeviceEntity>();
+    protected override async Task OnInitializedAsync()
+    {
+        Devices = B_Device.ListOfDevices();
+    }
+
+    private void SaveMaintenance()
+    {
+        oMaintenance.MaintenanceId = Guid.NewGuid().ToString();
+        B_Maintenance.Create(oMaintenance);
+        Nav.NavigateTo("maintenance/list");
+    }
+}

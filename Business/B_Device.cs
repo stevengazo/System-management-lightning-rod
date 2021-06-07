@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Entities;
 using DataAccess;
 
@@ -26,7 +27,7 @@ namespace Business
         {
             using (var Db = new RayosNoDataContext())
             {
-                return Db.Devices.ToList();
+                return Db.Devices.Include(S=>S.SaleMan).Include(C=>C.Client).ToList();
             }
         }
         /// <summary>

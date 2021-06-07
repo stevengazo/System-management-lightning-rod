@@ -1,0 +1,17 @@
+﻿@page "/maintenance/delete/{MaintenanceId}"
+
+
+
+<div>
+    <h2 class="text-center">Eliminar Mantenimiento</h2>
+    <hr />
+    <MaintenanceDeleteComponent id="@MaintenanceId.ToString()" />
+</div>
+@code{
+    [Parameter]
+    public string MaintenanceId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        MaintenanceId = MaintenanceId;
+    }
+}
