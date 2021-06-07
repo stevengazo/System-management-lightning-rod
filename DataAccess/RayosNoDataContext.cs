@@ -22,7 +22,8 @@ namespace DataAccess
         {
             if (!options.IsConfigured)
             {
-                options.UseSqlServer("Server=(Local);Database=RNTesting;User Id=TestingUserDb; Password=TestingUserDb1");
+                //options.UseSqlServer("Server=(Local);Database=RNTesting;User Id=TestingUserDb; Password=TestingUserDb1");
+                options.UseSqlServer("Server=tcp:testingdbrn1.database.windows.net,1433;Initial Catalog=testingdbrn1;Persist Security Info=False;User ID=testingdbrn1user;Password=estingdbrn1user$%!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
