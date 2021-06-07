@@ -29,13 +29,20 @@ namespace DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            DeviceEntity oDevice = new DeviceEntity { DeviceId = Guid.NewGuid().ToString(), Alias = "Prueba" };
             ClientEntity oClient = new ClientEntity { Id = Guid.NewGuid().ToString(), Name = "Prueba" };
-            SaleManEntity oSaleMan =  new SaleManEntity { SaleManId = Guid.NewGuid().ToString(), Name = "Prueba" };
+            SaleManEntity oSaleMan = new SaleManEntity { SaleManId = Guid.NewGuid().ToString(), Name = "Prueba" };
+            DeviceEntity oDevice = new DeviceEntity { DeviceId = Guid.NewGuid().ToString(), Alias = "Prueba",ClientId= oClient.Id, SaleManId = oSaleMan.SaleManId };
+            MaintenanceEntity oMaintenance = new MaintenanceEntity { MaintenanceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
+            ReplacementDeviceEntity oReplace = new ReplacementDeviceEntity { ReplacementDeviceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
+            WarrantyEntity oWarranty = new WarrantyEntity { Id = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ClientEntity>().HasData(oClient);            
             modelBuilder.Entity<SaleManEntity>().HasData(oSaleMan);
             modelBuilder.Entity<DeviceEntity>().HasData(oDevice);
+            modelBuilder.Entity<MaintenanceEntity>().HasData(oMaintenance);
+            modelBuilder.Entity<ReplacementDeviceEntity>().HasData(oReplace);
+            modelBuilder.Entity<WarrantyEntity>().HasData(oWarranty);
         }
     }
 }
