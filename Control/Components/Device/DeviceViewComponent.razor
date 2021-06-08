@@ -1,0 +1,70 @@
+﻿@using Entities;
+@using Business;
+
+
+<EditForm Model="oDevice">
+    <div class="form-group">
+        <label><strong>Referencia:</strong> @oDevice.DeviceId</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Alias:</strong> @oDevice.Alias</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Longitud:</strong> @oDevice.Longitude</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Latitud:</strong> @oDevice.Latitude</label>
+    </div>
+    <div class="form-group">
+        <label><strong>País:</strong> @oDevice.Country</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Fecha Instalación:</strong> @oDevice.InstallationDate</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Mes Mantenimiento:</strong> @oDevice.MaintenanceMonth</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Tipo: </strong> @oDevice.Type</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Modelo:</strong> @oDevice.Model</label>
+    </div>
+    <div class="form-group">
+        <label>
+            <strong>Estado:</strong>
+            @if (oDevice.IsActive)
+            {
+                <label>Se encuentra Activo</label>
+            }
+            else
+            {
+                <label>Se encuentra inactivo</label>
+            }
+        </label>
+    </div>
+    <div class="form-group">
+        <label><strong>Cliente:</strong> @oDevice.Client.Name</label>
+    </div>
+    <div class="form-group">
+        <label><strong>Vendedor:</strong> @oDevice.SaleMan.Name</label>
+    </div>
+</EditForm>
+
+
+
+
+
+
+@code{
+    [Parameter]
+    public string DeviceId { get; set; }
+
+    DeviceEntity oDevice = new DeviceEntity();
+
+    protected override  async Task OnInitializedAsync()
+    {
+        oDevice = B_Device.DeviceById(DeviceId);
+    }
+
+}
