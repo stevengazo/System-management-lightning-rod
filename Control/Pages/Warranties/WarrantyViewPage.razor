@@ -1,0 +1,31 @@
+﻿@page "/warranty/view/{WarrantyId}"
+
+
+
+
+
+<div class="text-center">
+    <h2> Información de la Garantia</h2>
+    <hr />
+    <a href="warranty/list">Regresar a la lista de Garantias</a>
+    <p>
+        A continuación se muestra la información realizada a la emisión del la garantia.
+    </p>
+
+    <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
+</div> 
+
+
+
+
+
+@code {
+    [Parameter]
+    public string WarrantyId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        WarrantyId = WarrantyId;
+    }
+} 

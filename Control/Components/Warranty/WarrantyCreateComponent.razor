@@ -1,0 +1,50 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+<EditForm Model="oWarranty">
+    <div class="form-group">
+        <label>Seleccione el Dispositivo</label>
+        <InputSelect @bind-Value="oWarranty.DeviceId" class="form-control">
+            <option value="0">Seleccione...</option>
+            @foreach (var obj in Devices)
+            {
+                <option value="@obj.DeviceId"> @obj.DeviceId</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label>Fecha envío Protocolo</label>
+        <InputDate @bind-Value="@oWarranty.DateSend" class="form-control" ></InputDate>
+    </div>
+    <div class="form-group">
+        <label>Fecha recepción Garantía</label>
+        <InputDate @bind-Value="@oWarranty.DateSend" class="form-control"></InputDate>
+    </div>
+    <div class="form-group">
+        <label>Notas:</label>
+        <InputTextArea @bind-Value="@oWarranty.Notes" class="form-control"></InputTextArea>
+    </div>
+</EditForm>
+
+<input type="button" value="Guardar Registro" class="btn-info" @onclick="SaveWarranty"/>
+
+@code{
+    WarrantyEntity oWarranty = new WarrantyEntity();
+    List<DeviceEntity> Devices = new List<DeviceEntity>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        Devices = B_Device.ListOfDevices();
+    }
+
+    private void SaveWarranty()
+    {
+        oWarranty.Id = Guid.NewGuid().ToString();
+        B_Warranty.Create(oWarranty);
+        Nav.NavigateTo("warranty/list");
+    }
+
+}

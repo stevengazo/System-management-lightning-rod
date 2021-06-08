@@ -8,16 +8,24 @@ using DataAccess;
 
 namespace Business
 {
-    public class B_Warranty
+    public static class B_Warranty
     {
-        public List<WarrantyEntity> ListOfWarranties()
+        public static WarrantyEntity WarrantyById(string id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                return DB.Warranties.ToList().LastOrDefault(W => W.Id == id);
+            }
+        }
+        public  static List<WarrantyEntity> ListOfWarranties()
         {
             using (var DB= new RayosNoDataContext())
             {
-                return DB.Warranties.ToList();
+                IEnumerable<WarrantyEntity> aux = DB.Warranties.OrderBy(W=>W.DeviceId);
+                return aux.ToList();
             }
         }
-        public void Create (WarrantyEntity oWarranty)
+        public  static void Create (WarrantyEntity oWarranty)
         {
             using(var DB = new RayosNoDataContext())
             {
@@ -25,7 +33,7 @@ namespace Business
                 DB.SaveChanges();
             }
         }
-        public void Update(WarrantyEntity oWarranty)
+        public static void Update(WarrantyEntity oWarranty)
         {
             using (var DB = new RayosNoDataContext())
             {
@@ -34,7 +42,7 @@ namespace Business
             }
         }
 
-        public void Delete(WarrantyEntity oWarranty)
+        public static void Delete(WarrantyEntity oWarranty)
         {
             using( var DB = new RayosNoDataContext())
             {

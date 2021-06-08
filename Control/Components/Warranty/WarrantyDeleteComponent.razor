@@ -1,0 +1,39 @@
+﻿@using Business;
+@using Entities;
+@inject NavigationManager Nav;
+
+
+<div class="text-center">
+    <label> ¿Deseas eliminar el registro numero @oWarranty.Id?</label>
+    <p> Verifica la información que estas a punto de eliminar</p>
+    <div>
+        <input class="btn-danger" type="button" value="Deseo Eliminar este registro" @onclick="DeleteWarranty" />
+        <input class="btn-info" type="button" value="Regresar a la lista" @onclick="BackToList" />
+    </div>
+</div>
+
+
+
+
+@code {
+    [Parameter]
+    public string WarrantyId { get; set; }
+
+    WarrantyEntity oWarranty = new WarrantyEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        oWarranty = B_Warranty.WarrantyById(WarrantyId);
+    }
+
+    private void DeleteWarranty()
+    {
+        B_Warranty.Delete(oWarranty);
+        Nav.NavigateTo("warranty/list");
+    }
+
+    private void BackToList()
+    {
+        Nav.NavigateTo("warranty/list");
+    }
+}

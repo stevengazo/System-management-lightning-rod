@@ -1,0 +1,22 @@
+﻿@page "/warranty/update/{WarrantyId}"
+
+
+
+<div class="text-center">
+    <h2> Creación de nuevo registro</h2>
+    <hr />
+    <a href="warranty/list">Regresar a la lista de Garantias</a>
+    <WarrantyUpdateComponent WarrantyId="@WarrantyId.ToString()"></WarrantyUpdateComponent>
+</div>
+
+
+@code {
+    [Parameter]
+    public string WarrantyId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        WarrantyId = WarrantyId;
+    }
+} 
