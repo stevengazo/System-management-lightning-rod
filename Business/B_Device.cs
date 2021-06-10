@@ -16,7 +16,7 @@ namespace Business
         {
             using (var Db = new RayosNoDataContext())
             {
-                return Db.Devices.Include(D=>D.Client).Include(D=>D.SaleMan).ToList().LastOrDefault(D=>D.DeviceId==id);
+                return Db.Devices.ToList().LastOrDefault(D=>D.DeviceId==id);
             }
         }
         /// <summary>
