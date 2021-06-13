@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Control.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class IDBContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public IDBContext(DbContextOptions<IDBContext> options)
             : base(options)
         {
         }

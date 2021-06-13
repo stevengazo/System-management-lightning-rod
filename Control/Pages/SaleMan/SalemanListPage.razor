@@ -1,22 +1,10 @@
 ﻿@page "/saleman/list"
-@inject 
-
-<AuthorizeView Roles="">
-    <Authorized>
-        <div>
-            Autorizado para ver esta vista
-        </div>       
-        <div class="text-center">
-            <h2>Lista de Vendedores</h2>
-            <a href="saleman/create"> Agregar nuevo vendedor</a>
-            <hr />
-            <SaleManListComponent></SaleManListComponent>
-        </div>
 
 
-    </Authorized>
-    <NotAuthorized>
-        No autorizado, favor pongase en contacto con el administrador
-    </NotAuthorized>
-</AuthorizeView>
 
+
+<div class="text-center">
+    <h2>Lista de Vendedores</h2>
+    <a href="saleman/create"> Agregar nuevo vendedor</a>
+    <hr />
+</div>
