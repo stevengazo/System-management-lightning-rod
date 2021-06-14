@@ -12,6 +12,26 @@ namespace Business
     public static class B_Device
     {
 
+        public static bool HaveDependence(DeviceEntity deviceEntity)
+        {
+            var stg = deviceEntity.DeviceId;
+            using (var DB = new RayosNoDataContext())
+            {
+
+                var cMaintenance = DB.Maintenances.Last(M => M.DeviceId == stg);
+                var cWarranty = DB.Warranties.Last(W => W.DeviceId == stg);
+                var cReplacement = DB.Replacements.Last(R => R.DeviceId == stg);
+                if ((cMaintenance == null) || (cWarranty == null) || (cReplacement == null))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
         public static DeviceEntity DeviceById(string id)
         {
             using (var Db = new RayosNoDataContext())
@@ -38,6 +58,7 @@ namespace Business
         {
             using(var Db = new RayosNoDataContext())
             {
+                oDevice.DeviceId = oDevice.DeviceId.ToUpper();
                 Db.Devices.Add(oDevice);
                 Db.SaveChanges();
             }
@@ -65,8 +86,13 @@ namespace Business
             using( var DB = new RayosNoDataContext())
             {
                 var query = DB.Devices.LastOrDefault(d => d.DeviceId == oDevice.DeviceId);
-                DB.Devices.Remove(query);
-                DB.SaveChanges();
+                var BandEstado = HaveDependence(oDevice);
+                if (BandEstado)
+                {
+                    DB.Devices.Remove(query);
+                    DB.SaveChanges();
+                }
+
             }
         }
         

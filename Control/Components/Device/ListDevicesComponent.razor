@@ -2,6 +2,10 @@
 @using Business;
 
 
+<div >
+    <Input type="text" value="Buscar" @onchange="SearchValue" class="form-group form-control"/>
+</div>
+
 <div>
     <table class="table table-responsive-sm table-bordered table-hover table-light"  >
         <thead>
@@ -33,10 +37,27 @@
 
 
 @code { 
+    List<DeviceEntity> tmpDevices = new List<DeviceEntity>();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     protected override async Task OnInitializedAsync()
     {
-        Devices = B_Device.ListOfDevices();
+        tmpDevices = B_Device.ListOfDevices();
+        Devices = tmpDevices;
     }
 
+
+
+    private void SearchValue(ChangeEventArgs e)
+    {
+        var aux = e.Value.ToString();
+        if (aux.Equals(string.Empty) || aux.Equals("Buscar"))
+        {
+            Devices = tmpDevices;
+        }
+        else {
+            Devices = tmpDevices.Where(D => D.DeviceId == aux).ToList();
+        }
+
+
+    }
 }
