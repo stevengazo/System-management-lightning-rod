@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Entities;
-
+using System.IO;
 
 namespace DataAccess
 {
@@ -20,11 +22,33 @@ namespace DataAccess
         public DbSet<WarrantyEntity> Warranties { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
+            GetConnectionString();
             if (!options.IsConfigured)
             {
-                options.UseSqlServer("Server=(Local);Database=RNTesting;User Id=TestingUserDb; Password=TestingUserDb1");                
+                options.UseSqlServer(MyConnectionString);                
             }
+
         }
+        /// <summary>
+        /// Temporal Connection String (for internal use of the .dll)
+        /// </summary>
+        internal string MyConnectionString { get; set; }
+
+        /// <summary>
+        /// Create a new configuration builder and connect to appsettings.json and read the 
+        /// connection string and set the value
+        /// </summary>
+        private void GetConnectionString (string connectionStringName = "RayosNoConnection")
+        {
+            var builder = new ConfigurationBuilder()
+                              .SetBasePath(Directory.GetCurrentDirectory()) 
+                              .AddJsonFile(connectionStringName) 
+                              .AddEnvironmentVariables(); 
+            Configuration = builder.Build();
+            MyConnectionString = Configuration.GetConnectionString("RayosNoConnection");
+        }
+
+        private IConfiguration Configuration { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
