@@ -13,8 +13,8 @@
                 <td> Numero de Serie</td>               
                 <td> Alias</td>
                 <td> Fecha de Instalación</td>
-                <td> Cliente</td>
-                <td> Vendedor</td>                
+                <td> Vendedor</td>
+                <td> Cliente</td>                
                 <td></td>
             </tr>
         </thead>
@@ -27,6 +27,7 @@
                     <td> @obj.InstallationDate</td>
                     <td> @obj.SaleMan.Name</td>
                     <td> @obj.Client.Name</td>
+                    <td> <a href="device/view/@obj.DeviceId"> Ver </a></td>
                     <td> <a href="device/update/@obj.DeviceId"> Modificar</a></td>
                 </tr>
             }
@@ -37,12 +38,23 @@
 
 
 @code { 
+    [Parameter]
+    public string id { get; set; }
+
     List<DeviceEntity> tmpDevices = new List<DeviceEntity>();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     protected override async Task OnInitializedAsync()
     {
-        tmpDevices = B_Device.ListOfDevices();
-        Devices = tmpDevices;
+        if (id == null)
+        {
+            tmpDevices = B_Device.ListOfDevices();
+            Devices = tmpDevices;
+        }
+        else
+        {
+            tmpDevices = B_Device.ListOfDevices(id);
+            Devices = tmpDevices;
+        }
     }
 
 

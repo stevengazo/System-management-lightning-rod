@@ -36,18 +36,26 @@ namespace Business
         {
             using (var Db = new RayosNoDataContext())
             {
-                return Db.Devices.ToList().LastOrDefault(D=>D.DeviceId==id);
+                return Db.Devices.Include(D=>D.SaleMan).Include(D=>D.Client).ToList().LastOrDefault(D=>D.DeviceId==id);
             }
         }
         /// <summary>
         /// Consult and return all the Devices in the Database
         /// </summary>
         /// <returns>Return a list of Devices</returns>
-        public static List<DeviceEntity> ListOfDevices()
+        public static List<DeviceEntity> ListOfDevices(string id="")
         {
             using (var Db = new RayosNoDataContext())
             {
-                return Db.Devices.Include(S=>S.SaleMan).Include(C=>C.Client).ToList();
+                if (id.Length == 0)
+                {
+                    return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).ToList();
+                }
+                else
+                {
+                    return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).Where(D=>D.SaleManId==id).ToList();
+                }
+                
             }
         }
         /// <summary>

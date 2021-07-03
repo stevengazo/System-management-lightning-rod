@@ -1,0 +1,39 @@
+﻿@using Entities;
+@using Business;
+
+<table class=" table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td> Numero de Serie del equipo </td>
+            <td> Fecha Envio España</td>
+            <td> Fecha Recepción España</td>
+            <td> </td>
+            <td> </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Warranties)
+        {
+            <tr>
+                <td> @obj.DeviceId </td>
+                <td> @obj.DateSend</td>
+                <td> @obj.DateReceived</td>
+                <td> <a href="warranty/view/@obj.Id">Ver</a></td>
+                <td> <a href="warranty/update/@obj.Id">Modificar</a></td>
+                <td> <a href="warranty/delete/@obj.Id">Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+
+    List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Warranties = B_Warranty.ListOfWarrantiesById(id);
+    }
+}  

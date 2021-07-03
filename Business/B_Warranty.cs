@@ -17,6 +17,14 @@ namespace Business
                 return DB.Warranties.ToList().LastOrDefault(W => W.Id == id);
             }
         }
+        public static List<WarrantyEntity> ListOfWarrantiesById(string id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                IEnumerable<WarrantyEntity> aux = DB.Warranties.OrderBy(W => W.DeviceId).Where(W=>W.DeviceId== id);
+                return aux.ToList();
+            }
+        }
         public  static List<WarrantyEntity> ListOfWarranties()
         {
             using (var DB= new RayosNoDataContext())

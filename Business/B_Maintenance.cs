@@ -11,6 +11,14 @@ namespace Business
 {
     public static class B_Maintenance
     {
+        public static List<MaintenanceEntity> ListOfMaintenancesById(string id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M => M.DeviceId).Where(D=>D.DeviceId==id);               
+                return aux.ToList();
+            }
+        }
         public static MaintenanceEntity MaintenanceById(string id)
         {
             using (var DB = new RayosNoDataContext())
