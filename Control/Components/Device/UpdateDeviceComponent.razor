@@ -101,6 +101,8 @@
     private void UpdateDevice()
     {
         var oClient =B_Client.ClientById(oDevice.ClientId);
+        var oSaleman = B_SaleMan.SaleManById(oDevice.SaleManId);
+        oDevice.SaleMan = oSaleman;
         oDevice.Client = oClient;
         B_Device.UpdateDevice(oDevice);
         Nav.NavigateTo("device/list");
