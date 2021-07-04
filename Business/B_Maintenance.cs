@@ -11,11 +11,32 @@ namespace Business
 {
     public static class B_Maintenance
     {
-        public static List<MaintenanceEntity> ListOfMaintenancesById(string id)
+        public static List<int> ListOfYears()
+        {
+            List<int> YearList = new List<int>();
+            List<int> aux = new List<int>();
+            using (var DB = new RayosNoDataContext())
+            {
+                var MaintenancesDates = from data in DB.Maintenances    
+                                        select (
+                                          data.MaintenanceDate
+                                        ) ;
+                foreach (var item in MaintenancesDates)
+                {
+                    aux.Add(item.Year);
+                }
+                YearList.AddRange(aux.Distinct());
+                YearList.Sort();
+                return YearList;
+            }
+        }
+
+
+        public static List<MaintenanceEntity> ListOfMaintenancesById(string DeviceId)
         {
             using (var DB = new RayosNoDataContext())
             {
-                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M => M.DeviceId).Where(D=>D.DeviceId==id);               
+                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M => M.DeviceId).Where(D=>D.DeviceId==DeviceId);               
                 return aux.ToList();
             }
         }
@@ -35,6 +56,15 @@ namespace Business
             using ( var DB = new RayosNoDataContext())
             {
                 IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M=>M.DeviceId);
+                return aux.ToList();
+            }
+        }
+
+        public static List<MaintenanceEntity> ListOfMaintenanceByYear(int Year)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M => M.DeviceId).Where(M => M.MaintenanceDate.Year == Year);
                 return aux.ToList();
             }
         }
