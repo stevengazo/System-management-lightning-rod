@@ -10,15 +10,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayosNoDataContext))]
-    [Migration("20210605233508_V1")]
-    partial class V1
+    [Migration("20210706013751_RayosNoDB")]
+    partial class RayosNoDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Entities.ClientEntity", b =>
@@ -32,6 +32,13 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "66462a63-7fde-4659-92f3-495f758b41d2",
+                            Name = "Prueba"
+                        });
                 });
 
             modelBuilder.Entity("Entities.DeviceEntity", b =>
@@ -79,6 +86,19 @@ namespace DataAccess.Migrations
                     b.HasIndex("SaleManId");
 
                     b.ToTable("Devices");
+
+                    b.HasData(
+                        new
+                        {
+                            DeviceId = "907ad322-7eaa-4510-80f9-3f278cf40288",
+                            Alias = "Prueba",
+                            ClientId = "66462a63-7fde-4659-92f3-495f758b41d2",
+                            InstallationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = false,
+                            Latitude = 0f,
+                            Longitude = 0f,
+                            SaleManId = "87d17867-8d5a-4c8d-81a3-b6f53bbd7114"
+                        });
                 });
 
             modelBuilder.Entity("Entities.MaintenanceEntity", b =>
@@ -115,6 +135,17 @@ namespace DataAccess.Migrations
                     b.HasIndex("DeviceId");
 
                     b.ToTable("Maintenances");
+
+                    b.HasData(
+                        new
+                        {
+                            MaintenanceId = "8a7e1bbf-096a-412a-9422-f091f9c71592",
+                            Ampers = 0f,
+                            DeviceId = "907ad322-7eaa-4510-80f9-3f278cf40288",
+                            DeviceOhms = 0f,
+                            MaintenanceDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpatOhms = 0f
+                        });
                 });
 
             modelBuilder.Entity("Entities.ReplacementDeviceEntity", b =>
@@ -136,6 +167,13 @@ namespace DataAccess.Migrations
                     b.HasIndex("DeviceId");
 
                     b.ToTable("Replacements");
+
+                    b.HasData(
+                        new
+                        {
+                            ReplacementDeviceId = "f4e3a320-0ad3-4a15-8ffa-d3ddc9f51182",
+                            DeviceId = "907ad322-7eaa-4510-80f9-3f278cf40288"
+                        });
                 });
 
             modelBuilder.Entity("Entities.SaleManEntity", b =>
@@ -152,6 +190,13 @@ namespace DataAccess.Migrations
                     b.HasKey("SaleManId");
 
                     b.ToTable("Salemans");
+
+                    b.HasData(
+                        new
+                        {
+                            SaleManId = "87d17867-8d5a-4c8d-81a3-b6f53bbd7114",
+                            Name = "Prueba"
+                        });
                 });
 
             modelBuilder.Entity("Entities.WarrantyEntity", b =>
@@ -176,6 +221,15 @@ namespace DataAccess.Migrations
                     b.HasIndex("DeviceId");
 
                     b.ToTable("Warranties");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "20c77a1f-a4fa-4193-bed8-8224a3454119",
+                            DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DeviceId = "907ad322-7eaa-4510-80f9-3f278cf40288"
+                        });
                 });
 
             modelBuilder.Entity("Entities.DeviceEntity", b =>

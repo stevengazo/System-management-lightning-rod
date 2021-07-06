@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class V1 : Migration
+    public partial class RayosNoDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -132,6 +132,36 @@ namespace DataAccess.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Clients",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { "66462a63-7fde-4659-92f3-495f758b41d2", "Prueba" });
+
+            migrationBuilder.InsertData(
+                table: "Salemans",
+                columns: new[] { "SaleManId", "Name", "QuantityOfDevice" },
+                values: new object[] { "87d17867-8d5a-4c8d-81a3-b6f53bbd7114", "Prueba", null });
+
+            migrationBuilder.InsertData(
+                table: "Devices",
+                columns: new[] { "DeviceId", "Alias", "ClientId", "Country", "InstallationDate", "IsActive", "Latitude", "Longitude", "MaintenanceMonth", "Model", "SaleManId", "Type" },
+                values: new object[] { "907ad322-7eaa-4510-80f9-3f278cf40288", "Prueba", "66462a63-7fde-4659-92f3-495f758b41d2", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 0f, 0f, null, null, "87d17867-8d5a-4c8d-81a3-b6f53bbd7114", null });
+
+            migrationBuilder.InsertData(
+                table: "Maintenances",
+                columns: new[] { "MaintenanceId", "Ampers", "DeviceId", "DeviceOhms", "MaintenanceDate", "ReportId", "SpatOhms", "StatusOfDevice", "TechnicianName" },
+                values: new object[] { "8a7e1bbf-096a-412a-9422-f091f9c71592", 0f, "907ad322-7eaa-4510-80f9-3f278cf40288", 0f, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0f, null, null });
+
+            migrationBuilder.InsertData(
+                table: "Replacements",
+                columns: new[] { "ReplacementDeviceId", "DeviceId", "NewSerieDevice", "Notes" },
+                values: new object[] { "f4e3a320-0ad3-4a15-8ffa-d3ddc9f51182", "907ad322-7eaa-4510-80f9-3f278cf40288", null, null });
+
+            migrationBuilder.InsertData(
+                table: "Warranties",
+                columns: new[] { "Id", "DateReceived", "DateSend", "DeviceId", "Notes" },
+                values: new object[] { "20c77a1f-a4fa-4193-bed8-8224a3454119", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "907ad322-7eaa-4510-80f9-3f278cf40288", null });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_ClientId",
                 table: "Devices",
@@ -156,6 +186,20 @@ namespace DataAccess.Migrations
                 name: "IX_Warranties_DeviceId",
                 table: "Warranties",
                 column: "DeviceId");
+
+            #region Stored Procedures
+           var SP_M_SelectByDeviceId = @"   CREATE PROCEDURE GetMaintenanceByDeviceId
+	                                            @_DeviceId varchar(50) 
+                                            AS
+                                            BEGIN
+                                                SET NOCOUNT ON;
+                                                SELECT * 
+                                                FROM Maintenances
+                                                WHERE Maintenances.DeviceId =@_DeviceId
+                                            END
+                                    ";
+            migrationBuilder.Sql(SP_M_SelectByDeviceId);
+            #endregion
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
