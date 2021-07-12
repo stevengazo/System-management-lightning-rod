@@ -198,7 +198,20 @@ namespace DataAccess.Migrations
                                                 WHERE Maintenances.DeviceId =@_DeviceId
                                             END
                                     ";
+            
+            string SP_D_M_ByYear = @"CREATE PROCEDURE GetDeviceByUnreallizedMaintenanceByYear 
+	                                        @_Year varchar(4) = '1'
+                                        AS
+                                        BEGIN
+	                                    SET NOCOUNT ON;
+                                        -- Insert statements for procedure here
+	                                    Select Devices.DeviceId,Alias,Longitude,Latitude,Country,InstallationDate,MaintenanceMonth,Devices.Type,Devices.Model,IsActive,ClientId,SaleManId
+	                                    from Devices left join Maintenances
+	                                    on Devices.DeviceId = Maintenances.DeviceId
+	                                    where Year(Maintenances.MaintenanceDate)!= @_Year
+                                        ";
             migrationBuilder.Sql(SP_M_SelectByDeviceId);
+            migrationBuilder.Sql(SP_D_M_ByYear);
             #endregion
         }
 

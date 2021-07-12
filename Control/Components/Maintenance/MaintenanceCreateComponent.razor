@@ -34,20 +34,32 @@
         <InputText class="form-control" @bind-Value="oMaintenance.ReportId"></InputText>
     </div>
     <div class="form-group">
-        <label>Numero de Informe</label>
+        <label>Numero de Equipo</label>
         <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId" >
             <option value="0"> Seleccione un equipo...</option>
             @foreach (var Device in Devices)
 	        {       
 	            <option value="@Device.DeviceId"> @Device.DeviceId - @Device.Alias </option>	 
 	        }
-        </InputSelect>   
+        </InputSelect>        
+    </div>    
+    <div>
+        <label>¿Numero de serie no visble?</label>
+        <a href="device/create"  target="_blank"> Crear dispositivo</a>
     </div>
-
 </EditForm>
-<input type="button" value="Registrar Mantenimiento" class="btn-primary" @onclick ="SaveMaintenance"/>
+
+
+
+
+<input type="button" value="Registrar Mantenimiento" class="btn-primary" @onclick="SaveMaintenance">
+
+
+
 
 @code{
+    bool BandExistDevice { get; set; }
+    string aux = "";
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     protected override async Task OnInitializedAsync()
@@ -61,4 +73,6 @@
         B_Maintenance.Create(oMaintenance);
         Nav.NavigateTo("maintenance/list");
     }
+
+
 }

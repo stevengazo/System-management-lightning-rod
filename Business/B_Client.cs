@@ -10,10 +10,13 @@ namespace Business
 {
     public static class B_Client
     {
+        
+        
         public static ClientEntity ClientById(string id)
         {
             using (var DB = new RayosNoDataContext())
             {
+                
                 return DB.Clients.ToList().LastOrDefault(C=>C.Id == id);
             }
         }

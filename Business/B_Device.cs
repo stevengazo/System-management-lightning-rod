@@ -39,6 +39,15 @@ namespace Business
                 return Db.Devices.Include(D=>D.SaleMan).Include(D=>D.Client).ToList().LastOrDefault(D=>D.DeviceId==id);
             }
         }
+
+        public static List<DeviceEntity> GetListOfDevicesById(string id)
+        {
+            using (var Db = new RayosNoDataContext())
+            {
+                var query = Db.Devices.FromSqlInterpolated($"select * from Devices Where DeviceId like '%{id}'").Include(S => S.SaleMan).Include(C => C.Client).ToList();
+                return query;
+            }
+        }
         /// <summary>
         /// Consult and return all the Devices in the Database
         /// </summary>
