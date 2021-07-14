@@ -1,0 +1,38 @@
+﻿@using Entities;
+@using Business;
+
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td>Id de Referencia</td>
+            <td>Numero de serie reemplazado</td>
+            <td>Numero de serie nuevo</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Replacements)
+        {
+        <tr>
+            <td>@obj.ReplacementDeviceId</td>
+            <td>@obj.DeviceId</td>
+            <td>@obj.NewSerieDevice</td>
+            <td><a href="">Ver</a></td>
+            <td><a href="">Editar</a></td>
+            <td><a href="">Eliminar</a></td>
+        </tr>
+        }
+    </tbody>
+</table> 
+
+@code{     
+    List<ReplacementDeviceEntity> Replacements = new List<ReplacementDeviceEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Replacements = B_Replacement.ListOfReplacement();
+    }
+}

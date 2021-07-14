@@ -25,7 +25,9 @@ namespace Business
                 try
                 {
                     List<DeviceEntity> oDevices = new List<DeviceEntity>();
+                    ///Execute a Stored Procedure saved in the DB
                     var query = DB.Devices.FromSqlInterpolated($"Exec GetDeviceByUnreallizedMaintenanceByYear @_Year={year.ToString()}");
+                    //Convert the IQueryable result, to list of DeviceEntity to send to the 
                     oDevices = query.ToList();
                     return oDevices;
                 }
