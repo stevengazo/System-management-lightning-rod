@@ -27,8 +27,7 @@ namespace Business
                     List<DeviceEntity> oDevices = new List<DeviceEntity>();
                     var query = DB.Devices.FromSqlInterpolated($"Exec GetDeviceByUnreallizedMaintenanceByYear @_Year={year.ToString()}");
                     oDevices = query.ToList();
-                    var aux = oDevices.Distinct().ToList();
-                    return aux;
+                    return oDevices;
                 }
                 catch (Exception d)
                 {

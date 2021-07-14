@@ -205,10 +205,12 @@ namespace DataAccess.Migrations
                                         BEGIN
 	                                    SET NOCOUNT ON;
                                         -- Insert statements for procedure here
-	                                    Select Devices.DeviceId,Alias,Longitude,Latitude,Country,InstallationDate,MaintenanceMonth,Devices.Type,Devices.Model,IsActive,ClientId,SaleManId
-	                                    from Devices left join Maintenances
-	                                    on Devices.DeviceId = Maintenances.DeviceId
-	                                    where Year(Maintenances.MaintenanceDate)!= @_Year
+	                                    	Select Devices.*
+	                                        from Devices left join (Select * 
+							                                        From Maintenances
+							                                        Where YEAR(MaintenanceDate) = @_Year) as ListMaintenance
+	                                        on Devices.DeviceId = ListMaintenance.DeviceId
+	                                        where ListMaintenance.MaintenanceId is null
                                         ";
             migrationBuilder.Sql(SP_M_SelectByDeviceId);
             migrationBuilder.Sql(SP_D_M_ByYear);
