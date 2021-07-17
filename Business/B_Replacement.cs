@@ -30,6 +30,7 @@ namespace Business
         {
             using (var DB = new RayosNoDataContext())
             {
+                oReplacement.ReplacementDeviceId = Guid.NewGuid().ToString();
                 DB.Replacements.Add(oReplacement);
                 DB.SaveChanges();
             }

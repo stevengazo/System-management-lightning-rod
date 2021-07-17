@@ -1,19 +1,27 @@
 ﻿@using Entities;
 @using Business;
-
+@inject NavigationManager nav
 
 <EditForm Model="oReplacement">
     <div class="form-group">
-        <label>Numero de serie del nuevo dispositivo</label>
-        <select class="form-control">
+        <label>Numero de serie del nuevo dispositivo</label>       
+        <InputSelect @bind-Value="oReplacement.NewSerieDevice" class="form-control">
             <option value="">Seleccione un equipo...</option>
-        </select>
+            @foreach (var item in oDevices)
+            {
+                <option value="@item.DeviceId"> @item.Client.Name - @item.DeviceId</option>
+            }
+        </InputSelect>
     </div>
     <div class="form-group">
         <label>Numero de serie del dispositivo a reeplazar</label>
-        <select class="form-control">
+        <InputSelect @bind-Value="oReplacement.DeviceId" class="form-control">
             <option value="">Seleccione un equipo...</option>
-        </select>
+            @foreach (var item in oDevices)
+            {
+                <option value="@item.DeviceId"> @item.Client.Name - @item.DeviceId</option>
+            }
+        </InputSelect>
     </div>
     <div>
         <label>Notas</label>
@@ -27,9 +35,16 @@
 @code {
     ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
 
+    List<DeviceEntity> oDevices = new List<DeviceEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        oDevices = B_Device.ListOfDevices().OrderBy(D => D.ClientId).ToList();
+    }
     protected void SaveReplacement()
     {
-
+        B_Replacement.Create(oReplacement);
+        nav.NavigateTo("replacement/list");
     }
 
 }
