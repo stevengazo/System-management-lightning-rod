@@ -210,9 +210,10 @@ namespace DataAccess.Migrations
 							                                        From Maintenances
 							                                        Where YEAR(MaintenanceDate) = @_Year) as ListMaintenance
 	                                        on Devices.DeviceId = ListMaintenance.DeviceId
-	                                        where ListMaintenance.MaintenanceId is null
+	                                        where ListMaintenance.MaintenanceId = null
+                                        end
                                         ";
-            migrationBuilder.Sql(SP_M_SelectByDeviceId);
+           migrationBuilder.Sql(SP_M_SelectByDeviceId);
             migrationBuilder.Sql(SP_D_M_ByYear);
             #endregion
         }

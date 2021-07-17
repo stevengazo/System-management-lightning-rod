@@ -2,23 +2,41 @@
 @using Entities;
 
 
-<EditForm Model="oWarranty">
-    <div class="form-group">
-        <label> <strong>Referencia:</strong> @oWarranty.Id</label>
-    </div>
-    <div class="form-group">
-        <label> <strong>Número de serie:</strong> @oWarranty.DeviceId</label>
-    </div>
-    <div class="form-group">
-        <label> <strong>Fecha envio de envio a España:</strong> @oWarranty.DateSend</label>
-    </div>
-    <div class="form-group">
-        <label> <strong>Fecha recepción de España:</strong> @oWarranty.DateReceived</label>
-    </div>
-    <div class="form-group">
-        <label> <strong>Notas: </strong> @oWarranty.Notes</label>
-    </div>
-</EditForm>
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td>Categoria</td>
+            <td>Información</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Referencia</td>
+            <td>@oWarranty.Id</td>
+        </tr>
+        <tr>
+            <td>Numero de serie</td>
+            <td>@oWarranty.DeviceId</td>
+        </tr>
+        <tr>
+            <td>Fecha de envio a España</td>
+            <td>@oWarranty.DateSend.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Fecha de recepción de España</td>
+            <td>@oWarranty.DateReceived.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Estatus de garantia</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Notas</td>
+            <td>@oWarranty.Notes</td>
+        </tr>
+    </tbody>
+</table>
+
 
 
 

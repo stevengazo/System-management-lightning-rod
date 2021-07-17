@@ -2,46 +2,61 @@
 @using Business;
 
 
-<EditForm Model="oMaintenance">
-    <div class="form-group">
-        <label> <strong>Id de referencia:</strong> @oMaintenance.MaintenanceId</label>
-    </div>
-    <div class="form-group">
-        <label><strong>Número de serie:</strong> @oMaintenance.DeviceId</label>
-    </div>
-    <div class="form-group">
-        <label><strong>Alias del dispositivo:</strong> @oMaintenance.Device.Alias</label>
-    </div>
-    <div class="form-group">
-        <label><strong>Fecha de instalación:</strong> @oMaintenance.Device.InstallationDate</label>
-    </div>
-    <div class="form-group">
-        <label> <strong>Fecha de Mantenimiento:</strong> @oMaintenance.MaintenanceDate </label>
-    </div>
-    <div class="form-group">
-        <label> <strong>Estado del dispositivo:</strong> </label>
-        <p> @oMaintenance.StatusOfDevice</p>
-    </div>
-    <div class="form-group">
-        <label> <strong>Resistencia de la malla:</strong> @oMaintenance.SpatOhms <span>&#8486;</span></label>
-    </div>
-    <div class="form-group">
-        <label>
-            <strong>Resistencia de las Semiesferas del Dispositivo:</strong> @oMaintenance.DeviceOhms M<span>&#8486;</span>
-        </label>
-    </div>
-    <div class="form-group">
-        <label><strong>Transferencia de Cargas:</strong> @oMaintenance.Ampers mA</label>
-    </div>
-    <div class="form-group">
-        <label><strong>Nombre del Técnico:</strong> @oMaintenance.TechnicianName</label>
-    </div>
-    <div class="form-group">
-        <label><strong>Número de Informe:</strong> @oMaintenance.ReportId</label>
-    </div>
+<table class="table border-dark table-responsive-sm table-bordered table-striped table-hover table-light">
+    <thead class="">
+        <tr>
+            <td>Categoría</td>
+            <td>Equipo</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Id de referencia</td>
+            <td>@oMaintenance.MaintenanceId</td>
+        </tr>
+        <tr>
+            <td>Número de serie</td>
+            <td>@oMaintenance.Device.DeviceId</td>
+        </tr>
+        <tr>
+            <td>Alias del dispositivo</td>
+            <td>@oMaintenance.Device.Alias</td>
+        </tr>
+        <tr>
+            <td>Fecha de instalación</td>
+            <td>@oMaintenance.Device.InstallationDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Fecha de Mantenimiento</td>
+            <td>@oMaintenance.MaintenanceDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Estado del dispositivo</td>   
+            <td>@oMaintenance.StatusOfDevice</td>
+        </tr>
+        <tr>
+            <td>Resistencia de la malla</td>
+            <td>@oMaintenance.SpatOhms<span>&#8486;</span></td>
+        </tr>
+        <tr>
+            <td>Resistencia de las semiesferas del dispositivo</td>
+            <td>@oMaintenance.DeviceOhms M<span>&#8486;</span></td>
+        </tr>
+        <tr>
+            <td>Transferencia de cargas </td>
+            <td>@oMaintenance.Ampers mA</td>
+        </tr>
+        <tr>
+            <td>Nombre del técnico</td>
+            <td>@oMaintenance.TechnicianName</td>
+        </tr>
+        <tr>
+            <td>Numero de informe</td>
+            <td>@oMaintenance.ReportId</td>
+        </tr>
+    </tbody>
+</table>
 
-
-</EditForm>
 
 
 @code{

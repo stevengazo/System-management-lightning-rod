@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entities;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.EntityFrameworkCore;
 using DataAccess;
 
 namespace Business
@@ -54,6 +56,16 @@ namespace Business
             {
                 DB.Replacements.Remove(oReplacement);
                 DB.SaveChanges();
+            }
+        }
+        public static ReplacementDeviceEntity GetReplacementById(string ReplacementId = "")
+        {
+            using(var DB= new RayosNoDataContext())
+            {
+                ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
+                var aux = DB.Replacements.FromSqlInterpolated($"select * from Replacements where Replacements.ReplacementDeviceId  = {ReplacementId}");
+                oReplacement = aux.FirstOrDefault();
+                return oReplacement;
             }
         }
     }

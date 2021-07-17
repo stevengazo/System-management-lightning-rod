@@ -1,0 +1,44 @@
+﻿@using Entities;
+@using Business;
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td>Información</td>
+            <td>Datos</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td> Id de referencia</td>
+            <td>@oReplacement.ReplacementDeviceId</td>
+        </tr>
+        <tr>
+            <td>Nueva serie del dispsitivo</td>
+            <td>@oReplacement.NewSerieDevice</td>
+        </tr>
+        <tr>
+            <td>Notas del dispositivo</td>
+            <td>@oReplacement.Notes</td>
+        </tr>
+        <tr>
+            <td>Id de dispositivo reemplazado</td>
+            <td>@oReplacement.DeviceId</td>
+        </tr>
+    </tbody>
+</table>
+
+
+@code   {
+    [Parameter]
+    public string ReplacementId { get; set; }
+
+    ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
+
+
+    protected override  async Task OnInitializedAsync()
+    {
+        oReplacement = B_Replacement.GetReplacementById(ReplacementId);
+    }
+}
+
