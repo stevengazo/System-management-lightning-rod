@@ -21,6 +21,7 @@ namespace DataAccess
         internal string MyConnectionString { get; set; }
         internal IConfiguration Configuration { get; set; }
         #endregion
+
         #region Public Attributes
         public DbSet<DeviceEntity> Devices { get; set; }
         public DbSet<ClientEntity> Clients { get; set; }
@@ -28,6 +29,7 @@ namespace DataAccess
         public DbSet<ReplacementDeviceEntity> Replacements { get; set; }
         public DbSet<SaleManEntity> Salemans { get; set; }
         public DbSet<WarrantyEntity> Warranties { get; set; }
+        public DbSet<IncidentEntity> Incidents { get; set; }
         #endregion
 
         #region Creating Model and seeding of data
@@ -49,7 +51,8 @@ namespace DataAccess
             MaintenanceEntity oMaintenance = new MaintenanceEntity { MaintenanceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
             ReplacementDeviceEntity oReplace = new ReplacementDeviceEntity { ReplacementDeviceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
             WarrantyEntity oWarranty = new WarrantyEntity { Id = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
-
+            IncidentEntity oIncident = new IncidentEntity { IncidentId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
+            
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ClientEntity>().HasData(oClient);
             modelBuilder.Entity<SaleManEntity>().HasData(oSaleMan);
@@ -57,6 +60,7 @@ namespace DataAccess
             modelBuilder.Entity<MaintenanceEntity>().HasData(oMaintenance);
             modelBuilder.Entity<ReplacementDeviceEntity>().HasData(oReplace);
             modelBuilder.Entity<WarrantyEntity>().HasData(oWarranty);
+            modelBuilder.Entity<IncidentEntity>().HasData(oIncident); 
         }
         #endregion
 

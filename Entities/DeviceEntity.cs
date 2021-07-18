@@ -37,7 +37,10 @@ namespace Entities
         // Relation with Warranty
         public ICollection<WarrantyEntity> Warranties { get; set; }
 
-        // Relation With Device 
+        // Relation With Replacements
         public ICollection<ReplacementDeviceEntity> Replacements { get; set; }
+
+        // Relation With Incidents
+        public ICollection<IncidentEntity> Incidents { get; set; }
     }
 }
