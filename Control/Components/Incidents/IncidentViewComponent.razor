@@ -1,0 +1,81 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+
+
+
+<table class="table table-light table-responsive-sm table-bordered">
+    <thead>
+        <tr>
+            <td>Categoría</td>
+            <td>Datos</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Id de referencia</td>
+            <td>@oIncident.IncidentId</td>
+        </tr>
+        <tr>
+            <td>Numero de serie</td>
+            <td>@oIncident.DeviceId</td>
+        </tr>
+        <tr>
+            <td>Alias</td>
+            <td>@oIncident.Device.Alias</td>
+        </tr>
+        <tr>
+            <td>Fecha del Reporte</td>
+            <td>@oIncident.ReportDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Fecha del incidente</td>
+            <td>@oIncident.IncidentDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Fecha de la revisión</td>
+            <td>@oIncident.RevisionDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Descripción del Reporte</td>
+            <td>@oIncident.ReportDescripcion</td>
+        </tr>
+        <tr>
+            <td>Información de la revisión</td>
+            <td>@oIncident.RevisionInformation</td>
+        </tr>
+        <tr>
+            <td>Estatus del dispositivo RAYOS-NO</td>
+            <td>@oIncident.DDCEStatus</td>
+        </tr>
+        <tr>
+            <td>Resistencia de la malla</td>
+            <td>@oIncident.SpatOhms</td>
+        </tr>
+        <tr>
+            <td>Tranferencia de cargas</td>
+            <td>@oIncident.Ampers</td>
+        </tr>
+        <tr>
+            <td>Resistencia del dispositivo</td>
+            <td>@oIncident.DeviceOhms</td>
+        </tr>
+        <tr>
+            <td>Recomendaciones</td>
+            <td>@oIncident.Recomentations</td>
+        </tr>
+    </tbody>
+</table>
+
+
+@code{
+    [Parameter]
+    public string IncidentId { get; set; }
+    IncidentEntity oIncident = new IncidentEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        oIncident = B_Incident.GetIncidentById(IncidentId);
+    }
+}

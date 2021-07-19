@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities;
 using DataAccess;
+using Microsoft.EntityFrameworkCore; 
 
 namespace Business
 {
@@ -18,7 +19,9 @@ namespace Business
         {
             using(var DB = new RayosNoDataContext())
             {
-                return (DB.Incidents.ToList());
+                List<IncidentEntity> incidents = new List<IncidentEntity>();
+                incidents = DB.Incidents.Include(D => D.Device).Include(C => C.Device.Client).ToList();
+                return incidents;
             }
         }
 
@@ -46,6 +49,16 @@ namespace Business
             {
                 DB.Incidents.Update(oIncident);
                 DB.SaveChanges();
+            }
+        }
+
+
+        public static IncidentEntity GetIncidentById(string IncidentId)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                var aux = DB.Incidents.FromSqlInterpolated($"Select * from Incidents where Incidents.IncidentId={IncidentId}").Include(D=>D.Device).FirstOrDefault();                
+                return aux;
             }
         }
     }

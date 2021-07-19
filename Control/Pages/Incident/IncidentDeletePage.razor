@@ -1,0 +1,21 @@
+﻿@page  "/incident/delete/{IncidentId}"
+
+<div>
+    <h2 class="text-center">Eliminación del Incidente</h2>    
+    <hr />
+    <a href="incident/list"> Regresar a la lista de incidentes</a>
+    <hr />
+    <IncidentDeleteComponent IncidentId="@IncidentId"/>
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string IncidentId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IncidentId = IncidentId;
+    }
+}

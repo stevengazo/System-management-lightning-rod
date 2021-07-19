@@ -1,0 +1,45 @@
+﻿@using Entities;
+@using Business;
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td>Numéro de serie</td>
+            <td>Alias</td>
+            <td>Cliente</td>
+            <td>Día del Reporte</td>
+            <td>Encargado</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Incidents)
+        {
+        <tr>
+            <td>@obj.DeviceId</td>
+            <td>@obj.Device.Alias</td>
+            <td>@obj.Device.Client.Name</td>
+            <td>@obj.ReportDate</td>
+            <td>@obj.TechnicianName</td>
+            <td><a href="incident/view/@obj.IncidentId" >Ver</a></td>
+            <td><a href="incident/update/@obj.IncidentId">Editar</a></td>
+            <td><a href="incident/delete/@obj.IncidentId">Eliminar</a></td>
+        </tr> 
+        }
+    </tbody>
+</table>
+
+
+
+@code {
+    List<IncidentEntity> Incidents = new List<IncidentEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Incidents = B_Incident.GetListOfIncidents();
+
+    }
+
+}

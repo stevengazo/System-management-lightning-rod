@@ -1,0 +1,35 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager nav;
+
+
+<div>
+    <h2>¿Deseas eliminar el registro?</h2>
+    <p> Verifica la información antes de eliminar el registro del equipo @oIncident.DeviceId y el día @oIncident.ReportDate</p>
+     <div>
+         <input type="button" value="Eliminar registro" class="btn-danger" @onclick="Delete"/><input type="button" value="Retornar" class="btn-info" @onclick="Back" />
+     </div>
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string IncidentId { get; set; }
+    IncidentEntity oIncident = new IncidentEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        oIncident = B_Incident.GetIncidentById(IncidentId);
+    }
+
+    private void Delete()
+    {
+        B_Incident.Delete(oIncident);
+        Back();
+    }
+    private void Back()
+    {
+        nav.NavigateTo("incident/list");
+    }
+}
