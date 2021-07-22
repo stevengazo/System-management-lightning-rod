@@ -11,7 +11,116 @@ namespace Business
 {
     public static class B_Device
     {
+        #region CRUD
 
+        /// <summary>
+        /// Consult and return all the Devices in the Database
+        /// </summary>
+        /// <returns>Return a list of Devices</returns>
+        public static List<DeviceEntity> ListOfDevices(string id = "")
+        {
+            using (var Db = new RayosNoDataContext())
+            {
+                if (id.Length == 0)
+                {
+                    return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).ToList();
+                }
+                else
+                {
+                    return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).Where(D => D.SaleManId == id).ToList();
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// Create a new Device object
+        /// </summary>
+        /// <param name="oDevice">Object type Device</param>
+        public static void CreateDevice(DeviceEntity oDevice)
+        {
+            using (var Db = new RayosNoDataContext())
+            {
+                oDevice.DeviceId = oDevice.DeviceId.ToUpper();
+                Db.Devices.Add(oDevice);
+                Db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Update a attributes of a Device in the database
+        /// </summary>
+        /// <param name="oDevice">Objet type Device</param>
+        public static void UpdateDevice(DeviceEntity oDevice)
+        {
+            using (var Db = new RayosNoDataContext())
+            {
+                Db.Devices.Update(oDevice);
+                Db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Delete Device from the table Devices 
+        /// </summary>
+        /// <param name="oDevice">Object to remove</param>
+        public static void DeleteDevice(DeviceEntity oDevice)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                var query = DB.Devices.LastOrDefault(d => d.DeviceId == oDevice.DeviceId);
+                var BandEstado = HaveDependence(oDevice);
+                if (BandEstado)
+                {
+                    DB.Devices.Remove(query);
+                    DB.SaveChanges();
+                }
+            }
+        }
+
+
+
+        #endregion
+
+        #region Search and Consults
+
+
+
+        /// <summary>
+        /// Count the Devices in the Data Base
+        /// </summary>
+        /// <returns>number of rows</returns>
+        public static int CountDevices()
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                var aux = (from Device in DB.Devices select Device).Count();
+                return aux;
+            }
+        }
+
+
+        /// <summary>
+        /// Get the list of devices by number of paging
+        /// </summary>
+        /// <param name="NumberOfPage">Number of the page</param>
+        /// <param name="NumberOfDevices">Quantity of devices to get back</param>
+        /// <returns></returns>
+        public static List<DeviceEntity> GetPagingDevices (int NumberOfPage= 0, int NumberOfDevices = 5)
+        {
+            int skipping = NumberOfPage * NumberOfDevices;
+            using(var DB = new RayosNoDataContext())
+            {
+                var aux = DB.Devices.Skip(skipping).Take(NumberOfDevices);
+                return aux.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Search a Device in the table with the device Id
+        /// </summary>
+        /// <param name="SearchDeviceId">string to consult</param>
+        /// <returns>List of devices </returns>
         public static List<DeviceEntity> GetSearchOfDevice(string SearchDeviceId= "0")
         {
             using ( var DB = new RayosNoDataContext())
@@ -27,12 +136,17 @@ namespace Business
                 return oDevices;
             }
         }
+
+        /// <summary>
+        /// Check if exists dependences in other tables with Linq
+        /// </summary>
+        /// <param name="deviceEntity">Entity to search</param>
+        /// <returns></returns>
         public static bool HaveDependence(DeviceEntity deviceEntity)
         {
             var stg = deviceEntity.DeviceId;
             using (var DB = new RayosNoDataContext())
             {
-
                 var cMaintenance = DB.Maintenances.Last(M => M.DeviceId == stg);
                 var cWarranty = DB.Warranties.Last(W => W.DeviceId == stg);
                 var cReplacement = DB.Replacements.Last(R => R.DeviceId == stg);
@@ -47,6 +161,11 @@ namespace Business
             }
         }
 
+        /// <summary>
+        /// Get a Device by the id using Linq
+        /// </summary>
+        /// <param name="id">Device id</param>
+        /// <returns>objet type Device</returns>
         public static DeviceEntity DeviceById(string id)
         {
             using (var Db = new RayosNoDataContext())
@@ -54,80 +173,7 @@ namespace Business
                 return Db.Devices.Include(D=>D.SaleMan).Include(D=>D.Client).ToList().LastOrDefault(D=>D.DeviceId==id);
             }
         }
-
-        public static List<DeviceEntity> GetListOfDevicesById(string id)
-        {
-            using (var Db = new RayosNoDataContext())
-            {
-                var query = Db.Devices.FromSqlInterpolated($"select * from Devices Where DeviceId like '%{id}'").Include(S => S.SaleMan).Include(C => C.Client).ToList();
-                return query;
-            }
-        }
-        /// <summary>
-        /// Consult and return all the Devices in the Database
-        /// </summary>
-        /// <returns>Return a list of Devices</returns>
-        public static List<DeviceEntity> ListOfDevices(string id="")
-        {
-            using (var Db = new RayosNoDataContext())
-            {
-                if (id.Length == 0)
-                {
-                    return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).ToList();
-                }
-                else
-                {
-                    return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).Where(D=>D.SaleManId==id).ToList();
-                }
-                
-            }
-        }
-        /// <summary>
-        /// Create a new Device object
-        /// </summary>
-        /// <param name="oDevice">Object type Device</param>
-        public static void CreateDevice( DeviceEntity oDevice)
-        {
-            using(var Db = new RayosNoDataContext())
-            {
-                oDevice.DeviceId = oDevice.DeviceId.ToUpper();
-                Db.Devices.Add(oDevice);
-                Db.SaveChanges();
-            }
-        }
-
-        /// <summary>
-        /// Update a attributes of a Device in the database
-        /// </summary>
-        /// <param name="oDevice">Objet type Device</param>
-        public static void UpdateDevice( DeviceEntity oDevice)
-        {
-            using (var Db = new RayosNoDataContext())
-            {
-                Db.Devices.Update(oDevice);
-                Db.SaveChanges();
-            }
-        }
-
-        /// <summary>
-        /// Delete Device from the table Devices 
-        /// </summary>
-        /// <param name="oDevice">Object to remove</param>
-        public static void DeleteDevice( DeviceEntity oDevice)
-        {
-            using( var DB = new RayosNoDataContext())
-            {
-                var query = DB.Devices.LastOrDefault(d => d.DeviceId == oDevice.DeviceId);
-                var BandEstado = HaveDependence(oDevice);
-                if (BandEstado)
-                {
-                    DB.Devices.Remove(query);
-                    DB.SaveChanges();
-                }
-
-            }
-        }
-        
-       
+        #endregion
     }
+
 }

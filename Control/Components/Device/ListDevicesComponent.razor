@@ -35,16 +35,23 @@
     </table>
 </div>
 
+<div>
+   
+</div>
 
 
 @code { 
     [Parameter]
     public string id { get; set; }
-
+    int QuantityOfDevices = 0;
+    int listPage = 0;
     List<DeviceEntity> tmpDevices = new List<DeviceEntity>();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     protected override async Task OnInitializedAsync()
     {
+
+        QuantityOfDevices = B_Device.CountDevices();
+            
         if (id == null)
         {
             tmpDevices = B_Device.ListOfDevices();
