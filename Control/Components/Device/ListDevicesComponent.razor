@@ -3,7 +3,7 @@
 
 
 <div >
-    <Input type="text" value="Buscar" @onchange="SearchValue" class="form-group form-control"/>
+    <Input type="text" value="Buscar Serie" @onchange="SearchValue" class="form-group form-control"/>
 </div>
 
 <div>
@@ -61,13 +61,14 @@
 
     private void SearchValue(ChangeEventArgs e)
     {
+        tmpDevices = B_Device.GetSearchOfDevice(e.Value.ToString());
         var aux = e.Value.ToString();
-        if (aux.Equals(string.Empty) || aux.Equals("Buscar"))
+        if (aux.Equals(string.Empty) || aux.Equals("Buscar Serie"))
         {
             Devices = tmpDevices;
         }
         else {
-            Devices = tmpDevices.Where(D => D.DeviceId == aux).ToList();
+            Devices = tmpDevices;
         }
 
 

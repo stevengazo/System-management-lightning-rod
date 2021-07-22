@@ -238,20 +238,35 @@ namespace DataAccess.Migrations
                                             END
                                     ";
 
-            string SP_D_M_ByYear = @"CREATE PROCEDURE GetDeviceByUnreallizedMaintenanceByYear 
-	                                        @_Year varchar(4) = '1'
-                                        AS
-                                        BEGIN
-	                                    SET NOCOUNT ON;
-                                        -- Insert statements for procedure here
-	                                    	Select Devices.*
-	                                        from Devices left join (Select * 
-							                                        From Maintenances
-							                                        Where YEAR(MaintenanceDate) = @_Year) as ListMaintenance
-	                                        on Devices.DeviceId = ListMaintenance.DeviceId
-	                                        where ListMaintenance.MaintenanceId = null
-                                        end
+            string SP_D_M_ByYear = @"
+                CREATE PROCEDURE GetDeviceByUnreallizedMaintenanceByYear 
+	                @_Year varchar(4) = '1'
+                AS
+                BEGIN
+	            SET NOCOUNT ON;
+                -- Insert statements for procedure here
+	                Select Devices.*
+	                from Devices left join (Select * 
+							                From Maintenances
+							                Where YEAR(MaintenanceDate) = @_Year) as ListMaintenance
+	                on Devices.DeviceId = ListMaintenance.DeviceId
+	                where ListMaintenance.MaintenanceId = null
+                end
                                         ";
+            string sp1 = @"
+                CREATE PROCEDURE SearchDeviceByDeviceId
+	                @_DeviceSearch varchar(450) = '0'
+                AS
+                BEGIN
+	                SET NOCOUNT ON;
+                    -- Insert statements for procedure here
+	                Select *
+	                FROM Devices
+	                WHERE Devices.DeviceId like CONCAT('%',@_DeviceSearch,'%')
+                END
+                GO
+            ";
+            migrationBuilder.Sql(sp1);
             migrationBuilder.Sql(SP_M_SelectByDeviceId);
             migrationBuilder.Sql(SP_D_M_ByYear);
             #endregion

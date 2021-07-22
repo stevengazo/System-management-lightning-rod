@@ -12,6 +12,21 @@ namespace Business
     public static class B_Device
     {
 
+        public static List<DeviceEntity> GetSearchOfDevice(string SearchDeviceId= "0")
+        {
+            using ( var DB = new RayosNoDataContext())
+            {
+                List<DeviceEntity> oDevices = new List<DeviceEntity>();
+                var aux = DB.Devices.FromSqlInterpolated($"exec dbo.SearchDeviceByDeviceId @_DeviceSearch ={SearchDeviceId}");
+                foreach (var item in aux)
+                {
+                    item.Client = B_Client.ClientById(item.ClientId);
+                    item.SaleMan = B_SaleMan.SaleManById(item.SaleManId);
+                    oDevices.Add(item);
+                }
+                return oDevices;
+            }
+        }
         public static bool HaveDependence(DeviceEntity deviceEntity)
         {
             var stg = deviceEntity.DeviceId;
