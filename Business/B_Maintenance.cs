@@ -12,6 +12,32 @@ namespace Business
 {
     public static class B_Maintenance
     {
+        /// <summary>
+        /// Method to consult and get the list of maintenances in a especific year and month
+        /// </summary>
+        /// <param name="Year">Year to consult</param>
+        /// <param name="Month">Month to consult</param>
+        /// <returns>List of maintenances</returns>
+        public static List<MaintenanceEntity> GetMaintenancesByYearAndMonth(string Year="0001", string Month = "1")
+        {
+            using(var DB = new RayosNoDataContext())
+            { 
+                List<MaintenanceEntity> maintenances = new List<MaintenanceEntity>();
+                var aux = DB.Maintenances.FromSqlInterpolated($@"   Select *
+                                                                    From Maintenances
+                                                                    Where(Year(MaintenanceDate) = {Year.ToString()}) and(MONTH(MaintenanceDate) = {Month.ToString()})");
+                if((aux.Count())== 0)
+                {
+                    maintenances = aux.ToList();
+                    maintenances.Add(new MaintenanceEntity());
+                }
+                else
+                {
+                   maintenances = aux.ToList();
+                }
+                return maintenances;
+            }
+        }
 
         /// <summary>
         /// Get the list of devices without maintenance in specific year

@@ -27,7 +27,7 @@ namespace Business
 
         public static void CreateIncident(IncidentEntity oIncident)
         {
-            using (var DB= new RayosNoDataContext())
+            using (var DB= new RayosNoDataContext())                
             {
                 oIncident.IncidentId = Guid.NewGuid().ToString();
                 DB.Incidents.Add(oIncident);
