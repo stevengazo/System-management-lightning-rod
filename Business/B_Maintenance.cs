@@ -28,8 +28,7 @@ namespace Business
                                                                     Where(Year(MaintenanceDate) = {Year.ToString()}) and(MONTH(MaintenanceDate) = {Month.ToString()})");
                 if((aux.Count())== 0)
                 {
-                    maintenances = aux.ToList();
-                    maintenances.Add(new MaintenanceEntity());
+                    maintenances = aux.ToList();                    
                 }
                 else
                 {
@@ -94,8 +93,12 @@ namespace Business
                                         ) ;
                 foreach (var item in MaintenancesDates)
                 {
-                    aux.Add(item.Year);
+                    if (item.Year != DateTime.Today.Year)
+                    {
+                        aux.Add(item.Year);
+                    }                    
                 }
+                YearList.Add(DateTime.Today.Year);
                 YearList.AddRange(aux.Distinct());
                 YearList.Sort();
                 return YearList;

@@ -250,7 +250,7 @@ namespace DataAccess.Migrations
 							                From Maintenances
 							                Where YEAR(MaintenanceDate) = @_Year) as ListMaintenance
 	                on Devices.DeviceId = ListMaintenance.DeviceId
-	                where ListMaintenance.MaintenanceId = null
+	                where ListMaintenance.MaintenanceId is  null
                 end
                                         ";
             string sp1 = @"
@@ -266,7 +266,21 @@ namespace DataAccess.Migrations
                 END
                 GO
             ";
+            string sp2 = @"
+            ALTER PROCEDURE [dbo].[SearchClientByName]
+	            -- Add the parameters for the stored procedure here
+	            @_Name varchar(30) ='sample'
+            AS
+            BEGIN
+	            SET NOCOUNT ON;
+                -- Insert statements for procedure here
+	            SELECT *
+	            FROM Clients
+	            WHERE Clients.Name LIKE  ('%'+@_Name+'%')
+            END
+            ";
             migrationBuilder.Sql(sp1);
+            migrationBuilder.Sql(sp2);
             migrationBuilder.Sql(SP_M_SelectByDeviceId);
             migrationBuilder.Sql(SP_D_M_ByYear);
             #endregion

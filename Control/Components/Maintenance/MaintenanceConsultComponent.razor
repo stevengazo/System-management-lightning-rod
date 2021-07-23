@@ -21,9 +21,9 @@
             <option value="@item.Key.ToString()">@item.Value</option>
         }
     </select>
+
     <button class="btn-info" @onclick="SearchMaintenances">Buscar</button>
 </div>
-
 
 
 <table class="table table-responsive-sm table-bordered table-hover table-light">
@@ -37,16 +37,16 @@
             <th></th>
         </tr>
     </thead>
-    <tbody >
+    <tbody>
         @foreach (var obj in maintenances)
         {
         <tr>
             <td>@obj.DeviceId</td>
             <td>@obj.MaintenanceDate.ToShortDateString()</td>
             <td>@obj.TechnicianName</td>
-            <td><a href="">Ver</a></td>
-            <td><a href="">Editar</a></td>
-            <td><a href="">Eliminar</a></td>
+            <td> <a href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
+            <td> <a href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
+            <td> <a style="color:red" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
         </tr>
         }
     </tbody>
@@ -57,10 +57,10 @@
 @code   {
 
     List<MaintenanceEntity> maintenances = new List<MaintenanceEntity>();
-
+    string ErrorMessage = "";
     List<int> Years = new List<int>();
-    string SelectedYear =string.Empty;
-    string SelectedMonth =string.Empty;
+    string SelectedYear = string.Empty;
+    string SelectedMonth = string.Empty;
 
 
     Dictionary<int, string> Months = new Dictionary<int, string> {
@@ -89,9 +89,15 @@
         bool bandYear = (SelectedYear.Equals(string.Empty)) ? false : true;
         bool BandMonth = (SelectedMonth.Equals(string.Empty)) ? false : true;
 
-        if(bandYear && BandMonth)
-        {
+        if (bandYear && BandMonth)
+        {           
             maintenances = B_Maintenance.GetMaintenancesByYearAndMonth(SelectedYear, SelectedMonth);
+            ErrorMessage = "";
+           
+        }
+        else
+        {
+            ErrorMessage = "Verifique los campos e intentelo de nuevo...";
         }
     }
 }

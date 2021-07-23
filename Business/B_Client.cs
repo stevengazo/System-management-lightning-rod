@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
 using System.Threading.Tasks;
 using Entities;
 using DataAccess;
@@ -12,6 +14,17 @@ namespace Business
     {
         
         
+        public static List<ClientEntity> SearchClientsByName(string Name = "")
+        {
+            using(var DB= new RayosNoDataContext())
+            {
+                var query = DB.Clients.FromSqlInterpolated(@$"exec dbo.SearchClientByName @_Name ={Name}");
+                var aux = query.ToList();
+                return aux;
+            }
+        }
+
+
         public static ClientEntity ClientById(string id)
         {
             using (var DB = new RayosNoDataContext())
