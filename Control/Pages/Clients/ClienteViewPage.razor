@@ -1,0 +1,27 @@
+﻿@page "/client/view/{ClientId}"
+
+<div>
+    <h2 class="text-center">Información del Cliente</h2>
+    <hr />
+    <a href="client/list"> Regresar a la lista de Clientes</a>
+    <hr />
+    <ClientViewComponent ClientId="@ClientId"/>
+</div>
+<div>
+    <h3 class="text-center"> Lista de dispositivos Pertenecientes al Cliente</h3>
+    <p class="text-center">
+        A continuación se muestra la lista de dispositivos pertenecientes al
+       cliente:
+    </p>  
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string ClientId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ClientId = ClientId;
+    }
+}

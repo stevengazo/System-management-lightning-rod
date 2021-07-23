@@ -1,0 +1,32 @@
+﻿@using Entities;
+@using Business;
+
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <tbody>
+        <tr>
+            <td>Id de Referencia</td>
+            <td>@oClient.Id</td>
+        </tr>
+        <tr>
+            <td>Nombre</td>
+            <td>@oClient.Name</td>
+        </tr>
+    </tbody>    
+</table>
+
+
+
+
+
+@code{
+    [Parameter]
+    public string ClientId { get; set; }
+
+    ClientEntity oClient = new ClientEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        oClient = B_Client.ClientById(ClientId);
+    }
+}
