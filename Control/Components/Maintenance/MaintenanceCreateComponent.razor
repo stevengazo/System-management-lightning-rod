@@ -71,7 +71,8 @@
     {
         oMaintenance.MaintenanceId = Guid.NewGuid().ToString();
         B_Maintenance.Create(oMaintenance);
-        Nav.NavigateTo("maintenance/list");
+        B_Maintenance.UpdateDevice(oMaintenance.DeviceId);
+        Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");
     }
 
 

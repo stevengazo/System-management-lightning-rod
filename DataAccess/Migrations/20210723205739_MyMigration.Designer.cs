@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayosNoDataContext))]
-    [Migration("20210723022130_MyMigration")]
+    [Migration("20210723205739_MyMigration")]
     partial class MyMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "25dbc709-1be9-4a30-be0c-267f4d69151c",
+                            Id = "1a3cdddd-f242-418a-b07c-88f32ef39b85",
                             Name = "Prueba"
                         });
                 });
@@ -67,11 +67,11 @@ namespace DataAccess.Migrations
                     b.Property<float>("Longitude")
                         .HasColumnType("real");
 
-                    b.Property<string>("MaintenanceMonth")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Model")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RecomendedDateOfMaintenance")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SaleManId")
                         .HasColumnType("nvarchar(450)");
@@ -90,14 +90,15 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10",
+                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5",
                             Alias = "Prueba",
-                            ClientId = "25dbc709-1be9-4a30-be0c-267f4d69151c",
+                            ClientId = "1a3cdddd-f242-418a-b07c-88f32ef39b85",
                             InstallationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
                             Latitude = 0f,
                             Longitude = 0f,
-                            SaleManId = "944f8fa0-ad91-438e-830d-65606cf96943"
+                            RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SaleManId = "d4f2c5b0-8145-4ae4-90bb-f276393c3aa5"
                         });
                 });
 
@@ -152,8 +153,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            IncidentId = "06a747a7-17ef-46bf-b72f-70b666ced75b",
-                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10",
+                            IncidentId = "2aacd7a5-8c15-438c-aa30-59104e456a64",
+                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5",
                             IncidentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ReportDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RevisionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -199,9 +200,9 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            MaintenanceId = "b2c3de5c-9c27-4be3-80dc-49325fa62e1f",
+                            MaintenanceId = "14b29f24-d383-426a-9468-3c3a23d3c2e0",
                             Ampers = 0f,
-                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10",
+                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5",
                             DeviceOhms = 0f,
                             MaintenanceDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpatOhms = 0f
@@ -231,8 +232,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "66f3703e-8e0b-42a2-9200-feff911ae770",
-                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10"
+                            ReplacementDeviceId = "d1cbe8f2-2f75-44f6-ac59-9ee552ea1c69",
+                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5"
                         });
                 });
 
@@ -254,7 +255,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "944f8fa0-ad91-438e-830d-65606cf96943",
+                            SaleManId = "d4f2c5b0-8145-4ae4-90bb-f276393c3aa5",
                             Name = "Prueba"
                         });
                 });
@@ -285,10 +286,10 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b80d68c6-daca-4fa8-8aa6-7462aa39af15",
+                            Id = "510ad2b3-0039-43e2-bc52-78a1c37138d0",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10"
+                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5"
                         });
                 });
 

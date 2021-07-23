@@ -39,7 +39,7 @@ namespace Entities
         /// <summary>
         /// Limit date of every year to made the device
         /// </summary>
-        public string MaintenanceMonth { get; set; }
+        public DateTime RecomendedDateOfMaintenance { get; set; }
         /// <summary>
         /// type of the device (Sale, rent, leasing, proof)
         /// </summary>

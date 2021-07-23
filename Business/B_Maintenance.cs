@@ -63,6 +63,35 @@ namespace Business
                 }
             }
         }
+
+        /// <summary>
+        /// Update the Device and return the Maintenance
+        /// </summary>
+        /// <param name="_DeviceId">Id of the device</param>
+        /// <returns></returns>
+        public static void UpdateDevice(string _DeviceId)
+        {
+            using ( var DB = new RayosNoDataContext())
+            {
+                try
+                {
+                    var oMaintenance = new MaintenanceEntity();
+                   var aux = DB.Database.ExecuteSqlInterpolated($@"
+                                                                        	UPDATE Devices
+	                                                                        SET Devices.RecomendedDateOfMaintenance = DATEADD(YEAR,1, tmpM.MaintenanceDate)
+	                                                                        FROM Devices , (SELECT MAX(M.MaintenanceDate) as MaintenanceDate, M.DeviceId
+					                                                                        FROM Maintenances AS M
+					                                                                        WHERE M.DeviceId = {_DeviceId}
+					                                                                        GROUP BY M.DeviceId) AS tmpM
+	                                                                        where Devices.DeviceId = tmpM.DeviceId
+                    ");
+                }
+                catch (Exception f)
+                {
+                }
+            }
+        }
+
         /// <summary>
         /// Get the maintenances by the device id
         /// </summary>
@@ -156,7 +185,6 @@ namespace Business
                 return aux.ToList();
             }
         }
-
         /// <summary>
         /// Create a new Maintenance
         /// </summary>
@@ -169,7 +197,6 @@ namespace Business
                 DB.SaveChanges();
             }
         }
-
         /// <summary>
         /// Update an exist Maintenance in the table Maintenances
         /// </summary>
