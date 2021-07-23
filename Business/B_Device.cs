@@ -116,17 +116,25 @@ namespace Business
             }
         }
 
+
+        public static List<DeviceEntity> GetSearchOfDevice(string _SearchDeviceId = "0")
+        {
+            return (GetSearchOfDevice(_SearchDeviceId,"",""));
+        }
+
+
+
         /// <summary>
         /// Search a Device in the table with the device Id
         /// </summary>
         /// <param name="SearchDeviceId">string to consult</param>
         /// <returns>List of devices </returns>
-        public static List<DeviceEntity> GetSearchOfDevice(string SearchDeviceId= "0")
+        public static List<DeviceEntity> GetSearchOfDevice(string _SearchDeviceId= "0", string _ClientId = "", string _SaleManId = "")
         {
             using ( var DB = new RayosNoDataContext())
             {
                 List<DeviceEntity> oDevices = new List<DeviceEntity>();
-                var aux = DB.Devices.FromSqlInterpolated($"exec dbo.SearchDeviceByDeviceId @_DeviceSearch ={SearchDeviceId}");
+                var aux = DB.Devices.FromSqlInterpolated($"exec dbo.SearchDeviceByDeviceId @_DeviceSearch ={_SearchDeviceId}");
                 foreach (var item in aux)
                 {
                     item.Client = B_Client.ClientById(item.ClientId);
