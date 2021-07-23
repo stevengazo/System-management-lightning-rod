@@ -38,11 +38,11 @@ namespace Entities
         /// </summary>
         [MaxLength(800)]
         public string RevisionInformation { get; set; }
+        /// <summary>
+        /// Information about the status of the device
+        /// </summary>
         [MaxLength(800)]
         public string DDCEStatus { get; set; }
-        public float SpatOhms { get; set; }
-        public float DeviceOhms { get; set; }
-        public float Ampers { get; set; }
         /// <summary>
         /// Recomendations maded by the Technician in site
         /// </summary>

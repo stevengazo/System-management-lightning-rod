@@ -5,7 +5,7 @@
 <EditForm Model="oIncident">
     <div class="form-group">
         <label>Fecha del Reporte del cliente</label>
-        <InputDate class="form-control" @bind-Value="oIncident.ReportDate" ></InputDate>
+        <InputDate class="form-control" @bind-Value="oIncident.ReportDate"></InputDate>
     </div>
     <div class="form-group">
         <label>Fecha del Incidente</label>
@@ -13,7 +13,11 @@
     </div>
     <div class="form-group">
         <label>Fecha de revisón</label>
-        <InputDate class="form-control" @bind-Value="oIncident.IncidentDate" ></InputDate>
+        <InputDate class="form-control" @bind-Value="oIncident.IncidentDate"></InputDate>
+    </div>
+    <div class="form-group">
+        <label>Fecha envio reporte</label>
+        <InputDate class="form-control" @bind-Value="oIncident.SendReportDate"></InputDate>
     </div>
     <div class="form-group">
         <label>Descripción del Reporte del cliente</label>
@@ -28,20 +32,12 @@
         <InputTextArea class="form-control" @bind-Value="oIncident.DDCEStatus"></InputTextArea>
     </div>
     <div class="form-group">
-        <label>Medición  de la malla</label>
-        <InputNumber class="form-control" @bind-Value="oIncident.SpatOhms"></InputNumber>
-    </div>
-    <div class="form-group">
-        <label>Medición del la resistencia del dispositivo</label>
-        <InputNumber class="form-control" @bind-Value="oIncident.DeviceOhms"></InputNumber>
-    </div>
-    <div class="form-group">
-        <label>Medición Transferencia de cargas</label>
-        <InputNumber class="form-control" @bind-Value="oIncident.Ampers"></InputNumber>
-    </div>
-    <div class="form-group">
         <label>Recomendaciones </label>
         <InputTextArea class="form-control" @bind-Value="oIncident.Recomentations"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label>Contacto del cliente</label>
+        <InputText class="form-control" @bind-Value="oIncident.Recomentations"></InputText>      
     </div>
     <div class="form-group">
         <label>Numero de serie</label>
@@ -52,7 +48,7 @@
                 <option value="@obj.DeviceId">@obj.Client.Name - @obj.DeviceId </option>
             }
         </InputSelect>
-    </div> 
+    </div>
 </EditForm>
 <div>
     <input  type="button" value="Guardar Incidente" @onclick="SaveIncident"/>

@@ -34,7 +34,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cca1a3fb-397b-4d2c-a35e-fc0afe562e01",
+                            Id = "25dbc709-1be9-4a30-be0c-267f4d69151c",
                             Name = "Prueba"
                         });
                 });
@@ -88,14 +88,14 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "7ba8af93-7c89-4ccf-876b-6057bd5fa153",
+                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10",
                             Alias = "Prueba",
-                            ClientId = "cca1a3fb-397b-4d2c-a35e-fc0afe562e01",
+                            ClientId = "25dbc709-1be9-4a30-be0c-267f4d69151c",
                             InstallationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
                             Latitude = 0f,
                             Longitude = 0f,
-                            SaleManId = "464e360a-a0c7-4633-a4ae-dba8e226af38"
+                            SaleManId = "944f8fa0-ad91-438e-830d-65606cf96943"
                         });
                 });
 
@@ -104,8 +104,8 @@ namespace DataAccess.Migrations
                     b.Property<string>("IncidentId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<float>("Ampers")
-                        .HasColumnType("real");
+                    b.Property<string>("ContactReportingName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DDCEStatus")
                         .HasMaxLength(800)
@@ -113,9 +113,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("DeviceId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<float>("DeviceOhms")
-                        .HasColumnType("real");
 
                     b.Property<DateTime>("IncidentDate")
                         .HasColumnType("datetime2");
@@ -138,8 +135,8 @@ namespace DataAccess.Migrations
                         .HasMaxLength(800)
                         .HasColumnType("nvarchar(800)");
 
-                    b.Property<float>("SpatOhms")
-                        .HasColumnType("real");
+                    b.Property<DateTime>("SendReportDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TechnicianName")
                         .HasColumnType("nvarchar(max)");
@@ -153,14 +150,12 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            IncidentId = "2392104d-f7fc-4f8a-8326-12a317b8b46e",
-                            Ampers = 0f,
-                            DeviceId = "7ba8af93-7c89-4ccf-876b-6057bd5fa153",
-                            DeviceOhms = 0f,
+                            IncidentId = "06a747a7-17ef-46bf-b72f-70b666ced75b",
+                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10",
                             IncidentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ReportDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RevisionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpatOhms = 0f
+                            SendReportDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -202,9 +197,9 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            MaintenanceId = "2a7eb222-0487-45ea-886b-c3c8fa3c5b02",
+                            MaintenanceId = "b2c3de5c-9c27-4be3-80dc-49325fa62e1f",
                             Ampers = 0f,
-                            DeviceId = "7ba8af93-7c89-4ccf-876b-6057bd5fa153",
+                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10",
                             DeviceOhms = 0f,
                             MaintenanceDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpatOhms = 0f
@@ -234,8 +229,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "b0f73891-e2ce-4085-88ae-dbb5a9778025",
-                            DeviceId = "7ba8af93-7c89-4ccf-876b-6057bd5fa153"
+                            ReplacementDeviceId = "66f3703e-8e0b-42a2-9200-feff911ae770",
+                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10"
                         });
                 });
 
@@ -257,7 +252,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "464e360a-a0c7-4633-a4ae-dba8e226af38",
+                            SaleManId = "944f8fa0-ad91-438e-830d-65606cf96943",
                             Name = "Prueba"
                         });
                 });
@@ -288,10 +283,10 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "29d0ff20-e7b3-405a-b67b-0180b908e2b6",
+                            Id = "b80d68c6-daca-4fa8-8aa6-7462aa39af15",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "7ba8af93-7c89-4ccf-876b-6057bd5fa153"
+                            DeviceId = "63765d28-d29b-45f5-8f21-2aeb7a5eba10"
                         });
                 });
 

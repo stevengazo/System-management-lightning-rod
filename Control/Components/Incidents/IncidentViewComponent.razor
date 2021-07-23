@@ -26,6 +26,10 @@
             <td>@oIncident.Device.Alias</td>
         </tr>
         <tr>
+            <td>Contacto del cliente</td>
+            <td>@oIncident.ContactReportingName</td>
+        </tr>
+        <tr>
             <td>Fecha del Reporte</td>
             <td>@oIncident.ReportDate.ToShortDateString()</td>
         </tr>
@@ -38,6 +42,10 @@
             <td>@oIncident.RevisionDate.ToShortDateString()</td>
         </tr>
         <tr>
+            <td>Fecha de envio de reporte</td>
+            <td>@oIncident.SendReportDate.ToShortDateString()</td>
+        </tr>
+        <tr>
             <td>Descripción del Reporte</td>
             <td>@oIncident.ReportDescripcion</td>
         </tr>
@@ -48,18 +56,6 @@
         <tr>
             <td>Estatus del dispositivo RAYOS-NO</td>
             <td>@oIncident.DDCEStatus</td>
-        </tr>
-        <tr>
-            <td>Resistencia de la malla</td>
-            <td>@oIncident.SpatOhms</td>
-        </tr>
-        <tr>
-            <td>Tranferencia de cargas</td>
-            <td>@oIncident.Ampers</td>
-        </tr>
-        <tr>
-            <td>Resistencia del dispositivo</td>
-            <td>@oIncident.DeviceOhms</td>
         </tr>
         <tr>
             <td>Recomendaciones</td>
