@@ -34,6 +34,10 @@
         <InputText class="form-control" @bind-Value="oMaintenance.ReportId"></InputText>
     </div>
     <div class="form-group">
+        <label>Recomendaciones</label>
+        <InputTextArea class="form-control" @bind-Value="oMaintenance.Recomendations"></InputTextArea>
+    </div>
+    <div class="form-group">
         <label>Numero de Equipo</label>
         <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId" >
             <option value="0"> Seleccione un equipo...</option>
