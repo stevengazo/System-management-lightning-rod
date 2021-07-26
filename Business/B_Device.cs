@@ -98,8 +98,6 @@ namespace Business
                 return aux;
             }
         }
-
-
         /// <summary>
         /// Get the list of devices by number of paging
         /// </summary>
@@ -115,15 +113,15 @@ namespace Business
                 return aux.ToList();
             }
         }
-
-
+        /// <summary>
+        /// Search a device by the Device Id
+        /// </summary>
+        /// <param name="_SearchDeviceId">Device Id</param>
+        /// <returns></returns>
         public static List<DeviceEntity> GetSearchOfDevice(string _SearchDeviceId = "0")
         {
             return (GetSearchOfDevice(_SearchDeviceId,"",""));
         }
-
-
-
         /// <summary>
         /// Search a Device in the table with the device Id
         /// </summary>
@@ -144,12 +142,11 @@ namespace Business
                 return oDevices;
             }
         }
-
         /// <summary>
         /// Check if exists dependences in other tables with Linq
         /// </summary>
         /// <param name="deviceEntity">Entity to search</param>
-        /// <returns></returns>
+        /// <returns>true if exists a dependency</returns>
         public static bool HaveDependence(DeviceEntity deviceEntity)
         {
             var stg = deviceEntity.DeviceId;
@@ -168,7 +165,6 @@ namespace Business
                 }
             }
         }
-
         /// <summary>
         /// Get a Device by the id using Linq
         /// </summary>
@@ -181,6 +177,8 @@ namespace Business
                 return Db.Devices.Include(D=>D.SaleMan).Include(D=>D.Client).ToList().LastOrDefault(D=>D.DeviceId==id);
             }
         }
+
+
         #endregion
     }
 
