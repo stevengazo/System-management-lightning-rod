@@ -35,23 +35,25 @@
     </table>
 </div>
 
-<div>
-   
+<div class="form-group">  
+    @for (int i = 1; i <= NumberPages; i++)
+    {
+        <input type="button" class="btn btn-light" value="@i" @onclick="ChancePage"/>  
+    }   
 </div>
 
 
 @code { 
     [Parameter]
     public string id { get; set; }
-    int QuantityOfDevices = 0;
-    int listPage = 0;
+
+    int NumberPages = 1;
     List<DeviceEntity> tmpDevices = new List<DeviceEntity>();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     protected override async Task OnInitializedAsync()
     {
+        NumberOfPages();
 
-        QuantityOfDevices = B_Device.CountDevices();
-            
         if (id == null)
         {
             tmpDevices = B_Device.ListOfDevices();
@@ -64,7 +66,25 @@
         }
     }
 
+    private void NumberOfPages()
+    {
+        double aux = B_Device.CountDevices() / 50;
+        if (aux > (aux + 0.01f))
+        {
+            NumberPages = (int)Math.Ceiling(aux);
 
+        }
+        else
+        {
+            NumberPages = (int)Math.Ceiling(aux);
+            NumberPages += 1;
+        }
+    }
+
+    private void ChancePage(EventArgs e)
+    {
+
+    }
 
     private void SearchValue(ChangeEventArgs e)
     {

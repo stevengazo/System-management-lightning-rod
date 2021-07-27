@@ -4,48 +4,65 @@
 @inject NavigationManager Nav;
 
 
+<div>
+    <div>
+        <EditForm Model="@oDevice">
+            <table class="table table-light table-responsive-sm table-bordered">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Número de serie:</td>
+                        <td>@oDevice.DeviceId</td>
+                    </tr>
+                    <tr>
+                        <td>Alias:</td>
+                        <td>@oDevice.Alias</td>
+                    </tr>
+                    <tr>
+                        <td>Latitud:</td>
+                        <td>@oDevice.Latitude</td>
+                    </tr>
+                    <tr>
+                        <td>Longitud:</td>
+                        <td>@oDevice.Longitude</td>
+                    </tr>
+                    <tr>
+                        <td>País:</td>
+                        <td>@oDevice.Country</td>
+                    </tr>
+                    <tr>
+                        <td>Fecha de Instalación:</td>
+                        <td>@oDevice.InstallationDate</td>
+                    </tr>
+                    <tr>
+                        <td>Fecha limite próximo mantenimiento</td>
+                        <td>@oDevice.RecomendedDateOfMaintenance</td>
+                    </tr>
+                    <tr>
+                        <td>Tipo de equipo</td>
+                        <td>@oDevice.Type</td>
+                    </tr>
+                    <tr>
+                        <td>Modelo:</td>
+                        <td>@oDevice.Model</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente:</td>
+                        <td>@oDevice.Client.Name</td>
+                    </tr>
+                    <tr>
+                        <td>Vendedor encargado:</td>
+                        <td>@oDevice.SaleMan.Name</td>
+                    </tr>
+                </tbody>
+            </table>
+        </EditForm>
+    </div>
+    
+</div>
 
-<EditForm Model="@oDevice">
-    <table class="table table-light table-responsive-sm table-bordered">
-        <thead>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Número de serie:</td>   <td>@oDevice.DeviceId</td>
-            </tr>
-            <tr>
-                <td>Alias:</td>             <td>@oDevice.Alias</td>
-            </tr>
-            <tr>
-                <td>Latitud:</td>           <td>@oDevice.Latitude</td>
-            </tr>
-            <tr>
-                <td>Longitud:</td>          <td>@oDevice.Longitude</td>
-            </tr>
-            <tr> 
-                <td>País:</td>              <td>@oDevice.Country</td>
-            </tr>
-            <tr>
-                <td>Fecha de Instalación:</td> <td>@oDevice.InstallationDate.ToShortDateString()</td>
-            </tr>
-            <tr>
-                <td>Fecha limite próximo mantenimiento</td> <td>@oDevice.RecomendedDateOfMaintenance.ToShortDateString()</td>
-            </tr>
-            <tr>
-                <td>Tipo de equipo</td>         <td>@oDevice.Type</td>
-            </tr>
-            <tr>
-                <td>Modelo:</td>            <td>@oDevice.Model</td>
-            </tr>
-            <tr>
-                <td>Cliente:</td>           <td>@oDevice.Client.Name</td>
-            </tr>
-            <tr>
-                <td>Vendedor encargado:</td>          <td>@oDevice.SaleMan.Name</td>
-            </tr>
-        </tbody>
-    </table>
-</EditForm>
+
 
 
 
@@ -54,10 +71,14 @@
     [Parameter]
     public string id { get; set; }
 
+    
+
     DeviceEntity oDevice { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        oDevice = B_Device.DeviceById(id);
-    }
 
+        oDevice = B_Device.DeviceById(id);
+
+    }
 }
