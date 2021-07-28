@@ -36,9 +36,10 @@
 </div>
 
 <div class="form-group">  
-    @for (int i = 1; i <= NumberPages; i++)
+    @for (int i = 1; i < NumberPages; i++)
     {
-        <input type="button" class="btn btn-light" value="@i" @onclick="ChancePage"/>  
+        var buttonNumber = i;
+        <input type="button" class="btn btn-light" value="@i" @onclick="@(e=> ChancePage(e,buttonNumber))"/>  
     }   
 </div>
 
@@ -56,7 +57,7 @@
 
         if (id == null)
         {
-            tmpDevices = B_Device.ListOfDevices();
+            tmpDevices = B_Device.GetPagingDevices(1, 10);
             Devices = tmpDevices;
         }
         else
@@ -68,11 +69,10 @@
 
     private void NumberOfPages()
     {
-        double aux = B_Device.CountDevices() / 50;
+        double aux = B_Device.CountDevices() / 10;
         if (aux > (aux + 0.01f))
         {
             NumberPages = (int)Math.Ceiling(aux);
-
         }
         else
         {
@@ -81,9 +81,10 @@
         }
     }
 
-    private void ChancePage(EventArgs e)
+    private void ChancePage(MouseEventArgs e, int buttonNumber)
     {
-
+        var aux = B_Device.GetPagingDevices(buttonNumber, 10);
+        Devices = aux;
     }
 
     private void SearchValue(ChangeEventArgs e)

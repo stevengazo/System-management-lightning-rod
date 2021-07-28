@@ -104,12 +104,21 @@ namespace Business
         /// <param name="NumberOfPage">Number of the page</param>
         /// <param name="NumberOfDevices">Quantity of devices to get back</param>
         /// <returns></returns>
-        public static List<DeviceEntity> GetPagingDevices (int NumberOfPage= 0, int NumberOfDevices = 5)
+        public static List<DeviceEntity> GetPagingDevices (int NumberOfPage= 0, int NumberOfDevices = 10)
         {
-            int skipping = NumberOfPage * NumberOfDevices;
+            int skipping = 0;
+            if (NumberOfPage<= 1)
+            {
+                skipping = 0;
+            }
+            else
+            {
+                skipping = (NumberOfPage - 1) * NumberOfDevices;
+            }
+            
             using(var DB = new RayosNoDataContext())
             {
-                var aux = DB.Devices.Skip(skipping).Take(NumberOfDevices);
+                var aux = DB.Devices.OrderBy(I=>I.ClientId).Include(S => S.SaleMan).Include(C => C.Client).Skip(skipping).Take(NumberOfDevices);
                 return aux.ToList();
             }
         }
