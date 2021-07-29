@@ -10,6 +10,32 @@ namespace Business
 {
     public static class B_Warranty
     {
+        public static List<WarrantyEntity> GetPaging(int NumberOfPage = 0, int Quantity = 40)
+        {
+            int Skipping = 0;
+            if (NumberOfPage <= 1)
+            {
+                Skipping = 0;
+            }
+            else
+            {
+                Skipping = (NumberOfPage - 1) * Quantity;
+            }
+            using( var DB = new RayosNoDataContext())
+            {
+                var aux = DB.Warranties.Skip(Skipping).Take(Quantity).OrderByDescending(W => W.DateSend);
+                return aux.ToList();
+            }
+
+        }
+        public static int Count()
+        {
+            using( var DB = new RayosNoDataContext())
+            {
+                var aux = (from Warranty in DB.Warranties select Warranty).Count();
+                return aux;
+            }
+        }
         public static WarrantyEntity WarrantyById(string id)
         {
             using (var DB = new RayosNoDataContext())
@@ -25,7 +51,10 @@ namespace Business
                 return aux.ToList();
             }
         }
-        public  static List<WarrantyEntity> ListOfWarranties()
+
+
+        #region CRUD
+        public static List<WarrantyEntity> ListOfWarranties()
         {
             using (var DB= new RayosNoDataContext())
             {
@@ -58,6 +87,6 @@ namespace Business
                 DB.SaveChanges();
             }
         }
-
+        #endregion
     }
 }
