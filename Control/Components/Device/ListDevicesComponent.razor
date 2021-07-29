@@ -9,11 +9,15 @@
 
 <hr />
 <div class="form-group">
-    @for (int i = 1; i < NumberPages; i++)
+    @if (id.Length == 0)
     {
-        var buttonNumber = i;
-        <input type="button" class="btn btn-light" value="@buttonNumber" @onclick="@(e=> ChancePage(e,buttonNumber))" />
+        for (int i = 1; i < NumberPages; i++)
+        {
+            var buttonNumber = i;
+            <input type="button" class="btn btn-light" value="@buttonNumber" @onclick="@(e=> ChancePage(e,buttonNumber))" />
+        }
     }
+
 </div>
 
 <div>
@@ -49,7 +53,7 @@
 
 @code {
     [Parameter]
-    public string id { get; set; }
+    public string id { get; set; } = "";
 
     int NumberPages = 1;
     List<DeviceEntity> tmpDevices = new List<DeviceEntity>();
