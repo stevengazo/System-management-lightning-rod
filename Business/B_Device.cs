@@ -118,7 +118,7 @@ namespace Business
             
             using(var DB = new RayosNoDataContext())
             {
-                var aux = DB.Devices.OrderBy(I=>I.ClientId).Include(S => S.SaleMan).Include(C => C.Client).Skip(skipping).Take(NumberOfDevices);
+                var aux = DB.Devices.OrderBy(I=>I.DeviceId).Skip(skipping).Take(NumberOfDevices).Include(S => S.SaleMan).Include(C => C.Client);
                 return aux.ToList();
             }
         }
