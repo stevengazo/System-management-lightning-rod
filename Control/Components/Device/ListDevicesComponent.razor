@@ -6,12 +6,13 @@
     <Input type="text" value="Buscar Serie" @onchange="SearchValue" class="form-group form-control" />
 </div>
 
+
 <hr />
 <div class="form-group">
     @for (int i = 1; i < NumberPages; i++)
     {
         var buttonNumber = i;
-        <input type="button" class="btn btn-light" value="@i" @onclick="@(e=> ChancePage(e,buttonNumber))" />
+        <input type="button" class="btn btn-light" value="@buttonNumber" @onclick="@(e=> ChancePage(e,buttonNumber))" />
     }
 </div>
 
@@ -83,9 +84,10 @@
         }
     }
 
-    private void ChancePage(EventArgs e)
+    private void ChancePage(MouseEventArgs e, int buttonNumber)
     {
-
+        var aux = B_Device.GetPagingDevices(buttonNumber, 40);
+        Devices = aux;
     }
 
     private void SearchValue(ChangeEventArgs e)

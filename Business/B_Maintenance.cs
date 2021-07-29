@@ -12,6 +12,45 @@ namespace Business
 {
     public static class B_Maintenance
     {
+        #region Consults and others
+        /// <summary>
+        /// Count all the records in the table Maintenances
+        /// </summary>
+        /// <returns>number of Maintenances</returns>
+        public static int CountMaintenances()
+        {           
+            using(var DB= new RayosNoDataContext())
+            {
+                var aux = (from Maintenance in DB.Maintenances select Maintenance).Count();
+                return aux;
+            }
+        }
+
+        /// <summary>
+        /// Get a specific quantity of maintenances and retun
+        /// </summary>
+        /// <param name="NumberOfPage">number of page </param>
+        /// <param name="QuantityOfMaintenances">quantity of devices to return</param>
+        /// <returns>list of devices to return</returns>
+        public static List<MaintenanceEntity> GetPagingMaintenances(int NumberOfPage = 0, int QuantityOfMaintenances = 40)
+        {
+            int Skipping = 0;
+            if(NumberOfPage<= 1)
+            {
+                Skipping = 0;
+            }
+            else
+            {
+                Skipping = (NumberOfPage - 1) * QuantityOfMaintenances;
+            }
+            using(var DB = new RayosNoDataContext())
+            {
+                var Maintenances = DB.Maintenances.Skip(Skipping).Take(QuantityOfMaintenances).OrderByDescending(M => M.MaintenanceDate).Include(M => M.Device);
+                return Maintenances.ToList();
+            }
+        }
+
+
         /// <summary>
         /// Method to consult and get the list of maintenances in a especific year and month
         /// </summary>
@@ -147,6 +186,7 @@ namespace Business
                 return aux.ToList();
             }
         }
+        
         /// <summary>
         /// Get the Maintenance by their id
         /// </summary>
@@ -185,11 +225,14 @@ namespace Business
                 return aux.ToList();
             }
         }
+        #endregion
+
+        #region CRUD
         /// <summary>
         /// Create a new Maintenance
         /// </summary>
         /// <param name="oMaintenance">New object to insert</param>
-        public  static void Create(MaintenanceEntity oMaintenance)
+        public static void Create(MaintenanceEntity oMaintenance)
         {
             using( var  DB = new RayosNoDataContext())
             {
@@ -221,6 +264,6 @@ namespace Business
                 DB.SaveChanges();
             }
         }
-
+        #endregion
     }
 }

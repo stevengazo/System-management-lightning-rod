@@ -2,6 +2,16 @@
 @using Business;
 
 
+<hr/>
+<div class="form-group">
+    @for(int i=1; i<NumberPages; i++)
+    {
+        var buttonNUmber = i;
+        <input type="button" value="@buttonNUmber" class="btn btn-light" @onclick="@(e=> ChangePage(e,buttonNUmber))" />
+    }
+</div>
+
+
 <table class="table table-hover table-striped table-responsive-sm ">
     <thead>
         <tr>
@@ -30,11 +40,36 @@
 
 
 @code {
+
     List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
 
+    int NumberPages = 1;
+
+    List<MaintenanceEntity> tmp = new List<MaintenanceEntity>();
 
     protected override async Task OnInitializedAsync()
-    {        
-        Maintenances = B_Maintenance.ListOfMaintenance();
+    {
+        Maintenances = B_Maintenance.GetPagingMaintenances(0,40);
+        NumberOfPages();
+    }
+
+    private void NumberOfPages()
+    {
+        double aux = B_Maintenance.CountMaintenances() / 40f;
+        if(aux> (aux + 0.0f))
+        {
+            NumberPages = (int)Math.Ceiling(aux);
+        }
+        else
+        {
+            NumberPages = (int)Math.Ceiling(aux);
+            NumberPages += 1;
+        }
+    }
+
+    private void ChangePage(MouseEventArgs e, int ButtonNumber)
+    {
+        var aux = B_Maintenance.GetPagingMaintenances(ButtonNumber, 40);
+        Maintenances = aux;
     }
 }
