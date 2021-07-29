@@ -13,21 +13,46 @@ namespace Business
     {
         #region CRUD
 
+
+        /// <summary>
+        /// Get an return n number of rows in the database
+        /// </summary>
+        /// <param name="Quantity">Quantity of devices to return</param>
+        /// <param name="skip">Quantity of devices to skip</param>
+        /// <returns>list of devices </returns>
+        public static List<DeviceEntity> TakeDevices(int Quantity = 50, int skip= 0)
+        {
+            using ( var DB = new RayosNoDataContext())
+            {
+                List<DeviceEntity> aux = new List<DeviceEntity>();
+                if(skip <=1 )
+                {
+                    aux = (from rows in DB.Devices select rows).Include(S => S.SaleMan).Include(C => C.Client).Take(Quantity).ToList();
+                }
+                else
+                {
+                    int QuantityToSkip = Quantity * skip;
+                    aux = (from rows in DB.Devices select rows).Include(S => S.SaleMan).Include(C => C.Client).Skip(QuantityToSkip).Take(Quantity).ToList();
+                }
+                return aux;
+            }
+        }
+
         /// <summary>
         /// Consult and return all the Devices in the Database
         /// </summary>
         /// <returns>Return a list of Devices</returns>
-        public static List<DeviceEntity> ListOfDevices(string id = "")
+        public static List<DeviceEntity> ListOfDevices(string _SalemanId = "")
         {
             using (var Db = new RayosNoDataContext())
             {
-                if (id.Length == 0)
+                if (_SalemanId.Length == 0)
                 {
                     return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).ToList();
                 }
                 else
                 {
-                    return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).Where(D => D.SaleManId == id).ToList();
+                    return Db.Devices.Include(S => S.SaleMan).Include(C => C.Client).Where(D => D.SaleManId == _SalemanId).ToList();
                 }
 
             }
@@ -166,9 +191,9 @@ namespace Business
             }
         }
         /// <summary>
-        /// Get a Device by the id using Linq
+        /// Get a Device by the _SalemanId using Linq
         /// </summary>
-        /// <param name="id">Device id</param>
+        /// <param name="id">Device _SalemanId</param>
         /// <returns>objet type Device</returns>
         public static DeviceEntity DeviceById(string id)
         {

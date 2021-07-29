@@ -38,7 +38,7 @@
 <div class="form-group">  
     @for (int i = 1; i <= NumberPages; i++)
     {
-        <input type="button" class="btn btn-light" value="@i" @onclick="ChancePage"/>  
+        <input type="button" class="btn btn-light" value="@i.ToString()" @onclick="ChancePage"/>  
     }   
 </div>
 
@@ -81,9 +81,10 @@
         }
     }
 
-    private void ChancePage(EventArgs e)
+    private void ChancePage( EventArgs e)
     {
-
+        int.TryParse(e.ToString() , out int Pages);
+        Devices = B_Device.TakeDevices(50, Pages);
     }
 
     private void SearchValue(ChangeEventArgs e)
