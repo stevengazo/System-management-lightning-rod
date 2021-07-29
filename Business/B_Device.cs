@@ -109,7 +109,13 @@ namespace Business
 
         #region Search and Consults
         
-
+        /// <summary>
+        /// Consult an existance device in the database
+        /// </summary>
+        /// <param name="_DeviceId">Device To search</param>
+        /// <param name="_Alias">Alias to search</param>
+        /// <param name="_Year">Year of installation</param>
+        /// <returns>list</returns>
         public static List<DeviceEntity> GetDevicesByConsult( string _DeviceId ="", string _Alias="", int _Year=0)
         {
             List<DeviceEntity> Devices = new List<DeviceEntity>();
