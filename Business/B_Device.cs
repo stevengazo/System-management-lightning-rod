@@ -119,7 +119,7 @@ namespace Business
         public static List<DeviceEntity> GetDevicesByConsult( string _DeviceId ="", string _Alias="", int _Year=0)
         {
             List<DeviceEntity> Devices = new List<DeviceEntity>();
-            using(var DB= new RayosNoDataContext())
+            using (var DB = new RayosNoDataContext())
             {
                 if ((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year != 0))
                 {
@@ -128,27 +128,27 @@ namespace Business
                                                                 Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
                                                             ").ToList();
                 }
-                else if((_DeviceId.Length == 0) && (_Alias.Length > 0) && (_Year != 0))
+                else if ((_DeviceId.Length == 0) && (_Alias.Length > 0) && (_Year != 0))
                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
                                                                 Where ( Devices.Alias  like '%{_Alias}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
                                                             ").ToList();
-                }else if((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
+                } else if ((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
                                                                 Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) 
                                                             ").ToList();
 
-                }else if((_DeviceId.Length > 0) && (_Alias.Length == 0) && (_Year != 0))
+                } else if ((_DeviceId.Length > 0) && (_Alias.Length == 0) && (_Year != 0))
                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
                                                                 Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
                                                             ").ToList();
                 }
-                else if((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
+                else if ((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
@@ -157,26 +157,27 @@ namespace Business
                 }
                 else if ((_DeviceId.Length > 0) && (_Alias.Length == 0) && (_Year != 0))
                 {
-                    
+
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                             From Devices
                                                             Where Devices.DeviceId like '%{_DeviceId}%'
                                                         ").ToList();
                 }
-                else {
+                else if((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
+                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
                                                                 Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) )
-                                                            ").ToList();                 
+                                                            ").ToList();
                 }
-                else if ((_DeviceId.Length == 0) && (_Alias.Length > 0) && (_Year == 0))
+                else if((_DeviceId.Length == 0) && (_Alias.Length > 0) && (_Year == 0))
                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
                                                                 Where  ( Devices.Alias  like '%{_Alias}%' )
                                                             ").ToList();
                 }
-                else 
+                else
                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
@@ -184,7 +185,7 @@ namespace Business
                                                             ").ToList();
                 }
                 return Devices;
-
+            }
         }
 
 
