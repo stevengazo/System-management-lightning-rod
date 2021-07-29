@@ -34,7 +34,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1a3cdddd-f242-418a-b07c-88f32ef39b85",
+                            Id = "7b7a2e75-3e9e-4138-9845-617de0a2c7d4",
                             Name = "Prueba"
                         });
                 });
@@ -88,15 +88,15 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5",
+                            DeviceId = "cf3ddd42-1bb4-4d2a-93e4-38ec25163722",
                             Alias = "Prueba",
-                            ClientId = "1a3cdddd-f242-418a-b07c-88f32ef39b85",
+                            ClientId = "7b7a2e75-3e9e-4138-9845-617de0a2c7d4",
                             InstallationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
                             Latitude = 0f,
                             Longitude = 0f,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "d4f2c5b0-8145-4ae4-90bb-f276393c3aa5"
+                            SaleManId = "f89a202f-fd0d-46ab-9103-cee7f9fce8ab"
                         });
                 });
 
@@ -151,8 +151,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            IncidentId = "2aacd7a5-8c15-438c-aa30-59104e456a64",
-                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5",
+                            IncidentId = "9615896d-a085-411e-a3d2-c61d60f276f9",
+                            DeviceId = "cf3ddd42-1bb4-4d2a-93e4-38ec25163722",
                             IncidentDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ReportDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RevisionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -177,6 +177,9 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("MaintenanceDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Recomendations")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ReportId")
                         .HasColumnType("nvarchar(max)");
 
@@ -198,9 +201,9 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            MaintenanceId = "14b29f24-d383-426a-9468-3c3a23d3c2e0",
+                            MaintenanceId = "a88601ef-6333-4992-9433-55585f0ec841",
                             Ampers = 0f,
-                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5",
+                            DeviceId = "cf3ddd42-1bb4-4d2a-93e4-38ec25163722",
                             DeviceOhms = 0f,
                             MaintenanceDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SpatOhms = 0f
@@ -230,8 +233,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "d1cbe8f2-2f75-44f6-ac59-9ee552ea1c69",
-                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5"
+                            ReplacementDeviceId = "5c75ab94-90e9-4c14-803b-863a320517a6",
+                            DeviceId = "cf3ddd42-1bb4-4d2a-93e4-38ec25163722"
                         });
                 });
 
@@ -253,7 +256,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "d4f2c5b0-8145-4ae4-90bb-f276393c3aa5",
+                            SaleManId = "f89a202f-fd0d-46ab-9103-cee7f9fce8ab",
                             Name = "Prueba"
                         });
                 });
@@ -284,10 +287,10 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "510ad2b3-0039-43e2-bc52-78a1c37138d0",
+                            Id = "e7e99600-5266-4e8a-b88b-5640849d0a18",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "d6d5df13-2d47-4e0e-8fe6-72ab0091abc5"
+                            DeviceId = "cf3ddd42-1bb4-4d2a-93e4-38ec25163722"
                         });
                 });
 

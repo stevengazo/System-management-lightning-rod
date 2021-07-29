@@ -2,19 +2,28 @@
 @using Business;
 
 
-<div >
-    <Input type="text" value="Buscar Serie" @onchange="SearchValue" class="form-group form-control"/>
+<div>
+    <Input type="text" value="Buscar Serie" @onchange="SearchValue" class="form-group form-control" />
+</div>
+
+<hr />
+<div class="form-group">
+    @for (int i = 1; i < NumberPages; i++)
+    {
+        var buttonNumber = i;
+        <input type="button" class="btn btn-light" value="@i" @onclick="@(e=> ChancePage(e,buttonNumber))" />
+    }
 </div>
 
 <div>
-    <table class="table table-hover table-striped table-responsive-sm "  >
+    <table class="table table-hover table-striped table-responsive-sm ">
         <thead>
             <tr>
-                <th> Numero de Serie</th>               
+                <th> Numero de Serie</th>
                 <th> Alias</th>
                 <th> Fecha de Instalación</th>
                 <th> Vendedor</th>
-                <th> Cliente</th>                
+                <th> Cliente</th>
                 <th></th>
             </tr>
         </thead>
@@ -27,23 +36,17 @@
                     <td> @obj.InstallationDate.Date</td>
                     <td> @obj.SaleMan.Name</td>
                     <td> @obj.Client.Name</td>
-                    <td> <a href="device/view/@obj.DeviceId" > Ver </a></td>
-                    <td> <a href="device/update/@obj.DeviceId" > Modificar</a></td>
+                    <td> <a href="device/view/@obj.DeviceId"> Ver </a></td>
+                    <td> <a href="device/update/@obj.DeviceId"> Modificar</a></td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
 
-<div class="form-group">  
-    @for (int i = 1; i <= NumberPages; i++)
-    {
-        <input type="button" class="btn btn-light" value="@i.ToString()" @onclick="ChancePage"/>  
-    }   
-</div>
 
 
-@code { 
+@code {
     [Parameter]
     public string id { get; set; }
 
@@ -56,7 +59,7 @@
 
         if (id == null)
         {
-            tmpDevices = B_Device.ListOfDevices();
+            tmpDevices = B_Device.GetPagingDevices(1, 40);
             Devices = tmpDevices;
         }
         else
@@ -68,11 +71,10 @@
 
     private void NumberOfPages()
     {
-        double aux = B_Device.CountDevices() / 50;
+        double aux = B_Device.CountDevices() / 40;
         if (aux > (aux + 0.01f))
         {
             NumberPages = (int)Math.Ceiling(aux);
-
         }
         else
         {
@@ -81,10 +83,9 @@
         }
     }
 
-    private void ChancePage( EventArgs e)
+    private void ChancePage(EventArgs e)
     {
-        int.TryParse(e.ToString() , out int Pages);
-        Devices = B_Device.TakeDevices(50, Pages);
+
     }
 
     private void SearchValue(ChangeEventArgs e)
@@ -95,7 +96,8 @@
         {
             Devices = tmpDevices;
         }
-        else {
+        else
+        {
             Devices = tmpDevices;
         }
 
