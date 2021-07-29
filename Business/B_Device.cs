@@ -121,14 +121,14 @@ namespace Business
             List<DeviceEntity> Devices = new List<DeviceEntity>();
             using (var DB = new RayosNoDataContext())
             {
-                if ((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year != 0))
+                if ((_DeviceId.Length != null) && (_Alias== null) && (_Year != 0))
                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
                                                                 Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
                                                             ").ToList();
                 }
-                else if ((_DeviceId.Length == 0) && (_Alias.Length > 0) && (_Year != 0))
+                else if ((_DeviceId== null) && (_Alias.Length !=null) && (_Year != 0))
                 {
                     Devices = DB.Devices.FromSqlInterpolated($@"Select *
                                                                 From Devices
