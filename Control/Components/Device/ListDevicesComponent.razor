@@ -2,8 +2,24 @@
 @using Business;
 
 
+
 <div>
-    <Input type="text" value="Buscar Serie" @onchange="SearchValue" class="form-group form-control" />
+    <div >
+        <label>Serie</label>
+       <input type="text" @bind="DeviceIdToSearch" class=" form-control-sm" />
+        <label>Alias</label>
+        <input type="text" @bind="AliasToSearch" class="form-control-sm"/>
+        <label>Año</label>
+        <select class="form-control-sm" @bind="YearToSearch">
+            <option value="">Seleccione un año...</option>
+            @foreach (var item in Years)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+        <input  class="btn-outline-light" type="button" value="Buscar" />
+    </div> 
+    <></>
 </div>
 
 
@@ -30,6 +46,7 @@
                 <th> Vendedor</th>
                 <th> Cliente</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -51,13 +68,36 @@
 
 
 
-@code {
+@code {  
+    #region Public Parametres
+
+    /// Public Variables   
     [Parameter]
     public string id { get; set; } = "";
 
+    #endregion
+
+    #region Internal Parametres
+    /// Seach Variables
+    public int YearToSearch { get; set; }
+
+    public string AliasToSearch { get; set; }
+
+    public string DeviceIdToSearch { get; set; }
+
+    public string ErrorMessage { get; set; }
+
+    /// Internal Variables 
+    List<int> Years = B_Device.ListOfYears();
     int NumberPages = 1;
     List<DeviceEntity> tmpDevices = new List<DeviceEntity>();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
+
+
+    #endregion
+
+    #region Methods
+
     protected override async Task OnInitializedAsync()
     {
         NumberOfPages();
@@ -109,4 +149,6 @@
 
 
     }
+
+    #endregion
 }

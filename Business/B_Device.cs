@@ -110,6 +110,90 @@ namespace Business
         #region Search and Consults
         
 
+        public static List<DeviceEntity> GetDevicesByConsult( string _DeviceId ="", string _Alias="", int _Year=0)
+        {
+            List<DeviceEntity> Devices = new List<DeviceEntity>();
+            using(var DB= new RayosNoDataContext())
+            {
+                if ((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year != 0))
+                {
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                                From Devices
+                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
+                                                            ").ToList();
+                }
+                else if((_DeviceId.Length == 0) && (_Alias.Length > 0) && (_Year != 0))
+                {
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                                From Devices
+                                                                Where ( Devices.Alias  like '%{_Alias}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
+                                                            ").ToList();
+                }else if((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
+                {
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                                From Devices
+                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) 
+                                                            ").ToList();
+
+                }else if((_DeviceId.Length > 0) && (_Alias.Length == 0) && (_Year != 0))
+                {
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                                From Devices
+                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
+                                                            ").ToList();
+                }
+                else if((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
+                {
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                                From Devices
+                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) )
+                                                            ").ToList();
+                }
+                else if ((_DeviceId.Length > 0) && (_Alias.Length == 0) && (_Year != 0))
+                {
+                    
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                            From Devices
+                                                            Where Devices.DeviceId like '%{_DeviceId}%'
+                                                        ").ToList();
+                }
+                else {
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                                From Devices
+                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) )
+                                                            ").ToList();                 
+                }
+                else if ((_DeviceId.Length == 0) && (_Alias.Length > 0) && (_Year == 0))
+                {
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                                From Devices
+                                                                Where  ( Devices.Alias  like '%{_Alias}%' )
+                                                            ").ToList();
+                }
+                else 
+                {
+                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
+                                                                From Devices
+                                                                Where ( YEAR( Devices.InstallationDate ) = {_Year})
+                                                            ").ToList();
+                }
+                return Devices;
+
+        }
+
+
+        /// <summary>
+        /// Get the years of installation registered in the table 
+        /// </summary>
+        /// <returns>list of years</returns>
+        public static List<int> ListOfYears()
+        {            
+            using(var DB = new RayosNoDataContext())
+            {
+                var Years= (from Devices in DB.Devices select Devices.InstallationDate.Year).Distinct().ToList();
+                return Years;
+            }
+        }
 
         /// <summary>
         /// Count the Devices in the Data Base
