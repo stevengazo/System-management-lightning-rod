@@ -104,7 +104,7 @@ namespace Business
         /// <param name="NumberOfPage">Number of the page</param>
         /// <param name="NumberOfDevices">Quantity of devices to get back</param>
         /// <returns></returns>
-        public static List<DeviceEntity> GetPagingDevices (int NumberOfPage= 0, int NumberOfDevices = 10)
+        public static List<DeviceEntity> GetPagingDevices (int NumberOfPage= 0, int NumberOfDevices = 30)
         {
             int skipping = 0;
             if (NumberOfPage<= 1)
