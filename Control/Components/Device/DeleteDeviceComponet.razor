@@ -2,8 +2,44 @@
 @using Business;
 
 
+<div class="text-center">
+    <h3>Desear Elimiar el equipo numero de serie @oDevice.DeviceId</h3>
+    <table class="table table-sm">
+        <tbody>
+            <tr>
+                <th>Alias</th>
+                <td>@oDevice.Alias</td>
+            </tr>
+            <tr>
+                <th>Cliente</th>
+                <td>@oDevice.Client.Name</td>
+            </tr>
+            <tr>
+                <th>Vendedor</th>
+                <td>@oDevice.SaleMan.Name</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Verifica las dependencias y la informacion que vas a eliminar... </p>
+    <input type="button" class="btn-danger" value="Deseo eliminar el equipo" @onclick="DeleteDevice" />
+    <input type="button" class="btn-light" value="Regresar a lista de equipos"  />
+</div>
 
 
 @code{
+    [Parameter]
+    public string DeviceId { get; set; }
 
+    DeviceEntity oDevice { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        oDevice = B_Device.DeviceById(DeviceId);
+    }
+
+    private void DeleteDevice()
+    {
+
+    }
+   
 }

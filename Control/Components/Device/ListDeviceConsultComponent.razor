@@ -55,7 +55,7 @@
             <tr>
                 <td> @obj.DeviceId</td>
                 <td> @obj.Alias</td>
-                <td> @obj.InstallationDate.Date</td>
+                <td> @obj.InstallationDate.Date.ToShortDateString()</td>
                 <td> @obj.SaleMan.Name</td>
                 <td> @obj.Client.Name</td>
                 <td> <a href="device/view/@obj.DeviceId"> Ver </a></td>
