@@ -1,5 +1,17 @@
-﻿<h3>DeleteDevicePage</h3>
+﻿@page "/device/delete/{DeviceId}"
 
-@code {
 
+
+<h1>
+    En construccion...
+</h1>
+
+
+@code{
+    [Parameter]
+    public string DeviceId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        DeviceId = DeviceId;
+    }
 }

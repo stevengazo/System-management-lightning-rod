@@ -108,7 +108,15 @@ namespace Business
         #endregion
 
         #region Search and Consults
-        
+
+        public static List<string> GetCountries()
+        {
+            using( var DB = new RayosNoDataContext())
+            {
+                return (from Device in DB.Devices select Device.Country).Distinct().ToList();
+            }
+        }
+
         /// <summary>
         /// Consult an existance device in the database
         /// </summary>
@@ -121,68 +129,46 @@ namespace Business
             List<DeviceEntity> Devices = new List<DeviceEntity>();
             using (var DB = new RayosNoDataContext())
             {
-                if ((_DeviceId.Length != null) && (_Alias== null) && (_Year != 0))
+                if ((_DeviceId != null) && (_Alias!= null) && (_Year != 0))
                 {
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                                From Devices
-                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
-                                                            ").ToList();
+                    var aux =   DB.Devices.FromSqlInterpolated($@"Select * From Devices
+                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) and ( Devices.Alias  like CONCAT('%',{_Alias},'%') ) and ( YEAR( Devices.InstallationDate ) = {_Year} )").Include(D => D.Client).Include(D => D.SaleMan);
+                    Devices = aux.OrderBy(D=>D.ClientId).ToList();
                 }
-                else if ((_DeviceId== null) && (_Alias.Length !=null) && (_Year != 0))
+                else if ((_DeviceId == null) && (_Alias != null) && (_Year != 0))
                 {
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                                From Devices
-                                                                Where ( Devices.Alias  like '%{_Alias}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
-                                                            ").ToList();
-                } else if ((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
-                {
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                                From Devices
-                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) 
-                                                            ").ToList();
-
-                } else if ((_DeviceId.Length > 0) && (_Alias.Length == 0) && (_Year != 0))
-                {
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                                From Devices
-                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( YEAR( Devices.InstallationDate ) = {_Year})
-                                                            ").ToList();
+                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
+                                Where ( Devices.Alias  like CONCAT('%',{_Alias},'%') ) and ( YEAR( Devices.InstallationDate ) = {_Year} )").Include(D => D.Client).Include(D => D.SaleMan);
+                    Devices = aux.OrderBy(D => D.ClientId).ToList();
                 }
-                else if ((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
+                else if ((_DeviceId != null) && (_Alias != null) && (_Year == 0))
                 {
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                                From Devices
-                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) )
-                                                            ").ToList();
-                }
-                else if ((_DeviceId.Length > 0) && (_Alias.Length == 0) && (_Year != 0))
+                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
+                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) and ( Devices.Alias  like CONCAT('%',{_Alias},'%') ) ").Include(D => D.Client).Include(D => D.SaleMan);
+                    Devices = aux.OrderBy(D => D.ClientId).ToList();
+                }else if ((_DeviceId != null) && (_Alias == null) && (_Year != 0))
                 {
-
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                            From Devices
-                                                            Where Devices.DeviceId like '%{_DeviceId}%'
-                                                        ").ToList();
+                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
+                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) and ( YEAR( Devices.InstallationDate ) = {_Year} )").Include(D => D.Client).Include(D => D.SaleMan);
+                    Devices = aux.OrderBy(D => D.ClientId).ToList();
                 }
-                else if((_DeviceId.Length > 0) && (_Alias.Length > 0) && (_Year == 0))
-                 {
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                                From Devices
-                                                                Where ( Devices.DeviceId like '%{_DeviceId}%' ) and ( Devices.Alias  like '%{_Alias}%' ) )
-                                                            ").ToList();
-                }
-                else if((_DeviceId.Length == 0) && (_Alias.Length > 0) && (_Year == 0))
+                else if ((_DeviceId != null) && (_Alias == null) && (_Year == 0))
                 {
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                                From Devices
-                                                                Where  ( Devices.Alias  like '%{_Alias}%' )
-                                                            ").ToList();
+                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
+                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) ").Include(D => D.Client).Include(D => D.SaleMan);
+                    Devices = aux.OrderBy(D=>D.DeviceId).ToList();
                 }
-                else
+                else if ((_DeviceId == null) && (_Alias != null) && (_Year == 0))
                 {
-                    Devices = DB.Devices.FromSqlInterpolated($@"Select *
-                                                                From Devices
-                                                                Where ( YEAR( Devices.InstallationDate ) = {_Year})
-                                                            ").ToList();
+                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
+                                Where  ( Devices.Alias  like CONCAT('%',{_Alias},'%') ) ").Include(D => D.Client).Include(D => D.SaleMan);
+                    Devices = aux.OrderBy(D => D.DeviceId).ToList();
+                }
+                else if ((_DeviceId == null) && (_Alias == null) && (_Year != 0))
+                {
+                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
+                                Where ( YEAR( Devices.InstallationDate ) = {_Year} )").Include(D => D.Client).Include(D => D.SaleMan);
+                    Devices = aux.OrderBy(D => D.DeviceId).ToList();
                 }
                 return Devices;
             }
