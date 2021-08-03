@@ -43,7 +43,7 @@
             <option value="0"> Seleccione un equipo...</option>
             @foreach (var Device in Devices)
 	        {       
-	            <option value="@Device.DeviceId"> @Device.DeviceId - @Device.Alias </option>	 
+	            <option value="@Device.DeviceId">@Device.Client.Name - @Device.DeviceId </option>	 
 	        }
         </InputSelect>        
     </div>    
@@ -69,6 +69,7 @@
     protected override async Task OnInitializedAsync()
     {
         Devices = B_Device.ListOfDevices();
+        Devices= Devices.OrderBy(D => D.ClientId).ToList();
     }
 
     private void SaveMaintenance()
