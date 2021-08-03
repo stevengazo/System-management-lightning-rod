@@ -119,11 +119,12 @@ namespace Business
             Dictionary<string, string> Devices = new Dictionary<string, string>();
             using( var DB= new RayosNoDataContext())
             {
-                var aux = (from Device in DB.Devices where Device.IsActive == true select Device).Include(D => D.Client);
+                var aux = (from Device in DB.Devices where Device.IsActive == true select Device ).Include(D => D.Client);
                 foreach(var a in aux)
                 {
                     Devices.Add(a.DeviceId, a.Client.Name);
                 }
+               
                 return Devices;
             }
         }

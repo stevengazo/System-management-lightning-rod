@@ -44,9 +44,9 @@
         <label>Numero de Informe</label>
         <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId">
             <option value="0"> Seleccione un equipo...</option>
-            @foreach (var Device in Devices)
+            @foreach (var Device in oDevices)
             {
-                <option value="@Device.DeviceId"> @Device.DeviceId - @Device.Alias </option>
+                <option value="@Device.Key"> @Device.Value - @Device.Key </option>
             }
         </InputSelect>
     </div>
@@ -57,6 +57,9 @@
 @code{
     [Parameter]
     public string id { get; set; }
+
+    Dictionary<string, string> oDevices = B_Device.GetDictonaryOfDevicesWithClient();
+
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     protected override async Task OnInitializedAsync()
