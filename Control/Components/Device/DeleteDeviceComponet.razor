@@ -3,9 +3,9 @@
 
 @inject NavigationManager Nav;
 
-<h3 class="text-center">Desear Elimiar el equipo numero de serie @oDevice.DeviceId</h3>
+<h3 class="text-center">Desear Eliminar el equipo numero de serie @oDevice.DeviceId</h3>
 <div class="align-content-center">    
-    <table class="table table-sm">
+    <table class="table table-sm table-light table-hover">
         <tbody>
             <tr>
                 <th>Alias</th>
@@ -22,6 +22,7 @@
         </tbody>
     </table>
     <p>Verifica las dependencias y la informacion que vas a eliminar... </p>
+    
     <input type="button" class="btn-danger" value="Deseo eliminar el equipo" @onclick="DeleteDevice" />
     <input type="button" class="btn-light" value="Regresar a lista de equipos"  />
     <p class="text-center" style="color:red"> @ErrorMessage</p>
@@ -42,9 +43,10 @@
 
     private void DeleteDevice()
     {
-        bool BandDependency = !B_Device.HaveDependence(oDevice);
+        bool BandDependency = B_Device.HaveDependence(oDevice);
         if (BandDependency)
         {
+            B_Device.DeleteDevice(oDevice);
             Nav.NavigateTo("device/list");
         }
         else
@@ -53,5 +55,4 @@
         }
 
     }
-
 }

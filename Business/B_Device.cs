@@ -92,14 +92,14 @@ namespace Business
         public static void DeleteDevice(DeviceEntity oDevice)
         {
             using (var DB = new RayosNoDataContext())
-            {
-                var query = DB.Devices.LastOrDefault(d => d.DeviceId == oDevice.DeviceId);
+            {                
                 var BandEstado = HaveDependence(oDevice);
                 if (BandEstado)
                 {
-                    DB.Devices.Remove(query);
+                    DB.Devices.Remove(oDevice);
                     DB.SaveChanges();
                 }
+
             }
         }
 
@@ -304,23 +304,23 @@ namespace Business
         /// Check if exists dependences in other tables with Linq
         /// </summary>
         /// <param name="deviceEntity">Entity to search</param>
-        /// <returns>true if exists a dependency</returns>
+        /// <returns>true if not exists a dependency</returns>
         public static bool HaveDependence(DeviceEntity deviceEntity)
         {
             var stg = deviceEntity.DeviceId;
             using (var DB = new RayosNoDataContext())
             {
-                var cMaintenance = DB.Maintenances.FromSqlInterpolated($"Select * from Maintenances Where DeviceId ='{stg}'").FirstOrDefault();
-                var cIncident = DB.Incidents.FromSqlInterpolated($"Select * from Incidents Where DeviceId ='{stg}'").FirstOrDefault();
-                var cWarranty = DB.Warranties.FromSqlInterpolated($"Select * from Warranties Where DeviceId ='{stg}'").FirstOrDefault();
-                var cReplacement = DB.Replacements.FromSqlInterpolated($"Select * from Replacements Where DeviceId ='{stg}'").FirstOrDefault();
-                if ((cMaintenance == null) || (cWarranty == null) || (cReplacement == null))
+                var cMaintenance = DB.Maintenances.FromSqlInterpolated($"Select * from Maintenances Where DeviceId ={stg}").FirstOrDefault();
+                var cIncident = DB.Incidents.FromSqlInterpolated($"Select * from Incidents Where DeviceId ={stg}").FirstOrDefault();
+                var cWarranty = DB.Warranties.FromSqlInterpolated($"Select * from Warranties Where DeviceId ={stg}").FirstOrDefault();
+                var cReplacement = DB.Replacements.FromSqlInterpolated($"Select * from Replacements Where DeviceId ={stg}").FirstOrDefault();
+                if ((cMaintenance == null) && (cWarranty == null) && (cReplacement == null))
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
             }
         }
