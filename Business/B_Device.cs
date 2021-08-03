@@ -108,6 +108,25 @@ namespace Business
         #endregion
 
         #region Search and Consults
+
+
+        /// <summary>
+        /// Get the id of the devices actives and the namme of the client
+        /// </summary>
+        /// <returns>Dictionary of DeviceIds and Clients names</returns>
+        public static Dictionary<string,string> GetDictonaryOfDevicesWithClient()
+        {
+            Dictionary<string, string> Devices = new Dictionary<string, string>();
+            using( var DB= new RayosNoDataContext())
+            {
+                var aux = (from Device in DB.Devices where Device.IsActive == true select Device).Include(D => D.Client);
+                foreach(var a in aux)
+                {
+                    Devices.Add(a.DeviceId, a.Client.Name);
+                }
+                return Devices;
+            }
+        }
         /// <summary>
         /// Get the countries registered in the Database
         /// </summary>

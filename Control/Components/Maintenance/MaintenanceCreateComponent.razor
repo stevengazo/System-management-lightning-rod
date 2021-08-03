@@ -41,9 +41,9 @@
         <label>Numero de Equipo</label>
         <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId" >
             <option value="0"> Seleccione un equipo...</option>
-            @foreach (var Device in Devices)
+            @foreach (var Device in oDevices)
 	        {       
-	            <option value="@Device.DeviceId">@Device.Client.Name - @Device.DeviceId </option>	 
+        <option value="@Device.Key">@Device.Value - @Device.Key </option>	 
 	        }
         </InputSelect>        
     </div>    
@@ -62,6 +62,7 @@
 
 
 @code{
+    Dictionary<string, string> oDevices = B_Device.GetDictonaryOfDevicesWithClient();
     bool BandExistDevice { get; set; }
     string aux = "";
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
