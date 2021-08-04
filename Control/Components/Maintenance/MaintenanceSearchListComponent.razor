@@ -7,38 +7,41 @@
     <div>
         <div>
             <label class="col-form-label-sm">Serie</label>
-            <input type="text"  value="Serie..." class=" form-control-sm" />
+            <input type="text" class=" form-control-sm" @bind="@DeviceToSearch" />
             <label class="col-form-label-sm">Mes</label>
-            <select class="form-control-sm">
+            <select class="form-control-sm" @bind="MonthToSearch">
                 <option value="">Seleccione...</option>
                 @foreach (var month in Months)
-	            {
-                    <option value="@month.Key">@month.Value</option>		 
-	            }
+                {
+                    <option value="@month.Key">@month.Value</option>
+
+                }
             </select>
             <label class="col-form-label-sm">Año</label>
-            <select class="form-control-sm">
+            <select class="form-control-sm" @bind="YearToSearch">
                 <option value="">Seleccione...</option>
                 @foreach (var item in Years)
-	            {
+                {
                     <option value="@item">@item</option>
-	            }
+                }
             </select>
             <label class="col-form-label-sm">Tecnico</label>
-            <select class="form-control-sm">
+            <select class="form-control-sm" @bind="NameToSearch">
                 <option value="">Seleccione...</option>
                 @foreach (var item in Technicians)
-	            {
-                    <option value="@item">@item</option>    	 
-	            }
+                {
+                    <option value="@item">@item</option>
+
+                }
             </select>
         </div>
         <div>
-            <input type="button" value="Buscar"  class="btn btn-outline-dark"/>
-            <input type="button" value="Limpiar" class="btn btn-outline-dark"/>
-            <input type="button" value="Generar" class="btn btn-outline-dark"/>
+            <input type="button" value="Buscar" class="btn btn-outline-dark" @onclick="Search" />
+            <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick="CleanSpaces" />
+            <input type="button" value="Generar" class="btn btn-outline-dark" />
         </div>
     </div>
+    <p class="text-center" style="color:red"> @ErrorMessage</p>
     <div>
         <table class="table table-hover table-striped table-responsive-sm ">
             <thead>
@@ -90,6 +93,7 @@
         { 11,"Noviembre"},
         { 12,"Diciembre"}
     };
+    string ErrorMessage { get; set; }
 
     #region Internal Variables
     private int YearToSearch { get; set; }
@@ -98,6 +102,18 @@
     private string NameToSearch { get; set; }
     #endregion
 
+    private void Search()
+    {
+        Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, NameToSearch, YearToSearch, MonthToSearch);
+        if (Maintenances.Count >0)
+        {
+            ErrorMessage = "";
+        }
+        else
+        {
+            ErrorMessage = "No hay mantenimientos que coindicidan con los criterios de busqueda...";
+        }
+    }
     private void CleanSpaces()
     {
         YearToSearch = 0;

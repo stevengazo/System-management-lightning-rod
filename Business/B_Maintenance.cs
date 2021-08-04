@@ -13,6 +13,52 @@ namespace Business
     public static class B_Maintenance
     {
         #region Consults and others
+       
+        public static List<MaintenanceEntity> GetMaintenancesByConsult(string _Device = "", string _Name ="",int _Year = 0, int _Month=0)
+        {
+            List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
+            using(var DB = new RayosNoDataContext())
+            {
+                if ((_Device != null) && (_Name != null) && (_Year != 0) && (_Month != 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	MaintenanceId like Concat('%',{_Device},'%') 
+		                                                                and (TechnicianName like CONCAT('%',{_Name},'%'))
+		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()}) 
+		                                                                and (MONTH(maintenanceDate) = {_Month.ToString()})");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device != null) && (_Name == null) && (_Year == 0) && (_Month == 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	DeviceId like Concat('%',{_Device},'%')");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device != null) && (_Name != null) && (_Year == 0) && (_Month == 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	MaintenanceId like Concat('%',{_Device},'%') 
+		                                                                and (TechnicianName like CONCAT('%',{_Name},'%'))");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device != null) && (_Name != null) && (_Year != 0) && (_Month == 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	MaintenanceId like Concat('%',{_Device},'%') 
+		                                                                and (TechnicianName like CONCAT('%',{_Name},'%'))
+		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()})");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device == null) && (_Name == null) && (_Year == 0) && (_Month != 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE (MONTH(maintenanceDate) = {_Month.ToString()})");
+                    Maintenances = aux.ToList();
+                }
+            }            
+            return Maintenances;
+        }
+
         /// <summary>
         /// Count all the records in the table Maintenances
         /// </summary>
