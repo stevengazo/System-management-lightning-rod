@@ -1,5 +1,111 @@
-﻿<h3>MaintenanceSearchListComponent</h3>
+﻿@using Entities;
+@using Business;
 
-@code {
 
+
+<div style=" margin-top: 22px; ">
+    <div>
+        <div>
+            <label class="col-form-label-sm">Serie</label>
+            <input type="text"  value="Serie..." class=" form-control-sm" />
+            <label class="col-form-label-sm">Mes</label>
+            <select class="form-control-sm">
+                <option value="">Seleccione...</option>
+                @foreach (var month in Months)
+	            {
+                    <option value="@month.Key">@month.Value</option>		 
+	            }
+            </select>
+            <label class="col-form-label-sm">Año</label>
+            <select class="form-control-sm">
+                <option value="">Seleccione...</option>
+                @foreach (var item in Years)
+	            {
+                    <option value="@item">@item</option>
+	            }
+            </select>
+            <label class="col-form-label-sm">Tecnico</label>
+            <select class="form-control-sm">
+                <option value="">Seleccione...</option>
+                @foreach (var item in Technicians)
+	            {
+                    <option value="@item">@item</option>    	 
+	            }
+            </select>
+        </div>
+        <div>
+            <input type="button" value="Buscar"  class="btn btn-outline-dark"/>
+            <input type="button" value="Limpiar" class="btn btn-outline-dark"/>
+            <input type="button" value="Generar" class="btn btn-outline-dark"/>
+        </div>
+    </div>
+    <div>
+        <table class="table table-hover table-striped table-responsive-sm ">
+            <thead>
+                <tr>
+                    <th> Numero Serie</th>
+                    <th> Fecha de Mantenimiento </th>
+                    <th> Técnico</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Maintenances)
+                {
+                    <tr>
+                        <td> @obj.DeviceId </td>
+                        <td> @obj.MaintenanceDate.Date</td>
+                        <td> @obj.TechnicianName</td>
+                        <td> <a href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
+                        <td> <a href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
+                        <td> <a style="color:red" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+@code{
+    private List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
+    List<string> Technicians = B_Maintenance.GetTechnicians();
+    List<int> Years = B_Maintenance.ListOfYears();
+    Dictionary<int, string> Months = new Dictionary<int, string>() {
+        { 1,"Enero"},
+        { 2,"Febrero"},
+        { 3,"Marzo"},
+        { 4,"Abril"},
+        { 5,"Mayo"},
+        { 6,"Junio"},
+        { 7,"Julio"},
+        { 8,"Agosto"},
+        { 9,"Septiembre"},
+        { 10,"Octubre"},
+        { 11,"Noviembre"},
+        { 12,"Diciembre"}
+    };
+
+    #region Internal Variables
+    private int YearToSearch { get; set; }
+    private int MonthToSearch { get; set; }
+    private string DeviceToSearch { get; set; }
+    private string NameToSearch { get; set; }
+    #endregion
+
+    private void CleanSpaces()
+    {
+        YearToSearch = 0;
+        MonthToSearch = 0;
+        DeviceToSearch = null;
+        NameToSearch = null;
+    }
 }
+
+
+

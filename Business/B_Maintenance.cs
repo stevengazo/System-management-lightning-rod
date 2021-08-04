@@ -27,6 +27,32 @@ namespace Business
         }
 
         /// <summary>
+        /// Get the years of the Maintenance Dates registered in the database
+        /// </summary>
+        /// <returns>list of years</returns>
+        public static List<int> GetYears()
+        {
+            using( var DB = new RayosNoDataContext())
+            {
+                var aux = (from Maintenance in DB.Maintenances select Maintenance.MaintenanceDate.Year).Distinct().ToList();
+                return aux;
+            }
+        }
+
+        /// <summary>
+        /// Get the Technians registered in the table Maintenances
+        /// </summary>
+        /// <returns>list of tecnicians</returns>
+        public static List<string> GetTechnicians()
+        {
+            using(var DB = new RayosNoDataContext())
+            {
+                var aux = (from maintenance in DB.Maintenances select maintenance.TechnicianName).Distinct().ToList();
+                return aux;
+            }
+        }
+
+        /// <summary>
         /// Get a specific quantity of maintenances and retun
         /// </summary>
         /// <param name="NumberOfPage">number of page </param>
