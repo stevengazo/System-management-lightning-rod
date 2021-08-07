@@ -55,6 +55,47 @@ namespace Business
                                                                         WHERE (MONTH(maintenanceDate) = {_Month.ToString()})");
                     Maintenances = aux.ToList();
                 }
+                else if ((_Device == null) && (_Name == null) && (_Year != 0) && (_Month != 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	 (YEAR(MaintenanceDate ) = {_Year.ToString()}) 
+		                                                                and (MONTH(maintenanceDate) = {_Month.ToString()})");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device == null) && (_Name != null) && (_Year != 0) && (_Month != 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	(TechnicianName like CONCAT('%',{_Name},'%'))
+		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()}) 
+		                                                                and (MONTH(maintenanceDate) = {_Month.ToString()})");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device != null) && (_Name == null) && (_Year != 0) && (_Month == 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	MaintenanceId like Concat('%',{_Device},'%') 		                                                                
+		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()})");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device == null) && (_Name != null) && (_Year == 0) && (_Month != 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	(TechnicianName like CONCAT('%',{_Name},'%'))
+		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()})");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device == null) && (_Name != null) && (_Year == 0) && (_Month == 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	(TechnicianName like CONCAT('%',{_Name},'%'))");
+                    Maintenances = aux.ToList();
+                }
+                else if ((_Device == null) && (_Name == null) && (_Year != 0) && (_Month == 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	(YEAR(MaintenanceDate ) = {_Year.ToString()})");
+                    Maintenances = aux.ToList();
+                }
             }            
             return Maintenances;
         }
