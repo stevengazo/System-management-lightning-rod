@@ -4,33 +4,37 @@
 
 <div>
     <div>
-        <label class="col-form-label-sm" >Serie del dispositivo</label>
-        <select class="form-control-sm" @bind="@DeviceIdToSearch" >
-            <option value="@null">Seleccione un equipo...</option>
+        <label class="col-form-label-sm">Serie del dispositivo</label>
+        <select class="form-control-sm" @bind="@DeviceIdToSearch">
+            <option value="">Seleccione un equipo...</option>
             @foreach (var it in Devices)
             {
                 <option value="@it.Key"> @it.Value - @it.Key </option>
             }
         </select>
-        <label class="col-form-label-sm" >Envio de cerfificado</label>
+        <label class="col-form-label-sm">Envio de cerfificado</label>
         <select class="form-control-sm" @bind="@YearToSearch">
+            <option value="0">Seleccione un año...</option>
             @foreach (var item in Years)
             {
-                <option value="@item">@item</option>                
+                <option value="@item">@item</option>
+
             }
         </select>
-        <label class="col-form-label-sm" >Estado de la garantia</label>
+        <label class="col-form-label-sm">Estado de la garantia</label>
         <select class="form-control-sm" @bind="@EstatusToSearch">
+            <option value="">Seleccione un estado...</option>
             <option value="En tramite">En tramite</option>
             <option value="Recibido">Recibido</option>
             <option value="Con Problemas">Con Problemas</option>
         </select>
     </div>
     <div>
-        <input type="button" value="Buscar" class="btn btn-outline-dark" @onclick="SearchWarranties"/>
-        <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick ="CleanSpaces"/>
-        <input type="button" value="Generar" class="btn btn-outline-dark"/>
+        <input type="button" value="Buscar" class="btn btn-outline-dark" @onclick="SearchWarranties" />
+        <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick="CleanSpaces" />
+        <input type="button" value="Generar" class="btn btn-outline-dark" />
     </div>
+    <p class="text-center" style="color:red"> @ErrorMessage</p>
 </div>
 
 <table class=" table table-hover table-striped table-responsive-sm ">
@@ -68,14 +72,14 @@
     public List<int> Years = new List<int>();
     private Dictionary<string, string> Devices;
 
-    #region VARIABLESTOSEARCH
+    #region internal
 
     private string DeviceIdToSearch = null;
     private int YearToSearch = 0;
     private string EstatusToSearch = null;
-
+    private string ErrorMessage = "";
     #endregion
-    protected override  async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         Years = B_Warranty.GetYearsOfSend();
         Devices = B_Device.GetDictonaryOfDevicesWithClient();
@@ -88,5 +92,15 @@
     }
     private void SearchWarranties()
     {
-        Warranties = B_Warranty
+        Warranties = B_Warranty.SearchWarranties(DeviceIdToSearch, EstatusToSearch, YearToSearch);
+        if (Warranties.Count <= 0)
+        {
+            ErrorMessage = "No hay coincidencias con los criterios de busqueda";
+        }
+        else
+        {
+            ErrorMessage = "";
+        }
+
     }
+}

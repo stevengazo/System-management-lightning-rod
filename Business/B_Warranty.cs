@@ -19,12 +19,52 @@ namespace Business
                 if ((_DeviceId != null) && (_Estatus != null) && (_Year != 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	id = {_DeviceId} ) 
-                                                         
-and		(	YEAR(DateSend)= {_Year.ToString()}	)
+                                                                    WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                                    and		(	YEAR(DateSend)= {_Year.ToString()}	)
                                                                     and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
                 }
-                return aux;
+                else if ((_DeviceId != null) && (_Estatus != null) && (_Year == 0))
+                {
+                    aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
+                                                                    WHERE	(	DeviceId = {_DeviceId} )
+                                                                    and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                }
+                else if ((_DeviceId != null) && (_Estatus == null) && (_Year == 0))
+                {
+                    aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
+                                                                    WHERE	(	DeviceId = {_DeviceId} )").ToList();
+                }
+                else if ((_DeviceId != null) && (_Estatus != null) && (_Year != 0))
+                {
+                    aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
+                                                                    WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                                    and		(	YEAR(DateSend)= {_Year.ToString()}	)
+                                                                    and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                }
+                else if ((_DeviceId == null) && (_Estatus != null) && (_Year != 0))
+                {
+                    aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
+                                                                    WHERE	(	YEAR(DateSend)= {_Year.ToString()}	)
+                                                                    and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                }
+                else if ((_DeviceId == null) && (_Estatus != null) && (_Year == 0))
+                {
+                    aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
+                                                                    WHERE	(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                }
+                else if ((_DeviceId == null) && (_Estatus == null) && (_Year != 0))
+                {
+                    aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
+                                                                    WHERE	(	YEAR(DateSend)= {_Year.ToString()}	)").ToList();
+                }
+                else if ((_DeviceId != null) && (_Estatus == null) && (_Year != 0))
+                {
+                    aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
+                                                               WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                               and		(	YEAR(DateSend)= {_Year.ToString()}	)").ToList();
+                }
+
+                return aux.ToList();
             }
             
         }
