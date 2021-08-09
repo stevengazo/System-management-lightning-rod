@@ -55,7 +55,7 @@
             <tr>
                 <td> @obj.DeviceId </td>
                 <td> @obj.DateSend.ToShortDateString()</td>
-                <td>@((!obj.Estatus.Equals("Recibido")) ?"" : obj.DateReceived.ToShortDateString())</td>
+                <td>@((!obj.Estatus.Equals("Recibido")) ?"Sin Recibir" : obj.DateReceived.ToShortDateString())</td>
                 <td> @obj.Estatus</td>
                 <td> <a href="warranty/view/@obj.Id">Ver</a></td>
                 <td> <a href="warranty/update/@obj.Id">Modificar</a></td>
