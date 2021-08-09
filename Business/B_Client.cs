@@ -14,6 +14,39 @@ namespace Business
     {
         
         
+        /// <summary>
+        /// Search clients in the database
+        /// </summary>
+        /// <param name="_name">Name of the client</param>
+        /// <param name="_Id">Id of the client in the database</param>
+        /// <returns>List of clients</returns>
+        public static List<ClientEntity> SearchClients(string _name = null, string _Id = null)
+        {
+            List<ClientEntity> Clients = new List<ClientEntity>();
+            using( var DB = new RayosNoDataContext())
+            {
+                if( (_name != null) && (_Id!= null))
+                {
+                    var aux = DB.Clients.FromSqlInterpolated($@"SELECT * FROM Clients
+                                                                WHERE	(Id like Concat('%',{_Id},'%'))
+                                                                and		(Name like concat('%',{_name},'%'))");
+                    Clients = aux.ToList();
+                }
+                else if ((_name == null) && (_Id != null))
+                {
+                    var aux = DB.Clients.FromSqlInterpolated($@"SELECT * FROM Clients
+                                                                WHERE	(Id like Concat('%',{_Id},'%'))");
+                    Clients = aux.ToList();
+                }
+                else if ((_name != null) && (_Id == null))
+                {
+                    var aux = DB.Clients.FromSqlInterpolated($@"SELECT * FROM Clients
+                                                                WHERE	(Name like concat('%',{_name},'%'))");
+                    Clients = aux.ToList();
+                }
+                return Clients;
+            }
+        }
         public static List<ClientEntity> SearchClientsByName(string Name = "")
         {
             using(var DB= new RayosNoDataContext())

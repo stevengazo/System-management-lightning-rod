@@ -1,0 +1,78 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<div class="align-center">
+    <div>
+        <label>ID de refencia</label>
+        <input type="text" @bind="ClientIdToSearch" />
+        <label>Nombre</label>
+        <input type="text" @bind="NameToSearch" />
+    </div>
+    <div>
+        <input type="button" value="Buscar" class="btn btn-outline-dark"  @onclick="SearchClients"/>
+        <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick="CleanValues" />
+    </div>
+    <p class="text-center" style="color:red"> @ErrorMessage</p>
+</div>
+
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td> Referencia</td>
+            <td> Nombre</td>
+            <td> </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Clients)
+        {
+            <tr>
+                <td> @obj.Id </td>
+                <td> @obj.Name </td>
+                <td><a href="client/view/@obj.Id">Ver</a></td>
+                <td> <a href="client/update/@obj.Id"> Modificar</a></td>
+                <td> <a style="color:red" href="/client/delete/@obj.Id"> Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code{
+    List<ClientEntity> Clients = new List<ClientEntity>();
+    List<ClientEntity> tmpClients = new List<ClientEntity>();
+    string ClientIdToSearch = null;
+    string NameToSearch = null;
+    string ErrorMessage = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private void CleanValues()
+    {
+        NameToSearch = null;
+        ClientIdToSearch = null;
+    }
+    private void SearchClients()
+    {
+        Clients = B_Client.SearchClients(NameToSearch, ClientIdToSearch);
+        if (Clients.Count <= 0)
+        {
+            ErrorMessage = "No hay clientes con los parametros especificados";
+        }
+        else
+        {
+            ErrorMessage = "";
+        }
+    }
+}
+
+
+
+
