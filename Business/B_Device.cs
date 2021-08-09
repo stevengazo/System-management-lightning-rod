@@ -113,7 +113,7 @@ namespace Business
         /// <summary>
         /// Get the id of the devices actives and the namme of the client
         /// </summary>
-        /// <returns>Dictionary of DeviceIds and Clients names</returns>
+        /// <returns>Dictionary of DeviceIds (Key) and Clients names (Value)</returns>
         public static Dictionary<string,string> GetDictonaryOfDevicesWithClient()
         {
             Dictionary<string, string> Devices = new Dictionary<string, string>();

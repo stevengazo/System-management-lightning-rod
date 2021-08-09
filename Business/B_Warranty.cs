@@ -4,12 +4,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 using DataAccess;
 
 namespace Business
 {
     public static class B_Warranty
     {
+        public static List<WarrantyEntity> SearchWarranties( string _DeviceId= null, string _Estatus= null, int _Year=0)
+        {
+            using(var DB = new RayosNoDataContext())
+            {
+                List<WarrantyEntity> aux = new List<WarrantyEntity>();
+                if ((_DeviceId != null) && (_Estatus != null) && (_Year != 0))
+                {
+                    aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
+                                                                    WHERE	(	id = {_DeviceId} ) 
+                                                         
+and		(	YEAR(DateSend)= {_Year.ToString()}	)
+                                                                    and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                }
+                return aux;
+            }
+            
+        }
+        /// <summary>
+        /// Search all the registered years in the warranties and return
+        /// </summary>
+        /// <returns>List of years registered</returns>
+        public static List<int> GetYearsOfSend()
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                var aux = (from Warranty in DB.Warranties select Warranty.DateSend.Year).Distinct().ToList();
+                return aux;
+            }
+        }
         public static List<WarrantyEntity> GetPaging(int NumberOfPage = 0, int Quantity = 40)
         {
             int Skipping = 0;

@@ -2,7 +2,36 @@
 @using Business;
 
 
-
+<div>
+    <div>
+        <label class="col-form-label-sm" >Serie del dispositivo</label>
+        <select class="form-control-sm" @bind="@DeviceIdToSearch" >
+            <option value="@null">Seleccione un equipo...</option>
+            @foreach (var it in Devices)
+            {
+                <option value="@it.Key"> @it.Value - @it.Key </option>
+            }
+        </select>
+        <label class="col-form-label-sm" >Envio de cerfificado</label>
+        <select class="form-control-sm" @bind="@YearToSearch">
+            @foreach (var item in Years)
+            {
+                <option value="@item">@item</option>                
+            }
+        </select>
+        <label class="col-form-label-sm" >Estado de la garantia</label>
+        <select class="form-control-sm" @bind="@EstatusToSearch">
+            <option value="En tramite">En tramite</option>
+            <option value="Recibido">Recibido</option>
+            <option value="Con Problemas">Con Problemas</option>
+        </select>
+    </div>
+    <div>
+        <input type="button" value="Buscar" class="btn btn-outline-dark" @onclick="SearchWarranties"/>
+        <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick ="CleanSpaces"/>
+        <input type="button" value="Generar" class="btn btn-outline-dark"/>
+    </div>
+</div>
 
 <table class=" table table-hover table-striped table-responsive-sm ">
     <thead>
@@ -10,6 +39,7 @@
             <th> Numero de Serie del equipo </th>
             <th> Fecha Envio España</th>
             <th> Fecha Recepción España</th>
+            <th> Estatus</th>
             <th> </th>
             <th> </th>
             <th> </th>
@@ -22,6 +52,7 @@
                 <td> @obj.DeviceId </td>
                 <td> @obj.DateSend</td>
                 <td> @obj.DateReceived</td>
+                <td> @obj.Estatus</td>
                 <td> <a href="warranty/view/@obj.Id">Ver</a></td>
                 <td> <a href="warranty/update/@obj.Id">Modificar</a></td>
                 <td> <a style="color:red" href="warranty/delete/@obj.Id">Eliminar</a></td>
@@ -34,11 +65,28 @@
 
 @code{
     public List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
+    public List<int> Years = new List<int>();
+    private Dictionary<string, string> Devices;
 
+    #region VARIABLESTOSEARCH
 
+    private string DeviceIdToSearch = null;
+    private int YearToSearch = 0;
+    private string EstatusToSearch = null;
+
+    #endregion
     protected override  async Task OnInitializedAsync()
     {
-        
+        Years = B_Warranty.GetYearsOfSend();
+        Devices = B_Device.GetDictonaryOfDevicesWithClient();
     }
-
-} 
+    private void CleanSpaces()
+    {
+        DeviceIdToSearch = null;
+        YearToSearch = 0;
+        EstatusToSearch = null;
+    }
+    private void SearchWarranties()
+    {
+        Warranties = B_Warranty
+    }
