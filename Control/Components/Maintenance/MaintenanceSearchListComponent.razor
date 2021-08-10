@@ -14,7 +14,6 @@
                 @foreach (var month in Months)
                 {
                     <option value="@month.Key">@month.Value</option>
-
                 }
             </select>
             <label class="col-form-label-sm">Año</label>
@@ -31,7 +30,6 @@
                 @foreach (var item in Technicians)
                 {
                     <option value="@item">@item</option>
-
                 }
             </select>
         </div>
@@ -65,7 +63,6 @@
                         <td> <a href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
                         <td> <a style="color:red" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
                     </tr>
-
                 }
             </tbody>
         </table>

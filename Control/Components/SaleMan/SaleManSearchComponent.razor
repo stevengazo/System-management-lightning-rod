@@ -1,0 +1,70 @@
+﻿@using Entities;
+@using Business;
+
+
+
+
+<div>
+    <div>
+        <label>Id de Referencia</label>
+        <input type="text" @bind="IDToSearch" />
+        <label>Nombre</label>
+        <input type="text" @bind="NameToSearch" />
+    </div>
+    <div>
+        <input type="button" class="btn btn-outline-dark" value="Buscar" @onclick="SeachSaleman"/>
+        <input type="button" class="btn btn-outline-dark" value="Limpiar" @onclick="CleanValues" />
+    </div>
+    <p class="text-center" style="color:red"> @ErrorMessage</p>
+</div>
+
+<table class="table table-hover table-striped table-responsive-sm ">
+    <thead>
+        <tr>
+            <th> Referencia </th>
+            <th> Nombre </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in SaleMans)
+        {
+            <tr>
+                <td> @obj.SaleManId</td>
+                <td> @obj.Name</td>
+                <td> <a href="saleman/view/@obj.SaleManId.ToString()"> Ver </a></td>
+                <td> <a href="saleman/update/@obj.SaleManId.ToString()"> Modificar</a></td>
+                <td> <a style="color:red" href="saleman/delete/@obj.SaleManId.ToString()"> Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code{
+    List<SaleManEntity> SaleMans = new List<SaleManEntity>();
+
+    string IDToSearch = null;
+    string NameToSearch = null;
+    string ErrorMessage = null;
+    private void  SeachSaleman()
+    {
+        SaleMans =  B_SaleMan.SearchSaleman(IDToSearch, NameToSearch);
+        if (SaleMans.Count <= 0)
+        {
+            ErrorMessage = "No hay coincidencias";
+        }
+        else
+        {
+            ErrorMessage = "";
+        }
+    }
+    private async Task CleanValues()
+    {
+        IDToSearch =  null;
+        NameToSearch = null;
+    }
+
+}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Entities;
 using DataAccess;
 
@@ -10,15 +11,10 @@ namespace Business
 {
     public static class B_SaleMan
     {
-            public static SaleManEntity SaleManById(string id)
-        {
-            using (var DB = new RayosNoDataContext())
-            {
-               
-                return DB.Salemans.ToList().LastOrDefault(S=>S.SaleManId == id);
-            }
-        }
-        public  static List<SaleManEntity> ListOfSaleMans()
+
+        
+        #region CRUD
+        public static List<SaleManEntity> ListOfSaleMans()
         {
             using(var DB = new RayosNoDataContext())
             {
@@ -55,7 +51,56 @@ namespace Business
                 }
             }
 
-        }        
+        }
+        #endregion
+
+        #region Consults
+
+
+        /// <summary>
+        /// Search a list of salemans 
+        /// </summary>
+        /// <param name="_id">id of the Saleman</param>
+        /// <param name="_name">name of the saleman</param>
+        /// <returns>list of salemans</returns>
+        public static List<SaleManEntity> SearchSaleman(string _id=null, string _name =null)
+        {
+            List<SaleManEntity> salemans = new List<SaleManEntity>();
+            using (var DB = new RayosNoDataContext())
+            {
+                if( (_id != null) && (_name != null))
+                {
+                    var aux = DB.Salemans.FromSqlInterpolated($@"   SELECT * FROM SALEMANS
+                                                                WHERE	(SaleManId like concat('%',{_id},'%'))
+                                                                and		(Name LIKE CONCAT('%',{_name},'%'))");
+                    salemans = aux.ToList();
+                }
+                else if ((_id == null) && (_name != null))
+                {
+                    var aux = DB.Salemans.FromSqlInterpolated($@"   SELECT * FROM SALEMANS
+                                                                    WHERE	(Name LIKE CONCAT('%',{_name},'%')) ");
+                    salemans = aux.ToList();
+                }
+                else if ((_id != null) && (_name == null))
+                {
+                    var aux = DB.Salemans.FromSqlInterpolated($@"   SELECT * FROM SALEMANS
+                                                                WHERE	(SaleManId like concat('%',{_id},'%'))");
+                    salemans = aux.ToList();
+                }
+
+            }
+            return salemans;
+        }
+        public static SaleManEntity SaleManById(string id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+
+                return DB.Salemans.ToList().LastOrDefault(S => S.SaleManId == id);
+            }
+        }
+
+
         /// <summary>
         /// Verificate if exists dependences in others tables
         /// </summary>
@@ -76,5 +121,6 @@ namespace Business
                 }
             }
         }
+        #endregion
     }
 }
