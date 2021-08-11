@@ -76,8 +76,7 @@
     private void SaveMaintenance()
     {
         oMaintenance.MaintenanceId = Guid.NewGuid().ToString();
-        B_Maintenance.Create(oMaintenance);
-        B_Maintenance.UpdateDevice(oMaintenance.DeviceId);
+        B_Maintenance.Create(oMaintenance);        
         Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");
     }
 
