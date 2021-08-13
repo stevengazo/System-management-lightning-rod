@@ -4,7 +4,7 @@
 
 
 
-<div class="form-group">
+<div class="row justify-content-center">
     @for (int i = 1; i < NumberOfPages; i++)
     {
         var buttonNumber = i;
@@ -50,10 +50,10 @@
 
     /// Public Variables   
     [Parameter]
-    public string ClientId { get => ClientId ; set => ClientId= null; }
+    public string ClientId { get; set; }
 
     [Parameter]
-    public string SaleMandId { get => ClientId; set => SaleMandId = null; }
+    public string SaleMandId { get; set; }
 
     #endregion
 
@@ -62,7 +62,7 @@
     int SelectedPage = 1;
     /// Internal Variables 
     int NumberOfPages = 1;
-    int Quantity = 15;
+    int Quantity = 25;
     List<DeviceEntity> Devices = new List<DeviceEntity>();
 
 
@@ -72,7 +72,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        QuantityOfPages();
+        QuantityOfPages();   
         Search();
     }
 
@@ -81,11 +81,11 @@
         double aux = 0f;
         if ((ClientId != null) && (SaleMandId == null))
         {
-            aux = B_Device.CountDevicesByClient() / Quantity;
+            aux = B_Device.CountDevicesByClient(ClientId) / Quantity;
         }
         else if ((ClientId == null) && (SaleMandId != null))
         {
-            aux = B_Device.CountDevicesBySaleMan() / Quantity;
+            aux = B_Device.CountDevicesBySaleMan(SaleMandId) / Quantity;
         }
 
         if (aux > (aux + 0.01f))
