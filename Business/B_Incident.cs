@@ -49,7 +49,7 @@ namespace Business
         {
             using(var DB = new RayosNoDataContext())
             {
-                return  (from Incident in DB.Incidents select Incident).Where(I => I.DeviceId == _DeviceIdToSearch).ToList();
+                return  (from Incident in DB.Incidents select Incident).Where(I => I.DeviceId == _DeviceIdToSearch).Include(I=>I.Device).Include(I=>I.Device.Client).Include(I => I.Device.SaleMan).ToList();
             }
         }
 
