@@ -3,35 +3,12 @@
 
 
 
-<div>
-    <div >
-        <label>Serie</label>
-       <input type="text" @bind="DeviceIdToSearch" class=" form-control-sm" />
-        <label>Alias</label>
-        <input type="text" @bind="AliasToSearch" class="form-control-sm"/>
-        <label>Año</label>
-        <select class="form-control-sm" @bind="YearToSearch">
-            <option value="">Seleccione un año...</option>
-            @foreach (var item in Years)
-            {
-                <option value="@item">@item</option>
-            }
-        </select>
-        <input  class="btn-outline-light" type="button" value="Buscar" />
-    </div> 
-    <></>
-</div>
 
-
-<hr />
 <div class="form-group">
-    @if (id.Length == 0)
+    @for (int i = 1; i < NumberOfPages; i++)
     {
-        for (int i = 1; i < NumberPages; i++)
-        {
-            var buttonNumber = i;
-            <input type="button" class="btn btn-light" value="@buttonNumber" @onclick="@(e=> ChancePage(e,buttonNumber))" />
-        }
+        var buttonNumber = i;
+        <input type="button" class="btn btn-light" value="@buttonNumber" @onclick="@(e=> ChancePage(e,buttonNumber))" />
     }
 
 </div>
@@ -73,24 +50,19 @@
 
     /// Public Variables   
     [Parameter]
-    public string id { get; set; } = "";
+    public string ClientId { get => ClientId ; set => ClientId= null; }
+
+    [Parameter]
+    public string SaleMandId { get => ClientId; set => SaleMandId = null; }
 
     #endregion
 
     #region Internal Parametres
-    /// Seach Variables
-    public int YearToSearch { get; set; }
 
-    public string AliasToSearch { get; set; }
-
-    public string DeviceIdToSearch { get; set; }
-
-    public string ErrorMessage { get; set; }
-
+    int SelectedPage = 1;
     /// Internal Variables 
-    List<int> Years = B_Device.ListOfYears();
-    int NumberPages = 1;
-    List<DeviceEntity> tmpDevices = new List<DeviceEntity>();
+    int NumberOfPages = 1;
+    int Quantity = 15;
     List<DeviceEntity> Devices = new List<DeviceEntity>();
 
 
@@ -100,53 +72,52 @@
 
     protected override async Task OnInitializedAsync()
     {
-        NumberOfPages();
-
-        if (id == null)
-        {
-            tmpDevices = B_Device.GetPagingDevices(1, 40);
-            Devices = tmpDevices;
-        }
-        else
-        {
-            tmpDevices = B_Device.ListOfDevices(id);
-            Devices = tmpDevices;
-        }
+        QuantityOfPages();
+        Search();
     }
 
-    private void NumberOfPages()
+    private void QuantityOfPages()
     {
-        double aux = B_Device.CountDevices() / 40;
+        double aux = 0f;
+        if ((ClientId != null) && (SaleMandId == null))
+        {
+            aux = B_Device.CountDevicesByClient() / Quantity;
+        }
+        else if ((ClientId == null) && (SaleMandId != null))
+        {
+            aux = B_Device.CountDevicesBySaleMan() / Quantity;
+        }
+
         if (aux > (aux + 0.01f))
         {
-            NumberPages = (int)Math.Ceiling(aux);
+            NumberOfPages = (int)Math.Ceiling(aux);
         }
         else
         {
-            NumberPages = (int)Math.Ceiling(aux);
-            NumberPages += 1;
+            NumberOfPages = (int)Math.Ceiling(aux);
+            NumberOfPages += 1;
         }
     }
+
 
     private void ChancePage(MouseEventArgs e, int buttonNumber)
     {
-        var aux = B_Device.GetPagingDevices(buttonNumber, 40);
-        Devices = aux;
+        SelectedPage = buttonNumber;
+        Search();
     }
 
-    private void SearchValue(ChangeEventArgs e)
-    {
-        tmpDevices = B_Device.GetSearchOfDevice(e.Value.ToString());
-        var aux = e.Value.ToString();
-        if (aux.Equals(string.Empty) || aux.Equals("Buscar Serie"))
-        {
-            Devices = tmpDevices;
-        }
-        else
-        {
-            Devices = tmpDevices;
-        }
 
+    private void Search()
+    {
+        if ((ClientId != null) && (SaleMandId == null))
+        {
+
+            Devices = B_Device.GetDevicesByClient(ClientId, Quantity, SelectedPage);
+        }
+        else if ((ClientId == null) && (SaleMandId != null))
+        {
+            Devices = B_Device.GetDevicesBySaleman(SaleMandId, Quantity, SelectedPage);
+        }
 
     }
 

@@ -128,6 +128,74 @@ namespace Business
                 return Devices;
             }
         }
+
+
+        public static int CountDevicesBySaleMan(string Salemanid = null)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                if (Salemanid != null)
+                {
+                    return (from device in DB.Devices select device).Where(D => D.SaleManId == Salemanid).Count();
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        public static int CountDevicesByClient( string ClientId= null)
+        {
+            using( var DB = new RayosNoDataContext())
+            {
+                if (ClientId != null)
+                {
+                    return  (from device in DB.Devices select device).Where(D => D.ClientId == ClientId).Count();
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        /// <summary>
+        /// Search the devices of the saleman and return the devices 
+        /// </summary>
+        /// <param name="_SaleMan">id to Search</param>
+        /// <param name="Quantity">Quantity of devices to return</param>
+        /// <param name="Page">Number of page</param>
+        /// <returns></returns>
+        public static List<DeviceEntity> GetDevicesBySaleman(string _SaleMan = null, int Quantity = 10, int Page = 1)
+        {
+            List<DeviceEntity> Devices = new List<DeviceEntity>();
+            int skipping = 0;
+            if (Page >= 2)
+            {
+                skipping = Quantity * Page;
+            }
+            using (var DB = new RayosNoDataContext())
+            {
+                var aux = (from Device in DB.Devices select Device).Where(D => D.SaleManId == _SaleMan).Skip(skipping).Take(Quantity).Include(C => C.Client).Include(S => S.SaleMan);
+                Devices = aux.ToList();
+            }
+            return Devices;
+        }
+
+        public static List<DeviceEntity> GetDevicesByClient(string _ClientId= null, int Quantity=10, int Page=1 )
+        {
+            List<DeviceEntity> Devices = new List<DeviceEntity>();
+            int skipping = 0;
+            if(Page >= 2)
+            {
+                skipping = Quantity * Page;
+            }
+            using( var DB = new RayosNoDataContext())
+            {
+                var aux = (from Device in DB.Devices select Device).Where(D => D.ClientId == _ClientId).Skip(skipping).Take(Quantity).Include(C => C.Client).Include(S => S.SaleMan);
+                Devices = aux.ToList();
+            }
+            return  Devices;
+        }
         /// <summary>
         /// Get the countries registered in the Database
         /// </summary>
