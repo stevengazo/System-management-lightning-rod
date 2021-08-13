@@ -27,7 +27,7 @@
         var BandDependence = B_Client.HaveDependence(oClient);
         if (!BandDependence)
         {
-            B_Client.RemoteClient(oClient);
+            B_Client.Delete(oClient);
             Nav.NavigateTo("client/list");
         }
         else

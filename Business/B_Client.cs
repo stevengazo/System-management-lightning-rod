@@ -12,8 +12,62 @@ namespace Business
 {
     public static class B_Client
     {
-        
-        
+        #region CRUD
+        /// <summary>
+        /// Create a new Client in the table Clients
+        /// </summary>
+        /// <param name="oClient">Objet Type ClientEntity</param>
+        public static void CreateClient(ClientEntity oClient)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                DB.Clients.Add(oClient);
+                DB.SaveChanges();
+            }
+        }
+        /// <summary>
+        /// Return the list of Clients in the database
+        /// </summary>
+        /// <returns>return all the devices in the database</returns>
+        public static List<ClientEntity> ListOfClients()
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                IEnumerable<ClientEntity> aux = DB.Clients.ToList().OrderBy(C => C.Name);
+                return aux.ToList();
+            }
+        }
+        /// <summary>
+        /// Consult if the Client to delete have dependences and Delete the Object
+        /// </summary>
+        /// <param name="oClient">Client to delete</param>
+        public static void Delete(ClientEntity oClient)
+        {
+            var BandDependence = HaveDependence(oClient);
+            if (!BandDependence)
+            {
+                using (var DB = new RayosNoDataContext())
+                {
+                    DB.Remove(oClient);
+                    DB.SaveChanges();
+                }
+            }
+        }
+        /// <summary>
+        /// Update an existant client in the Table Clients
+        /// </summary>
+        /// <param name="oClient">Object to Update</param>
+        public static void UpdateClient(ClientEntity oClient)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                DB.Clients.Update(oClient);
+                DB.SaveChanges();
+            }
+        }
+        #endregion
+        #region ConsultsAndSearch
+
         /// <summary>
         /// Search clients in the database
         /// </summary>
@@ -47,6 +101,11 @@ namespace Business
                 return Clients;
             }
         }
+        /// <summary>
+        /// Search clieents by name in the database
+        /// </summary>
+        /// <param name="Name">name to search </param>
+        /// <returns>list of results</returns>
         public static List<ClientEntity> SearchClientsByName(string Name = "")
         {
             using(var DB= new RayosNoDataContext())
@@ -56,8 +115,11 @@ namespace Business
                 return aux;
             }
         }
-
-
+        /// <summary>
+        /// Search a client by the id in the database
+        /// </summary>
+        /// <param name="id">Id to search</param>
+        /// <returns>Objetc</returns>
         public static ClientEntity ClientById(string id)
         {
             using (var DB = new RayosNoDataContext())
@@ -66,61 +128,6 @@ namespace Business
                 return DB.Clients.ToList().LastOrDefault(C=>C.Id == id);
             }
         }
-        /// <summary>
-        /// Return the list of Clients in the DB
-        /// </summary>
-        /// <returns></returns>
-        public static List<ClientEntity> ListOfClients()
-        {
-            using (var DB = new RayosNoDataContext())
-            {
-                IEnumerable<ClientEntity> aux = DB.Clients.ToList().OrderBy(C=>C.Name);
-                return aux.ToList();
-            }
-        }
-        /// <summary>
-        /// Create a new Client in the table Clients
-        /// </summary>
-        /// <param name="oClient">Objet Type ClientEntity</param>
-        public static void  CreateClient(ClientEntity oClient)
-        {
-            using(var DB =  new RayosNoDataContext())
-            {
-                DB.Clients.Add(oClient);
-                DB.SaveChanges();
-            }
-        }
-
-        /// <summary>
-        /// Update an existant client in the Table Clients
-        /// </summary>
-        /// <param name="oClient">Object to Update</param>
-        public static void UpdateClient(ClientEntity oClient)
-        {
-            using (var DB = new RayosNoDataContext())
-            {
-                DB.Clients.Update(oClient);
-                DB.SaveChanges();
-            }
-        }
-
-        /// <summary>
-        /// Consult if the Client to delete have dependences and Delete the Object
-        /// </summary>
-        /// <param name="oClient">Client to delete</param>
-        public  static    void RemoteClient(ClientEntity oClient)
-        {
-            var BandDependence = HaveDependence(oClient);
-            if( !BandDependence)
-            {
-                using (var DB = new RayosNoDataContext())
-                {
-                    DB.Remove(oClient);
-                    DB.SaveChanges();
-                }
-            }
-        }
-
         /// <summary>
         /// Consult if the Client have Dependences in others Tables
         /// </summary>
@@ -141,5 +148,7 @@ namespace Business
                 }
             }
         }
+        #endregion
     }
+
 }

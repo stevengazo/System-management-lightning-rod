@@ -34,12 +34,20 @@
 
 
 @code {
+    [Parameter]
+    public string _DeviceId { get; set; }
     List<IncidentEntity> Incidents = new List<IncidentEntity>();
 
     protected override async Task OnInitializedAsync()
     {
-        Incidents = B_Incident.GetListOfIncidents();
-
+        if(_DeviceId != null)
+        {
+            Incidents = B_Incident.GetListOfIncidentsByDevice(_DeviceId);
+        }
+        else
+        {
+            Incidents = B_Incident.GetListOfIncidents();
+        }
     }
 
 }
