@@ -12,7 +12,7 @@
             <option value="0">Seleccione...</option>
             @foreach (var obj in Devices)
             {
-                <option value="@obj.DeviceId"> @obj.DeviceId</option>
+                <option value="@obj.Key">@obj.Value  @obj.Key</option>
             }
         </InputSelect>
     </div>
@@ -46,20 +46,20 @@
     [Parameter]
     public string WarrantyId { get; set; }
     WarrantyEntity oWarranty = new WarrantyEntity();
-    List<DeviceEntity> Devices = new List<DeviceEntity>();
+    Dictionary<string, string> Devices = new Dictionary<string, string>();
     string[] EstatusType = { "En tramite", "Recibido", "Con Problemas" };
 
     protected override async Task OnInitializedAsync()
     {
         oWarranty = B_Warranty.WarrantyById(WarrantyId);
-        Devices = B_Device.ListOfDevices();
+        Devices = B_Device.GetDictonaryOfDevicesWithClient();
     }
 
     private void UpdateWarranty()
     {
 
         B_Warranty.Update(oWarranty);
-        Nav.NavigateTo("warranty/list");
+        Nav.NavigateTo($"warranty/view/{oWarranty.Id}");
     }
 
 }
