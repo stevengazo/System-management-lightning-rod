@@ -9,7 +9,7 @@
             <option value="">Seleccione un equipo...</option>
             @foreach (var item in oDevices)
             {
-                <option value="@item.DeviceId"> @item.Client.Name - @item.DeviceId</option>
+                <option value="@item.Key"> @item.Value - @item.Key</option>
             }
         </InputSelect>
     </div>
@@ -19,7 +19,7 @@
             <option value="">Seleccione un equipo...</option>
             @foreach (var item in oDevices)
             {
-                <option value="@item.DeviceId"> @item.Client.Name - @item.DeviceId</option>
+                <option value="@item.Key"> @item.Value - @item.Key</option>
             }
         </InputSelect>
     </div>
@@ -35,11 +35,11 @@
 @code {
     ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
 
-    List<DeviceEntity> oDevices = new List<DeviceEntity>();
+    Dictionary<string, string> oDevices = new Dictionary<string, string>();
 
     protected override async Task OnInitializedAsync()
     {
-        oDevices = B_Device.ListOfDevices().OrderBy(D => D.ClientId).ToList();
+        oDevices = B_Device.GetDictonaryOfDevicesWithClient();
     }
     protected void SaveReplacement()
     {

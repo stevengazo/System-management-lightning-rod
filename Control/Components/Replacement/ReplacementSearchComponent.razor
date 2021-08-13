@@ -6,10 +6,11 @@
 <div>
     <div>
         <label>Serie</label>
-        <input type="text" />
+        <input type="text" @bind="IDToSearch" />
     </div>
-    <input type="button" value="Buscar" class="btn btn-outline-dark" />
-    <input type="button" value="Limpiar" class="btn btn-outline-dark" />
+    <input type="button" value="Buscar" class="btn btn-outline-dark" @onclick="Search" />
+    <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick="CleanValues" />
+    <p class="text-center" style="color:red"> @ErrorMessage</p>
 </div>
 
 <table class="table table-hover table-striped table-responsive-sm ">
@@ -38,9 +39,31 @@
     </tbody>
 </table>
 
+
 @code{
     List<ReplacementDeviceEntity> Replacements = new List<ReplacementDeviceEntity>();
+    string IDToSearch = null;
+    string ErrorMessage = null;
 
+    private void CleanValues()
+    {
+        IDToSearch = null;
+    }
+
+    private void Search()
+    {
+        if (IDToSearch != null)
+        {
+            Replacements = B_Replacement.ConsultReplacements(IDToSearch.ToString());
+            ErrorMessage = "";
+        }
+        else
+        {
+            ErrorMessage = "No hay coincidencias en la base de datos";
+        }
+
+    }
 
 }
 
+ 

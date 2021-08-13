@@ -11,7 +11,11 @@ using DataAccess;
 namespace Business
 {
     public  static class B_Replacement
-    {   /// <summary>
+    {
+
+        #region CRUD
+
+        /// <summary>
         /// Get the list of replacements registered
         /// </summary>
         /// <returns>Return a list of replacements</returns>
@@ -22,6 +26,7 @@ namespace Business
                 return DB.Replacements.ToList();
             }
         }
+
         /// <summary>
         /// save a new replacement
         /// </summary>
@@ -35,6 +40,7 @@ namespace Business
                 DB.SaveChanges();
             }
         }
+
         /// <summary>
         /// Select and update an existent row in the table replacement
         /// </summary>
@@ -47,6 +53,7 @@ namespace Business
                 DB.SaveChanges();
             }
         }
+
         /// <summary>
         /// Select and delete an existant row in the table replacement
         /// </summary>
@@ -59,6 +66,10 @@ namespace Business
                 DB.SaveChanges();
             }
         }
+        #endregion
+
+        #region Consult
+
         public static ReplacementDeviceEntity GetReplacementById(string ReplacementId = "")
         {
             using(var DB= new RayosNoDataContext())
@@ -69,5 +80,25 @@ namespace Business
                 return oReplacement;
             }
         }
+
+        /// <summary>
+        /// Search the ids in the table replacements  and return the results
+        /// </summary>
+        /// <param name="IdReplacement">Id To Search</param>
+        /// <returns>List of Replacements</returns>
+        public static List<ReplacementDeviceEntity> ConsultReplacements(string IdReplacement = "")
+        {
+            List<ReplacementDeviceEntity> Replacements = new List<ReplacementDeviceEntity>();
+            using( var DB = new RayosNoDataContext())
+            {
+                Replacements = DB.Replacements.FromSqlInterpolated($@"   SELECT * FROM Replacements
+                                                                    WHERE   (NewSerieDevice like CONCAT('%',{IdReplacement.ToString()},'%')) 
+                                                                    or     ( DeviceId like CONCAT('%',{IdReplacement.ToString()},'%'))").ToList();
+            }
+
+            return Replacements;
+        }
+
+        #endregion
     }
 }
