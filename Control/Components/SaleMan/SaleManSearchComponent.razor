@@ -2,18 +2,21 @@
 @using Business;
 
 
-
-
-<div>
-    <div>
-        <label>Id de Referencia</label>
-        <input type="text" @bind="IDToSearch" />
-        <label>Nombre</label>
-        <input type="text" @bind="NameToSearch" />
+ 
+<div class="form-group row">
+    <div class="col">
+        <input class="rounded form-control" type="text" @bind="IDToSearch" placeholder="Id de Referencia"/>
     </div>
-    <div>
-        <input type="button" class="btn btn-outline-dark" value="Buscar" @onclick="SeachSaleman"/>
-        <input type="button" class="btn btn-outline-dark" value="Limpiar" @onclick="CleanValues" />
+    <div class="col">
+        <input class="rounded form-control" type="text" @bind="NameToSearch" placeholder="Nombre" />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <input type="button" class="btn btn-outline-dark form-control" value="Buscar" @onclick="SeachSaleman" />
+    </div>
+    <div class="col">
+        <input type="button" class="btn btn-outline-dark form-control" value="Limpiar" @onclick="CleanValues" />
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
 </div>

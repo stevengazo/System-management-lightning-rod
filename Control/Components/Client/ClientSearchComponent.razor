@@ -3,19 +3,24 @@
 
 
 
-<div class="align-center">
-    <div>
-        <label>ID de refencia</label>
-        <input type="text" @bind="ClientIdToSearch" />
-        <label>Nombre</label>
-        <input type="text" @bind="NameToSearch" />
+<div class="align-center form-group row">
+    <div class="col">
+        <input class="rounded form-control" type="text" @bind="ClientIdToSearch" placeholder="Id de Referencia"/>
     </div>
-    <div>
-        <input type="button" value="Buscar" class="btn btn-outline-dark"  @onclick="SearchClients"/>
-        <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick="CleanValues" />
+    <div class="col">
+        <input class="rounded form-control" type="text" @bind="NameToSearch" placeholder="Nombre de Cliente" />
     </div>
-    <p class="text-center" style="color:red"> @ErrorMessage</p>
 </div>
+<div class="align-center form-group row">
+    <div class="col">
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="SearchClients" />
+    </div>
+    <div class="col">
+        <input type="button" value="Limpiar" class="btn btn-outline-dark form-control " @onclick="CleanValues" />
+    </div>
+</div>
+<p class="text-center" style="color:red"> @ErrorMessage</p>
+
 
 
 <table class="table table-responsive-sm table-bordered table-hover table-light">

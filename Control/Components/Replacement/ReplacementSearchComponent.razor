@@ -3,15 +3,22 @@
 
 
 
-<div>
-    <div>
-        <label>Serie</label>
-        <input type="text" @bind="IDToSearch" />
+<div class="form-group row">
+    <div class="col">
+        <input class="form-control rounded" type="text" @bind="IDToSearch" placeholder="Numero de Serie" />
     </div>
-    <input type="button" value="Buscar" class="btn btn-outline-dark" @onclick="Search" />
-    <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick="CleanValues" />
-    <p class="text-center" style="color:red"> @ErrorMessage</p>
+    <div class="col">
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control"  @onclick="Search" />    
+    </div>
+    <div class="col">
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="Search" />
+    </div>
+    <div class="col">
+        <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanValues" />
+    </div>
 </div>
+
+<p class="text-center" style="color:red"> @ErrorMessage</p>
 
 <table class="table table-hover table-striped table-responsive-sm ">
     <thead>

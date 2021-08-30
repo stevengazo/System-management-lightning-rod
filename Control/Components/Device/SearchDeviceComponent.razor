@@ -4,32 +4,44 @@
 
 
 <div>
-    <div>
-        <label>Serie</label>
-        <input type="text" @bind="DeviceIdToSearch" class=" form-control-sm" />
-        <label>Alias</label>
-        <input type="text" @bind="AliasToSearch" class="form-control-sm" />
-        <label>Año</label>
-        <select class="form-control-sm" @bind="YearToSearch">
-            <option value="">Seleccione un año</option>
-            @foreach (var item in Years)
-            {
-                <option value="@item">@item</option>
-            }
-        </select>
-        <label>Pais</label>
-        <select class="form-control-sm" @bind="CountryToSearch">
-            <option value="">Seleccione un pais</option>
-            @foreach (var item in Countries)
-            {
-                <option value="@item">@item</option>
-            }
-        </select>
+    <div class="form-group row">
+        <div class="col">
+            <input type="text" @bind="DeviceIdToSearch" class="rounded form-control" placeholder="Serie" />
+        </div>
+        <div class="col">
+            <input type="text" @bind="AliasToSearch" class="rounded form-control" placeholder="Alias de Equipo" />
+        </div>
     </div>
-    <div>
-        <input class="btn-outline-dark" type="button" value="Buscar"  @onclick="Search" />
-        <input class="btn-outline-dark" type="button" value="Limpiar" @onclick="Clean" />
-        <input class="btn-outline-dark" type="button" value="Exportar"  />
+    <div class="form-group row">
+        <div class="col-6">
+            <select class="rounded form-control" @bind="YearToSearch">
+                <option value="">Año...</option>
+                @foreach (var item in Years)
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+        </div>
+        <div class="col-6">
+            <select class="rounded form-control" @bind="CountryToSearch">
+                <option value="">Pais...</option>
+                @foreach (var item in Countries)
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Buscar" @onclick="Search" />
+        </div>
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
+        </div>
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Exportar" />
+        </div>
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
 </div>

@@ -1,42 +1,51 @@
-﻿@using Entities;
+﻿
+@using Entities;
 @using Business;
 
 
 
 <div style=" margin-top: 22px; ">
-    <div>
-        <div>
-            <label class="col-form-label-sm">Serie</label>
-            <input type="text" class=" form-control-sm" @bind="@DeviceToSearch" />
-            <label class="col-form-label-sm">Mes</label>
-            <select class="form-control-sm" @bind="MonthToSearch">
-                <option value="">Seleccione...</option>
+    <div class="form-group row">
+        <div class="col">
+            <input type="text" class="rounded form-control" @bind="@DeviceToSearch" placeholder="Id del Dispositivo" />
+        </div>
+        <div class="col">
+            <select class="rounded form-control" @bind="MonthToSearch">
+                <option value="">Mes</option>
                 @foreach (var month in Months)
                 {
                     <option value="@month.Key">@month.Value</option>
                 }
             </select>
-            <label class="col-form-label-sm">Año</label>
-            <select class="form-control-sm" @bind="YearToSearch">
-                <option value="">Seleccione...</option>
+        </div>
+        <div class="col">
+            <select class="rounded form-control" @bind="YearToSearch" >
+                <option value="">Año</option>
                 @foreach (var item in Years)
                 {
                     <option value="@item">@item</option>
                 }
             </select>
-            <label class="col-form-label-sm">Tecnico</label>
-            <select class="form-control-sm" @bind="NameToSearch">
-                <option value="">Seleccione...</option>
+        </div>
+        <div class="col">
+            <select class="rounded form-control" @bind="NameToSearch">
+                <option value="">Técnico</option>
                 @foreach (var item in Technicians)
                 {
                     <option value="@item">@item</option>
                 }
             </select>
         </div>
-        <div>
-            <input type="button" value="Buscar" class="btn btn-outline-dark" @onclick="Search" />
-            <input type="button" value="Limpiar" class="btn btn-outline-dark" @onclick="CleanSpaces" />
-            <input type="button" value="Generar" class="btn btn-outline-dark" />
+    </div>    
+    <div class="row form-group">
+        <div class="col-3">
+            <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="Search" />
+        </div>
+        <div class="col-3">
+            <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanSpaces" />
+        </div>
+        <div class="col-3">
+            <input type="button" value="Generar" class="btn btn-outline-dark form-control" />
         </div>
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
