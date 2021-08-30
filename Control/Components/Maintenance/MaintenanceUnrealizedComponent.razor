@@ -2,17 +2,29 @@
 @using Business;
 
 
+<div class="form-group row">
+    <div class="col">
+        <label class="col-form-label"> Año a Seleccionar:</label>
+        <select class="rounded form-control" @onchange="Year">
+            <option value="0">Selecione un valor...</option>
+            @foreach (var item in listYear)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+    </div>
+    <div class="col"> 
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" />
+    </div>
+    <div class="col">
+        <input type="button" value="Generar" class="btn btn-outline-dark form-control" />
+    </div>
+</div>
+
 <div class="align-content-center">
-   <label class="col-form-label"> Año a Seleccionar:</label>
-    <select class="form-control-sm" @onchange="Year">
-        <option value="0">Selecione un valor...</option>
-        @foreach (var item in listYear)
-        {
-            <option value="@item">@item</option>
-        }
-    </select>
-    <input type="button" value="Buscar" class="btn btn-outline-dark" /> 
-    <input type="button" value="Generar" class="btn btn-outline-dark"/>
+   
+    
+    
  </div>
 
 <div>
