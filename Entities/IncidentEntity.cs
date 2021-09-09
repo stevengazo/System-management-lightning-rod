@@ -31,27 +31,23 @@ namespace Entities
         /// <summary>
         /// Description of the incident made it by the client
         /// </summary>
-        [MaxLength(800)]
+        [MaxLength(450)]
         public string ReportDescripcion { get; set; }
         /// <summary>
         /// Description of the incident and information of the status of the system
         /// </summary>
-        [MaxLength(800)]
+        [MaxLength(450)]
         public string RevisionInformation { get; set; }
         /// <summary>
         /// Information about the status of the device
         /// </summary>
-        [MaxLength(800)]
+        [MaxLength(450)]
         public string DDCEStatus { get; set; }
         /// <summary>
         /// Recomendations maded by the Technician in site
         /// </summary>
-        [MaxLength(800)]       
-        public string Recomentations { get; set; }
-        /// <summary>
-        /// Person of Mecsa who assitance to the place 
-        /// </summary>
-        public string TechnicianName { get; set; }
+        [MaxLength(450)]       
+        public string Recomentations { get; set; }        
         /// <summary>
         /// Person who made the report
         /// </summary>
@@ -61,5 +57,8 @@ namespace Entities
         //Relation With Device 
         public string DeviceId { get; set; }
         public DeviceEntity Device { get; set; }
+        //Relation with Technician
+        public TechnicianEntity Technician { get; set; }
+        public int TechnicianId { get; set; }
     }
 }

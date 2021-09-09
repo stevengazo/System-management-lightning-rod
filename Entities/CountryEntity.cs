@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace Entities
 {
-    public class ClientEntity
+  public   class CountryEntity
     {
-        [Required]
         [Key]
-        public string Id { get; set; }
-        public string Name { get; set; }
+        [Required]
+        public int CountryId { get; set; }
 
-        public int SectorId { get; set; }
-        public SectorEntity Sector { get; set; }
+        public string CountryName { get; set; }
+
 
         //Relation with Device
         public ICollection<DeviceEntity> Devices { get; set; }

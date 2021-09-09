@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Entities;
+using Microsoft.Spatial;
 using System.IO;
 
 namespace DataAccess
@@ -25,42 +26,117 @@ namespace DataAccess
         #region Public Attributes
         public DbSet<DeviceEntity> Devices { get; set; }
         public DbSet<ClientEntity> Clients { get; set; }
-        public DbSet<MaintenanceEntity> Maintenances { get; set; } 
+        public DbSet<MaintenanceEntity> Maintenances { get; set; }
         public DbSet<ReplacementDeviceEntity> Replacements { get; set; }
         public DbSet<SaleManEntity> Salemans { get; set; }
         public DbSet<WarrantyEntity> Warranties { get; set; }
         public DbSet<IncidentEntity> Incidents { get; set; }
-        #endregion
 
-        #region Creating Model and seeding of data
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        public DbSet<TypeDeviceEntity> TypesDevices { get; set; }
+        public DbSet<ModelDeviceEntity> ModelDevices { get; set; }
+        public DbSet<StatusEntity> Status {get;set;}
+        public DbSet<CountryEntity>  Countries{get;set;}
+        public DbSet<SectorEntity>  Sectors {get;set;}
+        public DbSet<TechnicianEntity> Technicians {get;set;}
+    #endregion
+
+    #region Creating Model and seeding of data
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             GetConnectionString();
             if (!options.IsConfigured)
             {
                 options.UseSqlServer(MyConnectionString);
             }
-
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+        protected void GenerateSeedOfData(ModelBuilder model)
         {
-            ClientEntity oClient = new ClientEntity { Id = Guid.NewGuid().ToString(), Name = "Prueba" };
+            #region COUNTRIES
+            CountryEntity oCountry = new CountryEntity() { CountryId = 506, CountryName = "Costa Rica" };
+            model.Entity<CountryEntity>().HasData(oCountry);
+            #endregion
+
+
+            #region STATUS
+            StatusEntity oStatus = new StatusEntity() { StatusId = 1, StatusName = "Garantia Emitida" };
+            model.Entity<StatusEntity>().HasData(oStatus);
+            #endregion
+
+
+            #region SALEMAN
             SaleManEntity oSaleMan = new SaleManEntity { SaleManId = Guid.NewGuid().ToString(), Name = "Prueba" };
-            DeviceEntity oDevice = new DeviceEntity { DeviceId = Guid.NewGuid().ToString(), Alias = "Prueba", ClientId = oClient.Id, SaleManId = oSaleMan.SaleManId };
-            MaintenanceEntity oMaintenance = new MaintenanceEntity { MaintenanceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
+            model.Entity<SaleManEntity>().HasData(oSaleMan);
+            #endregion
+
+            #region SECTORS
+            SectorEntity oPSector = new SectorEntity() { SectorId = 1, SectorName = "Privado" };
+            SectorEntity oPuSector = new SectorEntity() { SectorId = 2, SectorName = "Publico" };
+            model.Entity<SaleManEntity>().HasData(oPSector, oPuSector);
+            #endregion
+
+            #region CLIENT
+            ClientEntity oClient = new ClientEntity { Id = Guid.NewGuid().ToString(), Name = "Prueba", SectorId = oPSector.SectorId };
+            model.Entity<ClientEntity>().HasData(oClient);
+            #endregion
+
+            #region TYPES
+            TypeDeviceEntity oVtype = new TypeDeviceEntity() { TypeDeviceId = 01, TypeDeviceName = "Venta" };
+            TypeDeviceEntity oAtype = new TypeDeviceEntity() { TypeDeviceId = 01, TypeDeviceName = "Alquiler" };
+            TypeDeviceEntity oLtype = new TypeDeviceEntity() { TypeDeviceId = 02, TypeDeviceName = "Leasing" };
+            TypeDeviceEntity oPtype = new TypeDeviceEntity() { TypeDeviceId = 03, TypeDeviceName = "Prueba" };
+            model.Entity<TypeDeviceEntity>().HasData(oVtype,oAtype,oLtype,oPtype);
+            #endregion
+
+            #region MODELS
+            ModelDeviceEntity oModel = new ModelDeviceEntity() { ModelDeviceId = 1, ModelDeviceName = "DDCE-100" };
+            model.Entity<ModelDeviceEntity>().HasData(oModel);
+            #endregion
+
+            #region Technician
+            TechnicianEntity otech = new TechnicianEntity() { TechnicianId = 1, TechnicianName = "Sample" };
+            model.Entity<TechnicianEntity>().HasData(otech);
+            #endregion
+
+            #region PROJECT
+            DeviceEntity oDevice = new DeviceEntity
+            {
+                DeviceId = Guid.NewGuid().ToString(),
+                Alias = "Prueba",
+                ClientId = oClient.Id,
+                Ubication = GeographyPoint.Create(0, 0),
+                SaleManId = oSaleMan.SaleManId,
+                CountryId = oCountry.CountryId,
+                ModelDeviceId = oModel.ModelDeviceId,
+                TypeDeviceId = oVtype.TypeDeviceId
+            };
+            model.Entity<DeviceEntity>().HasData(oDevice);
+            #endregion
+
+            #region MAINTENANCE
+            MaintenanceEntity oMaintenance = new MaintenanceEntity { MaintenanceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId, TechnicianId=otech.TechnicianId };
+            #endregion
+
+            #region INCIDENT
+            IncidentEntity oIncident = new IncidentEntity { IncidentId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId ,TechnicianId = otech.TechnicianId};
+            #endregion
+
+            #region WARRANTY
+            WarrantyEntity oWarranty = new WarrantyEntity { Id = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId, StatusId=oStatus.StatusId  };
+            model.Entity<WarrantyEntity>().HasData(oWarranty);
+            #endregion
+
+            #region REPLACEMENT
             ReplacementDeviceEntity oReplace = new ReplacementDeviceEntity { ReplacementDeviceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
-            WarrantyEntity oWarranty = new WarrantyEntity { Id = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId, Estatus="Recibido" };
-            IncidentEntity oIncident = new IncidentEntity { IncidentId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
-            
+            model.Entity<ReplacementDeviceEntity>().HasData(oReplace);
+            #endregion
+
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {           
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ClientEntity>().HasData(oClient);
-            modelBuilder.Entity<SaleManEntity>().HasData(oSaleMan);
-            modelBuilder.Entity<DeviceEntity>().HasData(oDevice);
-            modelBuilder.Entity<MaintenanceEntity>().HasData(oMaintenance);
-            modelBuilder.Entity<ReplacementDeviceEntity>().HasData(oReplace);
-            modelBuilder.Entity<WarrantyEntity>().HasData(oWarranty);
-            modelBuilder.Entity<IncidentEntity>().HasData(oIncident); 
+            GenerateSeedOfData(modelBuilder);
         }
         #endregion
 

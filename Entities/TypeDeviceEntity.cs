@@ -7,18 +7,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities
 {
-    public class ClientEntity
+    public class TypeDeviceEntity
     {
-        [Required]
         [Key]
-        public string Id { get; set; }
-        public string Name { get; set; }
+        [Required]
+        public int TypeDeviceId { get; set; }
+        [MaxLength(30)]
+        public string TypeDeviceName { get; set; }
 
-        public int SectorId { get; set; }
-        public SectorEntity Sector { get; set; }
-
-        //Relation with Device
+        /// Relation with Device  
         public ICollection<DeviceEntity> Devices { get; set; }
-
     }
 }

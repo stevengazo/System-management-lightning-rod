@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.Spatial;
 namespace Entities
 {
     public class DeviceEntity
@@ -28,10 +28,10 @@ namespace Entities
         /// Latitud of the device
         /// </summary>
         public float Latitude { get; set; }
-        /// <summary>
-        /// Country were the device is installed
-        /// </summary>
-        public string Country { get; set; }
+
+        public GeographyPoint Ubication { get; set; }
+
+        
         /// <summary>
         /// Date of the installation of the device
         /// </summary>
@@ -40,18 +40,19 @@ namespace Entities
         /// Limit date of every year to made the device
         /// </summary>
         public DateTime RecomendedDateOfMaintenance { get; set; }
-        /// <summary>
-        /// type of the device (Sale, rent, leasing, proof)
-        /// </summary>
-        public string Type { get; set; }
-        /// <summary>
-        /// Model of the device
-        /// </summary>
-        public string Model { get; set; }
+
         /// <summary>
         /// Especificate if the device is operative 
         /// </summary>
         public bool IsActive { get; set; }
+
+        // Relation with Model
+        public int ModelDeviceId { get; set; }
+        public ModelDeviceEntity Model { get; set; }
+
+        // Relation with Country
+        public int CountryId { get; set; }
+        public CountryEntity Country { get; set; }
 
         // Relation with Client
         public string ClientId { get; set; }
@@ -60,6 +61,9 @@ namespace Entities
         // Relation with SaleMan
         public string SaleManId { get; set; }
         public SaleManEntity SaleMan { get; set; }
+        /// Relation with TypeDevice
+        public int TypeDeviceId { get; set; }
+        public TypeDeviceEntity TypeDevice { get; set; }
 
         //Relation with Maintenance
         public ICollection<MaintenanceEntity> Maintenances { get; set; }

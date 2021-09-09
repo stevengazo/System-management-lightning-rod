@@ -21,6 +21,11 @@ namespace Entities
         // Relation with Device
         public string DeviceId { get; set; }
         public DeviceEntity Device { get; set; }
+        // Relation with Status
+        public StatusEntity Status { get; set; }
+
+        public int StatusId { get; set; }
+
 
     }
 }
