@@ -66,14 +66,16 @@ namespace DataAccess
 
 
             #region SALEMAN
-            SaleManEntity oSaleMan = new SaleManEntity { SaleManId = Guid.NewGuid().ToString(), Name = "Prueba" };
+            SaleManEntity oSaleMan = new SaleManEntity();
+            oSaleMan.SaleManId = Guid.NewGuid().ToString();
+            oSaleMan.Name = "sample";
             model.Entity<SaleManEntity>().HasData(oSaleMan);
             #endregion
 
             #region SECTORS
             SectorEntity oPSector = new SectorEntity() { SectorId = 1, SectorName = "Privado" };
-            SectorEntity oPuSector = new SectorEntity() { SectorId = 2, SectorName = "Publico" };
-            model.Entity<SaleManEntity>().HasData(oPSector, oPuSector);
+            SectorEntity oPuSector= new SectorEntity() { SectorId = 2, SectorName = "Publico" };
+            model.Entity<SectorEntity>().HasData(oPSector, oPuSector);
             #endregion
 
             #region CLIENT
@@ -83,7 +85,7 @@ namespace DataAccess
 
             #region TYPES
             TypeDeviceEntity oVtype = new TypeDeviceEntity() { TypeDeviceId = 01, TypeDeviceName = "Venta" };
-            TypeDeviceEntity oAtype = new TypeDeviceEntity() { TypeDeviceId = 01, TypeDeviceName = "Alquiler" };
+            TypeDeviceEntity oAtype = new TypeDeviceEntity() { TypeDeviceId = 04, TypeDeviceName = "Alquiler" };
             TypeDeviceEntity oLtype = new TypeDeviceEntity() { TypeDeviceId = 02, TypeDeviceName = "Leasing" };
             TypeDeviceEntity oPtype = new TypeDeviceEntity() { TypeDeviceId = 03, TypeDeviceName = "Prueba" };
             model.Entity<TypeDeviceEntity>().HasData(oVtype,oAtype,oLtype,oPtype);
@@ -105,7 +107,6 @@ namespace DataAccess
                 DeviceId = Guid.NewGuid().ToString(),
                 Alias = "Prueba",
                 ClientId = oClient.Id,
-                Ubication = GeographyPoint.Create(0, 0),
                 SaleManId = oSaleMan.SaleManId,
                 CountryId = oCountry.CountryId,
                 ModelDeviceId = oModel.ModelDeviceId,

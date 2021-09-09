@@ -29,7 +29,6 @@ namespace Entities
         /// </summary>
         public float Latitude { get; set; }
 
-        public GeographyPoint Ubication { get; set; }
 
         
         /// <summary>

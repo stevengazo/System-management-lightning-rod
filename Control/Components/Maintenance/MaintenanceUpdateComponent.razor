@@ -30,7 +30,9 @@
     </div>
     <div class="form-group">
         <label>Nombre del Técnico</label>
-        <InputText class="form-control" @bind-Value="oMaintenance.TechnicianName"></InputText>
+        <InputSelect class="form-control" @bind-Value="oMaintenance.TechnicianId">
+            <option value=""></option>
+        </InputSelect>
     </div>
     <div class="form-group">
         <label>Numero de Informe</label>

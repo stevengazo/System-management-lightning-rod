@@ -20,7 +20,13 @@
         </div>
         <div class="form-group">
             <label class="h5">Pais de Instalación</label>
-            <InputText @bind-Value="oDevice.Country" class="form-control"></InputText>
+            <InputSelect @bind-Value="oDevice.Country" class="form-control">
+                <option value="">Pais</option>
+                @foreach (var item in Countries)
+                {
+                    <option value="@item.CountryId">@item.CountryName</option>
+                }
+            </InputSelect>
         </div>
         <div class="form-group">
             <label class="h5">Fecha de Instalación</label>
@@ -38,17 +44,23 @@
         </div>
         <div class="form-group">
             <label class="h5"> Tipo de Dispositivo</label>
-            <InputSelect @bind-Value="oDevice.Type" class="form-control">
+            <InputSelect @bind-Value="oDevice.TypeDeviceId" class="form-control">
                 <option value="">Seleccione...</option>
-                <option value="Venta">Venta</option>
-                <option value="Alquiler">Alquiler</option>
-                <option value="Leasing">Leasing</option>
-                <option value="Prueba">Prueba</option>
+                @foreach (var item in TDevices)
+                {
+                    <option value="@item.TypeDeviceId">@item.TypeDeviceName</option>
+                }
             </InputSelect>
         </div>
         <div class="form-group">
             <label class="h5">Modelo del dispositivo:</label>
-            <InputText @bind-Value="oDevice.Model" class="form-control"></InputText>
+            <InputSelect @bind-Value="oDevice.ModelDeviceId" class="form-control">
+                <option value="">Modelo</option>
+                @foreach (var item in Models)
+	            {
+                    <option value="@item.ModelDeviceId">@item.ModelDeviceName</option>		 
+	            }
+            </InputSelect>
         </div>
         <div class="form-group">
             <label class="h5">En funcionamiento</label>
@@ -86,12 +98,18 @@
     DeviceEntity oDevice = new DeviceEntity();
     List<ClientEntity> Clients = new List<ClientEntity>();
     List<SaleManEntity> SaleMans = new List<SaleManEntity>();
+    List<CountryEntity> Countries = new List<CountryEntity>();
+    List<TypeDeviceEntity> TDevices = new List<TypeDeviceEntity>();
+    List<ModelDeviceEntity> Models = new List<ModelDeviceEntity>();
     string[] Meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
     string Message;
     protected override async Task OnInitializedAsync()
     {
         Clients = B_Client.ListOfClients();
         SaleMans = B_SaleMan.ListOfSaleMans();
+        Countries = B_Country.ListOfCountries();
+        TDevices = B_TypeDevice.ListOfTDevices();
+        Models = B_ModelDevice.ListOfModels();
 
     }
 

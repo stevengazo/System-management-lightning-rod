@@ -30,10 +30,7 @@
         <div class="col">
             <select class="rounded form-control" @bind="NameToSearch">
                 <option value="">Técnico</option>
-                @foreach (var item in Technicians)
-                {
-                    <option value="@item">@item</option>
-                }
+
             </select>
         </div>
     </div>    
@@ -67,7 +64,6 @@
                     <tr>
                         <td> @obj.DeviceId </td>
                         <td> @obj.MaintenanceDate.Date</td>
-                        <td> @obj.TechnicianName</td>
                         <td> <a href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
                         <td> <a href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
                         <td> <a style="color:red" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
@@ -83,7 +79,7 @@
 
 @code{
     private List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
-    List<string> Technicians = B_Maintenance.GetTechnicians();
+    //List<TechnicianEntity> Technicians = B_
     List<int> Years = B_Maintenance.ListOfYears();
     Dictionary<int, string> Months = new Dictionary<int, string>() {
         { 1,"Enero"},

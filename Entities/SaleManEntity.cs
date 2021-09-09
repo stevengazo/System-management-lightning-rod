@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace Entities
 {
  public   class SaleManEntity
-    {
-        [Required]
+    {        
         [Key]
         public string SaleManId { get; set; }
         public string Name { get; set; }

@@ -200,11 +200,11 @@ namespace Business
         /// Get the countries registered in the Database
         /// </summary>
         /// <returns>List of countries</returns>
-        public static List<string> GetCountries()
+        public static List<CountryEntity> GetCountries()
         {
             using( var DB = new RayosNoDataContext())
             {
-                return (from Device in DB.Devices select Device.Country).Distinct().ToList();
+                return (from country in DB.Countries select country).Distinct().ToList();
             }
         }
 

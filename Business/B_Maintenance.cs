@@ -130,11 +130,11 @@ namespace Business
         /// Get the Technians registered in the table Maintenances
         /// </summary>
         /// <returns>list of tecnicians</returns>
-        public static List<string> GetTechnicians()
+        public static List<TechnicianEntity> GetTechnicians()
         {
             using(var DB = new RayosNoDataContext())
             {
-                var aux = (from maintenance in DB.Maintenances select maintenance.TechnicianName).Distinct().ToList();
+                var aux = (from Techni in DB.Technicians select Techni).Distinct().ToList();
                 return aux;
             }
         }
