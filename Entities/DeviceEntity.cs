@@ -47,7 +47,7 @@ namespace Entities
 
         // Relation with Model
         public int ModelDeviceId { get; set; }
-        public ModelDeviceEntity Model { get; set; }
+        public ModelDeviceEntity ModelDevice { get; set; }
 
         // Relation with Country
         public int CountryId { get; set; }

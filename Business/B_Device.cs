@@ -225,7 +225,7 @@ namespace Business
                 {
                     if(_Year==0 && _Country== 0)
                     {
-                         qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = null,@_CountryId = null");
+                        qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = null,@_CountryId = null");
                         Devices = qDevices.ToList();
                     }
                     else if (_Year == 0 && _Country != 0)
@@ -244,7 +244,6 @@ namespace Business
                         qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = {_Year.ToString()},@_CountryId = {_Country.ToString()}");
                         Devices = qDevices.ToList();
                 }
-
                var clientsIds = (from clid in Devices select clid.ClientId).Distinct().ToArray();
                 var SalemanIds = (from salId in Devices select salId.SaleManId).Distinct().ToArray();
                 List<ClientEntity> cli = new List<ClientEntity>();
@@ -264,7 +263,6 @@ namespace Business
                         from subDev in table.DefaultIfEmpty()
                     select subDev
                     ).ToList();
-
                 return Devices;
             }
         }
@@ -381,7 +379,8 @@ namespace Business
         {
             using (var Db = new RayosNoDataContext())
             {
-                return Db.Devices.Include(D=>D.SaleMan).Include(D=>D.Client).ToList().LastOrDefault(D=>D.DeviceId==id);
+                var query = Db.Devices.Include(D => D.SaleMan).Include(D => D.Client).Include(D => D.Country).Include(D => D.ModelDevice).Include(D => D.TypeDevice).ToList().LastOrDefault(D => D.DeviceId == id);
+                return query;
             }
         }
 
