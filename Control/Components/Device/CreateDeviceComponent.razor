@@ -20,8 +20,8 @@
         </div>
         <div class="form-group">
             <label class="h5">Pais de Instalación</label>
-            <InputSelect @bind-Value="oDevice.Country" class="form-control">
-                <option value="">Pais</option>
+            <InputSelect @bind-Value="oDevice.CountryId" class="form-control">
+                <option value=0>Pais</option>
                 @foreach (var item in Countries)
                 {
                     <option value="@item.CountryId">@item.CountryName</option>

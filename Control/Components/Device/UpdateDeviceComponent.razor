@@ -19,8 +19,12 @@
         </div>
         <div class="form-group">
             <label class="h5">Pais de Instalación</label>
-            <InputSelect @bind-Value="oDevice.Country" class="form-control">
+            <InputSelect @bind-Value="oDevice.CountryId" class="form-control">
                 <option value="">Pais</option>
+                @foreach (var item in Countries)
+                {
+                    <option value="@item.CountryId">@item.CountryName</option>
+                }
             </InputSelect>
         </div>
         <div class="form-group">
@@ -31,12 +35,20 @@
             <label class="h5"> Tipo de Dispositivo</label>
             <InputSelect @bind-Value="oDevice.TypeDeviceId" class="form-control">
                 <option value="">Tipo...</option>
+                @foreach (var item in TDevices)
+	            {
+		            <option value="@item.TypeDeviceId">@item.TypeDeviceName</option>
+	            }
             </InputSelect>
         </div>
         <div class="form-group">
             <label class="h5">Modelo del dispositivo:</label>
             <InputSelect @bind-Value="oDevice.ModelDeviceId" class="form-control">
                 <option value="">Modelo</option>
+                @foreach (var item in Models)
+	            {
+		            <option value="@item.ModelDeviceId">@item.ModelDeviceName</option>
+	            }
             </InputSelect>
         </div>
         <div class="form-group">
@@ -80,7 +92,7 @@
     List<SaleManEntity> SaleMans = new List<SaleManEntity>();
     List<ModelDeviceEntity> Models = new List<ModelDeviceEntity>();
     List<CountryEntity> Countries = new List<CountryEntity>();
-    List<TypeDeviceEntity> TypeDevices = new List<TypeDeviceEntity>();
+    List<TypeDeviceEntity> TDevices = new List<TypeDeviceEntity>();
     string[] Meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
     string Message;
     protected override async Task OnInitializedAsync()
@@ -88,15 +100,20 @@
         oDevice = B_Device.DeviceById(Id);
         Clients = B_Client.ListOfClients();
         SaleMans = B_SaleMan.ListOfSaleMans();
+        Countries = B_Country.ListOfCountries();
+        TDevices = B_TypeDevice.ListOfTDevices();
+        Models = B_ModelDevice.ListOfModels();
+
     }
 
 
     private void UpdateDevice()
     {
-        var oClient =B_Client.ClientById(oDevice.ClientId);
-        var oSaleman = B_SaleMan.SaleManById(oDevice.SaleManId);
-        oDevice.SaleMan = oSaleman;
-        oDevice.Client = oClient;
+        oDevice.Client =B_Client.ClientById(oDevice.ClientId);
+        oDevice.SaleMan = B_SaleMan.SaleManById(oDevice.SaleManId);
+        oDevice.Country = B_Country.GetCountryById(oDevice.CountryId);
+        oDevice.TypeDevice = B_TypeDevice.GetTypeById(oDevice.TypeDeviceId);
+        oDevice.ModelDevice = B_ModelDevice.GetModelById(oDevice.ModelDeviceId);
         B_Device.UpdateDevice(oDevice);
         Nav.NavigateTo("device/list");
     }

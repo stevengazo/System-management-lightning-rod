@@ -62,5 +62,14 @@ namespace Business
         }
 
         #endregion
+        #region Consult
+        public static ModelDeviceEntity GetModelById(int _id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                return DB.ModelDevices.FirstOrDefault(M => M.ModelDeviceId== _id);
+            }
+        }
+        #endregion
     }
 }

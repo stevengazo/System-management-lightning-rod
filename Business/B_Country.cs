@@ -75,6 +75,17 @@ namespace Business
         #endregion
 
         #region Consults
+        public static CountryEntity GetCountryById(int _id = 0)
+        {
+
+            using (var db = new RayosNoDataContext())
+            {
+                var country = (from count in db.Countries select count).Where(C => C.CountryId == _id).FirstOrDefault();
+                return country;
+            }
+            return null ;
+        }
+
 
         /// <summary>
         /// Consult if exists any dependence in the table Device

@@ -28,5 +28,14 @@ public static    class B_TypeDevice
             }
         }
         #endregion
+        #region CONsults
+        public static TypeDeviceEntity GetTypeById (int _id)
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                return DB.TypesDevices.FirstOrDefault(T=>T.TypeDeviceId == _id);
+            }
+        }
+        #endregion
     }
 }
