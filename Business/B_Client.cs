@@ -87,9 +87,7 @@ namespace Business
                 else
                 {
                     quer = DB.Clients.FromSqlInterpolated($@"Exec SearchClients @_idToSearch ={_Id}, @_name = {_name}, @_SectorId = null");
-                }
-
-                                
+                }                                
                 Clients = quer.ToList();
             }
             return Clients;
