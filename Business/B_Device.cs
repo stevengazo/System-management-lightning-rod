@@ -215,95 +215,55 @@ namespace Business
         /// <param name="_Alias">Alias to search</param>
         /// <param name="_Year">Year of installation</param>
         /// <returns>list</returns>
-        public static List<DeviceEntity> GetDevicesByConsult( string _DeviceId ="", string _Alias="", int _Year=0,string _Country = "")
+        public static List<DeviceEntity> GetDevicesByConsult( string _DeviceId =null, string _Alias=null, int _Year=0,int _Country = 0)
         {
             List<DeviceEntity> Devices = new List<DeviceEntity>();
             using (var DB = new RayosNoDataContext())
             {
-                     if ((_DeviceId != null) && (_Alias != null) && (_Year != 0) && (_Country != null))
+                IQueryable<DeviceEntity> qDevices;
+                if( (_Year == 0)||(_Country==0))
                 {
-                    var aux =   DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) 
-                                and ( Devices.Alias  like CONCAT('%',{_Alias},'%') ) 
-                                and ( YEAR( Devices.InstallationDate ) = {_Year} )  
-                                and ( Country like CONCAT('%',{_Country},'%') )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D=>D.ClientId).ToList();
+                    if(_Year==0 && _Country== 0)
+                    {
+                         qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = null,@_CountryId = null");
+                        Devices = qDevices.ToList();
+                    }
+                    else if (_Year == 0 && _Country != 0)
+                    {
+                        qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = null,@_CountryId = {_Country.ToString()}");
+                        Devices = qDevices.ToList();
+                    }
+                    else if (_Year != 0 && _Country == 0)
+                    {
+                        qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = {_Year.ToString()},@_CountryId = null");
+                        Devices = qDevices.ToList();
+                    }
                 }
-                else if ((_DeviceId == null) && (_Alias != null) && (_Year != 0) && (_Country != null))
+                else
                 {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.Alias  like CONCAT('%',{_Alias},'%') ) 
-                                and ( YEAR( Devices.InstallationDate ) = {_Year} )  
-                                and ( Country like CONCAT('%',{_Country},'%') )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
+                        qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = {_Year.ToString()},@_CountryId = {_Country.ToString()}");
+                        Devices = qDevices.ToList();
                 }
-                else if ((_DeviceId == null) && (_Alias == null) && (_Year != 0) && (_Country != null))
+
+               var clientsIds = (from clid in Devices select clid.ClientId).Distinct().ToArray();
+                var SalemanIds = (from salId in Devices select salId.SaleManId).Distinct().ToArray();
+                List<ClientEntity> cli = new List<ClientEntity>();
+                List<SaleManEntity> sal = new List<SaleManEntity>();
+                foreach (var item in clientsIds)
                 {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( YEAR( Devices.InstallationDate ) = {_Year} )  
-                                and ( Country like CONCAT('%',{_Country},'%') )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
+                    cli = (from client in DB.Clients select client).Where(C => C.Id == item).ToList();
                 }
-                else if ((_DeviceId == null) && (_Alias == null) && (_Year == 0) && (_Country != null))
+                foreach (var item in SalemanIds)
                 {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Country like CONCAT('%',{_Country},'%') )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
+                    sal = (from saleman in DB.Salemans select saleman).Where(C => C.SaleManId == item).ToList();
                 }
-                else if ((_DeviceId != null) && (_Alias != null) && (_Year != 0) && (_Country == null))
-                {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) 
-                                and ( Devices.Alias  like CONCAT('%',{_Alias},'%') ) 
-                                and ( YEAR( Devices.InstallationDate ) = {_Year} )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
-                }
-                else if ((_DeviceId != null) && (_Alias != null) && (_Year == 0) && (_Country == null))
-                {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) 
-                                and ( Devices.Alias  like CONCAT('%',{_Alias},'%') )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
-                }
-                else if ((_DeviceId != null) && (_Alias == null) && (_Year == 0) && (_Country == null))
-                {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
-                }
-                else if ((_DeviceId != null) && (_Alias == null) && (_Year != 0) && (_Country == null))
-                {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) 
-                                and ( YEAR( Devices.InstallationDate ) = {_Year} )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
-                }
-                else if ((_DeviceId == null) && (_Alias != null) && (_Year != 0) && (_Country == null))
-                {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.Alias  like CONCAT('%',{_Alias},'%') ) 
-                                and ( YEAR( Devices.InstallationDate ) = {_Year} )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
-                }
-                else if ((_DeviceId != null) && (_Alias == null) && (_Year == 0) && (_Country != null))
-                {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.DeviceId like CONCAT('%',{_DeviceId},'%') ) 
-                                and ( Country like CONCAT('%',{_Country},'%') )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
-                }
-                else if ((_DeviceId == null) && (_Alias != null) && (_Year == 0) && (_Country == null))
-                {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( Devices.Alias  like CONCAT('%',{_Alias},'%'))").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
-                }
-                else if ((_DeviceId == null) && (_Alias == null) && (_Year != 0) && (_Country == null))
-                {
-                    var aux = DB.Devices.FromSqlInterpolated($@"Select * From Devices
-                                Where ( YEAR( Devices.InstallationDate ) = {_Year} )").Include(D => D.Client).Include(D => D.SaleMan);
-                    Devices = aux.OrderBy(D => D.ClientId).ToList();
-                }
+                var query = (
+                    from Client in cli
+                    join dev  in Devices on Client.Id equals dev.ClientId
+                        into table
+                        from subDev in table.DefaultIfEmpty()
+                    select subDev
+                    ).ToList();
 
                 return Devices;
             }

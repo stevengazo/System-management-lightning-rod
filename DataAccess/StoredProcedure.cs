@@ -14,7 +14,89 @@ namespace DataAccess
     {
         public static void ExecuteSP(MigrationBuilder migrationBuilder)
         {
-            #region Stored Procedures
+			#region Stored Procedures
+			var spSeachDevice = $@"-- =============================================
+									-- Author:		Steven Gazo
+									-- Create date: 10/9/21
+									-- Description:	Search a device by the parameters
+									-- =============================================
+									CREATE PROCEDURE SearchDevice
+										-- Add the parameters for the stored procedure here
+										@_DeviceId varchar(50) =null,
+										@_Alias varchar(50) = null,
+										@_Year varchar(5) = null,
+										@_CountryId varchar(5)=null
+									AS
+									BEGIN
+										-- SET NOCOUNT ON added to prevent extra result sets from
+										-- interfering with SELECT statements.
+										SET NOCOUNT ON;
+
+										-- Insert statements for procedure here
+										Declare @_sqlCommand varchar(max) =' SELECT * FROM Devices  ';
+										DECLARE @_BAND binary = 0 ;
+										DECLARE @_exec binary = 0;
+
+										IF( @_DeviceId IS NOT NULL )
+										BEGIN
+											set @_sqlCommand = @_sqlCommand + ' WHERE DeviceId LIKE ''%' + @_DeviceId+'%''';
+											set @_BAND = 1;
+											set @_exec = 1;
+										END
+										IF( @_Alias IS NOT NULL)
+										BEGIN
+											IF( @_BAND =0)
+												BEGIN
+													set @_sqlCommand = @_sqlCommand + ' WHERE Alias LIKE ''%' + @_Alias+'%''';
+													set @_BAND = 1;
+													set @_exec = 1;
+												END
+											ELSE
+												BEGIN
+													set @_sqlCommand = @_sqlCommand + 'and Alias LIKE ''%' + @_Alias+'%''';
+													set @_BAND = 1;
+													set @_exec = 1;
+												END
+										END
+										IF( @_Year IS NOT NULL)
+										BEGIN
+											IF(@_BAND =0)
+												BEGIN
+													set @_sqlCommand = @_sqlCommand + ' WHERE YEAR(InstallationDate) = '+ @_Year;
+													set @_BAND = 1;
+													set @_exec = 1;
+												END
+											ELSE
+												BEGIN
+													set @_sqlCommand = @_sqlCommand + ' AND YEAR(InstallationDate) = '+ @_Year;
+													set @_BAND = 1;
+													set @_exec = 1;
+												END
+										END
+										IF( @_CountryId IS NOT NULL)
+										BEGIN
+											IF(@_BAND =0)
+												BEGIN
+													set @_sqlCommand = @_sqlCommand + ' WHERE CountryId =  '+ @_CountryId;
+													set @_BAND = 1;
+													set @_exec = 1;
+												END
+											ELSE
+												BEGIN
+													set @_sqlCommand = @_sqlCommand + ' AND CountryId =  '+ @_CountryId;
+													set @_BAND = 1;
+													set @_exec = 1;
+												END
+										END
+										if @_exec = 1
+										begin
+											print (@_sqlCommand);
+											EXEC (@_sqlCommand)
+										end
+
+									END
+									";
+			migrationBuilder.Sql(spSeachDevice);
             var spSearchClient = @"
 					-- =============================================
 					-- Author:		Steven Gazo

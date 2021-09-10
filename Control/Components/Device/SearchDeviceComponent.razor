@@ -27,7 +27,7 @@
                 <option value="">Pais...</option>
                 @foreach (var item in Countries)
                 {
-                    <option value="@item.CountryId.ToString()">@item.CountryName</option>
+                    <option value="@item.CountryId">@item.CountryName</option>
                 }
             </select>
         </div>
@@ -91,7 +91,7 @@
     #region Internal Parametres
     /// Seach Variables
 
-    public string CountryToSearch { get; set; }
+    public int CountryToSearch { get; set; }
 
     public int YearToSearch { get; set; }
 
@@ -113,7 +113,7 @@
 
     private void Clean()
     {
-        CountryToSearch = null;
+        CountryToSearch = 0;
         YearToSearch = 0;
         AliasToSearch = null;
         DeviceIdToSearch = null;
@@ -122,6 +122,7 @@
     protected override async Task OnInitializedAsync()
     {
         Countries = B_Country.ListOfCountries();
+
     }
 
     private void Search()
