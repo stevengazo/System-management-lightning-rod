@@ -79,9 +79,17 @@ namespace Business
             List<ClientEntity> Clients = new List<ClientEntity>();
             using (var DB = new RayosNoDataContext())
             {
-               
+                IQueryable<ClientEntity> quer;
+                if ( (_SectorId!=0) )
+                {
+                    quer = DB.Clients.FromSqlInterpolated($@"Exec SearchClients @_idToSearch ={_Id}, @_name = {_name}, @_SectorId = {_SectorId.ToString()}");
+                }
+                else
+                {
+                    quer = DB.Clients.FromSqlInterpolated($@"Exec SearchClients @_idToSearch ={_Id}, @_name = {_name}, @_SectorId = null");
+                }
 
-                var quer = DB.Clients.FromSqlInterpolated($@"Exec SearchClients @_idToSearch ={_Id}, @_name = {_name}, @_SectorId = {}");
+                                
                 Clients = quer.ToList();
             }
             return Clients;
