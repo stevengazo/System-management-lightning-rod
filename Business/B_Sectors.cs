@@ -23,7 +23,8 @@ namespace Business
         {
             using (var db = new RayosNoDataContext())
             {
-                return db.Sectors.ToList();
+                var query = db.Sectors.ToList();
+                return query;
             }
         }
         #endregion

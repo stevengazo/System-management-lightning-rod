@@ -15,6 +15,74 @@ namespace DataAccess
         public static void ExecuteSP(MigrationBuilder migrationBuilder)
         {
             #region Stored Procedures
+            var spSearchClient = @"
+					-- =============================================
+					-- Author:		Steven Gazo
+					-- Create date: 9/9/21
+					-- Description:	Search a client in the database
+					-- =============================================
+					Create  PROCEDURE SearchClients
+					-- Add the parameters for the stored procedure here
+					@_idToSearch varchar(100) =null,
+					@_name varchar(40),
+					@_SectorId varchar =0
+					AS
+					BEGIN
+						-- SET NOCOUNT ON added to prevent extra result sets from
+						-- interfering with SELECT statements.
+						SET NOCOUNT ON;
+
+						-- Insert statements for procedure here
+							Declare @_sqlCommand varchar(max) =' SELECT * FROM Clients ';
+						DECLARE @_BAND binary = 0 ;
+						DECLARE @_exec binary = 0;
+						if @_idToSearch IS NOT NULL
+						BEGIN
+								begin
+									set @_sqlCommand = @_sqlCommand + (' WHERE Id like ''%'+ @_idToSearch+'%''') ;
+									set @_BAND = 1;
+									set @_exec = 1;
+								end
+						END
+						if @_Name is not null
+						BEGIN
+							if @_BAND = 0
+								begin
+									set @_sqlCommand = @_sqlCommand + (' WHERE Name like  ''%'+ @_name + '%''') ;
+									set @_BAND = 1;
+									set @_exec = 1;			
+								end
+							else 
+								begin
+									set @_sqlCommand = @_sqlCommand + (' and Name like  ''%'+ @_name + '%''') ;
+									set @_BAND = 1;
+									set @_exec = 1;			
+								end
+						END
+						if @_SectorId != 0
+						BEGIN
+							if @_BAND = 0
+								begin
+									set @_sqlCommand = @_sqlCommand + (' WHERE SectorId = '+ @_SectorId) ;
+									set @_BAND = 1;
+									set @_exec = 1;			
+								end
+							else
+								begin
+									set @_sqlCommand = @_sqlCommand + (' and SectorId = '+ @_SectorId) ;
+									set @_BAND = 1;
+									set @_exec = 1;						
+								end
+						END
+						if @_exec = 1
+						begin
+							print (@_sqlCommand);
+							EXEC (@_sqlCommand)
+						end
+
+					END
+
+					";
             var SP_M_SelectByDeviceId = @"   CREATE PROCEDURE GetMaintenanceByDeviceId
 	                                            @_DeviceId varchar(50) 
                                             AS
@@ -67,6 +135,7 @@ namespace DataAccess
 	            WHERE Clients.Name LIKE  ('%'+@_Name+'%')
             END
             ";
+			migrationBuilder.Sql(spSearchClient);
             migrationBuilder.Sql(sp1);
             migrationBuilder.Sql(sp2);
             migrationBuilder.Sql(SP_M_SelectByDeviceId);
