@@ -35,8 +35,9 @@ namespace Control
             services.AddDbContext<IDBContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("IdentityConnection")));
-
+            
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IDBContext>();
 
             services.AddRazorPages();
@@ -44,6 +45,7 @@ namespace Control
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddSingleton<WeatherForecastService>();
+            var aux = services;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

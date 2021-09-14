@@ -244,25 +244,28 @@ namespace Business
                         qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = {_Year.ToString()},@_CountryId = {_Country.ToString()}");
                         Devices = qDevices.ToList();
                 }
-               var clientsIds = (from clid in Devices select clid.ClientId).Distinct().ToArray();
-                var SalemanIds = (from salId in Devices select salId.SaleManId).Distinct().ToArray();
-                List<ClientEntity> cli = new List<ClientEntity>();
-                List<SaleManEntity> sal = new List<SaleManEntity>();
-                foreach (var item in clientsIds)
+                if( Devices.Count != 0)
                 {
-                    cli = (from client in DB.Clients select client).Where(C => C.Id == item).ToList();
-                }
-                foreach (var item in SalemanIds)
-                {
-                    sal = (from saleman in DB.Salemans select saleman).Where(C => C.SaleManId == item).ToList();
-                }
-                var query = (
-                    from Client in cli
-                    join dev  in Devices on Client.Id equals dev.ClientId
-                        into table
+                    var clientsIds = (from clid in Devices select clid.ClientId).Distinct().ToArray();
+                    var SalemanIds = (from salId in Devices select salId.SaleManId).Distinct().ToArray();
+                    List<ClientEntity> cli = new List<ClientEntity>();
+                    List<SaleManEntity> sal = new List<SaleManEntity>();
+                    foreach (var item in clientsIds)
+                    {
+                        cli = (from client in DB.Clients select client).Where(C => C.Id == item).ToList();
+                    }
+                    foreach (var item in SalemanIds)
+                    {
+                        sal = (from saleman in DB.Salemans select saleman).Where(C => C.SaleManId == item).ToList();
+                    }
+                    var query = (
+                        from Client in cli
+                        join dev in Devices on Client.Id equals dev.ClientId
+                            into table
                         from subDev in table.DefaultIfEmpty()
-                    select subDev
-                    ).ToList();
+                        select subDev
+                        ).ToList();
+                }               
                 return Devices;
             }
         }

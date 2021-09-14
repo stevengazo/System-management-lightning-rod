@@ -1,15 +1,34 @@
-﻿@page "/warranty/list" 
+﻿@page "/warranty/list"
 
 
 
 
 
 
-<div class="text-center">
-    <h2>
-        Lista de Garantias emitidas por dispositivo
-    </h2>
-    <hr />
-    <a href="warranty/create">Crear nuevo registro</a>
-    <WarrantySearchComponent/>
-</div>
+
+
+<AuthorizeView Roles="Administrador,Lector">
+    <Authorized>
+        <div class="text-center">
+            <h2>
+                Lista de Garantias emitidas por dispositivo
+            </h2>
+            <hr />
+            <a href="warranty/create">Crear nuevo registro</a>
+            <WarrantySearchComponent />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h1 class="text-danger h1">
+            Contenido no disponible
+        </h1>
+        <p>
+            No posee las credenciales necesarias o no ha iniciado sesión. Por favor compruebe que haya iniciado sesión.
+        </p>
+        <p><a href="Identity/Account/Login">Inicie sesión para validar su información</a></p>
+        <p>
+            Si el problema persiste contacte al encargado.
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+
