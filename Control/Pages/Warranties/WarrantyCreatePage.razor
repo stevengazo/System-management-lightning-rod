@@ -1,10 +1,19 @@
-﻿@page "/warranty/create" 
+﻿@page "/warranty/create"
 
 
-<div class="text-center">
-    <h2> Creación de nuevo registro</h2>
-    <hr />
-    <a href="warranty/list">Regresar a la lista de Garantias</a>
-    <WarrantyCreateComponent></WarrantyCreateComponent>
-</div>
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div class="text-center">
+            <h2> Creación de nuevo registro</h2>
+            <hr />
+            <a href="warranty/list">Regresar a la lista de Garantias</a>
+            <WarrantyCreateComponent></WarrantyCreateComponent>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
 

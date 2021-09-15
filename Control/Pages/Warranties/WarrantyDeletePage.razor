@@ -4,12 +4,19 @@
 
 
 
-<div class="text-center">
-    <h2> Eliminación de la Garantia</h2>
-    <WarrantyDeleteComponent WarrantyId="@WarrantyId.ToString()" />
-</div>
 
 
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div class="text-center">
+            <h2> Eliminación de la Garantia</h2>
+            <WarrantyDeleteComponent WarrantyId="@WarrantyId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
 
 
 

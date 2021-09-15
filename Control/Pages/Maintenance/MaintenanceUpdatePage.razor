@@ -2,13 +2,21 @@
 
 
 
-<div>
-    <h2 class="text-center">Actualizar Vendedor</h2>
-    <hr />
-    <a href="maintenance/list"> Regresar a la lista de Mantenimientos</a>
-    <hr />
-    <MaintenanceUpdateComponent id="@MaintenanceId.ToString()"/>
-</div>
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2 class="text-center">Actualizar Vendedor</h2>
+            <hr />
+            <a href="maintenance/list"> Regresar a la lista de Mantenimientos</a>
+            <hr />
+            <MaintenanceUpdateComponent id="@MaintenanceId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
 
 
 

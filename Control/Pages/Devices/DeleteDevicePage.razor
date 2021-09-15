@@ -1,8 +1,20 @@
 ﻿@page "/device/delete/{DeviceId}"
 
 
-<h2 class="text-center">Eliminación de dispositivos</h2>
-<DeleteDeviceComponet DeviceId="@DeviceId"/>
+
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <h2 class="text-center">Eliminación de dispositivos</h2>
+        <DeleteDeviceComponet DeviceId="@DeviceId" />
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 
 

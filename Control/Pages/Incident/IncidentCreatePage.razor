@@ -3,10 +3,19 @@
 
 
 
-<div>
-    <h2>Creación de Incidentes</h2>
-    <p> Registro de incidentes de dispositivos RAYOS-NO. Detalle la información reelavante para el funcionamiento y motivos de funcionamiento.</p>
-    <a href="incident/list"> Regresar a la lista de incidentes</a>
-    <hr/>
-    <IncidentCreateComponent/>
-</div>
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2>Creación de Incidentes</h2>
+            <p> Registro de incidentes de dispositivos RAYOS-NO. Detalle la información reelavante para el funcionamiento y motivos de funcionamiento.</p>
+            <a href="incident/list"> Regresar a la lista de incidentes</a>
+            <hr />
+            <IncidentCreateComponent />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+

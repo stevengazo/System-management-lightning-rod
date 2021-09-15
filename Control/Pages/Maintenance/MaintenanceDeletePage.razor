@@ -2,11 +2,24 @@
 
 
 
-<div>
-    <h2 class="text-center">Eliminar Mantenimiento</h2>
-    <hr />
-    <MaintenanceDeleteComponent id="@MaintenanceId.ToString()" />
-</div>
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2 class="text-center">Eliminar Mantenimiento</h2>
+            <hr />
+            <MaintenanceDeleteComponent id="@MaintenanceId.ToString()" />
+        </div>
+
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
 @code{
     [Parameter]
     public string MaintenanceId { get; set; }
@@ -15,3 +28,4 @@
         MaintenanceId = MaintenanceId;
     }
 }
+
