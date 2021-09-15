@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityDataAccess
 {
@@ -43,7 +44,29 @@ namespace IdentityDataAccess
 
        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);           
+            base.OnModelCreating(builder);
+            IdentityRole Admin = new IdentityRole()
+            {
+                Id = "01",
+                Name = "Administrador",
+                NormalizedName = "ADMINISTRADOR",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            };
+            IdentityRole Editor = new IdentityRole()
+            {
+                Id = "02",
+                Name = "Editor",
+                NormalizedName = "EDITOR",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            };
+            IdentityRole Lector = new IdentityRole
+            {
+                Id = "03",
+                Name = "Lector",
+                NormalizedName = "LECTOR",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            };
+            builder.Entity<IdentityRole>().HasData(Admin, Editor, Lector);
         }
 
 
