@@ -1,0 +1,25 @@
+﻿@page "/maintenance/list"
+
+
+
+
+
+
+<AuthorizeView Roles="Administrador,Lector">
+    <Authorized>
+        <div class="text-center">
+            <h2>Lista de Mantenimientos</h2>
+            <hr />
+            <a href="maintenance/create"> Registrar Nuevo Mantenimiento</a> | <a href="maintenance/list/unrealizedByear/">Pendientes por año</a>
+            <MaintenanceSearchListComponent></MaintenanceSearchListComponent>
+        </div>
+        <hr />
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+

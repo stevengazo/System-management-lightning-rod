@@ -1,0 +1,76 @@
+﻿@using Entities;
+@using Business;
+
+
+<table class="table border-dark table-responsive-sm table-bordered table-striped table-hover table-light">
+    <thead class="">
+        <tr>
+            <td>Categoría</td>
+            <td>Equipo</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Id de referencia</td>
+            <td>@oMaintenance.MaintenanceId</td>
+        </tr>
+        <tr>
+            <td>Número de serie</td>
+            <td>@oMaintenance.Device.DeviceId</td>
+        </tr>
+        <tr>
+            <td>Alias del dispositivo</td>
+            <td>@oMaintenance.Device.Alias</td>
+        </tr>
+        <tr>
+            <td>Fecha de instalación</td>
+            <td>@oMaintenance.Device.InstallationDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Fecha de Mantenimiento</td>
+            <td>@oMaintenance.MaintenanceDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Estado del dispositivo</td>
+            <td>@oMaintenance.StatusOfDevice</td>
+        </tr>
+        <tr>
+            <td>Resistencia de la malla</td>
+            <td>@oMaintenance.SpatOhms<span>&#8486;</span></td>
+        </tr>
+        <tr>
+            <td>Resistencia de las semiesferas del dispositivo</td>
+            <td>@oMaintenance.DeviceOhms M<span>&#8486;</span></td>
+        </tr>
+        <tr>
+            <td>Transferencia de cargas </td>
+            <td>@oMaintenance.Ampers mA</td>
+        </tr>
+        <tr>
+            <td>Nombre del técnico</td>
+            <td>@oMaintenance.Technician.TechnicianName</td>
+        </tr>
+        <tr>
+            <td>Numero de informe</td>
+            <td>@oMaintenance.ReportId</td>
+        </tr>
+        <tr>
+            <td>Recomendaciones</td>
+            <td>@oMaintenance.Recomendations</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+    MaintenanceEntity oMaintenance = new MaintenanceEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        oMaintenance = B_Maintenance.MaintenanceById(id);
+    }
+
+}

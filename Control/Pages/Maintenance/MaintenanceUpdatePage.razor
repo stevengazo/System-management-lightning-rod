@@ -1,0 +1,22 @@
+﻿@page  "/maintenance/update/{MaintenanceId}"
+
+
+
+<div>
+    <h2 class="text-center">Actualizar Vendedor</h2>
+    <hr />
+    <a href="maintenance/list"> Regresar a la lista de Mantenimientos</a>
+    <hr />
+    <MaintenanceUpdateComponent id="@MaintenanceId.ToString()"/>
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string MaintenanceId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        MaintenanceId = MaintenanceId;
+    }
+}

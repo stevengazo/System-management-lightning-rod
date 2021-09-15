@@ -1,0 +1,47 @@
+﻿@using Entities;
+@using Business;
+
+@inject NavigationManager Nav;
+
+
+<div class="text-center">
+    <h3>
+        ¿Deseas borrar el vendedor @oSaleMan.Name?
+    </h3>
+    <p> Verifica las dependencias en el campo "Id Vendedor" en los registro de la tabla Equipos</p>
+    <input type="button" class="btn-danger" value="Deseo eliminar el vendedor" @onclick="DeleteSaleMan" />
+    <input type="button" class="btn-light" value="Regresar a lista de vendedores" @onclick="BackLink" />
+    <p class="text-center" style="color:red">@message</p>
+</div>
+
+@code{
+    [Parameter]
+    public string SaleMandId { get; set; }
+    string message;
+
+    SaleManEntity oSaleMan = new SaleManEntity();
+    protected override async Task OnInitializedAsync()
+    {
+        oSaleMan = B_SaleMan.SaleManById(SaleMandId);
+    }
+
+    private void DeleteSaleMan()
+    {
+        var BandDependence = B_SaleMan.HaveDependence(oSaleMan);
+        if (!BandDependence)
+        {
+            B_SaleMan.DeleteSaleMan(oSaleMan);
+            Nav.NavigateTo("saleman/list");
+        }
+        else
+        {
+            message = $"El vendedor \"{oSaleMan.Name}\" tiene dependencias en la tabla Equipos.\n Elimine las dependencias e instentelo de nuevo";
+        }
+
+    }
+
+    private void BackLink()
+    {
+        Nav.NavigateTo("saleman/list");
+    }
+}

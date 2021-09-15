@@ -1,0 +1,28 @@
+﻿@page "/saleman/view/{SaleManId}"
+
+
+<div>
+    <h2 class="text-center">Información del Vendedor</h2>
+    <hr />
+    <a href="saleman/list"> Regresar a la lista de vendedores</a>
+    <hr />
+    <SalemanViewComponent id="@SaleManId.ToString()" />
+</div>
+<div>
+    <h3 class="text-center"> Lista de dispositivos Pertenecientes al vendedor</h3>
+    <p class="text-center">
+        A continuación se muestra la lista de dispositivos pertenecientes al
+        vendedor:
+    </p>
+   <ListDevicesComponent SaleMandId="@SaleManId.ToString()"/>
+</div>
+
+
+@code{
+    [Parameter]
+    public string SaleManId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        SaleManId = SaleManId;
+    }
+}

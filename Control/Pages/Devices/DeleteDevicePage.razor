@@ -1,0 +1,16 @@
+﻿@page "/device/delete/{DeviceId}"
+
+
+<h2 class="text-center">Eliminación de dispositivos</h2>
+<DeleteDeviceComponet DeviceId="@DeviceId"/>
+
+
+
+@code{
+    [Parameter]
+    public string DeviceId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        DeviceId = DeviceId;
+    }
+}

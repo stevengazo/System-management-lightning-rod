@@ -1,0 +1,103 @@
+﻿@using Entities;
+@using Business;
+
+
+
+
+<div class="container-fluid">
+    <label>Año de Consulta</label>
+    <select @bind="@SelectedYear" class="form-control-sm">
+        <option value="0">Seleccione un valor...</option>
+        @foreach (var item in Years)
+        {
+            <option value="@item.ToString()">@item.ToString()</option>
+        }
+    </select>
+    <label>Mes de Consulta</label>
+    <select @bind="@SelectedMonth" class="form-control-sm">
+        <option value="0">Seleccione un valor...</option>
+        @foreach (var item in Months)
+        {
+            <option value="@item.Key.ToString()">@item.Value</option>
+        }
+    </select>   
+    <button class="btn-info" @onclick="SearchMaintenances">Buscar</button>
+</div>
+
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <th>Numero de Serie</th>
+            <th>Fecha de mantenimiento</th>
+            <th>Técnico</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in maintenances)
+        {
+        <tr>
+            <td>@obj.DeviceId</td>
+            <td>@obj.MaintenanceDate.ToShortDateString()</td>
+            <td>@obj.Technician.TechnicianName</td>
+            <td> <a href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
+            <td> <a href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
+            <td> <a style="color:red" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code   {
+
+    List<MaintenanceEntity> maintenances = new List<MaintenanceEntity>();
+    string ErrorMessage = "";
+    List<int> Years = new List<int>();
+    string SelectedYear = string.Empty;
+    string SelectedMonth = string.Empty;
+
+
+    Dictionary<int, string> Months = new Dictionary<int, string> {
+        {1,"Enero" },
+        {2,"Febrero" },
+        {3,"Marzo" },
+        {4,"Abril" },
+        {5,"Mayo" },
+        {6,"Junio" },
+        {7,"Julio" },
+        {8,"Agosto" },
+        {9,"Septiembre" },
+        {10,"Octubre" },
+        {11,"Noviembre" },
+        {12,"Diciembre" }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Years = B_Maintenance.ListOfYears();
+    }
+
+
+    private void SearchMaintenances()
+    {
+        bool bandYear = (SelectedYear.Equals(string.Empty)) ? false : true;
+        bool BandMonth = (SelectedMonth.Equals(string.Empty)) ? false : true;
+
+        if (bandYear && BandMonth)
+        {           
+            maintenances = B_Maintenance.GetMaintenancesByYearAndMonth(SelectedYear, SelectedMonth);
+            ErrorMessage = "";
+           
+        }
+        else
+        {
+            ErrorMessage = "Verifique los campos e intentelo de nuevo...";
+        }
+    }
+}
+

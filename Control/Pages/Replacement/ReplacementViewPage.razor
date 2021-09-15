@@ -1,0 +1,18 @@
+﻿@page "/replacement/view/{Replacementid}"
+
+<div>
+    <h1> Información del reemplazo respectivo</h1>
+    <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
+    <hr/>
+    <ReplacementViewComponent ReplacementId="@ReplacementId.ToString()" />
+</div>
+
+
+@code{
+    [Parameter]
+    public string ReplacementId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ReplacementId = ReplacementId;
+    }
+}

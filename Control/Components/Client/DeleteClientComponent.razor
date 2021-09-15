@@ -1,0 +1,44 @@
+﻿@using Entities;
+@using Business;
+
+@inject NavigationManager Nav;
+
+<div class=" text-center">
+    <h3>¿Deseas borrar el cliente @oClient.Name?</h3>
+    <p> Verifica las dependencias en el campo "Id Cliente" en los registros de la tabla Equipos</p>
+    <input type="button" class="btn-danger" value="Deseo eliminar el cliente" @onclick="DeleteClient" />
+    <input type="button" class="btn-light" value= "Regresar a lista de clientes" @onclick="BackLink" />
+    <p class="text-center" style="color:red">@message</p>
+</div>
+
+@code{  
+    [Parameter]
+    public string id { get; set; }
+    string message;
+
+    ClientEntity oClient = new ClientEntity();
+    protected override async Task OnInitializedAsync()
+    {
+        oClient = B_Client.ClientById(id);
+    }
+
+    private void DeleteClient()
+    {
+        var BandDependence = B_Client.HaveDependence(oClient);
+        if (!BandDependence)
+        {
+            B_Client.Delete(oClient);
+            Nav.NavigateTo("client/list");
+        }
+        else
+        {
+            message = $"El cliente {oClient.Name} tiene dependencias en la tabla Equipos.\n Elimine las dependencias e instentelo de nuevo";
+        }
+
+    }
+
+    private void BackLink()
+    {
+        Nav.NavigateTo("client/list");
+    }
+}

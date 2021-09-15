@@ -1,0 +1,29 @@
+﻿@page "/client/list"
+
+
+
+<AuthorizeView Roles="Administrador,Lector">
+    <Authorized>
+        <div class="text-center">
+            <h2>Lista de Clientes</h2>
+            <a href="client/Create"> Agregar nuevo Cliente</a>
+            <p>Información referente a los clientes registrados, poseedores de dispositivos RAYOS-NO</p>
+            <hr />
+            <ClientSearchComponent />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <h1 class="text-danger h1">
+            Contenido no disponible
+        </h1>
+        <p>
+            No posee las credenciales necesarias o no ha iniciado sesión. Por favor compruebe que haya iniciado sesión.
+        </p>
+        <p><a href="Identity/Account/Login">Inicie sesión para validar su información</a></p>
+        <p>
+            Si el problema persiste contacte al encargado.
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+
+

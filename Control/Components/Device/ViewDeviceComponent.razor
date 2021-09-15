@@ -1,0 +1,84 @@
+﻿@using Entities;
+@using Business;
+
+@inject NavigationManager Nav;
+
+
+<div>
+    <div>
+        <EditForm Model="@oDevice">
+            <table class="table table-light table-responsive-sm table-bordered table-striped">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Número de serie:</td>
+                        <td>@oDevice.DeviceId</td>
+                    </tr>
+                    <tr>
+                        <td>Alias:</td>
+                        <td>@oDevice.Alias</td>
+                    </tr>
+                    <tr>
+                        <td>Latitud:</td>
+                        <td>@oDevice.Latitude</td>
+                    </tr>
+                    <tr>
+                        <td>Longitud:</td>
+                        <td>@oDevice.Longitude</td>
+                    </tr>
+                    <tr>
+                        <td>País:</td>
+                        <td>@oDevice.Country.CountryName</td>
+                    </tr>
+                    <tr>
+                        <td>Fecha de Instalación:</td>
+                        <td>@oDevice.InstallationDate</td>
+                    </tr>
+                    <tr>
+                        <td>Fecha limite próximo mantenimiento</td>
+                        <td>@oDevice.RecomendedDateOfMaintenance</td>
+                    </tr>
+                    <tr>
+                        <td>Tipo de equipo</td>
+                        <td>@oDevice.TypeDevice.TypeDeviceName</td>
+                    </tr>
+                    <tr>
+                        <td>Modelo:</td>
+                        <td>@oDevice.ModelDevice.ModelDeviceName</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente:</td>
+                        <td><a href="client/view/@oDevice.ClientId"> @oDevice.Client.Name  </a></td>
+                    </tr>
+                    <tr>
+                        <td>Vendedor encargado:</td>
+                        <td><a href="saleman/view/@oDevice.SaleManId">@oDevice.SaleMan.Name</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </EditForm>
+    </div>
+    
+</div>
+
+
+
+
+
+@code
+{
+    [Parameter]
+    public string id { get; set; }
+
+    
+
+    DeviceEntity oDevice { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        oDevice = B_Device.DeviceById(id);
+
+    }
+}

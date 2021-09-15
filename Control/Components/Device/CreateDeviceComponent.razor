@@ -1,0 +1,134 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+<div>
+    <EditForm Model="oDevice">
+        <div class="form-group">
+            <label class="h5"> Numero de Serie: </label>
+            <InputText @bind-Value="oDevice.DeviceId" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label class="h5"> Alias del dispositivo: </label>
+            <InputText @bind-Value="oDevice.Alias" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <label class="h5">Longitud</label>
+            <InputNumber @bind-Value="@oDevice.Longitude" class="form-control"></InputNumber>
+            <label class="h5">Latitud</label>
+            <InputNumber @bind-Value="@oDevice.Latitude" class="form-control"></InputNumber>
+        </div>
+        <div class="form-group">
+            <label class="h5">Pais de Instalación</label>
+            <InputSelect @bind-Value="oDevice.CountryId" class="form-control">
+                <option value=0>Pais</option>
+                @foreach (var item in Countries)
+                {
+                    <option value="@item.CountryId">@item.CountryName</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label class="h5">Fecha de Instalación</label>
+            <InputDate @bind-Value="oDevice.InstallationDate" class="form-control"></InputDate>
+        </div>
+        <div class="form-group">
+            <label class="h5"> Mes de Mantenimiento</label>
+            <InputSelect @bind-Value="oDevice.RecomendedDateOfMaintenance" class="form-control">
+                <option value="">Seleccione...</option>
+                @foreach (var mes in Meses)
+                {
+                    <option value="@mes">@mes</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label class="h5"> Tipo de Dispositivo</label>
+            <InputSelect @bind-Value="oDevice.TypeDeviceId" class="form-control">
+                <option value="">Seleccione...</option>
+                @foreach (var item in TDevices)
+                {
+                    <option value="@item.TypeDeviceId">@item.TypeDeviceName</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label class="h5">Modelo del dispositivo:</label>
+            <InputSelect @bind-Value="oDevice.ModelDeviceId" class="form-control">
+                <option value="">Modelo</option>
+                @foreach (var item in Models)
+	            {
+                    <option value="@item.ModelDeviceId">@item.ModelDeviceName</option>		 
+	            }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label class="h5">En funcionamiento</label>
+            <InputCheckbox @bind-Value="oDevice.IsActive"></InputCheckbox>
+        </div>
+        <div class="form-group">
+            <label class="h5">Cliente</label>
+            <InputSelect @bind-Value="oDevice.ClientId" class="form-control">
+                <option value="">Seleccione un Cliente...</option>
+                @foreach (var obj in Clients)
+                {
+                    <option value="@obj.Id">@obj.Name</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label class="h5">Cliente</label>
+            <InputSelect @bind-Value="oDevice.SaleManId" class="form-control">
+                <option value="">Seleccione un Vendedor...</option>
+                @foreach (var obj in SaleMans)
+                {
+                    <option value="@obj.SaleManId">@obj.Name</option>
+                }
+            </InputSelect>
+        </div>
+    </EditForm>
+    <input type="button" value="Registrar Equipo" @onclick="SaveDevice"  class=" btn-group btn-light"/>
+    <div class="text-center" >
+        <label class="text-center" style="color: red">@Message</label>
+    </div>
+</div>
+
+
+@code   {
+    DeviceEntity oDevice = new DeviceEntity();
+    List<ClientEntity> Clients = new List<ClientEntity>();
+    List<SaleManEntity> SaleMans = new List<SaleManEntity>();
+    List<CountryEntity> Countries = new List<CountryEntity>();
+    List<TypeDeviceEntity> TDevices = new List<TypeDeviceEntity>();
+    List<ModelDeviceEntity> Models = new List<ModelDeviceEntity>();
+    string[] Meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+    string Message;
+    protected override async Task OnInitializedAsync()
+    {
+        Clients = B_Client.ListOfClients();
+        SaleMans = B_SaleMan.ListOfSaleMans();
+        Countries = B_Country.ListOfCountries();
+        TDevices = B_TypeDevice.ListOfTDevices();
+        Models = B_ModelDevice.ListOfModels();
+
+    }
+
+
+    private void SaveDevice()
+    {
+        if(oDevice.ClientId != null)
+        {
+            oDevice.RecomendedDateOfMaintenance = oDevice.InstallationDate.AddYears(1);
+            B_Device.CreateDevice(oDevice);
+            Nav.NavigateTo("device/list");
+        }
+        else
+        {
+            Message = "Error verifica los campos";
+        }
+
+
+    }
+}
+
+

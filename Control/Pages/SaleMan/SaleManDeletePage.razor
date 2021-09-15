@@ -1,0 +1,17 @@
+﻿@page "/saleman/delete/{SaleManId}"
+
+
+<div>
+    <h2 class="text-center">Eliminar Vendedor</h2>
+    <hr />
+    <SalemanDeleteComponent SaleMandId="@SaleManId.ToString()"/>
+</div>
+
+@code{
+    [Parameter]
+    public string SaleManId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        SaleManId = SaleManId;
+    }
+}

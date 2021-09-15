@@ -1,0 +1,40 @@
+﻿@using Business;
+@using Entities;
+
+
+
+
+<table class="table table-hover table-striped table-responsive-sm " >
+    <thead>
+        <tr>
+            <th> Referencia </th>
+            <th> Nombre </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in SaleMans)
+        {
+            <tr>
+                <td> @obj.SaleManId</td>
+                <td> @obj.Name</td>
+                <td> <a href="saleman/view/@obj.SaleManId.ToString()"> Ver </a></td>
+                <td> <a  href="saleman/update/@obj.SaleManId.ToString()"> Modificar</a></td>
+                <td> <a style="color:red" href="saleman/delete/@obj.SaleManId.ToString()"> Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table> 
+
+
+
+@code{
+    List<SaleManEntity> aux = new List<SaleManEntity>();
+    IEnumerable<SaleManEntity> SaleMans;
+    protected override async Task OnInitializedAsync()
+    {
+        aux = B_SaleMan.ListOfSaleMans();
+        SaleMans = aux.OrderBy(S => S.Name);
+    }
+} 

@@ -1,0 +1,53 @@
+﻿@using Entities;
+@using Business;
+
+<table class="table table-hover table-striped table-responsive-sm ">
+    <thead>
+        <tr>
+            <th>Numéro de serie</th>
+            <th>Alias</th>
+            <th>Cliente</th>
+            <th>Día del Reporte</th>
+            <th>Encargado</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Incidents)
+        {
+        <tr>
+            <td>@obj.DeviceId</td>
+            <td>@obj.Device.Alias</td>
+            <td>@obj.Device.Client.Name</td>
+            <td>@obj.ReportDate</td>
+            <td>@obj.Technician.TechnicianName</td>
+            <td><a href="incident/view/@obj.IncidentId" >Ver</a></td>
+            <td><a href="incident/update/@obj.IncidentId">Editar</a></td>
+            <td><a  style="color:red" href="incident/delete/@obj.IncidentId">Eliminar</a></td>
+        </tr> 
+        }
+    </tbody>
+</table>
+
+
+
+@code {
+    [Parameter]
+    public string _DeviceId { get; set; }
+    List<IncidentEntity> Incidents = new List<IncidentEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(_DeviceId != null)
+        {
+            Incidents = B_Incident.GetListOfIncidentsByDevice(_DeviceId);
+        }
+        else
+        {
+            Incidents = B_Incident.GetListOfIncidents();
+        }
+    }
+
+}

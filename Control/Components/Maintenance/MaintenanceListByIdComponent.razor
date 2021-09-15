@@ -1,0 +1,43 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td> Numero Serie</td>
+            <td> Fecha de Mantenimiento </td>
+            <td> Técnico</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Maintenances)
+        {
+            <tr>
+                <td> @obj.DeviceId </td>
+                <td> @obj.MaintenanceDate.ToShortDateString()</td>
+                <td> @obj.Technician.TechnicianName</td>
+                <td> <a href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
+                <td> <a href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
+                <td> <a style="color:red" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
+            </tr>            
+        }
+    </tbody>
+</table>
+
+
+@code {
+    [Parameter]
+    public string id { get; set;}
+    List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Maintenances = B_Maintenance.ListOfMaintenancesById(id);
+    }
+}

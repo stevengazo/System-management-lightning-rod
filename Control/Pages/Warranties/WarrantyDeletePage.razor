@@ -1,0 +1,25 @@
+﻿@page "/warranty/delete/{WarrantyId}"
+
+
+
+
+
+<div class="text-center">
+    <h2> Eliminación de la Garantia</h2>
+    <WarrantyDeleteComponent WarrantyId="@WarrantyId.ToString()" />
+</div>
+
+
+
+
+
+@code {
+    [Parameter]
+    public string WarrantyId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        WarrantyId = WarrantyId;
+    }
+} 

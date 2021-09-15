@@ -1,0 +1,94 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<div class="align-center form-group row">
+    <div class="col">
+        <input class="rounded form-control" type="text" @bind="ClientIdToSearch" placeholder="Id de Referencia"/>
+    </div>
+    <div class="col">
+        <input class="rounded form-control" type="text" @bind="NameToSearch" placeholder="Nombre de Cliente" />
+    </div>
+    <div class="col">
+        <select class="rounded form-control"  @bind="SectorToSearch" >
+            <option value=0>Sector</option>
+            @foreach (var item in Sectors)
+            {
+                <option value="@item.SectorId">@item.SectorName</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="align-center form-group row">
+    <div class="col">
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="SearchClients" />
+    </div>
+    <div class="col">
+        <input type="button" value="Limpiar" class="btn btn-outline-dark form-control " @onclick="CleanValues" />
+    </div>
+</div>
+<p class="text-center" style="color:red"> @ErrorMessage</p>
+
+
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td> Referencia</td>
+            <td> Nombre</td>
+            <td> </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Clients)
+        {
+            <tr>
+                <td> @obj.Id </td>
+                <td> @obj.Name </td>
+                <td><a href="client/view/@obj.Id">Ver</a></td>
+                <td> <a href="client/update/@obj.Id"> Modificar</a></td>
+                <td> <a style="color:red" href="/client/delete/@obj.Id"> Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code{
+    List<ClientEntity> Clients = new List<ClientEntity>();
+    List<ClientEntity> tmpClients = new List<ClientEntity>();
+    List<SectorEntity> Sectors = new List<SectorEntity>();
+    string ClientIdToSearch = null;
+    string NameToSearch = null;
+    string ErrorMessage = null;
+    int SectorToSearch = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Sectors = B_Sectors.ListOfSectors();
+    }
+
+    private void CleanValues()
+    {
+        NameToSearch = null;
+        ClientIdToSearch = null;
+    }
+    private void SearchClients()
+    {
+        Clients = B_Client.SearchClients(NameToSearch, ClientIdToSearch,SectorToSearch);
+        if (Clients.Count <= 0)
+        {
+            ErrorMessage = "No hay clientes con los parametros especificados";
+        }
+        else
+        {
+            ErrorMessage = "";
+        }
+    }
+}
+
+
+
+

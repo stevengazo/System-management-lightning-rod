@@ -1,0 +1,54 @@
+﻿@using Business;
+@using Entities;
+
+
+<table class="table table-responsive-sm table-bordered table-hover table-light">
+    <thead>
+        <tr>
+            <td>Categoria</td>
+            <td>Información</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Referencia</td>
+            <td>@oWarranty.Id</td>
+        </tr>
+        <tr>
+            <td>Numero de serie</td>
+            <td>@oWarranty.DeviceId</td>
+        </tr>
+        <tr>
+            <td>Fecha de envio a España</td>
+            <td>@oWarranty.DateSend.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Fecha de recepción de España</td>
+            <td>@oWarranty.DateReceived.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td>Estatus de garantia</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Notas</td>
+            <td>@oWarranty.Notes</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
+@code {
+    [Parameter]
+    public string WarrantyId { get; set; }
+
+    WarrantyEntity oWarranty = new WarrantyEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        oWarranty= B_Warranty.WarrantyById(WarrantyId);
+    }
+}

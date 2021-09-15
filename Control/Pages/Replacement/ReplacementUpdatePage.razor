@@ -1,0 +1,18 @@
+﻿@page "/replacement/update/{Replacementid}"
+
+<div>
+    <h1> Actualización del Reeplamzo</h1>
+    <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
+    <hr />
+   <ReplacementUpdateComponent Id="@ReplacementId.ToString()"/>
+</div>
+
+
+@code{
+    [Parameter]
+    public string ReplacementId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ReplacementId = ReplacementId;
+    }
+}

@@ -1,0 +1,20 @@
+﻿@page "/client/delete/{ClientId}"
+
+
+
+<div>
+    <h2 class="text-center">Eliminar Cliente</h2>
+    <hr />
+    <DeleteClientComponent id="@ClientId.ToString()"/>
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string ClientId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ClientId = ClientId;
+    }
+}

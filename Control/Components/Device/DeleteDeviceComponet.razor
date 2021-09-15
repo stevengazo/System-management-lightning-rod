@@ -1,0 +1,58 @@
+﻿@using Entities;
+@using Business;
+
+@inject NavigationManager Nav;
+
+<h3 class="text-center">Desear Eliminar el equipo numero de serie @oDevice.DeviceId</h3>
+<div class="align-content-center">    
+    <table class="table table-sm table-light table-hover">
+        <tbody>
+            <tr>
+                <th>Alias</th>
+                <td>@oDevice.Alias</td>
+            </tr>
+            <tr>
+                <th>Cliente</th>
+                <td>@oDevice.Client.Name</td>
+            </tr>
+            <tr>
+                <th>Vendedor</th>
+                <td>@oDevice.SaleMan.Name</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Verifica las dependencias y la informacion que vas a eliminar... </p>
+    
+    <input type="button" class="btn-danger" value="Deseo eliminar el equipo" @onclick="DeleteDevice" />
+    <input type="button" class="btn-light" value="Regresar a lista de equipos"  />
+    <p class="text-center" style="color:red"> @ErrorMessage</p>
+</div>
+
+
+@code{
+    [Parameter]
+    public string DeviceId { get; set; }
+
+    string ErrorMessage { get; set; }
+    DeviceEntity oDevice { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        oDevice = B_Device.DeviceById(DeviceId);
+    }
+
+    private void DeleteDevice()
+    {
+        bool BandDependency = B_Device.HaveDependence(oDevice);
+        if (BandDependency)
+        {
+            B_Device.DeleteDevice(oDevice);
+            Nav.NavigateTo("device/list");
+        }
+        else
+        {
+            ErrorMessage = "El equipo tiene vinculos en otras tablas... Elimina los vinculos e intentalo de nuevo";
+        }
+
+    }
+}

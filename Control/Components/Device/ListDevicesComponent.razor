@@ -1,0 +1,125 @@
+﻿@using Entities;
+@using Business;
+
+
+
+
+<div class="row justify-content-center">
+    @for (int i = 1; i < NumberOfPages; i++)
+    {
+        var buttonNumber = i;
+        <input type="button" class="btn btn-light" value="@buttonNumber" @onclick="@(e=> ChancePage(e,buttonNumber))" />
+    }
+
+</div>
+
+<div>
+    <table class="table table-hover table-striped table-responsive-sm ">
+        <thead>
+            <tr>
+                <th> Numero de Serie</th>
+                <th> Alias</th>
+                <th> Fecha de Instalación</th>
+                <th> Vendedor</th>
+                <th> Cliente</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Devices)
+            {
+                <tr>
+                    <td> @obj.DeviceId</td>
+                    <td> @obj.Alias</td>
+                    <td> @obj.InstallationDate.Date</td>
+                    <td> @obj.SaleMan.Name</td>
+                    <td> @obj.Client.Name</td>
+                    <td> <a href="device/view/@obj.DeviceId"> Ver </a></td>
+                    <td> <a href="device/update/@obj.DeviceId"> Modificar</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+@code {  
+    #region Public Parametres
+
+    /// Public Variables   
+    [Parameter]
+    public string ClientId { get; set; }
+
+    [Parameter]
+    public string SaleMandId { get; set; }
+
+    #endregion
+
+    #region Internal Parametres
+
+    int SelectedPage = 1;
+    /// Internal Variables 
+    int NumberOfPages = 1;
+    int Quantity = 25;
+    List<DeviceEntity> Devices = new List<DeviceEntity>();
+
+
+    #endregion
+
+    #region Methods
+
+    protected override async Task OnInitializedAsync()
+    {
+        QuantityOfPages();   
+        Search();
+    }
+
+    private void QuantityOfPages()
+    {
+        double aux = 0f;
+        if ((ClientId != null) && (SaleMandId == null))
+        {
+            aux = B_Device.CountDevicesByClient(ClientId) / Quantity;
+        }
+        else if ((ClientId == null) && (SaleMandId != null))
+        {
+            aux = B_Device.CountDevicesBySaleMan(SaleMandId) / Quantity;
+        }
+
+        if (aux > (aux + 0.01f))
+        {
+            NumberOfPages = (int)Math.Ceiling(aux);
+        }
+        else
+        {
+            NumberOfPages = (int)Math.Ceiling(aux);
+            NumberOfPages += 1;
+        }
+    }
+
+
+    private void ChancePage(MouseEventArgs e, int buttonNumber)
+    {
+        SelectedPage = buttonNumber;
+        Search();
+    }
+
+
+    private void Search()
+    {
+        if ((ClientId != null) && (SaleMandId == null))
+        {
+
+            Devices = B_Device.GetDevicesByClient(ClientId, Quantity, SelectedPage);
+        }
+        else if ((ClientId == null) && (SaleMandId != null))
+        {
+            Devices = B_Device.GetDevicesBySaleman(SaleMandId, Quantity, SelectedPage);
+        }
+
+    }
+
+    #endregion
+}

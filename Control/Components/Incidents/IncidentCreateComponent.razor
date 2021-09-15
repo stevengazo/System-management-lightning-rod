@@ -1,0 +1,71 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+<EditForm Model="oIncident">
+    <div class="form-group">
+        <label>Fecha del Reporte del cliente</label>
+        <InputDate class="form-control" @bind-Value="oIncident.ReportDate"></InputDate>
+    </div>
+    <div class="form-group">
+        <label>Fecha del Incidente</label>
+        <InputDate class="form-control" @bind-Value="oIncident.IncidentDate"></InputDate>
+    </div>
+    <div class="form-group">
+        <label>Fecha de revisón</label>
+        <InputDate class="form-control" @bind-Value="oIncident.IncidentDate"></InputDate>
+    </div>
+    <div class="form-group">
+        <label>Fecha envio reporte</label>
+        <InputDate class="form-control" @bind-Value="oIncident.SendReportDate"></InputDate>
+    </div>
+    <div class="form-group">
+        <label>Descripción del Reporte del cliente</label>
+        <InputTextArea class="form-control" @bind-Value="oIncident.ReportDescripcion"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label>Información de la revisión</label>
+        <InputTextArea class="form-control" @bind-Value="oIncident.RevisionInformation"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label>Estatus del dispositivo RAYOS-NO</label>
+        <InputTextArea class="form-control" @bind-Value="oIncident.DDCEStatus"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label>Recomendaciones </label>
+        <InputTextArea class="form-control" @bind-Value="oIncident.Recomentations"></InputTextArea>
+    </div>
+    <div class="form-group">
+        <label>Contacto del cliente</label>
+        <InputText class="form-control" @bind-Value="oIncident.Recomentations"></InputText>      
+    </div>
+    <div class="form-group">
+        <label>Numero de serie</label>
+        <InputSelect @bind-Value="oIncident.DeviceId" class="form-control">
+            <option value="">Seleccione un equipo...</option>
+            @foreach (var obj in Devices)
+            {
+                <option value="@obj.DeviceId">@obj.Client.Name - @obj.DeviceId </option>
+            }
+        </InputSelect>
+    </div>
+</EditForm>
+<div>
+    <input  type="button" value="Guardar Incidente" @onclick="SaveIncident"/>
+</div>
+
+@code{
+    IncidentEntity oIncident = new IncidentEntity();
+    List<DeviceEntity> Devices = new List<DeviceEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Devices = B_Device.ListOfDevices().OrderBy(D=>D.ClientId).ToList();
+    }
+
+    private void SaveIncident()
+    {
+        B_Incident.CreateIncident(oIncident);
+        Nav.NavigateTo("incident/list");
+    }
+}

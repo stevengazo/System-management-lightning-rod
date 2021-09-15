@@ -1,0 +1,38 @@
+﻿@using Entities;
+@using Business;
+
+@inject NavigationManager Nav;
+
+<EditForm Model="oSaleMan">
+    <div class="form-group">
+        <label>Nombre: </label>
+        <InputText @bind-Value="oSaleMan.Name" class="form-control"></InputText>
+    </div>
+</EditForm> 
+<input type="button"  value="Guardar Vendedor" @onclick="SaveSaleMan"/> 
+<div class="text-center" >
+    <label style="color:red">@message</label>
+</div>
+
+
+
+@code {
+    SaleManEntity oSaleMan = new SaleManEntity();
+    string message;
+
+    private void SaveSaleMan()
+    {
+        oSaleMan.SaleManId = Guid.NewGuid().ToString();
+        if (oSaleMan.Name== null)
+        {
+            message = "El nombre se encuentra vacio";
+        }
+        else
+        {
+
+            B_SaleMan.CreateSaleMan(oSaleMan);
+            Nav.NavigateTo("saleman/list");
+        }
+    }
+
+}

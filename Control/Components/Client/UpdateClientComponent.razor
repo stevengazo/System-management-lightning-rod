@@ -1,0 +1,38 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+<EditForm Model="@oClient">
+    <div class="form-group">
+        <label>Nombre del cliente</label>
+        <InputText @bind-Value="oClient.Name" class="form-control"></InputText>
+    </div>
+    <input type="button" value="Actualizar Cliente" @onclick="UpdateClient" />
+    <label style="color:red">@Message</label>
+</EditForm>
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+    string Message;
+    ClientEntity oClient = new ClientEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        oClient = B_Client.ClientById(id);
+    }
+
+    private void UpdateClient()
+    {
+        if (oClient.Name== null)
+        {
+            Message = "El campo nombre se encuentra vacio";
+        }
+        else 
+        {
+            B_Client.UpdateClient(oClient);
+            Nav.NavigateTo("client/list");
+        }
+    }
+
+}

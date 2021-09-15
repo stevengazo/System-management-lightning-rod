@@ -1,0 +1,52 @@
+﻿@using Entities;
+@using Business;
+
+<div>
+    <select class="form-control" @onchange="SelectYear">
+        <option value="0">Selecione un valor...</option>
+        @foreach (var item in listYear)
+        {
+            <option value="@item">@item</option>
+        }
+    </select>
+    <table class="table table-responsive-sm">
+        <thead>
+            <tr>
+                <td>Serie</td>
+                <td>Año</td>
+                <td>Técnico Encargado</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var i in listMaintenance)
+            {
+            <tr>
+                <td>@i.DeviceId</td>                
+                <td>@i.MaintenanceDate.Year</td>
+                <td>@i.Technician.TechnicianName</td>
+                <td> <a href="maintenance/view/@i.MaintenanceId"> Ver </a></td>
+                <td> <a href="maintenance/update/@i.MaintenanceId"> Modificar </a></td>
+            </tr>                
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+@code{
+    List<int> listYear= new List<int>();
+
+    List<MaintenanceEntity> listMaintenance = new List<MaintenanceEntity>();
+    protected override async Task OnInitializedAsync()
+    {
+        listYear = B_Maintenance.ListOfYears();
+    }
+
+    private void SelectYear(ChangeEventArgs e)
+    {
+        int.TryParse(e.Value.ToString(), out int Year);
+        listMaintenance = B_Maintenance.ListOfMaintenanceByYear(Year);
+
+    }
+}

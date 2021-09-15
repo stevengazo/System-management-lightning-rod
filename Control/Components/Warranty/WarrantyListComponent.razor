@@ -1,0 +1,79 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<hr />
+<div class="form-group">
+    @for (int i = 1; i < NumberPages; i++)
+    {
+        var buttonNUmber = i;
+        <input type="button" value="@buttonNUmber" class="btn btn-light" @onclick="@(e=> ChangePage(e,buttonNUmber))" />
+    }
+</div>
+
+
+<table class=" table table-hover table-striped table-responsive-sm ">
+    <thead>
+        <tr>
+            <th> Numero de Serie del equipo </th>
+            <th> Fecha Envio España</th>
+            <th> Fecha Recepción España</th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Warranties)
+        {
+            <tr>
+                <td> @obj.DeviceId </td>
+                <td> @obj.DateSend</td>
+                <td> @obj.DateReceived</td>
+                <td> <a href="warranty/view/@obj.Id">Ver</a></td>
+                <td> <a href="warranty/update/@obj.Id">Modificar</a></td>
+                <td> <a  style="color:red" href="warranty/delete/@obj.Id">Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+@code {
+    List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
+
+    int NumberPages = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Warranties = B_Warranty.GetPaging(0, 40);
+        NumberOfPages();
+    }
+
+
+    private void NumberOfPages()
+    {
+        double aux = B_Warranty.Count()/ 40f;
+        if (aux > (aux + 0.0f))
+        {
+            NumberPages = (int)Math.Ceiling(aux);
+        }
+        else
+        {
+            NumberPages = (int)Math.Ceiling(aux);
+            NumberPages += 1;
+        }
+    }
+
+
+    private void ChangePage(MouseEventArgs e, int ButtonNumber)
+    {
+        var aux = B_Warranty.GetPaging(ButtonNumber, 40);
+        Warranties = aux;
+    }
+}  

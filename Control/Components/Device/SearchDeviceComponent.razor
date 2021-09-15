@@ -1,0 +1,143 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<div>
+    <div class="form-group row">
+        <div class="col">
+            <input type="text" @bind="DeviceIdToSearch" class="rounded form-control" placeholder="Serie" />
+        </div>
+        <div class="col">
+            <input type="text" @bind="AliasToSearch" class="rounded form-control" placeholder="Alias de Equipo" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-6">
+            <select class="rounded form-control" @bind="YearToSearch">
+                <option value="">Año...</option>
+                @foreach (var item in Years)
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
+        </div>
+        <div class="col-6">
+            <select class="rounded form-control" @bind="CountryToSearch">
+                <option value="">Pais...</option>
+                @foreach (var item in Countries)
+                {
+                    <option value="@item.CountryId">@item.CountryName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Buscar" @onclick="Search" />
+        </div>
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
+        </div>
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Exportar" />
+        </div>
+    </div>
+    <p class="text-center" style="color:red"> @ErrorMessage</p>
+</div>
+
+<hr />
+
+<div>
+    <table class="table table-hover table-striped table-responsive-sm ">
+        <thead>
+            <tr>
+                <th> Numero de Serie</th>
+                <th> Alias</th>
+                <th> Fecha de Instalación</th>
+                <th> Vendedor</th>
+                <th> Cliente</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Devices)
+            {
+            <tr>
+                <td> @obj.DeviceId</td>
+                <td> @obj.Alias</td>
+                <td> @obj.InstallationDate.Date.ToShortDateString()</td>
+                <td> @obj.SaleMan.Name</td>
+                <td> @obj.Client.Name</td>
+                <td> <a href="device/view/@obj.DeviceId"> Ver </a></td>
+                <td> <a href="device/update/@obj.DeviceId"> Modificar</a></td>
+                <td> <a style="color:red" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+@code {
+    #region Public Parametres
+
+
+    #endregion
+
+    #region Internal Parametres
+    /// Seach Variables
+
+    public int CountryToSearch { get; set; }
+
+    public int YearToSearch { get; set; }
+
+    public string AliasToSearch { get; set; }
+
+    public string DeviceIdToSearch { get; set; }
+
+    public string ErrorMessage { get; set; }
+
+
+    /// Internal Variables
+    List<int> Years = B_Device.ListOfYears();
+    List<DeviceEntity> Devices = new List<DeviceEntity>();
+    List<CountryEntity> Countries = new List<CountryEntity>();
+
+    #endregion
+
+    #region Methods
+
+    private void Clean()
+    {
+        CountryToSearch = 0;
+        YearToSearch = 0;
+        AliasToSearch = null;
+        DeviceIdToSearch = null;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Countries = B_Country.ListOfCountries();
+        Clean();
+    }
+
+    private void Search()
+    {
+        Devices = B_Device.GetDevicesByConsult(DeviceIdToSearch, AliasToSearch, YearToSearch,CountryToSearch);
+        if (Devices.Count<= 0)
+        {
+            ErrorMessage = "No hay dispositivos que cumplan con los criterios de busqueda....";
+        }
+        else
+        {
+            ErrorMessage = null;
+        }
+        Clean();
+    }
+
+    #endregion
+}

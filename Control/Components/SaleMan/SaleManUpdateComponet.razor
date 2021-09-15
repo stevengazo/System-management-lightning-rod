@@ -1,0 +1,49 @@
+﻿@using Entities;
+@using Business;
+
+
+
+@inject NavigationManager Nav;
+
+<EditForm Model="oSaleMan">
+    <div class="form-group">
+        <label> Referencia: @oSaleMan.SaleManId</label>
+    </div>
+    <div class="form-group">
+        <label>Nombre: </label>
+        <InputText @bind-Value="oSaleMan.Name" class="form-control"></InputText>
+    </div>
+</EditForm>
+<input type="button" value="Actualizar Vendedor" @onclick="UpdateSaleMan" />
+<div class="text-center">
+    <label style="color:red">@message</label>
+</div>
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+
+    string message;
+    SaleManEntity oSaleMan = new SaleManEntity();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        oSaleMan = B_SaleMan.SaleManById(id);
+    }
+
+    private void UpdateSaleMan()
+    {
+        if(oSaleMan.Name.Length == 0)
+        {
+            message = "Verifica el campo nombre";
+        }
+        else
+        {
+            B_SaleMan.UpdateSaleMan(oSaleMan);
+            Nav.NavigateTo("saleman/list");
+        }
+    }
+}

@@ -1,0 +1,25 @@
+﻿@page "/device/list"
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+@using Microsoft.AspNetCore.Identity;
+
+
+
+<AuthorizeView Roles="Administrador,Lector">
+    <Authorized>
+        <div class="text-center">
+            <h2>Lista de Equipos RAYOS-NO</h2>
+            <a href="device/create"> Agregar nuevo dispositivo</a>
+            <hr />
+            <SearchDeviceComponent></SearchDeviceComponent>
+        </div>
+    </Authorized>
+    <NotAuthorized>        
+        <NotAvariableComponent> </NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+        @code {
+
+        }

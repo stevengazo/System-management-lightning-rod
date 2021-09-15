@@ -1,0 +1,78 @@
+﻿@using Entities;
+@using Business;
+
+
+<div class="form-group row">
+    <div class="col">
+        <label class="col-form-label"> Año a Seleccionar:</label>
+        <select class="rounded form-control" @onchange="Year">
+            <option value="0">Selecione un valor...</option>
+            @foreach (var item in listYear)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+    </div>
+    <div class="col"> 
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" />
+    </div>
+    <div class="col">
+        <input type="button" value="Generar" class="btn btn-outline-dark form-control" />
+    </div>
+</div>
+
+<div class="align-content-center">
+   
+    
+    
+ </div>
+
+<div>
+    <table class="table table-responsive-sm table-bordered table-hover table-light">
+        <thead>
+            <tr>
+                <td> Número de Serie</td>
+                <td> Alias</td>
+                <td> Día recomendado</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Devices)
+            {
+                <tr>
+                    <td>@i.DeviceId  </td>
+                    <td>@i.Alias</td>
+                    <td>@i.RecomendedDateOfMaintenance.ToShortDateString()</td>
+                    <td> <a href="device/view/@i.DeviceId"> Ver </a></td>
+                    <td> <a href="device/update/@i.DeviceId"> Modificar</a></td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+@code {
+
+    List<DeviceEntity> Devices = new List<DeviceEntity>();
+    List<int> listYear = new List<int>();
+    int SelectYear = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        listYear = B_Maintenance.ListOfYears();
+    }
+    private void Year(ChangeEventArgs e)
+    {
+        int.TryParse(e.Value.ToString(), out int Year);
+        var aux = B_Maintenance.GetDevicesWithoutMaintenancesByYear(Year.ToString());
+        Devices = aux;
+    }
+
+
+}

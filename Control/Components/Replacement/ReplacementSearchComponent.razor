@@ -1,0 +1,76 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<div class="form-group row">
+    <div class="col">
+        <input class="form-control rounded" type="text" @bind="IDToSearch" placeholder="Numero de Serie" />
+    </div>
+    <div class="col">
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control"  @onclick="Search" />    
+    </div>
+    <div class="col">
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="Search" />
+    </div>
+    <div class="col">
+        <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanValues" />
+    </div>
+</div>
+
+<p class="text-center" style="color:red"> @ErrorMessage</p>
+
+<table class="table table-hover table-striped table-responsive-sm ">
+    <thead>
+        <tr>
+            <th>Id de Referencia</th>
+            <th>Numero de serie reemplazado</th>
+            <th>Numero de serie nuevo</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Replacements)
+        {
+            <tr>
+                <td>@obj.ReplacementDeviceId</td>
+                <td>@obj.DeviceId</td>
+                <td>@obj.NewSerieDevice</td>
+                <td><a href="/replacement/view/@obj.ReplacementDeviceId.ToString()">Ver</a></td>
+                <td><a href="/replacement/update/@obj.ReplacementDeviceId.ToString()">Editar</a></td>
+                <td><a style="color:Red" href="">Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code{
+    List<ReplacementDeviceEntity> Replacements = new List<ReplacementDeviceEntity>();
+    string IDToSearch = null;
+    string ErrorMessage = null;
+
+    private void CleanValues()
+    {
+        IDToSearch = null;
+    }
+
+    private void Search()
+    {
+        if (IDToSearch != null)
+        {
+            Replacements = B_Replacement.ConsultReplacements(IDToSearch.ToString());
+            ErrorMessage = "";
+        }
+        else
+        {
+            ErrorMessage = "No hay coincidencias en la base de datos";
+        }
+
+    }
+
+}
+
+ 
