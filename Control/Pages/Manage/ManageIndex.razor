@@ -1,0 +1,24 @@
+﻿@page "/manage/Index"
+
+
+
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <h3>Administración</h3>
+        <hr />
+        <ListUsersComponent></ListUsersComponent>
+        <ListOfRolesComponent></ListOfRolesComponent>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+
+@code {
+
+}

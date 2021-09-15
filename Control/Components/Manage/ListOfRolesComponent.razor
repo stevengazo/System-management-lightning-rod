@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using Business;
+
+
+
+<h1>Lista de Usuarios Registrados</h1>
+<table class="table table-hover table-striped table-responsive-sm ">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Roles)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code{
+    List<IdentityRole> Roles = new List<IdentityRole>();
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        Roles = B_Manage.GetListOfRoles();
+    }
+}

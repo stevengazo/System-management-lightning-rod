@@ -37,11 +37,26 @@ namespace IdentityDataAccess
             return MyConnectionString;
         }
 
-        public IDBContext(DbContextOptions<IDBContext> options) : base(options)
+        public IDBContext() 
         {
-
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            GetConnectionString();
+            if (!options.IsConfigured)
+            {
+                options.UseSqlServer(MyConnectionString);
+            }
+        }
+
+
+        public IDBContext(DbContextOptions<IDBContext> options) : base(options)
+        {
+           
+        }
+
+        
        protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
