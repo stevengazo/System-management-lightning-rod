@@ -1,0 +1,48 @@
+﻿@using Business;
+@using Microsoft.AspNetCore.Identity;
+
+
+
+
+<h3>CreateUserComponent</h3>
+
+
+
+<EditForm Model="User">
+    <div class="form-group">
+        <label class="col-form-label-lg">Id</label>
+        <InputText @bind-Value="@User.Id" class="form-control" >@Guid.NewGuid().ToString()</InputText>
+    </div>
+    <div class="form-group">
+        <label class="col-form-label-lg">Correo</label>
+        <InputText @bind-Value="@User.Email" class="form-control" placeholder="Correo"></InputText>
+    </div>
+    <div class="form-group">
+        <label class="col-form-label-lg">Nombre de Usuario</label>
+        <InputText @bind-Value="@User.PhoneNumber" class="form-control"></InputText>
+    </div>
+</EditForm>
+<input type="button" value="Guardar" class="btn-info" @onclick="Save" />
+
+@code {  
+    IdentityUser User = new IdentityUser();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        base.OnInitializedAsync();
+
+
+    }
+
+    private void Save()
+    {
+        User.NormalizedUserName = User.UserName.ToUpper();
+        User.NormalizedEmail = User.Email.ToUpper();
+        User.EmailConfirmed = true;
+        B_Manage.CreateUser(User, Password);
+    }
+
+
+}
