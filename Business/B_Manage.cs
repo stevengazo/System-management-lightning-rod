@@ -7,24 +7,30 @@ using Entities;
 using DataAccess;
 using IdentityDataAccess;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 namespace Business
 {
     public static class B_Manage
     {
         public static void CreateUser()
         {
-            using(var IdentityDB= new IDBContext())
+            using (var IdentityDB = new IDBContext())
             {
-                UserManager<IdentityUser> userManager;
-                var s = userManager.FindByNameAsync("steven.gazo@grupomecsa.net");
-                var ss = s;
-                
-                
-                IdentityDB.Users.Add(user);
+                var roleStore = (IRoleStore<IdentityRole>)new RoleStore<IdentityRole>(IdentityDB);
+                var roleManager = new RoleManager<IdentityRole>(roleStore, null, null, null, null);
 
-                IdentityDB.SaveChanges();
+                var userStore = new UserStore<IdentityUser>(IdentityDB);
+                var userManager = new UserManager<IdentityUser>()
+
+
             }
         }
+
+    } 
+}
+
+
         public static List<IdentityRole> GetListOfRoles()
         {
             using (var IdentityDB = new IDBContext())
