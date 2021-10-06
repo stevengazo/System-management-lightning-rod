@@ -1,6 +1,7 @@
 ﻿@using Business;
 @using Microsoft.AspNetCore.Identity;
 
+@inject UserManager<IdentityUser> Usermanager;
 
 
 
@@ -26,7 +27,7 @@
 
 @code {  
     IdentityUser User = new IdentityUser();
-
+    string password = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,7 +42,8 @@
         User.NormalizedUserName = User.UserName.ToUpper();
         User.NormalizedEmail = User.Email.ToUpper();
         User.EmailConfirmed = true;
-        B_Manage.CreateUser(User, Password);
+        B_Manage.CreateUser(User, password, Usermanager);
+
     }
 
 

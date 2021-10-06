@@ -11,19 +11,10 @@ namespace Business
 {
     public static class B_Manage
     {
-        public static void CreateUser()
+        public static void CreateUser(IdentityUser User, string password, UserManager<IdentityUser> userManager)
         {
-            using(var IdentityDB= new IDBContext())
-            {
-                UserManager<IdentityUser> userManager;
-                var s = userManager.FindByNameAsync("steven.gazo@grupomecsa.net");
-                var ss = s;
-                
-                
-                IdentityDB.Users.Add(user);
-
-                IdentityDB.SaveChanges();
-            }
+         var result =  userManager.CreateAsync(User, password);
+         
         }
         public static List<IdentityRole> GetListOfRoles()
         {
@@ -40,5 +31,8 @@ namespace Business
                 return query;
             }
         }
+
+
+
     }
 }
