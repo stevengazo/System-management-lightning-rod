@@ -1,5 +1,5 @@
 # RNControl-WebApp
-Proyecto de registro y control de sistemas Rayos No - Grupo Mecsa
+Proyecto de registro y control de sistemas de pararrayos
 
 Este proyecto consta de las siguientes funciones:
 
