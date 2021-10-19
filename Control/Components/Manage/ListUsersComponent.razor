@@ -3,14 +3,12 @@
 
 
 
-<h1>Lista de Usuarios Registrados</h1>
+
 <table class="table table-hover table-striped table-responsive-sm ">
     <thead>
         <tr>
-            <th>Id</th>
             <th>Nombre de Usuario</th>
             <th>Correo</th>
-            <th>Numero de Telefono</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -18,13 +16,11 @@
         @foreach (var item in Users)
         {
         <tr>
-            <td>@item.Id</td>
             <td>@item.UserName</td>
             <td>@item.Email</td>
-            <td>@item.PhoneNumber</td>
-            <td><a >Ver</a></td>
-            <td><a>Editar</a></td>
-            <td><a class="text-danger">Eliminar</a></td>
+            <td><a href="/" >Ver</a></td>
+            <td><a href="/">Editar</a></td>
+            <td><a href="/" class="text-danger">Eliminar</a></td>
         </tr>
         }
     </tbody>

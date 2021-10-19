@@ -9,13 +9,14 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 
+
 @if (SignInManager.IsSignedIn(User))
 {
     var isValid = User.IsInRole("Administrador");
     if (isValid)
     {
-        <div class="row">
-            <div class="col-md-4">
+        <div class="container justify-content-between ">
+            <div >
                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <h4>Create a new account.</h4>
                     <hr />
