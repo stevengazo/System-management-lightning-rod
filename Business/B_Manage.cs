@@ -7,6 +7,8 @@ using Entities;
 using DataAccess;
 using IdentityDataAccess;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 namespace Business
 {
     public static class B_Manage
