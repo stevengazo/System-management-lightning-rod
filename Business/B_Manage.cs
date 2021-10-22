@@ -20,6 +20,27 @@ namespace Business
         }
 
 
+        /// <summary>
+        /// check if exist 
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="RoleId"></param>
+        /// <returns>true is exist, false if not exist</returns>
+        public static bool CheckRole(string UserId, string RoleId)
+        {
+            using (var IdentityDB = new IDBContext())
+            {
+                var query = (from ur in IdentityDB.UserRoles select ur).Where(ur => ur.RoleId == RoleId && ur.UserId == UserId).FirstOrDefault();
+                if (query != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
         public static void AddRole(string UserId,string RoleId)
         {
             using (var IdentityDB = new IDBContext())

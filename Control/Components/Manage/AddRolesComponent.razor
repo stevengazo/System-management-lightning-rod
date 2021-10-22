@@ -10,6 +10,7 @@
     <div class="form-group">
         <label>Seleccione el usuario</label>
         <select @bind="@SelectedUserId" class="form-control">
+            <option value="0">Seleccione un usuario</option>
             @foreach (IdentityUser item in ListOfUsers)
             {
                 <option value="@item.Id">@item.UserName</option>
@@ -19,6 +20,7 @@
     <div class="form-group">
         <label>Seleccione el rol</label>
         <select @bind="@SelectedRoleId"  class="form-control">
+            <option value="0">Seleccione un Rol</option>
             @foreach (IdentityRole item in ListOfRoles)
             {
                 <option value="@item.Id">@item.Name</option>
@@ -28,7 +30,7 @@
     <div>
         <input type="button" value="Añadir Rol" @onclick="AddRole" />
     </div>
-
+        <p class="text-center" style="color:red"> @errormessage</p>
 </div>
 
 
@@ -40,7 +42,7 @@
 @code {
     string SelectedUserId;
     string SelectedRoleId;
-
+    string errormessage = "";
 
     List<IdentityUser> ListOfUsers = new List<IdentityUser>();
     List<IdentityRole> ListOfRoles = new List<IdentityRole>();
@@ -48,7 +50,25 @@
 
     private void AddRole()
     {
-        B_Manage.AddRole(SelectedUserId,SelectedRoleId);
+        if( (SelectedRoleId == null) || (SelectedUserId ==null))
+        {
+            errormessage = "Seleccione un rol y usuario";
+        }
+        else
+        {
+            bool exitBand = B_Manage.CheckRole(SelectedUserId, SelectedRoleId);
+            if (!exitBand)
+            {
+                B_Manage.AddRole(SelectedUserId, SelectedRoleId);
+                errormessage = "Rol agregado con exito";
+            }
+            else
+            {
+                errormessage = "El usuario ya posee el rol";
+            }
+        }
+
+
 
     }
 
@@ -63,6 +83,6 @@
     }
 
 
-    
+
 
 }
