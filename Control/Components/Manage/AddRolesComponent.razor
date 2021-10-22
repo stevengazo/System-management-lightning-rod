@@ -1,0 +1,68 @@
+﻿@using Entities;
+@using IdentityDataAccess;
+@using Business;
+@using Microsoft.AspNetCore.Identity;
+
+
+
+<p>Añadir roles al usuario</p>
+<div >
+    <div class="form-group">
+        <label>Seleccione el usuario</label>
+        <select @bind="@SelectedUserId" class="form-control">
+            @foreach (IdentityUser item in ListOfUsers)
+            {
+                <option value="@item.Id">@item.UserName</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Seleccione el rol</label>
+        <select @bind="@SelectedRoleId"  class="form-control">
+            @foreach (IdentityRole item in ListOfRoles)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+    </div>
+    <div>
+        <input type="button" value="Añadir Rol" @onclick="AddRole" />
+    </div>
+
+</div>
+
+
+
+
+
+
+
+@code {
+    string SelectedUserId;
+    string SelectedRoleId;
+
+
+    List<IdentityUser> ListOfUsers = new List<IdentityUser>();
+    List<IdentityRole> ListOfRoles = new List<IdentityRole>();
+
+
+    private void AddRole()
+    {
+        B_Manage.AddRole(SelectedUserId,SelectedRoleId);
+
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        ListOfUsers = B_Manage.ListOfUsers();
+        ListOfRoles = B_Manage.GetListOfRoles();
+
+    }
+
+
+    
+
+}

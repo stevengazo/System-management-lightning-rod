@@ -6,13 +6,17 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 using Control.Areas.Identity.Pages.Account.Manage;
+using Microsoft.IdentityModel;
 namespace Control.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+
+        private UserManager<IdentityUser> UserManager;
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, UserManager<IdentityUser> userManager)
             : base(options)
         {
+            this.UserManager = userManager;
         }
 
 
@@ -40,7 +44,24 @@ namespace Control.Data
                 ConcurrencyStamp = Guid.NewGuid().ToString()
             };
             builder.Entity<IdentityRole>().HasData(Admin, Editor, Lector);
-    
+
+            /// GENERAR NUEVO USUARIO DE TIPO ADMINISTRADOR
+
+            string password = "admin1213$";
+            IdentityUser user = new IdentityUser()
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "admin",
+                Email = "admin@sample.com",
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                EmailConfirmed = true,
+            };
+            UserManager.AddPasswordAsync(user, password);
+            builder.Entity<IdentityUser>().HasData(user);
+
+       
+
+
         }
     }
 }
