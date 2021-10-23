@@ -244,6 +244,9 @@ namespace Business
             }
         }
 
+
+
+
         /// <summary>
         /// Get the maintenances by the device id
         /// </summary>
@@ -309,7 +312,7 @@ namespace Business
         {
             using (var DB = new RayosNoDataContext())
             {
-                return DB.Maintenances.Include(D=>D.Device).ToList().LastOrDefault(M => M.MaintenanceId == id);   
+                return DB.Maintenances.Include(D=>D.Device).Include(T=>T.Technician).ToList().LastOrDefault(M => M.MaintenanceId == id);   
             }
         }
         /// <summary>
@@ -351,6 +354,7 @@ namespace Business
             {
                 DB.Maintenances.Add(oMaintenance);
                 DB.SaveChanges();
+
             }
         }
         /// <summary>
