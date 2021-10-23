@@ -29,12 +29,6 @@
         <InputNumber class="form-control" @bind-Value="oMaintenance.Ampers"></InputNumber>
     </div>
     <div class="form-group">
-        <label>Nombre del Técnico</label>
-        <InputSelect class="form-control" @bind-Value="oMaintenance.TechnicianId">
-            <option value=""></option>
-        </InputSelect>
-    </div>
-    <div class="form-group">
         <label>Numero de Informe</label>
         <InputText class="form-control" @bind-Value="oMaintenance.ReportId"></InputText>
     </div>
@@ -43,12 +37,36 @@
         <InputTextArea class="form-control" @bind-Value="oMaintenance.Recomendations"></InputTextArea>
     </div>
     <div class="form-group">
-        <label>Numero de Informe</label>
+        <label>Numero de Equipo</label>
         <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId">
-            <option value="0"> Seleccione un equipo...</option>
-            @foreach (var Device in oDevices)
+            @if (oDevices.Count != 0)
             {
-                <option value="@Device.Key"> @Device.Value - @Device.Key </option>
+                <option value=""> Seleccione un equipo...</option>
+                @foreach (var Device in oDevices)
+                {
+                    <option value="@Device.DeviceId">@Device.DeviceId - @Device.Client.Name </option>
+                }
+            }
+            else
+            {
+                <option value="">No hay dispositivos activos</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label>Tecnico encargado</label>
+        <InputSelect class="form-control" @bind-Value="oMaintenance.TechnicianId">
+            @if (technicians.Count != 0)
+            {
+                <option value="0"> Seleccione un Tecnico...</option>
+                @foreach (TechnicianEntity technician in technicians)
+                {
+                    <option value="@technician.TechnicianId">@technician.TechnicianName </option>
+                }
+            }
+            else
+            {
+                <option value="0">No hay tecnicos disponibles</option>
             }
         </InputSelect>
     </div>
@@ -60,7 +78,9 @@
     [Parameter]
     public string id { get; set; }
 
-    Dictionary<string, string> oDevices = B_Device.GetDictonaryOfDevicesWithClient();
+
+    List<TechnicianEntity> technicians = new List<TechnicianEntity>();
+    List<DeviceEntity> oDevices;
 
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
@@ -68,10 +88,20 @@
     {
         Devices = B_Device.ListOfDevices();
         oMaintenance = B_Maintenance.MaintenanceById(id);
+
+        oDevices = B_Device.GetListofDevicesActive();
+        technicians = B_Technician.GetListOftechnicians();
     }
 
     private void UpdateMaintenance()
     {
+
+
+        var tmpTechnician = technicians.Find(T => T.TechnicianId == oMaintenance.TechnicianId);
+        oMaintenance.Technician = tmpTechnician;
+        var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
+        oMaintenance.Device = tmpDevice;
+
         B_Maintenance.Update(oMaintenance);
         Nav.NavigateTo("maintenance/list");
     }
