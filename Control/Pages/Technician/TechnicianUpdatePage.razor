@@ -1,0 +1,23 @@
+﻿@page "/Technician/Update/{TechnicianId}"
+
+
+
+<div>
+    <h3>
+        Actualización de Tecnico
+    </h3>
+    <UpdateTechnicianComponent id="@TechnicianId.ToString()"></UpdateTechnicianComponent>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public string TechnicianId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        TechnicianId = TechnicianId;
+    }
+} 

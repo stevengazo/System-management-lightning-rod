@@ -1,0 +1,73 @@
+﻿@using Entities;
+@using Business;
+
+
+<p>Favor registra la información perteneciente a los técnicos o personal que pueden realizar mantenimientos </p>
+
+
+<EditForm Model="@Technician">
+    <div class="form-group">
+        <label>Nombre de la persona</label>
+        <InputText class="form-control" @bind-Value="@Technician.TechnicianName"></InputText>
+    </div>
+</EditForm>
+
+<input type="button" value="Guardar Persona" @onclick="UpdateTechnician" />
+<div class="text-center">
+    <label style="color:red">@message</label>
+</div>
+
+
+@code{
+
+    [Parameter]
+    public string id { get; set; }
+
+    TechnicianEntity Technician = new TechnicianEntity();
+    string message = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        int.TryParse(id,out int intid);
+
+
+        Technician = B_Technician.GetTechnicianById(intid);
+    }
+
+    private void UpdateTechnician()
+    {
+        try
+        {
+            if (Technician.TechnicianName.Equals(""))
+            {
+                message = "Nombre en blanco";
+            }
+            else
+            {
+                B_Technician.Update(Technician);
+                message = "Actualizado registrado";
+                clean();
+            }
+
+        }
+        catch (Exception error)
+        {
+            Console.WriteLine(error.Message);
+            message = $"Error, recargue la pagina e intentelo de nuevo";
+        }
+
+
+    }
+
+
+    void clean()
+    {
+        Technician.TechnicianName = "";
+    }
+
+}
+
+
