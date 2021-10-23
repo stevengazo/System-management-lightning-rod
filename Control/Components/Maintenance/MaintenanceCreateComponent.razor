@@ -4,13 +4,18 @@
 
 
 
-<EditForm Model="oMaintenance">
+
+
+
+
+
+<EditForm Model="oMaintenance"> 
     <div class="form-group">
         <label>Fecha de Mantenimiento</label>
         <InputDate class="form-control" @bind-Value="oMaintenance.MaintenanceDate"></InputDate>
     </div>
     <div class="form-group">
-        <label> Estado del dispositivo</label>
+        <label>Estatus del dispositivo</label>
         <InputTextArea class="form-control" @bind-Value="oMaintenance.StatusOfDevice"></InputTextArea>
     </div>
     <div class="form-group">
@@ -26,10 +31,6 @@
         <InputNumber class="form-control" @bind-Value="oMaintenance.Ampers"></InputNumber>
     </div>
     <div class="form-group">
-        <label>Nombre del Técnico</label>
-        <InputText class="form-control" @bind-Value="oMaintenance.Technician.TechnicianName"></InputText>
-    </div>
-    <div class="form-group">
         <label>Numero de Informe</label>
         <InputText class="form-control" @bind-Value="oMaintenance.ReportId"></InputText>
     </div>
@@ -39,19 +40,45 @@
     </div>
     <div class="form-group">
         <label>Numero de Equipo</label>
-        <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId" >
-            <option value="0"> Seleccione un equipo...</option>
-            @foreach (var Device in oDevices)
-	        {       
-        <option value="@Device.Key">@Device.Value - @Device.Key </option>	 
-	        }
-        </InputSelect>        
-    </div>    
+        <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId">
+            @if (oDevices.Count != 0)
+            {
+                <option value=""> Seleccione un equipo...</option>
+                @foreach (var Device in oDevices)
+                {
+                    <option value="@Device.DeviceId">@Device.DeviceId - @Device.Client.Name </option>
+                }
+            }
+            else
+            {
+                <option value="">No hay dispositivos activos</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label>Tecnico encargado</label>
+        <InputSelect class="form-control" @bind-Value="oMaintenance.TechnicianId">
+            @if (technicians.Count != 0)
+            {
+                <option value="0"> Seleccione un Tecnico...</option>
+                @foreach (TechnicianEntity technician in technicians)
+                {
+                    <option value="@technician.TechnicianId">@technician.TechnicianName </option>
+                }
+            }
+            else
+            {
+                <option value="0">No hay tecnicos disponibles</option>
+            }
+        </InputSelect>
+    </div>
     <div>
         <label>¿Numero de serie no visble?</label>
-        <a href="device/create"  target="_blank"> Crear dispositivo</a>
+        <a href="device/create" target="_blank"> Crear dispositivo</a>
     </div>
+
 </EditForm>
+
 
 
 
@@ -62,21 +89,32 @@
 
 
 @code{
-    Dictionary<string, string> oDevices = B_Device.GetDictonaryOfDevicesWithClient();
+    List<TechnicianEntity> technicians = new List<TechnicianEntity>();
+    List<DeviceEntity> oDevices;
     bool BandExistDevice { get; set; }
-    string aux = "";
+
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
-    List<DeviceEntity> Devices = new List<DeviceEntity>();
     protected override async Task OnInitializedAsync()
     {
-        Devices = B_Device.ListOfDevices();
-        Devices= Devices.OrderBy(D => D.ClientId).ToList();
+        oDevices = B_Device.GetListofDevicesActive();
+        technicians = B_Technician.GetListOftechnicians();
     }
 
     private void SaveMaintenance()
     {
         oMaintenance.MaintenanceId = Guid.NewGuid().ToString();
-        B_Maintenance.Create(oMaintenance);        
+
+        // asignacion de clases
+
+        var tmpTechnician = technicians.Find(T => T.TechnicianId == oMaintenance.TechnicianId);
+        //oMaintenance.Technician = tmpTechnician;
+        var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
+      //  oMaintenance.Device = tmpDevice;
+
+
+
+
+        B_Maintenance.Create(oMaintenance);
         Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");
     }
 
