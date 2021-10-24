@@ -1,0 +1,55 @@
+﻿@page "/Technician/Index"
+
+
+
+
+    <style>
+        #create-component {
+         
+            display: none;
+           
+        }
+
+        #btn-show:checked {
+            create-component{
+                display: contents;
+            }    
+        }
+
+    </style>
+
+    
+
+
+
+    <AuthorizeView Roles="Administrador,Editor,Lector">
+        <Authorized>
+            <div>
+                <div>
+                    <h2>Lista de técnicos</h2>
+                    <p>Lista de personas autorizadas para la realización de mantenimientos</p>           
+                    <input type="checkbox" value="Agregar nuevo elemento" @onclick="showCreate" id="btn-show"/>
+                </div>
+                <div  id="create-component">
+                    <CreateTechnicianComponent  />
+                </div>
+                <div>
+                    <ListOfTechniciansComponent />
+                </div>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+
+        </NotAuthorized>
+    </AuthorizeView>
+
+
+
+@code{
+    void showCreate()
+    {
+        
+     
+    }
+
+}

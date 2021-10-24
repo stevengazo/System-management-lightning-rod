@@ -129,6 +129,37 @@ namespace Business
                 }
             }
         }
+
+
+        /// <summary>
+        /// Check if exist a country in the db
+        /// </summary>
+        /// <param name="CountryName">Country to search</param>
+        /// <returns>True if exits a country, false if not exist or present an error</returns>
+        public static bool CheckName(string CountryName)
+        {
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+                    var query = (from country in db.Countries select country).Where(C => C.CountryName.Equals(CountryName)).FirstOrDefault();
+                    if(query != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+                return false;
+            }
+
+        }
         #endregion
 
     }
