@@ -1,0 +1,13 @@
+﻿@page "/Country/Create" 
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <h2>Registro de Paises</h2>
+        <CreateCountryComponent/>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>

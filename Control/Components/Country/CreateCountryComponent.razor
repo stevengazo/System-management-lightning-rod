@@ -1,6 +1,6 @@
 ﻿@using Entities;
 @using Business;
-
+@inject NavigationManager Nav;
 
 <EditForm Model="country">
     <div class="form-group">
@@ -28,7 +28,7 @@
     {
         bool bandExistsName = B_Country.CheckName(country.CountryName);
         bool bandExistId = B_Country.ExistCountry(country);
-        if (bandExistsName|| bandExistId)
+        if (bandExistsName|| !bandExistId)
         {
             errormessage = "Ya existe un país registrado con ese nombre o codigo";
         }
@@ -36,6 +36,7 @@
         {
             B_Country.CreateCountry(country);
             errormessage = "Pais agregado";
+
         }
 
 
