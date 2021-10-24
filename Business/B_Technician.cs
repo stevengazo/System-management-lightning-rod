@@ -137,8 +137,9 @@ namespace Business
             {
                 using (var DB = new RayosNoDataContext())
                 {
-                    var query = (from Maintenance in DB.Maintenances select Maintenance).Where(T => T.TechnicianId.Equals(id)).ToList().Count;
-                    if(query <= 0)
+                    int.TryParse(id, out int tmpid);
+                    var query = (from Maintenance in DB.Maintenances select Maintenance).FirstOrDefault(M => M.TechnicianId == tmpid);
+                    if(query == null)
                     {
                         return true;
                     }

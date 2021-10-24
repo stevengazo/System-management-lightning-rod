@@ -1,0 +1,59 @@
+﻿@using Entities;
+@using Business;
+
+@inject NavigationManager Nav;
+
+
+
+
+
+
+<div>
+    <div>
+        <h3>
+            ¿Deseas borrar este técnico registrado?
+        </h3>
+        <p>
+            Estas seguro que deseas borrar el técnico @technician.TechnicianName
+        </p>
+    </div>
+    <div>
+        <p class="text-danger">@errormessage</p>
+    </div>
+    <div>
+        <input type="button" class="btn-outline-danger" value="Eliminar" @onclick="Delete" />
+    </div>
+
+</div>
+
+
+@code{
+    [Parameter]
+    public string tmpid { get; set; }
+
+    public string errormessage = "";
+    TechnicianEntity technician = new TechnicianEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        int.TryParse(tmpid, out int id);
+        technician = B_Technician.GetTechnicianById(id);
+    }
+
+    void Delete()
+    {
+        bool BandDependences = B_Technician.HaveDependences(technician.TechnicianId.ToString());
+        if (!BandDependences)
+        {
+            errormessage = "Existen dependencias, no es posible eliminar este registro";
+        }
+        else
+        {
+            B_Technician.Delete(technician);
+            Nav.NavigateTo("Technician/Index");
+
+        }
+    }
+
+}
