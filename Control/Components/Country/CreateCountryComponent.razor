@@ -3,10 +3,6 @@
 @inject NavigationManager Nav;
 
 <EditForm Model="country">
-    <div class="form-group">
-        <label>Id de Pais</label>
-        <InputNumber @bind-Value="country.CountryId" class="form-control"></InputNumber>
-    </div>
     <div>
         <label>Nombre de Pais</label>
         <InputText @bind-Value="country.CountryName" class="form-control"></InputText>
@@ -27,10 +23,10 @@
     private void SaveCountry()
     {
         bool bandExistsName = B_Country.CheckName(country.CountryName);
-        bool bandExistId = B_Country.ExistCountry(country);
-        if (bandExistsName|| !bandExistId)
+        //bool bandExistId = B_Country.ExistCountry(country);
+        if ( (bandExistsName))
         {
-            errormessage = "Ya existe un país registrado con ese nombre o codigo";
+            errormessage = "Ya existe un país registrado con ese nombre";
         }
         else
         {
@@ -41,6 +37,4 @@
 
 
     }
-
-
 }

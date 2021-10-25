@@ -18,15 +18,13 @@ namespace Business
         /// <param name="oCountry">Country to save</param>
         public static void CreateCountry( CountryEntity oCountry)
         {
-            bool BandExist = ExistCountry(oCountry);
-            if (BandExist)
+           
+            using (var db = new RayosNoDataContext())
             {
-                using (var db = new RayosNoDataContext())
-                {
-                    db.Countries.Add(oCountry);
-                    db.SaveChanges();
-                }
+                db.Countries.Add(oCountry);
+                db.SaveChanges();
             }
+           
 
         }
 
@@ -114,13 +112,13 @@ namespace Business
         /// Look if exist a country in the database by the CountryId
         /// </summary>
         /// <param name="country">Country to search</param>
-        /// <returns>True if not exist, False is exists</returns>
+        /// <returns>True if exitt, False if not exists</returns>
         public static bool ExistCountry (CountryEntity country)
         {
             using(var db = new RayosNoDataContext())
             {
-                var query = (from count in db.Countries select count).Where(C => C.CountryId == country.CountryId).FirstOrDefault();
-                if (query == null)
+                var query = (from count in db.Countries select count).Where(C => C.CountryId == country.CountryId).ToList();
+                if (query.Count>0)
                 {
                     return true;
                 }
@@ -143,8 +141,8 @@ namespace Business
             {
                 using (var db = new RayosNoDataContext())
                 {
-                    var query = (from country in db.Countries select country).Where(C => C.CountryName.Equals(CountryName)).FirstOrDefault();
-                    if(query != null)
+                    var query = (from country in db.Countries select country).Where(C => C.CountryName.Equals(CountryName)).ToList();
+                    if(query.Count>0)
                     {
                         return true;
                     }

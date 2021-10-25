@@ -1,0 +1,60 @@
+﻿@using Entities;
+@using Business;  
+
+<div>
+    <div>
+        <h3>¿Deseas eliminar este país?</h3>
+        <p> Estas seguro que deseas eliminar el país @Country.CountryName</p>
+    </div>
+    <div class="container justify-content-center">
+        <p class="text-danger" >@errormessage</p>
+        <input type="button" value="Eliminar" class="btn-danger" @onclick="DeleteCountry"/>
+    </div>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public string id { get; set; }
+
+    CountryEntity Country = new CountryEntity();
+
+    string errormessage = "";
+
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+        int.TryParse(id, out int tmpId);
+        Country = B_Country.GetCountryById(tmpId);
+
+    }
+
+
+    void DeleteCountry()
+    {
+        try
+        {
+            var BandDependences = B_Country.HaveDependences(Country);
+            if (BandDependences)
+            {
+                errormessage = "Este país tiene dependencias en la tabla Equipos";
+            }
+            else
+            {
+                B_Country.DeleteCountry(Country);
+                errormessage = "Pais Eliminado";
+            }
+
+        }
+        catch (Exception e)
+        {
+            errormessage = e.Message;
+        }
+
+    }
+
+
+}
