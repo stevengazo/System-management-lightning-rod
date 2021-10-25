@@ -125,18 +125,50 @@
         Clean();
     }
 
-    private void Search()
+    private bool CheckInputs()
     {
-        Devices = B_Device.GetDevicesByConsult(DeviceIdToSearch, AliasToSearch, YearToSearch,CountryToSearch);
-        if (Devices.Count<= 0)
+        if( (AliasToSearch == null) && (DeviceIdToSearch == null) && (YearToSearch == 0) && ( CountryToSearch ==0) )
         {
-            ErrorMessage = "No hay dispositivos que cumplan con los criterios de busqueda....";
+            return true;
         }
         else
         {
-            ErrorMessage = null;
+            return false;
         }
-        Clean();
+    }
+
+    private void Search()
+    {
+        try
+        {
+            bool ValidInputs = CheckInputs();
+            if (!ValidInputs)
+            {
+                Devices = B_Device.GetDevicesByConsult(DeviceIdToSearch, AliasToSearch, YearToSearch, CountryToSearch);
+                if (Devices.Count <= 0)
+                {
+                    ErrorMessage = "No hay dispositivos que cumplan con los criterios de busqueda....";
+                    Clean();
+                }
+                else
+                {
+                    ErrorMessage = null;
+                }
+            }
+            else
+            {
+                ErrorMessage = "No hay criterios para buscar";
+            }
+
+        }
+        catch (Exception f)
+        {
+
+            Clean();
+            ErrorMessage = f.Message;
+        }
+
+
     }
 
     #endregion
