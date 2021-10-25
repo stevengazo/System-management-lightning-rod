@@ -59,16 +59,22 @@
 
     private void Search()
     {
-        if (IDToSearch != null)
+        try
         {
-            Replacements = B_Replacement.ConsultReplacements(IDToSearch.ToString());
-            ErrorMessage = "";
+            if (IDToSearch != null)
+            {
+                Replacements = B_Replacement.ConsultReplacements(IDToSearch.ToString());
+                ErrorMessage = "";
+            }
+            else
+            {
+                ErrorMessage = "No hay coincidencias en la base de datos";
+            }
         }
-        else
+        catch (Exception c)
         {
-            ErrorMessage = "No hay coincidencias en la base de datos";
+            ErrorMessage = c.Message;
         }
-
     }
 
 }

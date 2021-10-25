@@ -77,14 +77,21 @@
     }
     private void SearchClients()
     {
-        Clients = B_Client.SearchClients(NameToSearch, ClientIdToSearch,SectorToSearch);
-        if (Clients.Count <= 0)
+        try
         {
-            ErrorMessage = "No hay clientes con los parametros especificados";
+            Clients = B_Client.SearchClients(NameToSearch, ClientIdToSearch, SectorToSearch);
+            if (Clients.Count <= 0)
+            {
+                ErrorMessage = "No hay clientes con los parametros especificados";
+            }
+            else
+            {
+                ErrorMessage = "";
+            }
         }
-        else
+        catch (Exception g)
         {
-            ErrorMessage = "";
+            ErrorMessage = g.Message;
         }
     }
 }

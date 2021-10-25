@@ -106,17 +106,26 @@
 
     private void Search()
     {
-        Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, NameToSearch, YearToSearch, MonthToSearch);
-        if (Maintenances.Count >0)
+        try
         {
-            ErrorMessage = "";
+            Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, NameToSearch, YearToSearch, MonthToSearch);
+            if (Maintenances.Count > 0)
+            {
+                ErrorMessage = "";
+            }
+            else
+            {
+                ErrorMessage = "No hay mantenimientos que coindicidan con los criterios de busqueda...";
+            }
+            CleanSpaces();
+
         }
-        else
+        catch (Exception e)
         {
-            ErrorMessage = "No hay mantenimientos que coindicidan con los criterios de busqueda...";
+            ErrorMessage = e.Message;
         }
-        CleanSpaces();
     }
+
     private void CleanSpaces()
     {
         YearToSearch = 0;
