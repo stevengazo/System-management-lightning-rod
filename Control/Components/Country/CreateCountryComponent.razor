@@ -26,19 +26,24 @@
 
     private void SaveCountry()
     {
-        bool bandExistsName = B_Country.CheckName(country.CountryName);
-        //bool bandExistId = B_Country.ExistCountry(country);
-        if ( (bandExistsName))
+        try
         {
-            errormessage = "Ya existe un país registrado con ese nombre";
+            bool bandExistsName = B_Country.CheckName(country.CountryName);
+            //bool bandExistId = B_Country.ExistCountry(country);
+            if ((bandExistsName))
+            {
+                errormessage = "Ya existe un país registrado con ese nombre";
+            }
+            else
+            {
+                B_Country.CreateCountry(country);
+                errormessage = "Pais agregado";
+
+            }
         }
-        else
+        catch (Exception f)
         {
-            B_Country.CreateCountry(country);
-            errormessage = "Pais agregado";
-
+            errormessage = f.Message;
         }
-
-
     }
 }

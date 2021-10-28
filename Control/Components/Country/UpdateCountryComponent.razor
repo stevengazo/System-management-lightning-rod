@@ -42,16 +42,26 @@
 
     private void UpdateValue()
     {
-        bool bandExistsName = B_Country.CheckName(country.CountryName);
-        if ((bandExistsName))
+        try
         {
-            errormessage = "Ya existe un país registrado con ese nombre";
+            bool bandExistsName = B_Country.CheckName(country.CountryName);
+            if ((bandExistsName))
+            {
+                errormessage = "Ya existe un país registrado con ese nombre";
+            }
+            else
+            {
+                B_Country.UpdateCountry(country);
+                errormessage = "Información modificada";
+            }
         }
-        else
+        catch (Exception h)
         {
-            B_Country.UpdateCountry(country);
-            errormessage = "Información modificada";
+            errormessage = h.Message;
         }
+
+
+
     }
 
 }
