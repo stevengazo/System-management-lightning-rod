@@ -74,15 +74,20 @@ namespace Business
         #endregion
 
         #region Consults
-        public static CountryEntity GetCountryById(int _id = 0)
+
+        /// <summary>
+        /// Search an especific country in the database with the id
+        /// </summary>
+        /// <param name="_id">id of the country (Code Country)</param>
+        /// <returns>Country or null</returns>
+        public static CountryEntity GetCountryById(string _id ="")
         {
 
             using (var db = new RayosNoDataContext())
             {
-                var country = (from count in db.Countries select count).Where(C => C.CountryId == _id).FirstOrDefault();
+                var country = (from count in db.Countries select count).Where(C => C.CountryId.Equals(_id)).FirstOrDefault();
                 return country;
             }
-            return null ;
         }
 
 

@@ -39,7 +39,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "00306a7e-98d6-4292-84e2-7a8f7cff5b72",
+                            Id = "9427857b-c18c-4548-ae3f-cfc581e83e60",
                             Name = "Prueba",
                             SectorId = 1
                         });
@@ -47,10 +47,9 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.CountryEntity", b =>
                 {
-                    b.Property<int>("CountryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("CountryId")
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
 
                     b.Property<string>("CountryName")
                         .HasColumnType("nvarchar(max)");
@@ -62,7 +61,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            CountryId = 506,
+                            CountryId = "506",
                             CountryName = "Costa Rica"
                         });
                 });
@@ -78,8 +77,8 @@ namespace DataAccess.Migrations
                     b.Property<string>("ClientId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
+                    b.Property<string>("CountryId")
+                        .HasColumnType("nvarchar(4)");
 
                     b.Property<DateTime>("InstallationDate")
                         .HasColumnType("datetime2");
@@ -94,9 +93,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("real");
 
                     b.Property<int>("ModelDeviceId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ModelDeviceId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RecomendedDateOfMaintenance")
@@ -114,7 +110,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.HasIndex("ModelDeviceId1");
+                    b.HasIndex("ModelDeviceId");
 
                     b.HasIndex("SaleManId");
 
@@ -125,17 +121,17 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "85dfa8d7-9aeb-4639-b3cb-f044dd4d2d38",
+                            DeviceId = "db8639db-0f2c-4c5d-8359-ff88e3fa84af",
                             Alias = "Prueba",
-                            ClientId = "00306a7e-98d6-4292-84e2-7a8f7cff5b72",
-                            CountryId = 506,
+                            ClientId = "9427857b-c18c-4548-ae3f-cfc581e83e60",
+                            CountryId = "506",
                             InstallationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
                             Latitude = 0f,
                             Longitude = 0f,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "6f35bd01-2c04-4cc5-96f0-13707a715fc5",
+                            SaleManId = "b2962ec8-4fe2-44e2-a8cc-1a2f3d5dd744",
                             TypeDeviceId = 1
                         });
                 });
@@ -281,8 +277,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "0b28df61-bb7e-40fb-8a36-4170f5cdc9a0",
-                            DeviceId = "85dfa8d7-9aeb-4639-b3cb-f044dd4d2d38"
+                            ReplacementDeviceId = "0d13414c-1370-4a6d-9480-fb62f7aaa55b",
+                            DeviceId = "db8639db-0f2c-4c5d-8359-ff88e3fa84af"
                         });
                 });
 
@@ -304,7 +300,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "6f35bd01-2c04-4cc5-96f0-13707a715fc5",
+                            SaleManId = "b2962ec8-4fe2-44e2-a8cc-1a2f3d5dd744",
                             Name = "sample"
                         });
                 });
@@ -451,10 +447,10 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b6462357-237c-4f04-b672-bdf9c98f4651",
+                            Id = "3aa0cc2d-2bd9-4938-92be-1886342afda9",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "85dfa8d7-9aeb-4639-b3cb-f044dd4d2d38",
+                            DeviceId = "db8639db-0f2c-4c5d-8359-ff88e3fa84af",
                             StatusId = 1
                         });
                 });
@@ -478,13 +474,13 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Entities.CountryEntity", "Country")
                         .WithMany("Devices")
-                        .HasForeignKey("CountryId")
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("Entities.ModelDeviceEntity", "ModelDevice")
+                        .WithMany("Devices")
+                        .HasForeignKey("ModelDeviceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Entities.ModelDeviceEntity", "Model")
-                        .WithMany("Devices")
-                        .HasForeignKey("ModelDeviceId1");
 
                     b.HasOne("Entities.SaleManEntity", "SaleMan")
                         .WithMany("Devices")
@@ -500,7 +496,7 @@ namespace DataAccess.Migrations
 
                     b.Navigation("Country");
 
-                    b.Navigation("Model");
+                    b.Navigation("ModelDevice");
 
                     b.Navigation("SaleMan");
 

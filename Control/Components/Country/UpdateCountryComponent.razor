@@ -7,7 +7,7 @@
 
 <div>
     <div>
-        <EditForm Model="country">
+        <EditForm Model="country">           
             <div class="form-group">
                 <label>Nombre del País</label>
                 <InputText @bind-Value="country.CountryName" class="form-control"></InputText>
@@ -35,8 +35,7 @@
     protected override async Task OnInitializedAsync()
     {
         base.OnInitializedAsync();
-        int.TryParse(id, out int result);
-        country = B_Country.GetCountryById(result);
+        country = B_Country.GetCountryById(id);
 
     }
 

@@ -24,12 +24,10 @@
     string errormessage = "";
 
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        return base.OnInitializedAsync();
-        int.TryParse(id, out int tmpId);
-        Country = B_Country.GetCountryById(tmpId);
-
+        base.OnInitializedAsync();
+        Country = B_Country.GetCountryById(id);
     }
 
 

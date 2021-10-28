@@ -11,8 +11,7 @@ namespace DataAccess.Migrations
                 name: "Countries",
                 columns: table => new
                 {
-                    CountryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CountryId = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
                     CountryName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -129,8 +128,7 @@ namespace DataAccess.Migrations
                     RecomendedDateOfMaintenance = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     ModelDeviceId = table.Column<int>(type: "int", nullable: false),
-                    ModelDeviceId1 = table.Column<int>(type: "int", nullable: true),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    CountryId = table.Column<string>(type: "nvarchar(4)", nullable: true),
                     ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SaleManId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TypeDeviceId = table.Column<int>(type: "int", nullable: false)
@@ -149,13 +147,13 @@ namespace DataAccess.Migrations
                         column: x => x.CountryId,
                         principalTable: "Countries",
                         principalColumn: "CountryId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Devices_ModelDevices_ModelDeviceId1",
-                        column: x => x.ModelDeviceId1,
+                        name: "FK_Devices_ModelDevices_ModelDeviceId",
+                        column: x => x.ModelDeviceId,
                         principalTable: "ModelDevices",
                         principalColumn: "ModelDeviceId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Devices_Salemans_SaleManId",
                         column: x => x.SaleManId,
@@ -287,7 +285,7 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Countries",
                 columns: new[] { "CountryId", "CountryName" },
-                values: new object[] { 506, "Costa Rica" });
+                values: new object[] { "506", "Costa Rica" });
 
             migrationBuilder.InsertData(
                 table: "ModelDevices",
@@ -297,7 +295,7 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Salemans",
                 columns: new[] { "SaleManId", "Name", "QuantityOfDevice" },
-                values: new object[] { "6f35bd01-2c04-4cc5-96f0-13707a715fc5", "sample", null });
+                values: new object[] { "b2962ec8-4fe2-44e2-a8cc-1a2f3d5dd744", "sample", null });
 
             migrationBuilder.InsertData(
                 table: "Sectors",
@@ -332,22 +330,22 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "Name", "SectorId" },
-                values: new object[] { "00306a7e-98d6-4292-84e2-7a8f7cff5b72", "Prueba", 1 });
+                values: new object[] { "9427857b-c18c-4548-ae3f-cfc581e83e60", "Prueba", 1 });
 
             migrationBuilder.InsertData(
                 table: "Devices",
-                columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "IsActive", "Latitude", "Longitude", "ModelDeviceId", "ModelDeviceId1", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
-                values: new object[] { "85dfa8d7-9aeb-4639-b3cb-f044dd4d2d38", "Prueba", "00306a7e-98d6-4292-84e2-7a8f7cff5b72", 506, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 0f, 0f, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "6f35bd01-2c04-4cc5-96f0-13707a715fc5", 1 });
+                columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "IsActive", "Latitude", "Longitude", "ModelDeviceId", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
+                values: new object[] { "db8639db-0f2c-4c5d-8359-ff88e3fa84af", "Prueba", "9427857b-c18c-4548-ae3f-cfc581e83e60", "506", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 0f, 0f, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "b2962ec8-4fe2-44e2-a8cc-1a2f3d5dd744", 1 });
 
             migrationBuilder.InsertData(
                 table: "Replacements",
                 columns: new[] { "ReplacementDeviceId", "DeviceId", "NewSerieDevice", "Notes" },
-                values: new object[] { "0b28df61-bb7e-40fb-8a36-4170f5cdc9a0", "85dfa8d7-9aeb-4639-b3cb-f044dd4d2d38", null, null });
+                values: new object[] { "0d13414c-1370-4a6d-9480-fb62f7aaa55b", "db8639db-0f2c-4c5d-8359-ff88e3fa84af", null, null });
 
             migrationBuilder.InsertData(
                 table: "Warranties",
                 columns: new[] { "Id", "DateReceived", "DateSend", "DeviceId", "Notes", "StatusId" },
-                values: new object[] { "b6462357-237c-4f04-b672-bdf9c98f4651", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "85dfa8d7-9aeb-4639-b3cb-f044dd4d2d38", null, 1 });
+                values: new object[] { "3aa0cc2d-2bd9-4938-92be-1886342afda9", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "db8639db-0f2c-4c5d-8359-ff88e3fa84af", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_SectorId",
@@ -365,9 +363,9 @@ namespace DataAccess.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Devices_ModelDeviceId1",
+                name: "IX_Devices_ModelDeviceId",
                 table: "Devices",
-                column: "ModelDeviceId1");
+                column: "ModelDeviceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_SaleManId",
@@ -413,6 +411,7 @@ namespace DataAccess.Migrations
                 name: "IX_Warranties_StatusId",
                 table: "Warranties",
                 column: "StatusId");
+
 
             StoredProcedure.ExecuteSP(migrationBuilder);
         }

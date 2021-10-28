@@ -4,6 +4,10 @@
 
 <EditForm Model="country">
     <div>
+        <label>Codigo País</label>
+        <InputText @bind-Value="country.CountryId" class="form-control"></InputText>
+    </div>
+    <div>
         <label>Nombre de Pais</label>
         <InputText @bind-Value="country.CountryName" class="form-control"></InputText>
     </div>

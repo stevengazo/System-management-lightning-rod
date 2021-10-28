@@ -91,7 +91,7 @@
     #region Internal Parametres
     /// Seach Variables
 
-    public int CountryToSearch { get; set; }
+    public string CountryToSearch { get; set; }
 
     public int YearToSearch { get; set; }
 
@@ -113,7 +113,7 @@
 
     private void Clean()
     {
-        CountryToSearch = 0;
+        CountryToSearch = null;
         YearToSearch = 0;
         AliasToSearch = null;
         DeviceIdToSearch = null;
@@ -127,7 +127,7 @@
 
     private bool CheckInputs()
     {
-        if( (AliasToSearch == null) && (DeviceIdToSearch == null) && (YearToSearch == 0) && ( CountryToSearch ==0) )
+        if( (AliasToSearch == null) && (DeviceIdToSearch == null) && (YearToSearch == 0) && ( CountryToSearch ==null) )
         {
             return true;
         }

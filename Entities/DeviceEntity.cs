@@ -50,7 +50,7 @@ namespace Entities
         public ModelDeviceEntity ModelDevice { get; set; }
 
         // Relation with Country
-        public int CountryId { get; set; }
+        public string CountryId { get; set; }
         public CountryEntity Country { get; set; }
 
         // Relation with Client
