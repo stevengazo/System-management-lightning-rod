@@ -61,10 +61,14 @@ else
 
 @if (ViewData["FistUse"].ToString().Equals("2"))
 {
-    <h1>Primer Inicio de Sesión</h1>
-    <p>No se detectan usuarios  previamente registrados, por favor ingrese el usuario</p>
+
+    
     <div class="container justify-content-between ">
         <div>
+            <div>
+                <h1>Primer Inicio de Sesión</h1>
+                <p>No se detectan usuarios  previamente registrados, por favor ingrese el usuario. Esta ventana solo se encuentra disponible para el primer ingreso en la aplicación</p>
+            </div>
             <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <h4>Create a new account.</h4>
                 <hr />
