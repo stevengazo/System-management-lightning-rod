@@ -12,11 +12,9 @@ namespace Control.Data
     public class ApplicationDbContext : IdentityDbContext
     {
 
-        private UserManager<IdentityUser> UserManager;
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, UserManager<IdentityUser> userManager)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            this.UserManager = userManager;
         }
 
 
@@ -47,7 +45,7 @@ namespace Control.Data
 
             /// GENERAR NUEVO USUARIO DE TIPO ADMINISTRADOR
 
-            string password = "admin1213$";
+       /*     string password = "admin1213$";
             IdentityUser user = new IdentityUser()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -57,7 +55,7 @@ namespace Control.Data
                 EmailConfirmed = true,
             };
             UserManager.AddPasswordAsync(user, password);
-            builder.Entity<IdentityUser>().HasData(user);
+            builder.Entity<IdentityUser>().HasData(user);*/
 
        
 
