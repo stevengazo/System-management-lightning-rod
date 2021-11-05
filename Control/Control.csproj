@@ -23,4 +23,8 @@
     <ProjectReference Include="..\IdentityDataAccess\IdentityDataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\ModelDevice\" />
+  </ItemGroup>
+
 </Project>
