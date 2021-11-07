@@ -1,8 +1,25 @@
-﻿@page
+﻿@page "/Identity/Admin/ChangePassByAdmin/{id}"
+@using Microsoft.AspNetCore.Identity;
 @model Control.Areas.Identity.Pages.Admin.ChangePassByAdminModel
+
+@{
+    IdentityUser user = (IdentityUser)ViewData["User"];
+}
+
 
 <h1>
     Sample of page
 </h1>
+
+
+
+<p>@user.Email</p>
+<p>@user.Id</p>
+
+
+
+
+
+
 
 
