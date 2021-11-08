@@ -50,37 +50,25 @@ namespace Control.Areas.Identity.Pages.Admin
 
 
 
-        private async Task<bool>  ChangePassword(IdentityUser user, string _password)
+        private bool  ChangePassword(IdentityUser user, string _passwordHash)
         {
-            IdentityResult removepass;
-            IdentityResult changepassword;
             try
             {
-                if(user != null)
+                using (var db = new IDBContext())
                 {
-                    removepass=  this._userManager.RemovePasswordAsync(user).Result;
-                    if (removepass.Succeeded)
-                    {
-                        changepassword =  this._userManager.AddPasswordAsync(user, _password).Result;
-                        if (changepassword.Succeeded)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    return false;
+                    user.PasswordHash = _passwordHash;
+                    db.Users.Update(user);
+                    db.SaveChanges();
+                    return true;
                 }
-
-                return true;
-            }
-            catch (Exception)
-            {
-
                 return false;
             }
+            catch (Exception g ) 
+            {
+
+                Console.WriteLine($"Error {g.Message}");
+                return false;
+            }  
         }
 
 
@@ -116,7 +104,7 @@ namespace Control.Areas.Identity.Pages.Admin
         public async Task<IActionResult> OnPostAsync(string id = "", string password="",string cpassword = "")
         {
             bool BandSuccess = false ;
-            var user = GetUser(id);
+            var _user = GetUser(id);
             string error = "";
 
             if( (password == null) || (cpassword == null))
@@ -132,14 +120,17 @@ namespace Control.Areas.Identity.Pages.Admin
                 }
                 else
                 {
-                   BandSuccess= await ChangePassword(user,password);
-                   if (BandSuccess)
-                   {
+
+                    var tmp = _userManager.PasswordHasher;
+                    var tmpHasher = tmp.HashPassword(_user, password);
+                    BandSuccess = ChangePassword(_user, tmpHasher);
+                    if (BandSuccess)
+                    {
                         error = "Contraseña cambiada";
-                   }
+                    }
                 }
             }                               
-            ViewData["User"] = user;
+            ViewData["User"] = _user;
             ViewData["error"] = error;
             return Page();
         }
