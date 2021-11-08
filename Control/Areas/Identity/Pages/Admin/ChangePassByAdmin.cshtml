@@ -1,6 +1,7 @@
 ﻿@page "/Identity/Admin/ChangePassByAdmin/{id}"
 @using Microsoft.AspNetCore.Identity;
 @model Control.Areas.Identity.Pages.Admin.ChangePassByAdminModel
+
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject RoleManager<IdentityRole> Rolemanager
@@ -30,7 +31,7 @@
             </div>
             <div class="form-group">
                 <input class="form-control" type="submit" value="Cambiar Contraseña" />
-                <p class="text-danger">@ViewData["error"]</p>
+                <p class="text-danger text-center">@ViewData["error"]</p>
             </div>
         </form>
 
