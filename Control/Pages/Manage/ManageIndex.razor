@@ -2,27 +2,6 @@
 
 
 
-<style>
-    #container {        
-        width: 100%;
-        height: 100%;
-        display: grid;
-        grid-template-columns: auto auto;
-        justify-content: center;
-        align-content: center;
-        gap: 10px;
-        
-        grid-template-columns: repeat(auto-fill,300px,240px);
-    }
-    #card-right div h3 {
-        font-size: 16px;
-        align-content:end;
-    }
-    #card-right div p {
-        font-size: 12px;
-        align-content: end;
-    }
-</style>
 
 
 <AuthorizeView Roles="Administrador">
@@ -35,15 +14,15 @@
             <label>¿Deseas agregar roles?</label>
             <a class="text-decoration-none" href="manage/AddRoles">Designar roles</a>
         </div>
-        <div id="container">
-            <div id="card-left">
+        <div class="d-xl-flex flex-column">
+            <div>
                 <h3>Lista de Usuarios</h3>
                 <p>Lista de Usuarios registrados en el sistema.</p>
                 <ListUsersComponent></ListUsersComponent>
             </div>
-            <div id="card-right">
-                <h5 class="h5 text-md-right" >Lista de Roles </h5>
-                <p  class="text-sm-right">Lista de roles predeterminados en el sistema</p>
+            <div>
+                <h5 class="h5 text-md-left" >Lista de Roles </h5>
+                <p  class="text-sm-left">Lista de roles predeterminados en el sistema</p>
                 <ListOfRolesComponent></ListOfRolesComponent>
             </div>
         </div>
