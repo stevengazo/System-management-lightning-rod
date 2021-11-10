@@ -1,0 +1,56 @@
+﻿@using Entities;
+@using Business;
+@using Microsoft.AspNetCore.Identity;
+
+
+<p>Información del Usuario</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Información</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Id de Usuario</th>
+            <th>@User.Id</th>
+        </tr>
+        <tr>
+            <th>Nombre de Usuario</th>
+            <th>@User.UserName</th>
+        </tr>
+        <tr>
+            <th>Id de Usuario</th>
+            <th>@User.Id</th>
+        </tr>
+        <tr>
+            <th>Correo</th>
+            <th>@User.Email</th>
+        </tr>
+        <tr>
+            <th>Número de Telefono</th>
+            <th>@User.PhoneNumber</th>
+        </tr>
+    </tbody>
+</table>
+
+
+
+@code {
+
+    IdentityUser User;
+    [Parameter]
+    public string UserId { get; set; }
+
+
+    protected override async  Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        User = B_Manage.GetUser(UserId);
+    }
+
+
+}

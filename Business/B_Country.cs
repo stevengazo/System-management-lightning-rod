@@ -18,15 +18,13 @@ namespace Business
         /// <param name="oCountry">Country to save</param>
         public static void CreateCountry( CountryEntity oCountry)
         {
-            bool BandExist = ExistCountry(oCountry);
-            if (BandExist)
+           
+            using (var db = new RayosNoDataContext())
             {
-                using (var db = new RayosNoDataContext())
-                {
-                    db.Countries.Add(oCountry);
-                    db.SaveChanges();
-                }
+                db.Countries.Add(oCountry);
+                db.SaveChanges();
             }
+           
 
         }
 
@@ -43,7 +41,8 @@ namespace Business
             }            
         }
 
-        /// <summary>
+
+              /// <summary>
         /// Update an exist country
         /// </summary>
         /// <param name="oCountry"></param>
@@ -75,15 +74,20 @@ namespace Business
         #endregion
 
         #region Consults
-        public static CountryEntity GetCountryById(int _id = 0)
+
+        /// <summary>
+        /// Search an especific country in the database with the id
+        /// </summary>
+        /// <param name="_id">id of the country (Code Country)</param>
+        /// <returns>Country or null</returns>
+        public static CountryEntity GetCountryById(string _id ="")
         {
 
             using (var db = new RayosNoDataContext())
             {
-                var country = (from count in db.Countries select count).Where(C => C.CountryId == _id).FirstOrDefault();
+                var country = (from count in db.Countries select count).Where(C => C.CountryId.Equals(_id)).FirstOrDefault();
                 return country;
             }
-            return null ;
         }
 
 
@@ -113,13 +117,13 @@ namespace Business
         /// Look if exist a country in the database by the CountryId
         /// </summary>
         /// <param name="country">Country to search</param>
-        /// <returns>True if not exist, False is exists</returns>
+        /// <returns>True if exitt, False if not exists</returns>
         public static bool ExistCountry (CountryEntity country)
         {
             using(var db = new RayosNoDataContext())
             {
-                var query = (from count in db.Countries select count).Where(C => C.CountryId == country.CountryId).FirstOrDefault();
-                if (query == null)
+                var query = (from count in db.Countries select count).Where(C => C.CountryId == country.CountryId).ToList();
+                if (query.Count>0)
                 {
                     return true;
                 }
@@ -128,6 +132,37 @@ namespace Business
                     return false;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Check if exist a country in the db
+        /// </summary>
+        /// <param name="CountryName">Country to search</param>
+        /// <returns>True if exits a country, false if not exist or present an error</returns>
+        public static bool CheckName(string CountryName)
+        {
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+                    var query = (from country in db.Countries select country).Where(C => C.CountryName.Equals(CountryName)).ToList();
+                    if(query.Count>0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+                return false;
+            }
+
         }
         #endregion
 

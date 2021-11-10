@@ -1,0 +1,68 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<p>Edita el nombre del país registrado</p>
+
+<div>
+    <div>
+        <EditForm Model="country">           
+            <div class="form-group">
+                <label>Nombre del País</label>
+                <InputText @bind-Value="country.CountryName" class="form-control"></InputText>
+            </div>
+        </EditForm>
+    </div>
+    <div>
+        <p class="text-center text-danger">@errormessage</p>
+        <input class="btn-outline-info" value="Actualizar" @onclick="UpdateValue" />
+    </div>
+
+</div>
+
+
+
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+
+    CountryEntity country = new CountryEntity();
+    string errormessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        country = B_Country.GetCountryById(id);
+
+    }
+
+
+    private void UpdateValue()
+    {
+        try
+        {
+            bool bandExistsName = B_Country.CheckName(country.CountryName);
+            if ((bandExistsName))
+            {
+                errormessage = "Ya existe un país registrado con ese nombre";
+            }
+            else
+            {
+                B_Country.UpdateCountry(country);
+                errormessage = "Información modificada";
+            }
+        }
+        catch (Exception h)
+        {
+            errormessage = h.Message;
+        }
+
+
+
+    }
+
+}
+

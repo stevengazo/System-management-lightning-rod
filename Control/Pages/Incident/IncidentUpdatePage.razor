@@ -1,13 +1,23 @@
 ﻿@page  "/incident/update/{IncidentId}"
 
-<div>
-    <h2 class="text-center">Actualizar Incidente</h2>
-    <hr />
-    <a href="incident/list"> Regresar a la lista de incidentes</a>
-    <hr />
-    <IncidentUpdateComponent IncidentId="@IncidentId"/>
-</div>
 
+
+
+
+<AuthorizeView Roles="Adminitrador,Editor">
+    <Authorized>
+        <div>
+            <h2 class="text-center">Actualizar Incidente</h2>
+            <hr />
+            <a href="incident/list"> Regresar a la lista de incidentes</a>
+            <hr />
+            <IncidentUpdateComponent IncidentId="@IncidentId" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code{

@@ -1,0 +1,19 @@
+﻿@page "/Country/Index"
+
+
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2>Lista de Paises Registrados</h2>
+            <a href="Country/Create">Añadir pais</a>
+            <ListOfCountriesComponent/>
+
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>

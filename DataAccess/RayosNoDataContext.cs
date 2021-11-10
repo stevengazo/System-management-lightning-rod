@@ -54,7 +54,7 @@ namespace DataAccess
         protected void GenerateSeedOfData(ModelBuilder model)
         {
             #region COUNTRIES
-            CountryEntity oCountry = new CountryEntity() { CountryId = 506, CountryName = "Costa Rica" };
+            CountryEntity oCountry = new CountryEntity() { CountryId = "506", CountryName = "Costa Rica" };
             model.Entity<CountryEntity>().HasData(oCountry);
             #endregion
 

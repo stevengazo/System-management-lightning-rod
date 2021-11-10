@@ -1,0 +1,25 @@
+﻿@page "/Technician/Delete/{TechnicianId}"
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <h2>Eliminación de Usuario</h2>
+        <DeleteTechnicianComponent tmpid="@TechnicianId" />
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+@code{
+    [Parameter]
+    public string TechnicianId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        TechnicianId = TechnicianId;
+    }
+}
+

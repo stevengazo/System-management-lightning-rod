@@ -1,11 +1,21 @@
 ﻿@page "/replacement/update/{Replacementid}"
 
-<div>
-    <h1> Actualización del Reeplamzo</h1>
-    <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
-    <hr />
-   <ReplacementUpdateComponent Id="@ReplacementId.ToString()"/>
-</div>
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h1> Actualización del Reeplamzo</h1>
+            <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
+            <hr />
+            <ReplacementUpdateComponent Id="@ReplacementId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
+
 
 
 @code{

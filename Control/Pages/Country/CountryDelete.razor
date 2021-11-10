@@ -1,0 +1,32 @@
+﻿@page "/Country/Delete/{CountryId}"
+
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2>Eliminación de País</h2>
+            <DeleteCountryComponent id="@CountryId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public string CountryId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        CountryId = CountryId;
+    }
+} 

@@ -110,6 +110,19 @@ namespace Business
         #region Search and Consults
 
 
+        
+        public static List<DeviceEntity> GetListofDevicesActive()
+        {
+            Dictionary<string, string> Devices = new Dictionary<string, string>();
+            using (var DB = new RayosNoDataContext())
+            {
+                var aux = (from Device in DB.Devices select Device).Where(D => D.IsActive == true).Include(D => D.Client).ToList();
+                return aux;
+            }
+        }
+
+
+
         /// <summary>
         /// Get the id of the devices actives and the namme of the client
         /// </summary>
@@ -119,7 +132,7 @@ namespace Business
             Dictionary<string, string> Devices = new Dictionary<string, string>();
             using( var DB= new RayosNoDataContext())
             {
-                var aux = (from Device in DB.Devices where Device.IsActive == true select Device ).Include(D => D.Client);
+                var aux = (from Device in DB.Devices select Device).Where(D=>D.IsActive== true).Include(D => D.Client);
                 foreach(var a in aux)
                 {
                     Devices.Add(a.DeviceId, a.Client.Name);
@@ -215,25 +228,25 @@ namespace Business
         /// <param name="_Alias">Alias to search</param>
         /// <param name="_Year">Year of installation</param>
         /// <returns>list</returns>
-        public static List<DeviceEntity> GetDevicesByConsult( string _DeviceId =null, string _Alias=null, int _Year=0,int _Country = 0)
+        public static List<DeviceEntity> GetDevicesByConsult( string _DeviceId =null, string _Alias=null, int _Year=0,string _Country = null)
         {
             List<DeviceEntity> Devices = new List<DeviceEntity>();
             using (var DB = new RayosNoDataContext())
             {
                 IQueryable<DeviceEntity> qDevices;
-                if( (_Year == 0)||(_Country==0))
+                if( (_Year == 0)||(_Country==null))
                 {
-                    if(_Year==0 && _Country== 0)
+                    if(_Year==0 && _Country== null)
                     {
                         qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = null,@_CountryId = null");
                         Devices = qDevices.ToList();
                     }
-                    else if (_Year == 0 && _Country != 0)
+                    else if (_Year == 0 && _Country != null)
                     {
                         qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = null,@_CountryId = {_Country.ToString()}");
                         Devices = qDevices.ToList();
                     }
-                    else if (_Year != 0 && _Country == 0)
+                    else if (_Year != 0 && _Country == null)
                     {
                         qDevices = DB.Devices.FromSqlInterpolated($@"EXEC SearchDevice @_DeviceId = {_DeviceId},	@_Alias = {_Alias},	@_Year = {_Year.ToString()},@_CountryId = null");
                         Devices = qDevices.ToList();

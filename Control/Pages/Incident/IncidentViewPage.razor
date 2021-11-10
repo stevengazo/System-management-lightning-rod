@@ -1,13 +1,26 @@
 ﻿@page  "/incident/view/{IncidentId}"
 
-<div>
-    <h2 class="text-center">Información del Incidente</h2>
-    <p>A continuación se muestra la información reelaventa </p>
-    <hr />
-    <a href="incident/list"> Regresar a la lista de incidentes</a>
-    <hr />
-    <IncidentViewComponent IncidentId="@IncidentId.ToString()"/>
-</div>
+
+
+
+
+
+<AuthorizeView Roles="Administrador,Editor,Lector">
+    <Authorized>
+        <div>
+            <h2 class="text-center">Información del Incidente</h2>
+            <p>A continuación se muestra la información reelaventa </p>
+            <hr />
+            <a href="incident/list"> Regresar a la lista de incidentes</a>
+            <hr />
+            <IncidentViewComponent IncidentId="@IncidentId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 
 

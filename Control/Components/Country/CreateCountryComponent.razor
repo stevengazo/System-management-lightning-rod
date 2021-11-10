@@ -1,0 +1,49 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager Nav;
+
+<EditForm Model="country">
+    <div>
+        <label>Codigo País</label>
+        <InputText @bind-Value="country.CountryId" class="form-control"></InputText>
+    </div>
+    <div>
+        <label>Nombre de Pais</label>
+        <InputText @bind-Value="country.CountryName" class="form-control"></InputText>
+    </div>
+</EditForm>
+<p class="text-danger text-center">@errormessage</p>
+
+<input type="button" value="Agregar" class="btn-outline-success" @onclick="SaveCountry"/>
+
+
+
+@code{
+    CountryEntity country = new CountryEntity();
+    string errormessage = "";
+
+
+
+    private void SaveCountry()
+    {
+        try
+        {
+            bool bandExistsName = B_Country.CheckName(country.CountryName);
+            //bool bandExistId = B_Country.ExistCountry(country);
+            if ((bandExistsName))
+            {
+                errormessage = "Ya existe un país registrado con ese nombre";
+            }
+            else
+            {
+                B_Country.CreateCountry(country);
+                errormessage = "Pais agregado";
+
+            }
+        }
+        catch (Exception f)
+        {
+            errormessage = f.Message;
+        }
+    }
+}

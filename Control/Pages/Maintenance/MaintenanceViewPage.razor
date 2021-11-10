@@ -1,12 +1,24 @@
 ﻿@page  "/maintenance/view/{MaintenanceId}"
 
-<div>
-    <h2 class="text-center">Información del Mantenimiento</h2>
-    <hr />
-    <a href="maintenance/list"> Regresar a la lista de Mantenimientos</a>
-    <hr />
-    <MaintenanceViewComponent id="@MaintenanceId.ToString()" />
-</div>
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2 class="text-center">Información del Mantenimiento</h2>
+            <hr />
+            <a href="maintenance/list"> Regresar a la lista de Mantenimientos</a>
+            <hr />
+            <MaintenanceViewComponent id="@MaintenanceId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
+
+
 
 
 

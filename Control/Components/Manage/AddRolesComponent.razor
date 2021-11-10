@@ -1,0 +1,88 @@
+﻿@using Entities;
+@using IdentityDataAccess;
+@using Business;
+@using Microsoft.AspNetCore.Identity;
+
+
+
+<p>Añadir roles al usuario</p>
+<div >
+    <div class="form-group">
+        <label>Seleccione el usuario</label>
+        <select @bind="@SelectedUserId" class="form-control">
+            <option value="0">Seleccione un usuario</option>
+            @foreach (IdentityUser item in ListOfUsers)
+            {
+                <option value="@item.Id">@item.UserName</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Seleccione el rol</label>
+        <select @bind="@SelectedRoleId"  class="form-control">
+            <option value="0">Seleccione un Rol</option>
+            @foreach (IdentityRole item in ListOfRoles)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+    </div>
+    <div>
+        <input type="button" value="Añadir Rol" @onclick="AddRole" />
+    </div>
+        <p class="text-center" style="color:red"> @errormessage</p>
+</div>
+
+
+
+
+
+
+
+@code {
+    string SelectedUserId;
+    string SelectedRoleId;
+    string errormessage = "";
+
+    List<IdentityUser> ListOfUsers = new List<IdentityUser>();
+    List<IdentityRole> ListOfRoles = new List<IdentityRole>();
+
+
+    private void AddRole()
+    {
+        if( (SelectedRoleId == null) || (SelectedUserId ==null))
+        {
+            errormessage = "Seleccione un rol y usuario";
+        }
+        else
+        {
+            bool exitBand = B_Manage.CheckRole(SelectedUserId, SelectedRoleId);
+            if (!exitBand)
+            {
+                B_Manage.AddRole(SelectedUserId, SelectedRoleId);
+                errormessage = "Rol agregado con exito";
+            }
+            else
+            {
+                errormessage = "El usuario ya posee el rol";
+            }
+        }
+
+
+
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        ListOfUsers = B_Manage.ListOfUsers();
+        ListOfRoles = B_Manage.GetListOfRoles();
+
+    }
+
+
+
+
+}

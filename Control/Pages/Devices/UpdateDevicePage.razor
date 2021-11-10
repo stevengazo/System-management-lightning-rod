@@ -1,12 +1,26 @@
 ﻿@page "/device/update/{DeviceId}"
 
-<div>
-    <h2 class="text-center">Actualizar dispositivo</h2>
-    <hr/>
-    <a href="device/list"> Regresar a la lista de dispositivos</a>
-    <hr/>
-    <UpdateDeviceComponent Id="@DeviceId.ToString()"/>
-</div>
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2 class="text-center">Actualizar dispositivo</h2>
+            <hr />
+            <a href="device/list"> Regresar a la lista de dispositivos</a>
+            <hr />
+            <UpdateDeviceComponent Id="@DeviceId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
 
 
 @code{

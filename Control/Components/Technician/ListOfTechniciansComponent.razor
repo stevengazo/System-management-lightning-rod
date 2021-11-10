@@ -1,0 +1,41 @@
+﻿@using Entities;
+@using Business; 
+
+<p>A continuación se presenta una lista de los técnicos registrados</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Técnico</td>
+            <td>Acciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in technicians)
+        {
+        <tr>
+            <td>@item.TechnicianId</td>
+            <td>@item.TechnicianName</td>
+            <td><a href="Technician/Update/@item.TechnicianId.ToString()">Editar</a></td>
+            <td><a href="Technician/Delete/@item.TechnicianId.ToString()" class="text-danger">Eliminar</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+    List<TechnicianEntity> technicians = new List<TechnicianEntity>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        technicians = B_Technician.GetListOftechnicians();
+
+    }
+
+}

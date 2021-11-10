@@ -1,0 +1,28 @@
+﻿ @page "/manage/ViewUser/{UserId}"
+
+
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <h1>Información del Usuario</h1>
+        <ViewUserComponent UserId="@UserId.ToString()"></ViewUserComponent>
+        <hr />
+        <ViewUserRolesComponent UserId="@UserId.ToString()"></ViewUserRolesComponent>
+    </Authorized>
+    <NotAuthorized>
+        <h2 class="text-danger">No posee autorización para ver esta pagina</h2>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+@code{
+    [Parameter]
+    public string UserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+    UserId = UserId;
+    } 
+}
+
+    

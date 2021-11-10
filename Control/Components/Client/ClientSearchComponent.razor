@@ -46,9 +46,9 @@
             <tr>
                 <td> @obj.Id </td>
                 <td> @obj.Name </td>
-                <td><a href="client/view/@obj.Id">Ver</a></td>
-                <td> <a href="client/update/@obj.Id"> Modificar</a></td>
-                <td> <a style="color:red" href="/client/delete/@obj.Id"> Eliminar</a></td>
+                <td><a class="btn btn-primary" href="client/view/@obj.Id">Ver</a></td>
+                <td> <a class="btn btn-secondary" href="client/update/@obj.Id"> Modificar</a></td>
+                <td> <a class="btn btn-danger" href="/client/delete/@obj.Id"> Eliminar</a></td>
             </tr>
         }
     </tbody>
@@ -77,14 +77,21 @@
     }
     private void SearchClients()
     {
-        Clients = B_Client.SearchClients(NameToSearch, ClientIdToSearch,SectorToSearch);
-        if (Clients.Count <= 0)
+        try
         {
-            ErrorMessage = "No hay clientes con los parametros especificados";
+            Clients = B_Client.SearchClients(NameToSearch, ClientIdToSearch, SectorToSearch);
+            if (Clients.Count <= 0)
+            {
+                ErrorMessage = "No hay clientes con los parametros especificados";
+            }
+            else
+            {
+                ErrorMessage = "";
+            }
         }
-        else
+        catch (Exception g)
         {
-            ErrorMessage = "";
+            ErrorMessage = g.Message;
         }
     }
 }

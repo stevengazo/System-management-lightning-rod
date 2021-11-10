@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using IdentityDataAccess;
 
 namespace Control.Areas.Identity.Pages.Account
 {
@@ -22,18 +23,21 @@ namespace Control.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IDBContext _IDBContext;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,            
+            IDBContext _context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _IDBContext = _context;
         }
 
         [BindProperty]
@@ -64,8 +68,10 @@ namespace Control.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["FistUse"] = NotExistsUsers();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -75,15 +81,23 @@ namespace Control.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var x = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    var bandExistsUsers = CheckQuantityOfUser();
+                    if (bandExistsUsers == 1)
+                    {
+                        addAdministratorRole(user);
+                    }
+                    
+
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
+                    var callbackUrl = Url.Page( "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
@@ -110,5 +124,76 @@ namespace Control.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+        /// <summary>
+        /// Check if exist users in the database 
+        /// </summary>
+        /// <returns>If not exists = 2, if exits 1 , error = 0</returns>
+
+        private int NotExistsUsers()
+        {
+            try
+            {
+                var query = (from user in _IDBContext.Users select user).ToList();
+                if(query.Count== 0)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            catch (Exception f)
+            {
+                Console.WriteLine($"Error {f.Message}");
+                return 0;
+                
+            }
+        }
+
+        private int CheckQuantityOfUser()
+        {
+            try
+            {
+                var query = (from user in _IDBContext.Users select user).ToList();
+                if (query.Count == 1)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception f)
+            {
+                Console.WriteLine($"Error {f.Message}");
+                return 404;
+
+            }
+        }
+
+        private void addAdministratorRole(IdentityUser user)
+        {
+            try
+            {
+                using( var db = _IDBContext)
+                {
+                    var query = (from rol in db.Roles select rol).Where(R => R.Id.Equals("01")).First();
+
+                    var row = new IdentityUserRole<string>();
+                    row.RoleId = query.Id;
+                    row.UserId = user.Id;
+                    db.UserRoles.Add(row);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception er)
+            {
+                Console.WriteLine($"Error en asignacion de rol {er.Message}");               
+            }
+        }
+
     }
 }

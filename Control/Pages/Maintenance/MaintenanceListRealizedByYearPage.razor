@@ -2,15 +2,22 @@
 
 
 
-<div class="text-center">
-    <h1> Lista de Mantenimiento</h1>
-    <p >
-        A continuación se presenta los mantenimientos realizados
-        realizados en el período seleccionado.
-    </p>
-    <MaintenanceConsultComponent></MaintenanceConsultComponent>
-</div>
 
+<AuthorizeView Roles="Administrador,Lector,Editor">
+    <Authorized>
+        <div class="text-center">
+            <h1> Lista de Mantenimiento</h1>
+            <p>
+                A continuación se presenta los mantenimientos realizados
+                realizados en el período seleccionado.
+            </p>
+            <MaintenanceConsultComponent></MaintenanceConsultComponent>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code {

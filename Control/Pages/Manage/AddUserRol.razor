@@ -1,0 +1,19 @@
+﻿@page "/manage/AddRoles"
+
+<h3>AddUserRol</h3>
+
+
+
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <AddRolesComponent></AddRolesComponent>
+    </Authorized>
+    <NotAuthorized>
+        <h2 class="text-danger">No hay autorización para ver esta información</h2>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+}

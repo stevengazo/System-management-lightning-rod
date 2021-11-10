@@ -65,15 +65,15 @@
         <tbody>
             @foreach (var obj in Devices)
             {
-            <tr>
+            <tr class="align-middle"> 
                 <td> @obj.DeviceId</td>
                 <td> @obj.Alias</td>
                 <td> @obj.InstallationDate.Date.ToShortDateString()</td>
                 <td> @obj.SaleMan.Name</td>
                 <td> @obj.Client.Name</td>
-                <td> <a href="device/view/@obj.DeviceId"> Ver </a></td>
-                <td> <a href="device/update/@obj.DeviceId"> Modificar</a></td>
-                <td> <a style="color:red" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
+                <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
+                <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
+                <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
             </tr>
             }
         </tbody>
@@ -91,7 +91,7 @@
     #region Internal Parametres
     /// Seach Variables
 
-    public int CountryToSearch { get; set; }
+    public string CountryToSearch { get; set; }
 
     public int YearToSearch { get; set; }
 
@@ -113,7 +113,7 @@
 
     private void Clean()
     {
-        CountryToSearch = 0;
+        CountryToSearch = null;
         YearToSearch = 0;
         AliasToSearch = null;
         DeviceIdToSearch = null;
@@ -125,18 +125,50 @@
         Clean();
     }
 
-    private void Search()
+    private bool CheckInputs()
     {
-        Devices = B_Device.GetDevicesByConsult(DeviceIdToSearch, AliasToSearch, YearToSearch,CountryToSearch);
-        if (Devices.Count<= 0)
+        if( (AliasToSearch == null) && (DeviceIdToSearch == null) && (YearToSearch == 0) && ( CountryToSearch ==null) )
         {
-            ErrorMessage = "No hay dispositivos que cumplan con los criterios de busqueda....";
+            return true;
         }
         else
         {
-            ErrorMessage = null;
+            return false;
         }
-        Clean();
+    }
+
+    private void Search()
+    {
+        try
+        {
+            bool ValidInputs = CheckInputs();
+            if (!ValidInputs)
+            {
+                Devices = B_Device.GetDevicesByConsult(DeviceIdToSearch, AliasToSearch, YearToSearch, CountryToSearch);
+                if (Devices.Count <= 0)
+                {
+                    ErrorMessage = "No hay dispositivos que cumplan con los criterios de busqueda....";
+                    Clean();
+                }
+                else
+                {
+                    ErrorMessage = null;
+                }
+            }
+            else
+            {
+                ErrorMessage = "No hay criterios para buscar";
+            }
+
+        }
+        catch (Exception f)
+        {
+
+            Clean();
+            ErrorMessage = f.Message;
+        }
+
+
     }
 
     #endregion

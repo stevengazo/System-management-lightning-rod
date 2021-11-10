@@ -3,20 +3,24 @@
 
 
 
+<AuthorizeView Roles="Administrador,Lector,Editor">
+    <Authorized>
 
-<div class="text-center">
-    <h2> Información de la Garantia</h2>
-    <hr />
-    <a href="warranty/list">Regresar a la lista de Garantias</a>
-    <p>
-        A continuación se muestra la información realizada a la emisión del la garantia.
-    </p>
+        <div class="text-center">
+            <h2> Información de la Garantia</h2>
+            <hr />
+            <a href="warranty/list">Regresar a la lista de Garantias</a>
+            <p>
+                A continuación se muestra la información realizada a la emisión del la garantia.
+            </p>
+            <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
+        </div>
 
-    <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
-</div> 
-
-
-
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code {

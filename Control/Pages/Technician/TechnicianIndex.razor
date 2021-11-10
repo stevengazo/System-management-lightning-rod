@@ -1,0 +1,26 @@
+﻿@page "/Technician/Index"
+
+
+
+
+
+
+    <AuthorizeView Roles="Administrador,Editor,Lector">
+        <Authorized>
+            <div>
+                <div>
+                    <h2>Lista de técnicos</h2>
+                    <p>Lista de personas autorizadas para la realización de mantenimientos</p>           
+                    <a href="Technician/Create">Agregar nuevo técnico</a>
+                </div>
+                <div>
+                    <ListOfTechniciansComponent />
+                </div>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+
+        </NotAuthorized>
+    </AuthorizeView>
+
+

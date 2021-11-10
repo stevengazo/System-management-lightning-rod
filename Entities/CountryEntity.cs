@@ -11,7 +11,8 @@ namespace Entities
     {
         [Key]
         [Required]
-        public int CountryId { get; set; }
+        [MaxLength(4)]
+        public string CountryId { get; set; }
 
         public string CountryName { get; set; }
 

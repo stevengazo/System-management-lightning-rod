@@ -1,0 +1,42 @@
+﻿@using Entities;
+@using Business;
+@using Microsoft.AspNetCore.Identity;
+
+
+<p>Roles del usuario asignados</p>
+
+<table>
+    <tbody>
+        @foreach (var i in ListOfRoles)
+        {
+            <tr>
+                <th>Rol: @i.Name</th>
+            </tr>
+        }
+        @if(ListOfRoles.Count== 0)
+        {
+            <h2 class="text-danger">No hay roles asignados</h2>
+        }
+
+    </tbody>
+</table>
+
+
+@code {
+
+    List<IdentityRole> ListOfRoles;
+
+    [Parameter]
+    public string UserId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        ListOfRoles = B_Manage.GetListOfRolesByUser(UserId);
+    }
+
+
+}
+ 

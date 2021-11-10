@@ -2,20 +2,35 @@
 
 
 
+
+
 <AuthorizeView Roles="Administrador">
     <Authorized>
-        <h3>Administración</h3>
+        <h2>Administración</h2>
         <hr />
-        <ListUsersComponent></ListUsersComponent>
-        <ListOfRolesComponent></ListOfRolesComponent>
+        <div>
+            <label>¿Deseas agregar un usuario?</label>
+            <a class="text-decoration-none" href="Identity/Account/Register">Registrar Nuevo Usuario</a> |
+            <label>¿Deseas agregar roles?</label>
+            <a class="text-decoration-none" href="manage/AddRoles">Designar roles</a>
+        </div>
+        <div class="d-xl-flex flex-column">
+            <div>
+                <h3>Lista de Usuarios</h3>
+                <p>Lista de Usuarios registrados en el sistema.</p>
+                <ListUsersComponent></ListUsersComponent>
+            </div>
+            <div>
+                <h5 class="h5 text-md-left" >Lista de Roles </h5>
+                <p  class="text-sm-left">Lista de roles predeterminados en el sistema</p>
+                <ListOfRolesComponent></ListOfRolesComponent>
+            </div>
+        </div>
     </Authorized>
     <NotAuthorized>
         <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>
 </AuthorizeView>
-
-
-
 
 
 

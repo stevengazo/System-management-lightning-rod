@@ -1,0 +1,20 @@
+﻿@page "/Technician/Create" 
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2>
+                Registro de técnicos
+            </h2>
+            <CreateTechnicianComponent />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+

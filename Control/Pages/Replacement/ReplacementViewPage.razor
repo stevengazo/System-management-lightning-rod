@@ -1,11 +1,20 @@
 ﻿@page "/replacement/view/{Replacementid}"
 
-<div>
-    <h1> Información del reemplazo respectivo</h1>
-    <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
-    <hr/>
-    <ReplacementViewComponent ReplacementId="@ReplacementId.ToString()" />
-</div>
+
+
+<AuthorizeView Roles="Administrador,Lector,Editor">
+    <Authorized>
+        <div>
+            <h1> Información del reemplazo respectivo</h1>
+            <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
+            <hr />
+            <ReplacementViewComponent ReplacementId="@ReplacementId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code{

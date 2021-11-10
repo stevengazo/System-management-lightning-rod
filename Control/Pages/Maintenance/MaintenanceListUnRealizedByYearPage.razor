@@ -1,15 +1,27 @@
 ﻿@page "/maintenance/list/unrealizedByear/"
 
 
-<div class="text-center">
-    <h1> Lista de Dispositivos sin mantenimiento</h1>
-    <p>
-        A continuación se presenta los equipos que no presentan
-        mantenimientos en los plazos en los plazos seleccionados.
-    </p>
-</div>
 
-<MaintenanceUnrealizedComponent/>
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div class="text-center">
+            <h1> Lista de Dispositivos sin mantenimiento</h1>
+            <p>
+                A continuación se presenta los equipos que no presentan
+                mantenimientos en los plazos en los plazos seleccionados.
+            </p>
+        </div>
+        <MaintenanceUnrealizedComponent />
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
+
+
 
 @code {
 

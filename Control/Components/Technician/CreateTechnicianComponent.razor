@@ -1,0 +1,54 @@
+﻿@using Entities;
+@using Business;
+
+
+<p>Favor registra la información perteneciente a los técnicos o personal que pueden realizar mantenimientos </p>
+
+
+<EditForm Model="@Technician">
+    <div class="form-group">
+        <label>Nombre de la persona</label>
+        <InputText class="form-control" @bind-Value="@Technician.TechnicianName"></InputText>
+    </div>
+</EditForm>
+
+<input type="button" value="Guardar Persona" @onclick="SaveTechnician" />
+<div class="text-center">
+    <label style="color:red">@message</label>
+</div>
+
+
+
+
+@code{
+
+    TechnicianEntity Technician = new TechnicianEntity();
+    string message = "";
+
+    private void SaveTechnician()
+    {
+        try
+        {
+
+            B_Technician.Create(Technician);
+            message = "Técnico registrado";
+            clean();
+        }
+        catch (Exception error)
+        {
+            Console.WriteLine(error.Message);
+            message = $"Error, recargue la pagina e intentelo de nuevo";
+        }
+
+
+    }
+
+
+    void clean()
+    {
+        Technician.TechnicianName = "";
+    }
+
+}
+
+

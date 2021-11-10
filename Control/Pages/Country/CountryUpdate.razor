@@ -1,0 +1,33 @@
+﻿@page "/Country/Update/{CountryId}"
+
+
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2>Actualización de País</h2>
+            <UpdateCountryComponent id="@CountryId.ToString()" />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public string CountryId { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        CountryId = CountryId;
+    }
+} 

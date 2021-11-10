@@ -1,0 +1,49 @@
+﻿@using Business;
+@using Entities;
+
+
+
+
+<div>
+    <p>A continuación se presentan los paises registrados</p>
+    <table class="table table-hover" >
+        <thead>
+            <tr>
+                <td>Codigo</td>
+                <td>Nombre</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in countries)
+            {
+            <tr>
+                <td>@item.CountryId</td>
+                <td>@item.CountryName</td>
+                <td><a href="Country/Update/@item.CountryId.ToString()">Editar</a></td>
+                <td><a href="Country/Delete/@item.CountryId.ToString()" class="text-danger">Eliminar</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+@code{
+    List<CountryEntity> countries = new List<CountryEntity>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        countries = B_Country.ListOfCountries();
+
+    }
+
+
+}

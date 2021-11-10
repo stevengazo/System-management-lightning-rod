@@ -64,9 +64,9 @@
                     <tr>
                         <td> @obj.DeviceId </td>
                         <td> @obj.MaintenanceDate.Date</td>
-                        <td> <a href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
-                        <td> <a href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
-                        <td> <a style="color:red" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
+                        <td> <a class="btn btn-primary"  href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
+                        <td> <a class="btn btn-secondary" href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
+                        <td> <a class="btn btn-danger" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
                     </tr>
                 }
             </tbody>
@@ -106,17 +106,26 @@
 
     private void Search()
     {
-        Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, NameToSearch, YearToSearch, MonthToSearch);
-        if (Maintenances.Count >0)
+        try
         {
-            ErrorMessage = "";
+            Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, NameToSearch, YearToSearch, MonthToSearch);
+            if (Maintenances.Count > 0)
+            {
+                ErrorMessage = "";
+            }
+            else
+            {
+                ErrorMessage = "No hay mantenimientos que coindicidan con los criterios de busqueda...";
+            }
+            CleanSpaces();
+
         }
-        else
+        catch (Exception e)
         {
-            ErrorMessage = "No hay mantenimientos que coindicidan con los criterios de busqueda...";
+            ErrorMessage = e.Message;
         }
-        CleanSpaces();
     }
+
     private void CleanSpaces()
     {
         YearToSearch = 0;

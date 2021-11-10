@@ -1,12 +1,22 @@
 ﻿@page "/device/create"
 
-<div>
-    <h2 class="text-center">Registro de Nuevo dispositivo</h2>
-    <hr />
-    <a class="text-center" href="device/list">Regresar a la lista de dispositivos</a>   
-    <hr />
-    <CreateDeviceComponent />
-</div>
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2 class="text-center">Registro de Nuevo dispositivo</h2>
+            <hr />
+            <a class="text-center" href="device/list">Regresar a la lista de dispositivos</a>
+            <hr />
+            <CreateDeviceComponent />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
+
 
 @code {
 

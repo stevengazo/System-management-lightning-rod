@@ -36,9 +36,9 @@
             <tr>
                 <td> @obj.SaleManId</td>
                 <td> @obj.Name</td>
-                <td> <a href="saleman/view/@obj.SaleManId.ToString()"> Ver </a></td>
-                <td> <a href="saleman/update/@obj.SaleManId.ToString()"> Modificar</a></td>
-                <td> <a style="color:red" href="saleman/delete/@obj.SaleManId.ToString()"> Eliminar</a></td>
+                <td> <a class="btn btn-primary" href="saleman/view/@obj.SaleManId.ToString()"> Ver </a></td>
+                <td> <a class="btn btn-secondary" href="saleman/update/@obj.SaleManId.ToString()"> Modificar</a></td>
+                <td> <a class="btn btn-danger" href="saleman/delete/@obj.SaleManId.ToString()"> Eliminar</a></td>
             </tr>
         }
     </tbody>
@@ -54,16 +54,25 @@
     string ErrorMessage = null;
     private void  SeachSaleman()
     {
-        SaleMans =  B_SaleMan.SearchSaleman(IDToSearch, NameToSearch);
-        if (SaleMans.Count <= 0)
+        try
         {
-            ErrorMessage = "No hay coincidencias";
+
+            SaleMans = B_SaleMan.SearchSaleman(IDToSearch, NameToSearch);
+            if (SaleMans.Count <= 0)
+            {
+                ErrorMessage = "No hay coincidencias";
+            }
+            else
+            {
+                ErrorMessage = "";
+            }
         }
-        else
+        catch (Exception f)
         {
-            ErrorMessage = "";
+            ErrorMessage = f.Message;
         }
     }
+
     private async Task CleanValues()
     {
         IDToSearch =  null;
