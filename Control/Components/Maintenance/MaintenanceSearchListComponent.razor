@@ -28,8 +28,12 @@
             </select>
         </div>
         <div class="col">
-            <select class="rounded form-control" @bind="NameToSearch">
+            <select class="rounded form-control" @bind="TechnicianIdToSearch">
                 <option value="">Técnico</option>
+                @foreach (var item in technicians)
+                {
+                       <option value="@item.TechnicianId.ToString()">@item.TechnicianName</option>
+                }
 
             </select>
         </div>
@@ -64,6 +68,7 @@
                     <tr>
                         <td> @obj.DeviceId </td>
                         <td> @obj.MaintenanceDate.Date</td>
+                        <td> @obj.Technician.TechnicianName</td>
                         <td> <a class="btn btn-primary"  href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
                         <td> <a class="btn btn-secondary" href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
                         <td> <a class="btn btn-danger" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
@@ -101,14 +106,22 @@
     private int YearToSearch { get; set; }
     private int MonthToSearch { get; set; }
     private string DeviceToSearch { get; set; }
-    private string NameToSearch { get; set; }
+    private string TechnicianIdToSearch { get; set; }    
+    List<TechnicianEntity> technicians = new List<TechnicianEntity>();
     #endregion
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        technicians = B_Technician.GetListOftechnicians();
+    }
 
     private void Search()
     {
         try
         {
-            Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, NameToSearch, YearToSearch, MonthToSearch);
+            Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, TechnicianIdToSearch, YearToSearch, MonthToSearch);
             if (Maintenances.Count > 0)
             {
                 ErrorMessage = "";
@@ -131,7 +144,7 @@
         YearToSearch = 0;
         MonthToSearch = 0;
         DeviceToSearch = null;
-        NameToSearch = null;
+        TechnicianIdToSearch = null;
     }
 }
 
