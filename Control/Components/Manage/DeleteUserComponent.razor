@@ -1,0 +1,74 @@
+﻿@using Business;
+@using Microsoft.AspNetCore.Identity;
+
+
+
+@inject NavigationManager Nav;
+
+<div class="justify-content-center">
+    <div>
+        <h3>¿ Deseas eliminar el usuario de @_User.UserName?</h3>
+        <p> Si elimina el usuario, no podra volver a iniciar sesión. Si desea realizas otras acciones:</p> 
+        <ul>
+            <li><a href="manage/EditUser/@UserId"> Desactivar usuario temporalmente</a></li>
+            <li><a href="manage/ViewUser/@UserId"> Quitar roles de usuario</a></li>
+        </ul>
+
+    </div>
+    <br />
+    <div>
+        <button class="btn btn-danger" @onclick="Delete" >Eliminar</button>
+        <button class="btn btn-information" @onclick="Back">Regresar</button>
+    </div>
+    <div>
+        <p>@message</p>
+    </div>
+
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string UserId { get; set; }
+
+    string message = "";
+
+    private IdentityUser _User = new IdentityUser();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        _User = B_Manage.GetUser(UserId);
+
+    }
+    protected async Task Back()
+    {
+        Nav.NavigateTo("manage/Index");
+    }
+
+    protected async Task Delete()
+    {
+        try
+        {
+            var band = B_Manage.DeleteUser(_User);
+            if (band)
+            {
+                message = "Usuario eliminado";
+                Back();
+            }
+            else
+            {
+                message = "El usuario no logró se eliminado, contacta con el administrador o intentalo de nuevo";
+            }
+
+        }
+        catch (Exception s)
+        {
+            Console.Write($"Error : {s.Message}");
+
+        }
+
+    }
+}

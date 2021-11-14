@@ -25,7 +25,7 @@
             <td><a class="btn btn-primary"  href="manage/ViewUser/@item.Id" >Ver</a></td>
             <td><a class="btn btn-secondary" href="manage/EditUser/@item.Id">Editar</a></td>            
             <td><a class="btn btn-warning" href="Identity/Admin/ChangePassByAdmin/@item.Id">Cambiar Contraseña </a></td>
-            <td><a class="btn btn-danger" href="">Eliminar </a></td>                       
+            <td><a class="btn btn-danger" href="manage/DeleteUser/@item.Id">Eliminar </a></td>                       
         </tr>
         }
     </tbody>
@@ -48,7 +48,7 @@
     }
     private void ChargeList()
     {
-        Users = B_Manage.ListOfUsers();
+        Users = B_Manage.ListOfUsers().OrderBy(D=>D.UserName).ToList();
     }
 
 

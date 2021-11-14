@@ -38,6 +38,27 @@ namespace Business
             }
         }
 
+
+
+        public static bool DeleteUser(IdentityUser _user)
+        {
+            try
+            {
+                using (var db = new IDBContext())
+                {
+                    db.Users.Remove(_user);
+                    db.SaveChanges();
+                    return true;
+
+                }
+                return false;
+            }
+            catch (Exception v)
+            {
+                Console.WriteLine($"Error {v.Message}");
+                return false;
+            }
+        }
         public static bool UpdateUser(IdentityUser _user)
         {
             try
