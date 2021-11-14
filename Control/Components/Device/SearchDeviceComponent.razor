@@ -1,6 +1,11 @@
-﻿@using Entities;
+﻿@using CsvHelper.Configuration
+@using Entities;
 @using Business;
+@using System.IO;
+@using CsvHelper;
+@using System.Globalization;
 
+@inject IJSRuntime Js;
 
 
 <div>
@@ -40,7 +45,7 @@
             <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
         </div>
         <div class="col">
-            <input class="btn-outline-dark form-control" type="button" value="Exportar" />
+            <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
         </div>
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
@@ -134,6 +139,29 @@
         else
         {
             return false;
+        }
+    }
+
+
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+                
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Devices.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("DevicesConsult.csv", arr);
+            }
         }
     }
 
