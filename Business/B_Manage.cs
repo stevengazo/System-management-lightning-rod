@@ -38,6 +38,28 @@ namespace Business
             }
         }
 
+        public static bool UpdateUser(IdentityUser _user)
+        {
+            try
+            {
+                using (var db = new IDBContext())
+                {
+                    db.Users.Update(_user);
+                    db.SaveChanges();
+                        return true;
+
+                }
+                return false;
+            }
+            catch (Exception v)
+            {
+                Console.WriteLine($"Error {v.Message}");
+                return false;
+            }
+        }
+
+
+
 
         /// <summary>
         /// Change the confirmation of the user
