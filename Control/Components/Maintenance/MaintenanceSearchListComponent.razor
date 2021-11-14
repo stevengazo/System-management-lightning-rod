@@ -1,8 +1,11 @@
-﻿
-@using Entities;
+﻿@using Entities;
 @using Business;
 
-
+@using CsvHelper;
+@using CsvHelper.Configuration
+@using System.Globalization;
+@using System.IO;
+@inject IJSRuntime Js;
 
 <div style=" margin-top: 22px; ">
     <div class="form-group row">
@@ -39,14 +42,14 @@
         </div>
     </div>    
     <div class="row form-group">
-        <div class="col-3">
+        <div class="col">
             <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="Search" />
         </div>
-        <div class="col-3">
+        <div class="col">
             <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanSpaces" />
         </div>
-        <div class="col-3">
-            <input type="button" value="Generar" class="btn btn-outline-dark form-control" />
+        <div class="col">
+            <input type="button" value="Generar" class="btn btn-outline-dark form-control" @onclick="Download"/>
         </div>
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
@@ -136,6 +139,29 @@
         catch (Exception e)
         {
             ErrorMessage = e.Message;
+        }
+    }
+
+    
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+                
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Maintenances.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("MaintenancesSearchConsult.csv", arr);
+            }
         }
     }
 

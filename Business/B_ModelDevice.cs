@@ -70,6 +70,49 @@ namespace Business
                 return DB.ModelDevices.FirstOrDefault(M => M.ModelDeviceId== _id);
             }
         }
+
+
+        public static bool HasDependences (int _id)
+        {
+            try
+            {
+                using (var DB = new RayosNoDataContext())
+                {
+                    var query = (from device in DB.Devices select device).FirstOrDefault(D=>D.ModelDeviceId== _id); 
+                    if(query!=null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public static bool CheckIfExistsId(int _id)
+        {
+            ModelDeviceEntity query;
+            using (var DB = new RayosNoDataContext())
+            {
+                query = DB.ModelDevices.FirstOrDefault(M => M.ModelDeviceId == _id);
+                if(query != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
         #endregion
     }
 }

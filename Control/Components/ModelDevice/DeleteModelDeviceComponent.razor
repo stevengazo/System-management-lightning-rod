@@ -1,0 +1,74 @@
+﻿@using Entities;
+@using Business;
+
+
+@inject NavigationManager Nav;
+
+
+<div>
+    <div>
+        ¿Desea eliminar el modelo @oModelDevice.ModelDeviceName?
+    </div>
+    <div>
+        <input type="button" value="Borrar " class="btn btn-danger" @onclick="DeleteModel"/>
+        <input type="button" value="Atras" class="btn" @onclick="Back"/>
+    </div>
+    <p class="text-danger">@Message</p>
+</div>
+
+
+
+
+@code{
+    [Parameter]
+    public string Id { get; set; }
+
+    ModelDeviceEntity oModelDevice = new ModelDeviceEntity();
+    private string Message = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        int.TryParse(Id, out int ModelId);
+
+        oModelDevice = B_ModelDevice.GetModelById(ModelId);
+
+    }
+
+    private void Back()
+    {
+        Nav.NavigateTo("Models/Index");
+    }
+
+
+    private void DeleteModel()
+    {
+        try
+        {
+            bool bandExists = B_ModelDevice.CheckIfExistsId(oModelDevice.ModelDeviceId);
+            if (bandExists)
+            {
+                bool BandExistsDependences = B_ModelDevice.HasDependences(oModelDevice.ModelDeviceId);
+                if (BandExistsDependences)
+                {
+                    Message = "Existen dependencias, no es posible eliminar este registro";
+                }
+                else
+                {
+                    B_ModelDevice.DeleteModel(oModelDevice);
+
+                    Message = "Modelo eliminado";    
+                }
+            }
+            else
+            {
+                Message = "El modelo no existe en la base de datos";
+            }
+        }catch(Exception f)
+        {
+            Message = $"Error: {f.Message}";
+        }
+    }
+}

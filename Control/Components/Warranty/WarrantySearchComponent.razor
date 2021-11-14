@@ -1,6 +1,11 @@
 ﻿@using Entities;
 @using Business;
 
+@using CsvHelper.Configuration
+@using CsvHelper;
+@using System.Globalization;
+@using System.IO;
+@inject IJSRuntime Js;
 
 
 
@@ -38,14 +43,14 @@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-3">
+        <div class="col">
             <input type="button" value="Buscar" class="btn btn-outline-dark rounded" @onclick="SearchWarranties" />
         </div>
-        <div class="col-3">
+        <div class="col">
             <input type="button" value="Limpiar" class="btn btn-outline-dark rounded" @onclick="CleanSpaces" />
         </div>
-        <div class="col-3">
-            <input type="button" value="Generar" class="btn btn-outline-dark rounded" />
+        <div class="col">
+            <input type="button" value="Generar" class="btn btn-outline-dark rounded" @onclick="Download"/>
         </div>
     </div>
 
@@ -113,6 +118,28 @@
         {
             ErrorMessage = "";
         }
+    }
+    
 
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+                
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Warranties.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("WarrantiesConsult.csv", arr);
+            }
+        }
     }
 }
