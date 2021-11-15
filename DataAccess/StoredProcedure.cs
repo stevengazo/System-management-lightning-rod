@@ -189,6 +189,7 @@ namespace DataAccess
 							                Where YEAR(MaintenanceDate) = @_Year) as ListMaintenance
 	                on Devices.DeviceId = ListMaintenance.DeviceId
 	                where ListMaintenance.MaintenanceId is  null
+						and Devices.IsActive = 1
                 end
                                         ";
             string sp1 = @"
