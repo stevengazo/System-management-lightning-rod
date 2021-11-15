@@ -124,6 +124,24 @@ namespace Business
             return Maintenances;
         }
 
+
+
+        public static Dictionary<int,int> GeQuantityByYears()
+        {
+            Dictionary<int, int> QuantityByYears = new Dictionary<int, int>();
+            List<int> years = new List<int>();
+            using (var DB = new RayosNoDataContext())
+            {
+                years = (from maint in DB.Maintenances select maint.MaintenanceDate.Year).Distinct().ToList();
+                foreach (var item in years)
+                {
+                    var tmp = (from maint in DB.Maintenances select maint).Where(M => M.MaintenanceDate.Year == item).Count();
+                    QuantityByYears.Add(item, tmp);
+                }
+            }
+            return QuantityByYears;
+        }
+
         /// <summary>
         /// Count all the records in the table Maintenances
         /// </summary>

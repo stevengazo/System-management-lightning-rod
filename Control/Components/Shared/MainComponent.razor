@@ -1,38 +1,124 @@
 ﻿@using Entities;
 @using Business;
 @using ChartJs.Blazor.PieChart;
+@using ChartJs.Blazor.BarChart;
 
 
 
-<div class="row">
-    <div class="col">
 
-    </div>
-    <div class="col">
-        <Chart Config="@_configurationPieChart"></Chart>
-    </div>
-
+<div >
+    <Chart Config="@_configPieSalemanDevices"></Chart>
+    <p>La gráfica muestra todos los dispositivos activos por vendedor.</p>
+</div>
+<div >
+    <Chart Config="@_configurationPieChartCountrie"></Chart>
+    <p>La gráfica muestra todos los dispositivos, activos o dañados.</p>
+</div>
+<div >
+    <Chart Config="@_barConfigMaintByYear"/>
 </div>
 
 
 
 
 @code{
-    private PieConfig _configurationPieChart;
-    private Dictionary<string, int> QuantityOfDevices = new Dictionary<string, int>();
+    private PieConfig _configurationPieChartCountrie;
+    private PieConfig _configPieSalemanDevices;
+    private BarConfig _barConfigMaintByYear;
+    private Chart _chart;
 
+    private Dictionary<string, int> QuantityOfDevices = new Dictionary<string, int>();
+    private Dictionary<string, int> SaleMan_Devices = new Dictionary<string, int>();
+    private Dictionary<int, int> MaintanancesByYear = new Dictionary<int, int>();
     protected override async Task OnInitializedAsync()
     {
         base.OnInitializedAsync();
         QuantityOfDevices = B_Country.DevicesByCountry();
+        SaleMan_Devices = B_SaleMan.GetDictionaryOfSalemansWithDevices();
+        MaintanancesByYear = B_Maintenance.GeQuantityByYears();
         PieChartQuantityOfDeviceByCountries();
+        PieSalemanDevices();
+        MaintenanceByYearsChart();
     }
 
 
+    private void MaintenanceByYearsChart()
+    {
+         _barConfigMaintByYear= new BarConfig()
+            {
+                Options = new BarOptions
+                {
+                    Responsive = true,
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Mantenimientos Por Año"
+                    }
+                }
+            };
+
+        var tmpValues = new List<int>();    
+        var tmplist= new List<int>(MaintanancesByYear.Values);
+        var colorlist = new List<string>();
+
+
+        foreach (var item in MaintanancesByYear)
+        {            
+            _barConfigMaintByYear.Data.Labels.Add(item.Key.ToString());
+            tmpValues.Add(item.Value);
+            colorlist.Add(ColorUtil.RandomColorString());
+        }
+
+        BarDataset<int> _BarDataset = new BarDataset<int>(tmpValues);
+        _BarDataset.BackgroundColor = colorlist.ToArray();
+        _BarDataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);
+        _barConfigMaintByYear.Data.Datasets.Add(_BarDataset);
+    }
+    
+
+
+    private void PieSalemanDevices()
+    {
+        _configPieSalemanDevices = new PieConfig();
+        _configPieSalemanDevices.Options = new PieOptions
+            {
+                Responsive= true,
+                Title= new OptionsTitle()
+                {
+                    Display= true,
+                    Text="Dispositivos Por Vendedor"
+                }
+            };
+
+        int[] tmp = new int[ SaleMan_Devices.Count];
+        var tmplist= new List<int>();
+        foreach(var saleman in  SaleMan_Devices)
+        {
+            _configPieSalemanDevices.Data.Labels.Add(saleman.Key);
+            tmplist.Add(saleman.Value);            
+
+        }
+    
+        string[] colors = new string[SaleMan_Devices.Count];
+
+        for (var i = 0; i < SaleMan_Devices.Count; i++)
+        {
+            var tmpcolor = ColorUtil.RandomColorString().ToString();
+            colors[i] = tmpcolor;
+            tmp[i] = tmplist[i];
+        }
+
+        PieDataset<int> dataset = new PieDataset<int>(tmp);
+        dataset.BackgroundColor = colors;
+        dataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);
+        _configPieSalemanDevices.Data.Datasets.Add(dataset);
+
+    }
+
     private void PieChartQuantityOfDeviceByCountries()
     {
-        _configurationPieChart = new PieConfig();
-        _configurationPieChart.Options = new PieOptions
+        _configurationPieChartCountrie = new PieConfig();
+        _configurationPieChartCountrie.Options = new PieOptions
             {
                 Responsive= true,
                 Title= new OptionsTitle()
@@ -45,7 +131,7 @@
         var tmplist= new List<int>();
         foreach(var country in QuantityOfDevices)
         {
-            _configurationPieChart.Data.Labels.Add(country.Key);
+            _configurationPieChartCountrie.Data.Labels.Add(country.Key);
             tmplist.Add(country.Value);            
 
         }
@@ -61,10 +147,12 @@
         }
 
 
-
         PieDataset<int> dataset = new PieDataset<int>(tmp);
         dataset.BackgroundColor = colors;
         dataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);
-        _configurationPieChart.Data.Datasets.Add(dataset);
+        _configurationPieChartCountrie.Data.Datasets.Add(dataset);
     }
+
+
+
 }

@@ -91,6 +91,26 @@ namespace Business
             }
             return salemans;
         }
+
+        /// <summary>
+        /// Return a dictionary with the quantity of devices active by saleman
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string,int> GetDictionaryOfSalemansWithDevices()
+        {
+            List<SaleManEntity> salemans = new List<SaleManEntity>();
+            Dictionary<string, int> Sale_Device = new Dictionary<string, int>();
+            using (var DB = new RayosNoDataContext())
+            {
+                salemans = DB.Salemans.ToList();
+                foreach (var item in salemans)
+                {
+                    var tmp = (from dev in DB.Devices select dev).Where(S => S.IsActive == true).Where(S => S.SaleManId == item.SaleManId).Count();
+                    Sale_Device.Add(item.Name, tmp);
+                }
+            }
+            return Sale_Device; 
+        }
         public static SaleManEntity SaleManById(string id)
         {
             using (var DB = new RayosNoDataContext())
