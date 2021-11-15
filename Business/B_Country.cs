@@ -7,7 +7,7 @@ using DataAccess;
 using Entities;
 namespace Business
 {
-    public  static class B_Country
+    public static class B_Country
     {
 
         #region CRUD
@@ -16,37 +16,39 @@ namespace Business
         /// Registered a new country in the database
         /// </summary>
         /// <param name="oCountry">Country to save</param>
-        public static void CreateCountry( CountryEntity oCountry)
+        public static void CreateCountry(CountryEntity oCountry)
         {
-           
+
             using (var db = new RayosNoDataContext())
             {
                 db.Countries.Add(oCountry);
                 db.SaveChanges();
             }
-           
+
 
         }
+
+
 
         /// <summary>
         /// List the records in the database
         /// </summary>
         /// <returns>List type CountryEntity</returns>
-        public  static List<CountryEntity> ListOfCountries()
+        public static List<CountryEntity> ListOfCountries()
         {
             using (var DB = new RayosNoDataContext())
             {
                 var query = (from country in DB.Countries select country).ToList();
                 return query;
-            }            
+            }
         }
 
 
-              /// <summary>
+        /// <summary>
         /// Update an exist country
         /// </summary>
         /// <param name="oCountry"></param>
-        public static void UpdateCountry( CountryEntity oCountry)
+        public static void UpdateCountry(CountryEntity oCountry)
         {
             using (var db = new RayosNoDataContext())
             {
@@ -63,7 +65,7 @@ namespace Business
             bool BandExist = HaveDependences(country);
             if (!BandExist)
             {
-                using(var db = new RayosNoDataContext())
+                using (var db = new RayosNoDataContext())
                 {
                     db.Countries.Remove(country);
                     db.SaveChanges();
@@ -80,7 +82,7 @@ namespace Business
         /// </summary>
         /// <param name="_id">id of the country (Code Country)</param>
         /// <returns>Country or null</returns>
-        public static CountryEntity GetCountryById(string _id ="")
+        public static CountryEntity GetCountryById(string _id = "")
         {
 
             using (var db = new RayosNoDataContext())
@@ -88,6 +90,22 @@ namespace Business
                 var country = (from count in db.Countries select count).Where(C => C.CountryId.Equals(_id)).FirstOrDefault();
                 return country;
             }
+        }
+
+
+        public static Dictionary<string,int> DevicesByCountry()
+        {
+            Dictionary<string, int> listofcountries = new Dictionary<string, int>();
+            using (var db = new RayosNoDataContext())
+            {
+                var query = (from country in db.Countries select country).ToList();
+                foreach (var item in query)
+                {
+                    var tmp = (from devi in db.Devices select devi).Where(D => D.CountryId == item.CountryId).Count();
+                    listofcountries.Add(item.CountryName, tmp);
+                }
+            }
+            return listofcountries;
         }
 
 

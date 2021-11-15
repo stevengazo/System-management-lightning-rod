@@ -1,0 +1,70 @@
+﻿@using Entities;
+@using Business;
+@using ChartJs.Blazor.PieChart;
+
+
+
+<div class="row">
+    <div class="col">
+
+    </div>
+    <div class="col">
+        <Chart Config="@_configurationPieChart"></Chart>
+    </div>
+
+</div>
+
+
+
+
+@code{
+    private PieConfig _configurationPieChart;
+    private Dictionary<string, int> QuantityOfDevices = new Dictionary<string, int>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        QuantityOfDevices = B_Country.DevicesByCountry();
+        PieChartQuantityOfDeviceByCountries();
+    }
+
+
+    private void PieChartQuantityOfDeviceByCountries()
+    {
+        _configurationPieChart = new PieConfig();
+        _configurationPieChart.Options = new PieOptions
+            {
+                Responsive= true,
+                Title= new OptionsTitle()
+                {
+                    Display= true,
+                    Text="Cantidad Instalados Por País"
+                }
+            };
+        int[] tmp = new int[QuantityOfDevices.Count];
+        var tmplist= new List<int>();
+        foreach(var country in QuantityOfDevices)
+        {
+            _configurationPieChart.Data.Labels.Add(country.Key);
+            tmplist.Add(country.Value);            
+
+        }
+
+
+        string[] colors = new string[QuantityOfDevices.Count];
+
+        for (var i = 0; i < QuantityOfDevices.Count; i++)
+        {
+            var tmpcolor = ColorUtil.RandomColorString().ToString();
+            colors[i] = tmpcolor;
+            tmp[i] = tmplist[i];
+        }
+
+
+
+        PieDataset<int> dataset = new PieDataset<int>(tmp);
+        dataset.BackgroundColor = colors;
+        dataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);
+        _configurationPieChart.Data.Datasets.Add(dataset);
+    }
+}
