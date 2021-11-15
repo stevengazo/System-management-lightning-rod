@@ -73,6 +73,7 @@
         _BarDataset.BackgroundColor = colorlist.ToArray();
         _BarDataset.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
         _BarDataset.BorderColor = ColorUtil.ColorHexString(133, 133, 133);
+        _BarDataset.MinBarLength = 20;
         _barConfigMaintByYear.Data.Datasets.Add(_BarDataset);
     }
 
@@ -84,6 +85,10 @@
         _configPieSalemanDevices.Options = new PieOptions
             {
                 Responsive= true,
+                Legend = new Legend
+                {
+                    Position = Position.Top
+                },
                 Title= new OptionsTitle()
                 {
                     Display= true,
@@ -110,7 +115,7 @@
         }
 
         PieDataset<int> dataset = new PieDataset<int>(tmp);
-        dataset.BackgroundColor = colors;
+        dataset.BackgroundColor = colors;        
         dataset.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
         dataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);       
         _configPieSalemanDevices.Data.Datasets.Add(dataset);
