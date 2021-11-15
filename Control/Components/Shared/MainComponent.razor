@@ -44,7 +44,7 @@
 
     private void MaintenanceByYearsChart()
     {
-         _barConfigMaintByYear= new BarConfig()
+        _barConfigMaintByYear= new BarConfig()
             {
                 Options = new BarOptions
                 {
@@ -71,10 +71,11 @@
 
         BarDataset<int> _BarDataset = new BarDataset<int>(tmpValues);
         _BarDataset.BackgroundColor = colorlist.ToArray();
-        _BarDataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);
+        _BarDataset.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
+        _BarDataset.BorderColor = ColorUtil.ColorHexString(133, 133, 133);
         _barConfigMaintByYear.Data.Datasets.Add(_BarDataset);
     }
-    
+
 
 
     private void PieSalemanDevices()
@@ -98,7 +99,7 @@
             tmplist.Add(saleman.Value);            
 
         }
-    
+
         string[] colors = new string[SaleMan_Devices.Count];
 
         for (var i = 0; i < SaleMan_Devices.Count; i++)
@@ -110,7 +111,8 @@
 
         PieDataset<int> dataset = new PieDataset<int>(tmp);
         dataset.BackgroundColor = colors;
-        dataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);
+        dataset.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
+        dataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);       
         _configPieSalemanDevices.Data.Datasets.Add(dataset);
 
     }
@@ -149,6 +151,7 @@
 
         PieDataset<int> dataset = new PieDataset<int>(tmp);
         dataset.BackgroundColor = colors;
+        dataset.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
         dataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);
         _configurationPieChartCountrie.Data.Datasets.Add(dataset);
     }
