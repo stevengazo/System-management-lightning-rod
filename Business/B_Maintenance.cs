@@ -229,6 +229,31 @@ namespace Business
                     ///Execute a Stored Procedure saved in the DB
                     var query = DB.Devices.FromSqlInterpolated($"Exec GetDeviceByUnreallizedMaintenanceByYear @_Year={year.ToString()}");
                     //Convert the IQueryable result, to list of DeviceEntity to send to the 
+                    var clients = new List<ClientEntity>();
+                    var models = new List<ModelDeviceEntity>();
+                    var salemans = new List<SaleManEntity>();
+                    var typeofdevice = new List<TypeDeviceEntity>();
+                    var countries = new List<CountryEntity>();
+                    using(var db = new RayosNoDataContext())
+                    {
+                        countries = db.Countries.ToList();
+                        clients = db.Clients.ToList();
+                        models = db.ModelDevices.ToList();
+                        salemans = db.Salemans.ToList();
+                        typeofdevice = db.TypesDevices.ToList();
+
+                    }
+
+                    foreach( var i in query)
+                    {
+                        
+                        var tmp = i.ClientId;;                       
+                        i.Client= clients.Find(C=>C.Id ==tmp);
+                        i.SaleMan = salemans.Find(S => S.SaleManId == i.SaleManId);
+                        i.ModelDevice = models.Find(M => M.ModelDeviceId == i.ModelDeviceId);
+                        i.TypeDevice = typeofdevice.Find(T => T.TypeDeviceId == i.TypeDeviceId);
+                        i.Country = countries.Find(C => C.CountryId == i.CountryId);
+                    }
                     oDevices = query.ToList();
                     return oDevices;
                 }
