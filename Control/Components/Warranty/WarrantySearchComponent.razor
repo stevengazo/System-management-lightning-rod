@@ -34,11 +34,12 @@
         </div>
         <div class="col">
             <label class="col-form-label">Estado de la garantia</label>
-            <select class="form-control rounded " @bind="@EstatusToSearch">
-                <option value="">Seleccione un estado...</option>
-                <option value="En tramite">En tramite</option>
-                <option value="Recibido">Recibido</option>
-                <option value="Con Problemas">Con Problemas</option>
+            <select class="form-control rounded " @bind="@tmpEstatusToSearch">
+                @foreach (var item in StatusList)
+               {
+                   <option value="@item.StatusId">@item.StatusName</option>
+               }
+                
             </select>
         </div>
     </div>
@@ -88,6 +89,7 @@
     public List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
     public List<int> Years = new List<int>();
     private Dictionary<string, string> Devices;
+    private List<StatusEntity> StatusList;
 
     #region internal
 
@@ -95,20 +97,34 @@
     private int YearToSearch = 0;
     private string EstatusToSearch = null;
     private string ErrorMessage = "";
+    private int tmpEstatusToSearch = 0;
     #endregion
+
+
+
+
     protected override async Task OnInitializedAsync()
     {
         Years = B_Warranty.GetYearsOfSend();
         Devices = B_Device.GetDictonaryOfDevicesWithClient();
+        StatusList = B_Status.GetStatus();
     }
     private void CleanSpaces()
     {
         DeviceIdToSearch = null;
         YearToSearch = 0;
-        EstatusToSearch = null;
+        tmpEstatusToSearch = 0;
     }
+
+
     private void SearchWarranties()
     {
+        if(tmpEstatusToSearch != 0)
+        {
+        EstatusToSearch = tmpEstatusToSearch.ToString();    
+        }
+        
+        
         Warranties = B_Warranty.SearchWarranties(DeviceIdToSearch, EstatusToSearch, YearToSearch);
         if (Warranties.Count <= 0)
         {
