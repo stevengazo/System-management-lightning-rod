@@ -53,10 +53,13 @@
 <div>
     <input  type="button" value="Guardar Incidente" @onclick="SaveIncident"/>
 </div>
+<p class="text-danger">@Message</p>
 
 @code{
     IncidentEntity oIncident = new IncidentEntity();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
+
+    string Message = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,7 +68,15 @@
 
     private void SaveIncident()
     {
-        B_Incident.CreateIncident(oIncident);
-        Nav.NavigateTo("incident/list");
+        try
+        {
+            B_Incident.CreateIncident(oIncident);
+            Nav.NavigateTo("incident/list");
+        }
+        catch(Exception f)
+        {
+            Message = $"Error: {f.Message}. Intentelo de nuevo";
+        }
+        
     }
 }

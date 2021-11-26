@@ -63,6 +63,8 @@
     [Parameter]
     public string IncidentId { get; set; }
 
+    string Message = "";
+
     IncidentEntity oIncident = new IncidentEntity();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
 
@@ -73,8 +75,18 @@
     }
     private void UpdateIncident()
     {
-        B_Incident.Update(oIncident);
-        Nav.NavigateTo("incident/list");
+        try
+        {
+            oIncident.Device = Devices.First(D => D.DeviceId == oIncident.DeviceId);
+            B_Incident.Update(oIncident);
+            Nav.NavigateTo("incident/list");        
+        }
+        catch(Exception g)
+        {
+            Message = $"Error: {g.Message}";
+
+        }
+    
     }
 
 }   

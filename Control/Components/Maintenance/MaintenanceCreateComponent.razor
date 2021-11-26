@@ -85,13 +85,14 @@
 
 <input type="button" value="Registrar Mantenimiento" class="btn-primary" @onclick="SaveMaintenance">
 
-
+<p>@Message</p>
 
 
 @code{
     List<TechnicianEntity> technicians = new List<TechnicianEntity>();
     List<DeviceEntity> oDevices;
     bool BandExistDevice { get; set; }
+    string Message="";
 
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
     protected override async Task OnInitializedAsync()
@@ -102,6 +103,8 @@
 
     private void SaveMaintenance()
     {
+        try
+        {
         oMaintenance.MaintenanceId = Guid.NewGuid().ToString();
 
         // asignacion de clases
@@ -109,13 +112,18 @@
         var tmpTechnician = technicians.Find(T => T.TechnicianId == oMaintenance.TechnicianId);
         //oMaintenance.Technician = tmpTechnician;
         var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
-      //  oMaintenance.Device = tmpDevice;
-
-
-
+        //  oMaintenance.Device = tmpDevice;
 
         B_Maintenance.Create(oMaintenance);
         Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");
+
+
+        }
+        catch(Exception f)
+        {
+            Message = $"Error: {f.Message}. Intentelo de nuevo";
+        }
+   
     }
 
 

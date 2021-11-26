@@ -16,7 +16,7 @@
 </table>
 
 
-
+<p>@Error</p>
 
 
 @code{
@@ -24,9 +24,17 @@
     public string ClientId { get; set; }
 
     ClientEntity oClient = new ClientEntity();
-
+    string Error = "";
     protected override async Task OnInitializedAsync()
     {
-        oClient = B_Client.ClientById(ClientId);
+        try
+        {
+            oClient = B_Client.ClientById(ClientId);
+            Error = "";
+        }catch(Exception s)
+        {
+            Error = $"Error: {s.Message}. Intentelo de nuevo o contacte al administrador";
+        }
+
     }
 }

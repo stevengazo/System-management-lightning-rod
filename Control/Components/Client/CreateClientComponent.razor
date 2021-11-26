@@ -9,15 +9,24 @@
     </div>
     <input type="button" value="Registar Cliente" @onclick="SaveClient" />
 </EditForm>
+<p class="text-danger">@Error</p>
 
 @code{
     ClientEntity oClient = new ClientEntity();
-
+    string Error = "";
 
     private void SaveClient()
     {
-        oClient.Id = Guid.NewGuid().ToString();
-        B_Client.CreateClient(oClient);
-        Nav.NavigateTo("client/list");
+        try
+        {
+            oClient.Id = Guid.NewGuid().ToString();
+            B_Client.CreateClient(oClient);
+            Error = "";
+            Nav.NavigateTo("client/list");        
+        }catch (Exception f)
+        {
+            Error = $" Error: {f.Message}. Intentelo nuevamente.";
+        } 
+
     }
 }

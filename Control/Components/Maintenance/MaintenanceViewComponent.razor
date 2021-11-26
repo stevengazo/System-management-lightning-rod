@@ -60,6 +60,7 @@
         </tr>
     </tbody>
 </table>
+<p>@Message</p>
 
 
 
@@ -67,10 +68,18 @@
     [Parameter]
     public string id { get; set; }
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
-
+    string Message = "";
     protected override async Task OnInitializedAsync()
     {
-        oMaintenance = B_Maintenance.MaintenanceById(id);
+        try
+        {
+            oMaintenance = B_Maintenance.MaintenanceById(id);
+        }
+        catch(Exception f)
+        {
+            Message = $"Error: {f.Message}. Intentelo de nuevo";
+        }
+    
     }
 
 }

@@ -59,7 +59,7 @@
             </table>
         </EditForm>
     </div>
-    
+    <p>@Message</p>
 </div>
 
 
@@ -71,14 +71,22 @@
     [Parameter]
     public string id { get; set; }
 
-    
+    string Message = "";
 
     DeviceEntity oDevice { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        try
+        {
+            oDevice = B_Device.DeviceById(id);    
+        }catch(Exception f)
+        {
+            Message = $"Error: {f.Message}";
 
-        oDevice = B_Device.DeviceById(id);
+        }
+
+        
 
     }
 }

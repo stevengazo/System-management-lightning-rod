@@ -109,13 +109,20 @@
 
     private void UpdateDevice()
     {
-        oDevice.Client =B_Client.ClientById(oDevice.ClientId);
-        oDevice.SaleMan = B_SaleMan.SaleManById(oDevice.SaleManId);
-        oDevice.Country = B_Country.GetCountryById(oDevice.CountryId);
-        oDevice.TypeDevice = B_TypeDevice.GetTypeById(oDevice.TypeDeviceId);
-        oDevice.ModelDevice = B_ModelDevice.GetModelById(oDevice.ModelDeviceId);
-        B_Device.UpdateDevice(oDevice);
-        Nav.NavigateTo("device/list");
+        try
+        {
+            oDevice.Client =B_Client.ClientById(oDevice.ClientId);
+            oDevice.SaleMan = B_SaleMan.SaleManById(oDevice.SaleManId);
+            oDevice.Country = B_Country.GetCountryById(oDevice.CountryId);
+            oDevice.TypeDevice = B_TypeDevice.GetTypeById(oDevice.TypeDeviceId);
+            oDevice.ModelDevice = B_ModelDevice.GetModelById(oDevice.ModelDeviceId);
+            B_Device.UpdateDevice(oDevice);
+            Nav.NavigateTo("device/list");
+        }catch(Exception f)
+        {
+            Message = $"Error: {f.Message}. Intentelo de nuevo";
+        }
+
     }
 
 }

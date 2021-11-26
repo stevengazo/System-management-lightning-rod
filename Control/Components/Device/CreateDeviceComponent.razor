@@ -106,15 +106,22 @@
 
     private void SaveDevice()
     {
-        if(oDevice.ClientId != null)
+        try
         {
-            oDevice.RecomendedDateOfMaintenance = oDevice.InstallationDate.AddYears(1);
-            B_Device.CreateDevice(oDevice);
-            Nav.NavigateTo("device/list");
-        }
-        else
+            if(oDevice.ClientId != null)
+            {
+                oDevice.RecomendedDateOfMaintenance = oDevice.InstallationDate.AddYears(1);
+                B_Device.CreateDevice(oDevice);
+                Nav.NavigateTo("device/list");
+            }
+            else
+            {
+                Message = "Error verifica los campos";
+            }
+
+        }catch(Exception f)
         {
-            Message = "Error verifica los campos";
+            Message = $"Error {f.Message}. Intentalo de nuevo..";           
         }
 
 

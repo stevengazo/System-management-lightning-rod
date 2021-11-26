@@ -38,12 +38,13 @@
 </EditForm>
 
 <input type="button" value="Guardar Registro" class="btn-info" @onclick="SaveWarranty"/>
+<p>@Message</p>
 
 @code{
     WarrantyEntity oWarranty = new WarrantyEntity();    
     Dictionary<string, string> Devices = new Dictionary<string, string>();
     List<StatusEntity> status = new List<StatusEntity>();
-
+    string Message = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -54,10 +55,17 @@
 
     private void SaveWarranty()
     {
-        oWarranty.Id = Guid.NewGuid().ToString();
+        try
+        {
+            oWarranty.Id = Guid.NewGuid().ToString();
 
-        B_Warranty.Create(oWarranty);
-        Nav.NavigateTo($"warranty/view/{oWarranty.Id}");
+            B_Warranty.Create(oWarranty);
+            Nav.NavigateTo($"warranty/view/{oWarranty.Id}");        
+        }catch(Exception f)
+        {
+            Message = $"Error: {f.Message}. Intentelo de nuevo";
+        }
+
     }
 
 }

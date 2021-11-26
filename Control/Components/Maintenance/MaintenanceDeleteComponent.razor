@@ -11,17 +11,26 @@
     <input type="button" class="btn-light" value="Regresar a lista de Mantenimientos" @onclick="BackLink" />    
 </div>
 
-
+<p>@Message</p>
 
 @code{
     [Parameter]
     public string id { get; set; }
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
 
+    string Message = "";
+
     private void DeleteMaintenance()
     {
-        B_Maintenance.Delete(oMaintenance);
-        BackLink();
+        try
+        {
+            B_Maintenance.Delete(oMaintenance);
+            BackLink();        
+        }
+        catch(Exception sg){
+            Message = $"Error: {sg.Message}. Intentelo de nuevo";
+        }
+    
     }
     protected override async Task OnInitializedAsync()
     {

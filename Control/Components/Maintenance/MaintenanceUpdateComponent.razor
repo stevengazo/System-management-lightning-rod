@@ -73,11 +73,14 @@
 
 </EditForm>
 <input type="button" value="ActualizarMantenimiento" class="btn-primary" @onclick="UpdateMaintenance" />
+<p>@Message</p>
+
 
 @code{
     [Parameter]
     public string id { get; set; }
 
+    string Message = "";
 
     List<TechnicianEntity> technicians = new List<TechnicianEntity>();
     List<DeviceEntity> oDevices;
@@ -95,14 +98,20 @@
 
     private void UpdateMaintenance()
     {
+        try
+        {
+            var tmpTechnician = technicians.Find(T => T.TechnicianId == oMaintenance.TechnicianId);
+            oMaintenance.Technician = tmpTechnician;
+            var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
+            oMaintenance.Device = tmpDevice;
 
+            B_Maintenance.Update(oMaintenance);
+            Nav.NavigateTo("maintenance/list");
+        }
+        catch(Exception f)
+        {
+            Message = $"Error:{f.Message}. Intentelo de nuevo";
+        }
 
-        var tmpTechnician = technicians.Find(T => T.TechnicianId == oMaintenance.TechnicianId);
-        oMaintenance.Technician = tmpTechnician;
-        var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
-        oMaintenance.Device = tmpDevice;
-
-        B_Maintenance.Update(oMaintenance);
-        Nav.NavigateTo("maintenance/list");
     }
 }

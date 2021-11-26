@@ -5,6 +5,7 @@
 <div>
     <input type="text" value="Buscar cliente" @onchange="SearchCliente" class="form-group form-control" /> 
 </div>
+<p class="text-danger">@error</p>
 
 <table class="table table-responsive-sm table-bordered table-hover table-light" >
     <thead>
@@ -34,6 +35,7 @@
     List<ClientEntity> Clients = new List<ClientEntity>();
 
     List<ClientEntity> tmpClients = new List<ClientEntity>();
+    string error = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,11 +44,17 @@
 
     private void SearchCliente (ChangeEventArgs e)
     {
-        tmpClients = B_Client.SearchClientsByName(e.Value.ToString());
-        if (tmpClients.Count != 0)
-        {
-            Clients = tmpClients;
+        try{
+            tmpClients = B_Client.SearchClientsByName(e.Value.ToString());
+            if (tmpClients.Count != 0)
+            {
+                Clients = tmpClients;
+            }
+            error = "";
+        }catch(Exception s){
+            error = $"Error: {s.Message}. Intentelo de nuevo o contacte con el administrador";
         }
+
     }
 }
 

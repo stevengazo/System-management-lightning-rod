@@ -28,7 +28,7 @@
         <input type="button" value="Limpiar" class="btn btn-outline-dark form-control " @onclick="CleanValues" />
     </div>
 </div>
-<p class="text-center" style="color:red"> @ErrorMessage</p>
+<p class="text-center text-danger"> @ErrorMessage</p>
 
 
 
@@ -91,7 +91,7 @@
         }
         catch (Exception g)
         {
-            ErrorMessage = g.Message;
+            ErrorMessage = $"Error: {g.Message}. Intentelo de nuevo o contacte al administrador.";
         }
     }
 }
