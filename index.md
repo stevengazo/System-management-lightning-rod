@@ -17,7 +17,7 @@ The technologies used in this project are:
 - SQL Server: DB Engine to create the database. Also i use Stored Procedures, to have better performance.
 
 
-##Objetives of the Project
+## Objetives of the Project
 
 The original purpose of this project, is proof my skills and abilities like Developer. Also i evaluate a one problem in a companies focus in the installation and maintenances of lightning rod. This companies need a smart (basic) control of the lightning rod installed, and the status of this devices. Why is this so necesary? Because this systems are focus on the segurity of things like buildings, structures and more, but also this system provided segurity at the people. 
 
@@ -26,6 +26,27 @@ For that reason, i built this software to manage the maintenances and the instal
 
 
 ### Description of the project
+A continuation i going to descript the structure of the appplication and the general use:
+
+#### Basic Information
+
+##### Customers 
+
+##### Salemans
+
+##### Models
+
+##### Countries
+
+#### Device information
+##### Creation of Device
+
+##### Update of Device
+
+##### Delete of Device
+
+##### Search of Devices
+
 
 
 
