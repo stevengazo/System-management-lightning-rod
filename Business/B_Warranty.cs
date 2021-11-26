@@ -110,7 +110,7 @@ namespace Business
         {
             using (var DB = new RayosNoDataContext())
             {
-                return DB.Warranties.ToList().LastOrDefault(W => W.Id == id);
+                return DB.Warranties.Include(D => D.Status).FirstOrDefault( W=>W.Id == id);
             }
         }
         public static List<WarrantyEntity> ListOfWarrantiesById(string id)

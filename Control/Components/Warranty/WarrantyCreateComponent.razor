@@ -29,9 +29,9 @@
         <label>Estatus</label>
         <InputSelect @bind-Value="oWarranty.StatusId" class="form-control">
             <option value="">Seleccione un estado...</option>
-            @foreach (var item in EstatusType)
+            @foreach (var item in status)
             {
-                <option value="@item">@item</option>
+                <option value="@item.StatusId">@item.StatusName</option>
             }
         </InputSelect>
     </div>
@@ -40,15 +40,16 @@
 <input type="button" value="Guardar Registro" class="btn-info" @onclick="SaveWarranty"/>
 
 @code{
-    WarrantyEntity oWarranty = new WarrantyEntity();
-    string[] EstatusType = { "En tramite", "Recibido", "Con Problemas" };
+    WarrantyEntity oWarranty = new WarrantyEntity();    
     Dictionary<string, string> Devices = new Dictionary<string, string>();
+    List<StatusEntity> status = new List<StatusEntity>();
 
 
     protected override async Task OnInitializedAsync()
     {
 
         Devices = B_Device.GetDictonaryOfDevicesWithClient();
+        status = B_Status.GetStatus();
     }
 
     private void SaveWarranty()

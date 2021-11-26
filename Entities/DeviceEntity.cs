@@ -23,11 +23,11 @@ namespace Entities
         /// <summary>
         /// Longitude of the device
         /// </summary>
-        public float Longitude { get; set; }
+        public string Longitude { get; set; }
         /// <summary>
         /// Latitud of the device
         /// </summary>
-        public float Latitude { get; set; }
+        public string Latitude { get; set; }
 
 
         

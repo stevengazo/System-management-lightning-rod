@@ -16,7 +16,7 @@ namespace DataAccess.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.9")
+                .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Entities.ClientEntity", b =>
@@ -39,7 +39,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9427857b-c18c-4548-ae3f-cfc581e83e60",
+                            Id = "a0e9c19e-0872-4f6a-a055-79499540b4fe",
                             Name = "Prueba",
                             SectorId = 1
                         });
@@ -86,11 +86,11 @@ namespace DataAccess.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<float>("Latitude")
-                        .HasColumnType("real");
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Longitude")
-                        .HasColumnType("real");
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ModelDeviceId")
                         .HasColumnType("int");
@@ -121,17 +121,15 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "db8639db-0f2c-4c5d-8359-ff88e3fa84af",
+                            DeviceId = "48c70cd9-c4fb-45c6-a1f2-f836de11692c",
                             Alias = "Prueba",
-                            ClientId = "9427857b-c18c-4548-ae3f-cfc581e83e60",
+                            ClientId = "a0e9c19e-0872-4f6a-a055-79499540b4fe",
                             CountryId = "506",
                             InstallationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = false,
-                            Latitude = 0f,
-                            Longitude = 0f,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "b2962ec8-4fe2-44e2-a8cc-1a2f3d5dd744",
+                            SaleManId = "c19a0dae-16b7-4ffc-a251-2c7c4b6369d7",
                             TypeDeviceId = 1
                         });
                 });
@@ -277,8 +275,8 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "0d13414c-1370-4a6d-9480-fb62f7aaa55b",
-                            DeviceId = "db8639db-0f2c-4c5d-8359-ff88e3fa84af"
+                            ReplacementDeviceId = "6701db63-52f5-4c86-884b-103259d1d9ad",
+                            DeviceId = "48c70cd9-c4fb-45c6-a1f2-f836de11692c"
                         });
                 });
 
@@ -300,7 +298,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "b2962ec8-4fe2-44e2-a8cc-1a2f3d5dd744",
+                            SaleManId = "c19a0dae-16b7-4ffc-a251-2c7c4b6369d7",
                             Name = "sample"
                         });
                 });
@@ -352,6 +350,21 @@ namespace DataAccess.Migrations
                         {
                             StatusId = 1,
                             StatusName = "Garantia Emitida"
+                        },
+                        new
+                        {
+                            StatusId = 2,
+                            StatusName = "Garantia No Emitida"
+                        },
+                        new
+                        {
+                            StatusId = 3,
+                            StatusName = "En tramite"
+                        },
+                        new
+                        {
+                            StatusId = 4,
+                            StatusName = "Con problemas"
                         });
                 });
 
@@ -447,10 +460,10 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3aa0cc2d-2bd9-4938-92be-1886342afda9",
+                            Id = "d2f89002-00bb-45de-b5f2-7ce4047abefb",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "db8639db-0f2c-4c5d-8359-ff88e3fa84af",
+                            DeviceId = "48c70cd9-c4fb-45c6-a1f2-f836de11692c",
                             StatusId = 1
                         });
                 });

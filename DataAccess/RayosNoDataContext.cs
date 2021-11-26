@@ -61,7 +61,13 @@ namespace DataAccess
 
             #region STATUS
             StatusEntity oStatus = new StatusEntity() { StatusId = 1, StatusName = "Garantia Emitida" };
+            StatusEntity oStatus1 = new StatusEntity() { StatusId = 2, StatusName = "Garantia No Emitida" };
+            StatusEntity oStatus2 = new StatusEntity() { StatusId = 3, StatusName = "En tramite" };
+            StatusEntity oStatus3 = new StatusEntity() { StatusId = 4, StatusName = "Con problemas" };
             model.Entity<StatusEntity>().HasData(oStatus);
+            model.Entity<StatusEntity>().HasData(oStatus1);
+            model.Entity<StatusEntity>().HasData(oStatus2);
+            model.Entity<StatusEntity>().HasData(oStatus3);
             #endregion
 
 
