@@ -26,7 +26,7 @@ For that reason, i built this software to manage the maintenances and the instal
 
 
 ### Description of the project
-A continuation i going to descript the structure of the appplication and the general use:
+I going to descript the structure of the application and the general use:
 
 #### Basic Information
 
