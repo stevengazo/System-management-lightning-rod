@@ -135,7 +135,8 @@ namespace Business
                 var aux = (from Device in DB.Devices select Device).Where(D=>D.IsActive== true).Include(D => D.Client);
                 var tmp =  (
                     from dev in aux
-                    orderby dev.ClientId
+                    where dev.IsActive == true
+                    orderby dev.Client.Name
                     select new { Key = dev.DeviceId, Value = dev.Client.Name }).ToDictionary(D => D.Key, D => D.Value)
                     ;
 

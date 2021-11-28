@@ -41,12 +41,12 @@
     <div class="form-group">
         <label>Numero de Equipo</label>
         <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId">
-            @if (oDevices.Count != 0)
+            @if (devicesDict.Count != 0)
             {
                 <option value=""> Seleccione un equipo...</option>
-                @foreach (var Device in oDevices)
+                @foreach (var Device in devicesDict)
                 {
-                    <option value="@Device.DeviceId">@Device.DeviceId - @Device.Client.Name </option>
+                    <option value="@Device.Value">@Device.Value- @Device.Key </option>
                 }
             }
             else
@@ -91,13 +91,14 @@
 @code{
     List<TechnicianEntity> technicians = new List<TechnicianEntity>();
     List<DeviceEntity> oDevices;
+    Dictionary<string, string> devicesDict = new Dictionary<string, string>();
     bool BandExistDevice { get; set; }
     string Message="";
 
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
     protected override async Task OnInitializedAsync()
     {
-        oDevices = B_Device.GetListofDevicesActive();
+        devicesDict = B_Device.GetDictonaryOfDevicesWithClient();
         technicians = B_Technician.GetListOftechnicians();
     }
 
