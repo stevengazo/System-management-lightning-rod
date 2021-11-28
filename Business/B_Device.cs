@@ -133,12 +133,13 @@ namespace Business
             using( var DB= new RayosNoDataContext())
             {
                 var aux = (from Device in DB.Devices select Device).Where(D=>D.IsActive== true).Include(D => D.Client);
-                foreach(var a in aux)
-                {
-                    Devices.Add(a.DeviceId, a.Client.Name);
-                }
-               
-                return Devices;
+                var tmp =  (
+                    from dev in aux
+                    orderby dev.ClientId
+                    select new { Key = dev.DeviceId, Value = dev.Client.Name }).ToDictionary(D => D.Key, D => D.Value)
+                    ;
+
+                return tmp;
             }
         }
 

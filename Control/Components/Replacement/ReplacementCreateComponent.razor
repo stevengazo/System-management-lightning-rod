@@ -30,21 +30,32 @@
 </EditForm>
 <div class="align-content-center">
     <input  type="button" value="Guardar reemplazo" class="btn-info" @onclick="SaveReplacement"/>
+    <p class="text-danger" >@Message</p>
 </div>
+
 
 @code {
     ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
 
     Dictionary<string, string> oDevices = new Dictionary<string, string>();
-
+    string Message = "";
     protected override async Task OnInitializedAsync()
     {
         oDevices = B_Device.GetDictonaryOfDevicesWithClient();
     }
     protected void SaveReplacement()
     {
-        B_Replacement.Create(oReplacement);
-        nav.NavigateTo("replacement/list");
+        try
+        {
+            B_Replacement.Create(oReplacement);
+            nav.NavigateTo("replacement/list");            
+        }
+        catch(Exception f)
+        {
+            Message = $"Error: {f.Message}";
+
+        }
+
     }
 
 }

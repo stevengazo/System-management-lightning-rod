@@ -28,6 +28,7 @@
     </tbody>
 </table>
 
+<p class="text-danger">@Message</p>
 
 @code   {
     [Parameter]
@@ -35,10 +36,19 @@
 
     ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
 
+    string Message = "";
 
     protected override  async Task OnInitializedAsync()
     {
+        try
+        {
         oReplacement = B_Replacement.GetReplacementById(ReplacementId);
+        }
+        catch(Exception w)
+        {
+            Message = $"Error {w.Message}";
+        }
+
     }
 }
 

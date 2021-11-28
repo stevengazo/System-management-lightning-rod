@@ -36,14 +36,22 @@
 
     private void UpdateSaleMan()
     {
-        if(oSaleMan.Name.Length == 0)
+        try
         {
-            message = "Verifica el campo nombre";
+            if(oSaleMan.Name.Length == 0)
+            {
+                message = "Verifica el campo nombre";
+            }
+            else
+            {
+                B_SaleMan.UpdateSaleMan(oSaleMan);
+                Nav.NavigateTo("saleman/list");
+            }
         }
-        else
+        catch(Exception h)
         {
-            B_SaleMan.UpdateSaleMan(oSaleMan);
-            Nav.NavigateTo("saleman/list");
+            message = $"Error: {h.Message}";
         }
+
     }
 }

@@ -18,6 +18,7 @@
     </table>
 </EditForm>
 
+<p class="text-danger">@message</p>
 
 
 @code{
@@ -29,6 +30,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        oSaleMan = B_SaleMan.SaleManById(id);
+        try
+        {
+            oSaleMan = B_SaleMan.SaleManById(id);       
+        }
+        catch(Exception f)
+        {
+            message = $"Error {f.Message}";
+        }
     }
 }

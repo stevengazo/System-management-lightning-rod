@@ -27,17 +27,23 @@
 
     private void DeleteSaleMan()
     {
-        var BandDependence = B_SaleMan.HaveDependence(oSaleMan);
-        if (!BandDependence)
+        try
         {
-            B_SaleMan.DeleteSaleMan(oSaleMan);
-            Nav.NavigateTo("saleman/list");
+            var BandDependence = B_SaleMan.HaveDependence(oSaleMan);
+            if (!BandDependence)
+            {
+                B_SaleMan.DeleteSaleMan(oSaleMan);
+                Nav.NavigateTo("saleman/list");
+            }
+            else
+            {
+                message = $"El vendedor \"{oSaleMan.Name}\" tiene dependencias en la tabla Equipos.\n Elimine las dependencias e instentelo de nuevo";
+            }
         }
-        else
+        catch(Exception g)
         {
-            message = $"El vendedor \"{oSaleMan.Name}\" tiene dependencias en la tabla Equipos.\n Elimine las dependencias e instentelo de nuevo";
-        }
-
+            message = $"Error: {g.Message}";
+        }      
     }
 
     private void BackLink()

@@ -30,6 +30,7 @@
 </EditForm>
 <div class="align-content-center">
     <input type="button" value="Guardar reemplazo" class="btn-info" @onclick="SaveReplacement" />
+    <p class="text-danger">@Message</p>
 </div>
 
 @code {
@@ -40,6 +41,8 @@
 
     Dictionary<string, string> oDevices = new Dictionary<string, string>();
 
+    string Message = "";
+
     protected override async Task OnInitializedAsync()
     {
         oReplacement = B_Replacement.GetReplacementById(Id);
@@ -47,8 +50,16 @@
     }
     protected void SaveReplacement()
     {
-        B_Replacement.Update(oReplacement);
-        nav.NavigateTo($"replacement/view/{oReplacement.ReplacementDeviceId}");
+        try
+        {
+            B_Replacement.Update(oReplacement);
+            nav.NavigateTo($"replacement/view/{oReplacement.ReplacementDeviceId}");
+        }
+        catch(Exception d)
+        {
+            Message = $"Error {d.Message}";
+        }
+        
     }
 
 }
