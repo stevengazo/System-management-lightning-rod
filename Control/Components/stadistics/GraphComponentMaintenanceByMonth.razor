@@ -1,0 +1,132 @@
+﻿@using Entities;
+@using Business;
+@using ChartJs.Blazor.PieChart;
+@using ChartJs.Blazor.BarChart;
+
+
+
+<div >
+    <div class="form-group">
+        <label>Seleccione el año</label>
+        <select class="form-control-sm" @onchange="ChangeSelect" >
+            @foreach (var item in ListOfYears)
+           {
+            <option value="@item">@item</option>               
+           }
+        </select>
+    </div>   
+    <Chart Config="_BarConfig" ></Chart>
+    <p><i>Descripción: Linea de tiempo por año de la cantidad de mantenimientos realizados.</i></p>
+</div>
+
+
+
+
+
+
+@code{
+    private BarConfig _BarConfig;
+    private Chart _Chart;
+    Dictionary<int, int> MaintenancesByMonth = new Dictionary<int, int>();
+
+
+
+
+    int[] ListOfYears;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        ListOfYears = B_Maintenance.YearsRegistered();  
+        _BarConfig = new BarConfig()
+        {
+            Options = new BarOptions
+            {
+                Responsive = true,
+                Title= new OptionsTitle
+                {
+                    Display= true,
+                    Text="Mantenimientos por mes"
+                }
+            }
+        };
+        UploadData();
+
+    }
+
+    private void ChangeSelect(ChangeEventArgs e)
+    {
+        int.TryParse(e.Value.ToString(), out int tmpYear);
+        UploadData(tmpYear);
+    }
+
+
+    private void RemoveDataset()
+    {
+        IList<IDataset> datasets = _BarConfig.Data.Datasets;
+        if (datasets.Count == 0)
+            return;
+        datasets.RemoveAt(datasets.Count - 1);
+    }
+
+
+    private void RemoveData()
+    {
+
+
+
+
+
+
+
+
+
+        if (_BarConfig.Data.Datasets.Count == 0)
+            return;
+
+        IList<string> labels = _BarConfig.Data.Labels;
+        if (labels.Count > 0)
+            /*   labels.RemoveAt(labels.Count -1);*/
+            _BarConfig.Data.Labels.RemoveAt(labels.Count - 1);
+
+        foreach (IDataset dataset in _BarConfig.Data.Datasets)
+        {
+            if (dataset is IDataset<int> intDataset &&
+                     intDataset.Count > 0)
+            {
+             //   intDataset.RemoveAt(intDataset.Count -1);
+             //_BarConfig.Data.Datasets.RemoveAt(intDataset.Count -1);
+            }
+        }
+
+
+
+
+    }
+
+
+    private void UploadData(int year = 2020)
+    {
+        if(_BarConfig.Data.Datasets.Count!=0)
+        {
+            RemoveData();   
+        }
+         BarDataset<int> _barDataSet = new BarDataset<int>();
+        
+        MaintenancesByMonth = B_Maintenance.GetMaintenancesInYear(year);
+
+        
+        _barDataSet.BackgroundColor = ColorUtil.ColorHexString(231, 62, 8);
+        foreach (var item in MaintenancesByMonth)
+        {
+            _BarConfig.Data.Labels.Add(item.Key.ToString());
+            _barDataSet.Add(item.Value);
+
+        }
+        
+        _BarConfig.Data.Datasets.Add(_barDataSet);
+
+    }
+
+}

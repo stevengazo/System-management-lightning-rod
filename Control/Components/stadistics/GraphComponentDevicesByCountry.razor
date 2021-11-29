@@ -1,0 +1,73 @@
+﻿@using Entities;
+@using Business;
+@using ChartJs.Blazor.PieChart;
+@using ChartJs.Blazor.BarChart;
+
+
+
+
+<div >
+    <Chart Config="@_configurationPieChartCountrie"></Chart>
+    <p><i>La gráfica muestra todos los dispositivos, activos o dañados registrados en la base de datos.</i></p>
+</div>
+
+
+
+
+@code{
+    private PieConfig _configurationPieChartCountrie;     
+    private Chart _chart;
+
+    private Dictionary<string, int> QuantityOfDevices = new Dictionary<string, int>();
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        QuantityOfDevices = B_Country.DevicesByCountry();
+        PieChartQuantityOfDeviceByCountries();
+    }
+
+
+
+
+    private void PieChartQuantityOfDeviceByCountries()
+    {
+        _configurationPieChartCountrie = new PieConfig();
+        _configurationPieChartCountrie.Options = new PieOptions
+            {
+                Responsive= true,
+                Title= new OptionsTitle()
+                {
+                    Display= true,
+                    Text="Cantidad Instalados Por País"
+                }
+            };
+        int[] tmp = new int[QuantityOfDevices.Count];
+        var tmplist= new List<int>();
+        foreach(var country in QuantityOfDevices)
+        {
+            _configurationPieChartCountrie.Data.Labels.Add(country.Key);
+            tmplist.Add(country.Value);            
+
+        }
+
+
+        string[] colors = new string[QuantityOfDevices.Count];
+
+        for (var i = 0; i < QuantityOfDevices.Count; i++)
+        {
+            var tmpcolor = ColorUtil.RandomColorString().ToString();
+            colors[i] = tmpcolor;
+            tmp[i] = tmplist[i];
+        }
+
+
+        PieDataset<int> dataset = new PieDataset<int>(tmp);
+        dataset.BackgroundColor = colors;
+        dataset.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
+        dataset.BorderColor = ColorUtil.ColorHexString(255, 255, 255);
+        _configurationPieChartCountrie.Data.Datasets.Add(dataset);
+    }
+
+
+
+}

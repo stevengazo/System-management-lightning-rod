@@ -46,7 +46,7 @@
                 <option value=""> Seleccione un equipo...</option>
                 @foreach (var Device in devicesDict)
                 {
-                    <option value="@Device.Value">@Device.Value- @Device.Key </option>
+                    <option value="@Device.Key">@Device.Value- @Device.Key </option>
                 }
             }
             else
@@ -90,7 +90,6 @@
 
 @code{
     List<TechnicianEntity> technicians = new List<TechnicianEntity>();
-    List<DeviceEntity> oDevices;
     Dictionary<string, string> devicesDict = new Dictionary<string, string>();
     bool BandExistDevice { get; set; }
     string Message="";
@@ -108,12 +107,6 @@
         {
         oMaintenance.MaintenanceId = Guid.NewGuid().ToString();
 
-        // asignacion de clases
-
-        var tmpTechnician = technicians.Find(T => T.TechnicianId == oMaintenance.TechnicianId);
-        //oMaintenance.Technician = tmpTechnician;
-        var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
-        //  oMaintenance.Device = tmpDevice;
 
         B_Maintenance.Create(oMaintenance);
         Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");

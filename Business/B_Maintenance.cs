@@ -13,6 +13,65 @@ namespace Business
     public static class B_Maintenance
     {
         #region Consults and others
+
+
+        /// <summary>
+        /// Get an array with the years registered in the Maintance Table
+        /// </summary>
+        /// <returns>Arrays of Years</returns>
+        public static int[] YearsRegistered()
+        {
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+                    return (from main in db.Maintenances select main.MaintenanceDate.Year).Distinct().ToArray();
+                }
+            }
+            catch(Exception h)
+            {
+                Console.WriteLine($"Error: {h.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the quantity of maintenances realized in a specific year, by month
+        /// </summary>
+        /// <param name="Year">Year to consult</param>
+        /// <returns>List of years [key = month, value = Quantity]</returns>
+        public static Dictionary<int,int> GetMaintenancesInYear(int Year= 2020)
+        {
+            try
+            {
+                var result = new Dictionary<int, int>();
+                using (var DB = new RayosNoDataContext())
+                {
+                    var query = (from Maintenance
+                                 in DB.Maintenances
+                                 where Maintenance.MaintenanceDate.Year == Year
+                                 select Maintenance
+                                 ).ToList();
+
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        var tmpquery = (from main in query
+                                        where main.MaintenanceDate.Month == i
+                                        select main).ToList().Count();
+                        result.Add(i, tmpquery);
+                    }
+
+                    return result;
+                }
+                return null;
+            }
+            catch( Exception f)
+            {
+                Console.WriteLine($"Error: {f.Message}");
+                return null;
+            }
+
+        }
        
         public static List<MaintenanceEntity> GetMaintenancesByConsult(string _Device = "", string _TechnicianId ="",int _Year = 0, int _Month=0)
         {
@@ -417,12 +476,20 @@ namespace Business
         /// <param name="oMaintenance">New object to insert</param>
         public static void Create(MaintenanceEntity oMaintenance)
         {
-            using( var  DB = new RayosNoDataContext())
+            try
             {
-                DB.Maintenances.Add(oMaintenance);
-                DB.SaveChanges();
+                using (var DB = new RayosNoDataContext())
+                {
+                    DB.Maintenances.Add(oMaintenance);
+                    DB.SaveChanges();
 
+                }
             }
+            catch(Exception f)
+            {
+                Console.WriteLine($"Error: {f.Message}");
+            }
+
         }
         /// <summary>
         /// Update an exist Maintenance in the table Maintenances

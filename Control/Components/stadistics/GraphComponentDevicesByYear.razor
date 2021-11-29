@@ -1,0 +1,68 @@
+﻿@using Entities;
+@using Business;
+@using ChartJs.Blazor.PieChart;
+@using ChartJs.Blazor.BarChart;
+
+
+
+
+<div >
+    <Chart Config="@_barConfigDeviceByYear"/>
+    <p><i>Cantidad de Dispositivos instalados al año</i></p>
+</div>
+
+
+
+
+@code{
+    private BarConfig _barConfigDeviceByYear;
+    private Chart _chart;
+
+    Dictionary<int, int> DevicesInstalledByYear = new Dictionary<int, int>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        DevicesInstalledByYear = B_Device.GetDevicesByYear();
+        DevicesByYearsChart();
+
+    }
+
+
+    private void DevicesByYearsChart()
+    {
+        this._barConfigDeviceByYear = new BarConfig()       
+        {
+            Options= new BarOptions
+            {
+                Responsive = true,
+                Title= new OptionsTitle
+                {
+                    Display= true,
+                    Text="Dispositivos Instalados por Año"
+                }
+            }
+        };
+        var tmpValues = new List<int>();
+        var colorList = new List<string>();
+
+        foreach (var YearDevice in DevicesInstalledByYear)
+        {
+            this._barConfigDeviceByYear.Data.Labels.Add(YearDevice.Key.ToString());            tmpValues.Add(YearDevice.Value);
+            colorList.Add(ColorUtil.RandomColorString());            
+        }
+
+        BarDataset<int> _barDataSet = new BarDataset<int>(tmpValues);
+        _barDataSet.Label = "Cantidad de Equipo por año";
+        _barDataSet.BackgroundColor = ColorUtil.ColorHexString(22, 37, 189);
+        _barDataSet.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
+        _barDataSet.MinBarLength = 20;
+        _barConfigDeviceByYear.Data.Datasets.Add(_barDataSet);
+    }
+
+
+
+
+
+}

@@ -110,6 +110,35 @@ namespace Business
         #region Search and Consults
 
 
+
+        public static Dictionary<int,int> GetDevicesByYear()
+        {
+            Dictionary<int, int> Devices = new Dictionary<int, int>();
+            using (var DB = new RayosNoDataContext())
+            {
+                try
+                {
+                    var tmpYear = (from dev in DB.Devices select dev.InstallationDate.Year).Distinct().ToList();
+                    foreach (var item in tmpYear)
+                    {
+                        var QuantityOfDevices = (
+                            from dev in DB.Devices
+                            where dev.InstallationDate.Year == item
+                            select dev
+                            ).ToList().Count();
+
+                        Devices.Add(item, QuantityOfDevices);
+                    }
+                    return Devices;
+                }
+                catch(Exception b)
+                {
+                    Console.WriteLine($"Error: {b.Message}");
+                    return (new Dictionary<int, int>()); 
+                }
+                
+            }            
+        }
         
         public static List<DeviceEntity> GetListofDevicesActive()
         {

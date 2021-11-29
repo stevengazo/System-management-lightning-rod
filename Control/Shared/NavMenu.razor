@@ -6,105 +6,74 @@
 </div>
 
 
-<AuthorizeView Roles="Administrador">
-    <Authorized>
-        <div class="@NavMenuCssClass " @onclick="ToggleNavMenu">
-            <ul class="nav flex-column">
+<div class="@NavMenuCssClass " @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="device/list">
+                <span class="oi oi-list" aria-hidden="true"></span> Equipos
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="maintenance/list">
+                <span class="oi oi-check" aria-hidden="true"></span> Mantenimientos
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="warranty/list">
+                <span class="oi oi-document" aria-hidden="true"></span> Garantias
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="client/list">
+                <span class="oi oi-people" aria-hidden="true"></span> Clientes
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="saleman/list">
+                <span class="oi oi-person" aria-hidden="true"></span> Vendedores
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="replacement/list">
+                <span class="oi oi-delete" aria-hidden="true"></span> Reemplazos
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="incident/list">
+                <span class="oi oi-warning" aria-hidden="true"></span> Incidentes
+            </NavLink>
+        </li>
+
+        <AuthorizeView Roles="Editor">
+            <Authorized>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    <NavLink class="nav-link" href="stadistics/index">
+                        <span class="oi oi-graph" aria-hidden="true"></span> Estadisticas
                     </NavLink>
                 </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="device/list">
-                        <span class="oi oi-list" aria-hidden="true"></span> Equipos
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="maintenance/list">
-                        <span class="oi oi-check" aria-hidden="true"></span> Mantenimientos
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="warranty/list">
-                        <span class="oi oi-document" aria-hidden="true"></span> Garantias
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="client/list">
-                        <span class="oi oi-people" aria-hidden="true"></span> Clientes
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="saleman/list">
-                        <span class="oi oi-person" aria-hidden="true"></span> Vendedores
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="replacement/list">
-                        <span class="oi oi-delete" aria-hidden="true"></span> Reemplazos
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="incident/list">
-                        <span class="oi oi-warning" aria-hidden="true"></span> Incidentes
-                    </NavLink>
-                </li>
+            </Authorized>
+            <NotAuthorized>
+            </NotAuthorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Administrador">
+            <Authorized>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="manage/Index">
                         <span class="oi oi-box" aria-hidden="true"></span> Administración
                     </NavLink>
                 </li>
-            </ul>
-        </div>
-    </Authorized>
-    <NotAuthorized>
-        <div class="@NavMenuCssClass " @onclick="ToggleNavMenu">
-            <ul class="nav flex-column">
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        <span class="oi oi-home" aria-hidden="true"></span> Home
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="device/list">
-                        <span class="oi oi-list" aria-hidden="true"></span> Equipos
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="maintenance/list">
-                        <span class="oi oi-check" aria-hidden="true"></span> Mantenimientos
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="warranty/list">
-                        <span class="oi oi-document" aria-hidden="true"></span> Garantias
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="client/list">
-                        <span class="oi oi-people" aria-hidden="true"></span> Clientes
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="saleman/list">
-                        <span class="oi oi-person" aria-hidden="true"></span> Vendedores
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="replacement/list">
-                        <span class="oi oi-delete" aria-hidden="true"></span> Reemplazos
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="incident/list">
-                        <span class="oi oi-warning" aria-hidden="true"></span> Incidentes
-                    </NavLink>
-                </li>
-            </ul>
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
+            </Authorized>
+            <NotAuthorized>
+            </NotAuthorized>
+        </AuthorizeView>
+    </ul>
+</div>
+
 
 
 @code {
