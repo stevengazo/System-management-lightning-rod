@@ -29,61 +29,65 @@ For that reason, i built this software to manage the maintenances and the instal
 I going to descript the structure of the application and the general use:
 
 #### Basic Information
+This part of the software is the basic information required to registered a new Device in the database. This is the first information to registered in the system, to have a good experience. All this information is used to create graphs, and filters and others things. All this entities haved a CRUD to manage the data.
 
 ##### Customers 
+Customer information. Only need the name of de customer. The system create a drop down list with the clients.
 
 ##### Salemans
+The salemans are the responsable every year to do the maintenance of the device.
 
 ##### Models
+Model of the device. Exists more thant one model of the device. The lightning rod model, is used to determine the radius of protection of the device..
 
 ##### Countries
+List of countries used in the database. This information specified the country where is installed the device. This information is used to see how many devices are per country.
+##### Type of device 
+List of types of device, for example "device of sell", "device of rental", "device of proof", etc This entity specifite the type of device. This information is important for the salemans, to reallized the maintanance.
 
-#### Device information
+
+### Device information
+This entity have an CRUD (Create, Read, Update and Delete) methods to manage the devices. To continuation, i present imagenes of the interface
+
 ##### Creation of Device
+This interface present the basic inputs, to registered a new device. This interface register the follow information:
+
+- Alias of the device
+- Ubication (longitude and latitude)
+- Serial Number
+- Date of installation
+- Type of device
+- Model
+- Customer who sell the device
+- Salemans responsable of the device
+
+###### Image Sample
+
+![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
 
 ##### Update of Device
+This interface allow update the information of the device
+
+![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
 
 ##### Delete of Device
+This interface allow delete the device only if this device doesn't have warranties, maintenances, incidents or replacements registered
 
+![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
 ##### Search of Devices
+This interface allow search devices in the database and return the devices by a specific parameters (id, alias,country and year of installation)
+
+![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
+
+### Maintenance information
+Before register a new maintenance, is required create a new Technicians (is used to linked the maintenance with the technician responsable)
 
 
+This information is important to registered the maintenance, recommendations and status of the device. This is used to do new maintenances by the technicians
 
+![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
 
+#### Create Maintenance
+This interface present the basic inputs, to registered a new maintenance. This 
 
-
-You can use the [editor on GitHub](https://github.com/stevengazo/RNControl-WebApp/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/stevengazo/RNControl-WebApp/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
