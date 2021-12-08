@@ -10,7 +10,7 @@ namespace Entities
    public  class MaintenanceEntity
     {
         [Key]
-        [Required]
+        [Required(ErrorMessage ="Información requerida")]
         public string MaintenanceId { get; set; }
         public DateTime MaintenanceDate { get; set; }
         [Required(ErrorMessage ="Información Requerida")]
@@ -21,7 +21,7 @@ namespace Entities
         public float Ampers { get; set; }        
         public string ReportId { get; set; }
         [Required(ErrorMessage = "Información Requerida")]
-        [MaxLength(300, ErrorMessage = "Excede la cantidad permitida")]
+        [MaxLength(300, ErrorMessage = "Excede la cantidad permitida")]        
         public string Recomendations { get; set; }
 
         //Relation With Device 

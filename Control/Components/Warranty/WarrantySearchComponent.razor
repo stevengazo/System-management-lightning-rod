@@ -113,27 +113,36 @@
     {
         DeviceIdToSearch = null;
         YearToSearch = 0;
-        tmpEstatusToSearch = 0;
+        tmpEstatusToSearch = 1;
     }
 
 
     private void SearchWarranties()
     {
-        if(tmpEstatusToSearch != 0)
+        try
         {
-        EstatusToSearch = tmpEstatusToSearch.ToString();    
+            if(tmpEstatusToSearch != 0)
+            {
+                EstatusToSearch = tmpEstatusToSearch.ToString();    
+            }
+
+
+            Warranties = B_Warranty.SearchWarranties(DeviceIdToSearch, EstatusToSearch, YearToSearch);
+            if (Warranties.Count <= 0)
+            {
+                ErrorMessage = "No hay coincidencias con los criterios de busqueda";
+            }
+            else
+            {
+                ErrorMessage = "";
+            }
         }
-        
-        
-        Warranties = B_Warranty.SearchWarranties(DeviceIdToSearch, EstatusToSearch, YearToSearch);
-        if (Warranties.Count <= 0)
+        catch(Exception f)
         {
-            ErrorMessage = "No hay coincidencias con los criterios de busqueda";
+
+            ErrorMessage = $"Error: {f.Message}";
         }
-        else
-        {
-            ErrorMessage = "";
-        }
+
     }
     
 
@@ -154,7 +163,7 @@
                     csv.WriteRecords(arr1);
                 }
                 var arr = memoryStream.ToArray();
-                Js.SaveAs("WarrantiesConsult.csv", arr);
+                Js.SaveAs("WarrantiesSearch.csv", arr);
             }
         }
     }
