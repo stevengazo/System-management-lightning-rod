@@ -6,6 +6,17 @@
     <div class="form-group">
         <label>Nombre del cliente</label>
         <InputText @bind-Value="oClient.Name" class="form-control"></InputText>
+        <p><i>Nombre jurídico del cliente o nombre físico</i></p>
+    </div>
+    <div class="form-group">
+        <label>Sector del cliente</label>
+        <InputSelect @bind-Value="oClient.SectorId" class="form-control">
+            @foreach (var item in Sectors)
+           {
+               <option value="@item.SectorId">@item.SectorName</option>
+           }
+        </InputSelect>
+        <p><i>Sector correspondiente al Cliente</i></p>
     </div>
     <input type="button" value="Registar Cliente" @onclick="SaveClient" />
 </EditForm>
@@ -14,6 +25,13 @@
 @code{
     ClientEntity oClient = new ClientEntity();
     string Error = "";
+
+    List<SectorEntity> Sectors = new List<SectorEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Sectors = B_Sectors.ListOfSectors();
+    }
 
     private void SaveClient()
     {

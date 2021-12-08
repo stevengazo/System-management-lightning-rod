@@ -12,18 +12,22 @@
                 <option value="@obj.Key">@obj.Value  @obj.Key</option>
             }
         </InputSelect>
+        <p><i>Número de dispositivo </i></p>
     </div>
     <div class="form-group">
         <label>Fecha envío Protocolo</label>
         <InputDate @bind-Value="oWarranty.DateSend" class="form-control" ></InputDate>
+        <p><i>Fecha de envio del protocolo a España</i></p>
     </div>
     <div class="form-group">
         <label>Fecha recepción Garantía</label>
         <InputDate @bind-Value="oWarranty.DateReceived" class="form-control"></InputDate>
+        <p><i>Fecha de recepción o estimada de España</i></p>
     </div>
     <div class="form-group">
         <label>Notas:</label>
         <InputTextArea @bind-Value="oWarranty.Notes" class="form-control"></InputTextArea>
+        <p><i>Notas respectivas a la garantía </i></p>
     </div>
     <div class="form-group">
         <label>Estatus</label>
@@ -34,6 +38,7 @@
                 <option value="@item.StatusId">@item.StatusName</option>
             }
         </InputSelect>
+        <p><i>Estado de la garantía </i></p>
     </div>
 </EditForm>
 
