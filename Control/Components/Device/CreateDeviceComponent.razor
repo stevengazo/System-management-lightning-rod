@@ -63,6 +63,7 @@
         <div class="form-group">
             <label class="h5">En funcionamiento</label>
             <InputCheckbox @bind-Value="oDevice.IsActive"></InputCheckbox>
+            <p><i>Seleccionar si el equipo se encuentra en funcionamiento</i></p>
         </div>
         <div class="form-group">
             <label class="h5">Cliente</label>
@@ -73,10 +74,10 @@
                     <option value="@obj.Id">@obj.Name</option>
                 }
             </InputSelect>
-            <p><i>Seleccionar si el equipo se encuentra en funcionamiento</i></p>
+            <p><i>El cliente debe ser preregistrado antes de ingresar un nuevo equipo</i></p>
         </div>
         <div class="form-group">
-            <label class="h5">Cliente</label>
+            <label class="h5">Vendedor</label>
             <InputSelect @bind-Value="oDevice.SaleManId" class="form-control">
                 <option value="">Seleccione un Vendedor...</option>
                 @foreach (var obj in SaleMans)
@@ -84,7 +85,7 @@
                     <option value="@obj.SaleManId">@obj.Name</option>
                 }
             </InputSelect>
-            <p><i>El cliente debe estar previamente registrado</i></p>
+            <p><i>El vendedor debe estar previamente registrado</i></p>
         </div>
     </EditForm>
     <input type="button" value="Registrar Equipo" @onclick="SaveDevice"  class=" btn-group btn-light"/>
