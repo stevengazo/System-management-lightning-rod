@@ -48,6 +48,17 @@
         <InputText class="form-control" @bind-Value="oIncident.ContactReportingName"></InputText>  
         <p><i>Nombre de la persona que realiza el reporte a la empresa</i></p>
     </div>
+        <div class="form-group">
+        <label><strong>Ténico encargado</strong></label>
+        <InputSelect @bind-Value="oIncident.TechnicianId" class="form-control">
+            <option value="">Seleccione un Técnico...</option>
+            @foreach (var obj in technicians)
+            {
+                <option value="@obj.TechnicianId">@obj.TechnicianName</option>
+            }
+        </InputSelect>
+        <p><i>Nombre de la persona que realizó la visita.</i></p>
+    </div>
     <div class="form-group">
         <label><strong>Numero de serie</strong></label>
         <InputSelect @bind-Value="oIncident.DeviceId" class="form-control">
@@ -68,18 +79,21 @@
 @code{
     IncidentEntity oIncident = new IncidentEntity();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
+    List<TechnicianEntity> technicians = new List<TechnicianEntity>(); 
 
     string Message = "";
 
     protected override async Task OnInitializedAsync()
     {
         Devices = B_Device.ListOfDevices().OrderBy(D=>D.ClientId).ToList();
+        technicians = B_Technician.GetListOftechnicians();
     }
 
     private void SaveIncident()
     {
         try
         {
+            
             B_Incident.CreateIncident(oIncident);
             Nav.NavigateTo("incident/list");
         }

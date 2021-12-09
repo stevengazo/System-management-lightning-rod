@@ -18,12 +18,21 @@ namespace Business
         /// <param name="oIncident">Incident to registered</param>
         public static void CreateIncident(IncidentEntity oIncident)
         {
-            using (var DB = new RayosNoDataContext())
+            try
             {
-                oIncident.IncidentId = Guid.NewGuid().ToString();
-                DB.Incidents.Add(oIncident);
-                DB.SaveChanges();
+                using (var DB = new RayosNoDataContext())
+                {
+                    oIncident.IncidentId = Guid.NewGuid().ToString();
+                    DB.Incidents.Add(oIncident);
+                    DB.SaveChanges();
+                }
             }
+            catch(Exception s)
+            {
+                Console.WriteLine($"{s.Message}") ;
+
+            }
+
         }
 
         /// <summary>
@@ -49,7 +58,7 @@ namespace Business
         {
             using(var DB = new RayosNoDataContext())
             {
-                return  (from Incident in DB.Incidents select Incident).Where(I => I.DeviceId == _DeviceIdToSearch).Include(I=>I.Device).Include(I=>I.Device.Client).Include(I => I.Device.SaleMan).ToList();
+                return  (from Incident in DB.Incidents select Incident).Where(I => I.DeviceId == _DeviceIdToSearch).Include(I=>I.Device).Include(I=>I.Device.Client).Include(I => I.Device.SaleMan).Include(I => I.Technician).ToList();
             }
         }
 
@@ -62,7 +71,7 @@ namespace Business
             using(var DB = new RayosNoDataContext())
             {
                 List<IncidentEntity> incidents = new List<IncidentEntity>();
-                incidents = DB.Incidents.Include(D => D.Device).Include(C => C.Device.Client).ToList();
+                incidents = DB.Incidents.Include(D => D.Device).Include(I=>I.Technician).Include(C => C.Device.Client).ToList();
                 return incidents;
             }
         }
