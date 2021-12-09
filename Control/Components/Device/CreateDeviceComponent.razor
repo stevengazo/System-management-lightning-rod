@@ -5,17 +5,17 @@
 <div>
     <EditForm Model="oDevice">
         <div class="form-group">
-            <label class="h5"> Numero de Serie: </label>
+            <label class="h5"> <strong>Numero de Serie:</strong> </label>
             <InputText @bind-Value="oDevice.DeviceId" class="form-control"></InputText>
             <p><i>Número de serie del equipo</i></p>
         </div>
         <div class="form-group">
-            <label class="h5"> Alias del dispositivo: </label>
+            <label class="h5"><strong> Alias del dispositivo:</strong> </label>
             <InputText @bind-Value="oDevice.Alias" class="form-control"></InputText>
             <p><i>Alias, ejemplo: "Sector oficina"</i></p>
         </div>
         <div class="form-group">
-            <label class="h5">Longitud</label>
+            <label class="h5"><strong>Longitud</strong></label>
             <InputText @bind-Value="@oDevice.Longitude" class="form-control"></InputText>
             <p><i>Puede ser dado en grados o decimales</i></p>
             <label class="h5">Latitud</label>
@@ -23,7 +23,7 @@
             <p><i>Puede ser dado en grados o decimales</i></p>
         </div>
         <div class="form-group">
-            <label class="h5">Pais de Instalación</label>
+            <label class="h5"><strong>Pais de Instalación</strong></label>
             <InputSelect @bind-Value="oDevice.CountryId" class="form-control">
                 <option value=0>Pais</option>
                 @foreach (var item in Countries)
@@ -34,12 +34,12 @@
             <p><i>País en el  cual se realiza la instalación</i></p>
         </div>
         <div class="form-group">
-            <label class="h5">Fecha de Instalación</label>
+            <label class="h5"><strong>Fecha de Instalación</strong></label>
             <InputDate @bind-Value="oDevice.InstallationDate" class="form-control"></InputDate>
             <p><i>Fecha exacta de la colocación del equipo</i></p>
         </div>
         <div class="form-group">
-            <label class="h5"> Tipo de Dispositivo</label>
+            <label class="h5"> <strong>Tipo de Dispositivo</strong></label>
             <InputSelect @bind-Value="oDevice.TypeDeviceId" class="form-control">
                 <option value="">Seleccione...</option>
                 @foreach (var item in TDevices)
@@ -50,7 +50,7 @@
             <p><i>Consultar información con vendedor</i></p>
         </div>
         <div class="form-group">
-            <label class="h5">Modelo del dispositivo:</label>
+            <label class="h5"><strong>Modelo del dispositivo:</strong></label>
             <InputSelect @bind-Value="oDevice.ModelDeviceId" class="form-control">
                 <option value="">Modelo</option>
                 @foreach (var item in Models)
@@ -61,12 +61,12 @@
             <p><i>Modelo del equipo. Determinado por radio de cobertura</i></p>
         </div>
         <div class="form-group">
-            <label class="h5">En funcionamiento</label>
+            <label class="h5"><strong>En funcionamiento</strong></label>
             <InputCheckbox @bind-Value="oDevice.IsActive"></InputCheckbox>
             <p><i>Seleccionar si el equipo se encuentra en funcionamiento</i></p>
         </div>
         <div class="form-group">
-            <label class="h5">Cliente</label>
+            <label class="h5"><strong>Cliente</strong></label>
             <InputSelect @bind-Value="oDevice.ClientId" class="form-control">
                 <option value="">Seleccione un Cliente...</option>
                 @foreach (var obj in Clients)
@@ -77,7 +77,7 @@
             <p><i>El cliente debe ser preregistrado antes de ingresar un nuevo equipo</i></p>
         </div>
         <div class="form-group">
-            <label class="h5">Vendedor</label>
+            <label class="h5"><strong>Vendedor</strong></label>
             <InputSelect @bind-Value="oDevice.SaleManId" class="form-control">
                 <option value="">Seleccione un Vendedor...</option>
                 @foreach (var obj in SaleMans)

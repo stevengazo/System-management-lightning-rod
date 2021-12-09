@@ -4,43 +4,52 @@
 
 <EditForm Model="oIncident">
     <div class="form-group">
-        <label>Fecha del Reporte del cliente</label>
+        <label><strong>Fecha del Reporte del cliente</strong></label>
         <InputDate class="form-control" @bind-Value="oIncident.ReportDate"></InputDate>
+        <p><i>Fecha en la cuan el cliente realiza el reporte</i></p>
     </div>
     <div class="form-group">
-        <label>Fecha del Incidente</label>
+        <label><strong>Fecha del Incidente</strong></label>
         <InputDate class="form-control" @bind-Value="oIncident.IncidentDate"></InputDate>
+        <p><i>Fecha en la cual se presentó el indicente (especificado por el cliente)</i></p>
     </div>
     <div class="form-group">
-        <label>Fecha de revisón</label>
-        <InputDate class="form-control" @bind-Value="oIncident.IncidentDate"></InputDate>
+        <label><strong>Fecha de revisión</strong></label>
+        <InputDate class="form-control" @bind-Value="oIncident.RevisionDate"></InputDate>
+        <p><i>Fecha de revisión del incidente</i></p>
     </div>
     <div class="form-group">
-        <label>Fecha envio reporte</label>
+        <label><strong>Fecha envio reporte</strong></label>
         <InputDate class="form-control" @bind-Value="oIncident.SendReportDate"></InputDate>
+        <p><i>Fecha de envío del reporte</i></p>
     </div>
     <div class="form-group">
-        <label>Descripción del Reporte del cliente</label>
+        <label><strong>Descripción del Reporte del cliente</strong></label>
         <InputTextArea class="form-control" @bind-Value="oIncident.ReportDescripcion"></InputTextArea>
+        <p><i>Descripción del incidente. (Versión del cliente, acerca de lo acontecido)</i></p>
     </div>
     <div class="form-group">
-        <label>Información de la revisión</label>
+        <label><strong>Información de la revisión</strong></label>
         <InputTextArea class="form-control" @bind-Value="oIncident.RevisionInformation"></InputTextArea>
+        <p><i>Información posterior a la revisión del equipo</i></p>
     </div>
     <div class="form-group">
-        <label>Estatus del dispositivo RAYOS-NO</label>
+        <label><strong>Estatus del dispositivo RAYOS-NO</strong></label>
         <InputTextArea class="form-control" @bind-Value="oIncident.DDCEStatus"></InputTextArea>
+        <p><i>Estado del dispositivo (información posterior a la revisión)</i></p>
     </div>
     <div class="form-group">
-        <label>Recomendaciones </label>
+        <label><strong>Recomendaciones</strong></label>
         <InputTextArea class="form-control" @bind-Value="oIncident.Recomentations"></InputTextArea>
+        <p><i>Recomendaciones con base en la visita (o acciones a tomar en cuenta)</i></p>
     </div>
     <div class="form-group">
-        <label>Contacto del cliente</label>
-        <InputText class="form-control" @bind-Value="oIncident.Recomentations"></InputText>      
+        <label><strong>Contacto del cliente</strong></label>
+        <InputText class="form-control" @bind-Value="oIncident.ContactReportingName"></InputText>  
+        <p><i>Nombre de la persona que realiza el reporte a la empresa</i></p>
     </div>
     <div class="form-group">
-        <label>Numero de serie</label>
+        <label><strong>Numero de serie</strong></label>
         <InputSelect @bind-Value="oIncident.DeviceId" class="form-control">
             <option value="">Seleccione un equipo...</option>
             @foreach (var obj in Devices)
@@ -48,6 +57,7 @@
                 <option value="@obj.DeviceId">@obj.Client.Name - @obj.DeviceId </option>
             }
         </InputSelect>
+        <p><i>Cliente y numero de serie del dispositivo.</i></p>
     </div>
 </EditForm>
 <div>

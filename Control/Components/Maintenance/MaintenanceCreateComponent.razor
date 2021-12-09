@@ -8,45 +8,45 @@
 
 
 
-
+<div>
 <EditForm Model="oMaintenance"> 
     <p class="text-danger">@Message</p>
     <div class="form-group">
-        <label><strong>Fecha de Mantenimiento</strong></label>
+        <label class="h5"><strong>Fecha de Mantenimiento</strong></label>
         <InputDate class="form-control" @bind-Value="oMaintenance.MaintenanceDate"></InputDate>
         <p><i>Coloque la fecha en la cual se realizó el mantenimiento.</i></p>
     </div>
     <div class="form-group">
-        <label><strong>Estado del dispositivo</strong></label>
+        <label class="h5"><strong>Estado del dispositivo</strong></label>
         <InputTextArea class="form-control" @bind-Value="oMaintenance.StatusOfDevice"></InputTextArea>
         <p><i>Escriba las notas referentes al mantenimiento y al dispositivo. Resumen del mantenimiento (no mayor a 300 caracteres).</i></p>
     </div>
     <div class="form-group">
-        <label><strong> Resistencia de la malla</strong></label>
+        <label class="h5"><strong> Resistencia de la malla</strong></label>
         <InputNumber class="form-control" @bind-Value="oMaintenance.SpatOhms"></InputNumber>
         <p><i>Coloque el valor de resistencia de la malla dado en <span>&#8486;</span>.</i></p>
     </div>
     <div class="form-group">
-        <label><strong>Resistencia de las Semiesferas del Dispositivo</strong></label>
+        <label class="h5"><strong>Resistencia de las Semiesferas del Dispositivo</strong></label>
         <InputNumber class="form-control" @bind-Value="oMaintenance.DeviceOhms"></InputNumber>
         <p><i>Coloque el valor de resistencia entre las semiesferas del dispositivo G<span>&#8486;</span>.</i></p>
     </div>
     <div class="form-group">
-        <label><strong>Transferencia de Cargas</strong></label>
+        <label class="h5"><strong>Transferencia de Cargas</strong></label>
         <InputNumber class="form-control" @bind-Value="oMaintenance.Ampers"></InputNumber>
         <p><i>Coloque el valor de transferencia de cargas entre el equipo y la malla. Valor dado en mA (mili Amperios).</i></p>
     </div>
     <div class="form-group">
-        <label><strong>Numero de Informe</strong></label>
+        <label class="h5"><strong>Numero de Informe</strong></label>
         <InputText class="form-control" @bind-Value="oMaintenance.ReportId"></InputText>
     </div>
     <div class="form-group">
-        <label><strong>Recomendaciones</strong></label>
+        <label class="h5"><strong>Recomendaciones</strong></label>
         <InputTextArea class="form-control" @bind-Value="oMaintenance.Recomendations"></InputTextArea>
         <p><i>Recomendaciones a tomar en cuenta para futuros trabajos.</i></p>
     </div>
     <div class="form-group">
-        <label><strong>Numero de Equipo</strong></label>
+        <label class="h5"><strong>Numero de Equipo</strong></label>
         <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId">
             @if (devicesDict.Count != 0)
             {
@@ -63,7 +63,7 @@
         </InputSelect>
     </div>
     <div class="form-group">
-        <label><strong>Tecnico encargado</strong></label>
+        <label class="h5"><strong>Tecnico encargado</strong></label>
         <InputSelect class="form-control" @bind-Value="oMaintenance.TechnicianId">
             @if (technicians.Count != 0)
             {
@@ -85,7 +85,7 @@
     </div>
 
 </EditForm>
-
+</div>
 
 
 
