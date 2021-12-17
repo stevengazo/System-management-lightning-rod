@@ -15,6 +15,36 @@ namespace DataAccess
         public static void ExecuteSP(MigrationBuilder migrationBuilder)
         {
 			#region Stored Procedures
+			var spUpdateRecomendedDate = $@"CREATE PROCEDURE UpdateRecomendedDateOfMaintenance
+												@_DeviceId varchar(50) 
+											AS
+											BEGIN
+												SET NOCOUNT ON;
+												Declare @_sample Date = null;
+												set @_sample = (SELECT TOP 1  Maintenances.MaintenanceDate 
+															FROM Maintenances
+															WHERE Maintenances.DeviceId = @_DeviceId
+															ORDER BY MaintenanceDate DESC);
+
+												if(@_sample =null)
+													BEGIN
+														PRINT('No hay fechas..');
+													END
+												ELSE
+													BEGIN
+														Set @_sample= DATEADD(year, 1, @_sample);
+														SELECT @_sample;  
+														UPDATE Devices
+														SET RecomendedDateOfMaintenance = @_sample
+														WHERE Devices.DeviceId = @_DeviceId
+													END
+												/*SELECT DeviceId, RecomendedDateOfMaintenance
+												from Devices WHERE DeviceId =@_DeviceId*/
+											END
+											GO
+											";
+			migrationBuilder.Sql(spUpdateRecomendedDate);
+
 			var spSeachDevice = $@"-- =============================================
 									-- Author:		Steven Gazo
 									-- Create date: 10/9/21

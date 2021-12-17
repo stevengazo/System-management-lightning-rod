@@ -482,7 +482,7 @@ namespace Business
                 {
                     DB.Maintenances.Add(oMaintenance);
                     DB.SaveChanges();
-
+                    DB.Database.ExecuteSqlInterpolated($"EXECUTE  UpdateRecomendedDateOfMaintenance @_DeviceId = {oMaintenance.DeviceId.ToString()}");
                 }
             }
             catch(Exception f)
@@ -498,9 +498,25 @@ namespace Business
         public static void Update ( MaintenanceEntity oMaintenance)
         {
             using (var DB = new RayosNoDataContext())
-            {
-                DB.Maintenances.Update(oMaintenance);
-                DB.SaveChanges();
+            { 
+                try
+                {
+                    ///Es necesario generar un  SP que consulte los mantenimientos y traiga la ultima fecha
+                    ///Este es un arreglo temporal
+                    var device = B_Device.DeviceById(oMaintenance.DeviceId);
+                    device.RecomendedDateOfMaintenance = oMaintenance.MaintenanceDate.AddYears(1);
+                    B_Device.UpdateDevice(device);
+                }catch(Exception f)
+                {
+                    Console.WriteLine($"Error {f.InnerException}");
+                }
+                finally
+                {
+                    DB.Maintenances.Update(oMaintenance);
+                    DB.SaveChanges();
+                    DB.Database.ExecuteSqlInterpolated($"EXECUTE  UpdateRecomendedDateOfMaintenance @_DeviceId = {oMaintenance.DeviceId.ToString()}");
+                }
+
             }
         }
         /// <summary>
@@ -513,6 +529,7 @@ namespace Business
             {
                 DB.Maintenances.Remove(oMaintenance);
                 DB.SaveChanges();
+                DB.Database.ExecuteSqlInterpolated($"EXECUTE  UpdateRecomendedDateOfMaintenance @_DeviceId = {oMaintenance.DeviceId.ToString()}");
             }
         }
         #endregion
