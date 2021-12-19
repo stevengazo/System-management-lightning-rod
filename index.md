@@ -4,6 +4,8 @@
 
 Thanks for comming  to my respository and project ❤
 
+Important information: all the code and documentation of this project (except the messages in the branches of this repository) is written in english. Also the graphic   interface(web pages) is written in spanish, because the users for this project only know spanish.
+
 This app is focus to use in the management the maintanances, warranties and incidents of lightning rod and their installations. The project is development by [Steven Gazo](https://www.linkedin.com/in/stevengazo/) just like a sample and exercise of programming in C# and proof his skills like a Full Stack Developer.
 
 
