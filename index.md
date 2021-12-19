@@ -63,21 +63,21 @@ This interface present the basic inputs, to registered a new device. This interf
 
 ###### Image Sample
 
-![Image](https://user-images.githubusercontent.com/43178863/146663219-f5e0f8a2-8019-42df-a01a-066dcf72c428.png)
+![Busqueda de dispositivo](https://user-images.githubusercontent.com/43178863/146663218-1ac76c31-7ad7-4281-9922-46e5f6fb4bbc.png)
 
 ##### Update of Device
 This interface allow update the information of the device
 
-![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
+![Actualización de dispositivo](https://user-images.githubusercontent.com/43178863/146663216-1529e965-bbfb-45d2-bac4-2f690b6c7300.png)
 
 ##### Delete of Device
 This interface allow delete the device only if this device doesn't have warranties, maintenances, incidents or replacements registered
 
-![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
+![Eliminación de dispositivo](https://user-images.githubusercontent.com/43178863/146663217-bac80ec9-5f6e-4c17-ae81-2adf48b66068.png)
 ##### Search of Devices
 This interface allow search devices in the database and return the devices by a specific parameters (id, alias,country and year of installation)
 
-![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
+![Creación de dispositivos](https://user-images.githubusercontent.com/43178863/146663219-f5e0f8a2-8019-42df-a01a-066dcf72c428.png)
 
 ### Maintenance information
 Before register a new maintenance, is required create a new Technicians (is used to linked the maintenance with the technician responsable)
@@ -91,7 +91,7 @@ This information is important to registered the maintenance, recommendations and
 This interface present the basic inputs, to registered a new maintenance. This 
 
 ![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
-![Actualización de dispositivo](https://user-images.githubusercontent.com/43178863/146663216-1529e965-bbfb-45d2-bac4-2f690b6c7300.png)
-![Eliminación de dispositivo](https://user-images.githubusercontent.com/43178863/146663217-bac80ec9-5f6e-4c17-ae81-2adf48b66068.png)
-![Busqueda de dispositivo](https://user-images.githubusercontent.com/43178863/146663218-1ac76c31-7ad7-4281-9922-46e5f6fb4bbc.png)
-![Creación de dispositivos](https://user-images.githubusercontent.com/43178863/146663219-f5e0f8a2-8019-42df-a01a-066dcf72c428.png)
+
+
+
+
