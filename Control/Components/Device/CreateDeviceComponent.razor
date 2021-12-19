@@ -87,6 +87,11 @@
             </InputSelect>
             <p><i>El vendedor debe estar previamente registrado</i></p>
         </div>
+        <div class="form-group">
+            <label class="h5"><strong>Notas del equipo</strong></label>
+            <InputTextArea  @bind-Value="oDevice.Note" class="form-control"></InputTextArea>
+            <p><i>Notas Generales del dispositivo</i></p>
+        </div>
     </EditForm>
     <input type="button" value="Registrar Equipo" @onclick="SaveDevice"  class=" btn-group btn-light"/>
     <div class="text-center" >
@@ -121,6 +126,7 @@
         {
             if(oDevice.ClientId != null)
             {
+                oDevice.IsReplaced = false;
                 oDevice.RecomendedDateOfMaintenance = oDevice.InstallationDate.AddYears(1);
                 B_Device.CreateDevice(oDevice);
                 Nav.NavigateTo("device/list");

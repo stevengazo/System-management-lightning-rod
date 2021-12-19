@@ -39,16 +39,25 @@
 
     Dictionary<string, string> oDevices = new Dictionary<string, string>();
     string Message = "";
+
     protected override async Task OnInitializedAsync()
     {
         oDevices = B_Device.GetDictonaryOfDevicesWithClient();
     }
+
     protected void SaveReplacement()
     {
         try
         {
-            B_Replacement.Create(oReplacement);
-            nav.NavigateTo("replacement/list");            
+            if( oReplacement.NewSerieDevice.Equals(oReplacement.DeviceId))
+            {
+                Message = "Los numeros de serie son identicos, verifique los dispositivos";
+            }else
+            {
+                B_Replacement.Create(oReplacement);
+                nav.NavigateTo("replacement/list");                            
+            }
+
         }
         catch(Exception f)
         {

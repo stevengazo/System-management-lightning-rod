@@ -45,6 +45,16 @@ namespace Entities
         /// </summary>
         public bool IsActive { get; set; }
 
+        /// <summary>
+        /// This property only is used if the device is replacement
+        /// </summary>
+        public bool IsReplaced { get; set; }
+        /// <summary>
+        /// General notes about the device
+        /// </summary>
+        public string Note { get; set; }
+
+
         // Relation with Model
         public int ModelDeviceId { get; set; }
         public ModelDeviceEntity ModelDevice { get; set; }

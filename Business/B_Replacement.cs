@@ -70,14 +70,17 @@ namespace Business
 
         #region Consult
 
+
+
+
+
+        
         public static ReplacementDeviceEntity GetReplacementById(string ReplacementId = "")
         {
             using(var DB= new RayosNoDataContext())
             {
-                ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
-                var aux = DB.Replacements.FromSqlInterpolated($"select * from Replacements where Replacements.ReplacementDeviceId  = {ReplacementId}");
-                oReplacement = aux.FirstOrDefault();
-                return oReplacement;
+                var aux = (from Rempl in DB.Replacements select Rempl).FirstOrDefault(R=>R.ReplacementDeviceId.Equals(ReplacementId));
+                return aux;
             }
         }
 
@@ -92,8 +95,7 @@ namespace Business
             using( var DB = new RayosNoDataContext())
             {
                 Replacements = DB.Replacements.FromSqlInterpolated($@"   SELECT * FROM Replacements
-                                                                    WHERE   (NewSerieDevice like CONCAT('%',{IdReplacement.ToString()},'%')) 
-                                                                    or     ( DeviceId like CONCAT('%',{IdReplacement.ToString()},'%'))").ToList();
+                                                                    WHERE   Replacements.NewSerieDevice = {IdReplacement} or Replacements.DeviceId ={IdReplacement} ").ToList();
             }
 
             return Replacements;

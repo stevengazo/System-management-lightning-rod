@@ -75,6 +75,11 @@
                 }
             </InputSelect>
         </div>
+        <div class="form-group">
+            <label class="h5"><strong>Notas del equipo</strong></label>
+            <InputTextArea  @bind-Value="oDevice.Note" class="form-control"></InputTextArea>
+            <p><i>Notas Generales del dispositivo</i></p>
+        </div>
     </EditForm>
     <input type="button" value="Actualizar Equipo" @onclick="UpdateDevice" class=" btn-group btn-light" />
     <div class="text-center">
