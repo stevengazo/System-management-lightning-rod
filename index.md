@@ -61,10 +61,7 @@ This interface present the basic inputs, to registered a new device. This interf
 - Customer who sell the device
 - Salemans responsable of the device
 
-###### Image Sample
-
-![Busqueda de dispositivo](https://user-images.githubusercontent.com/43178863/146663218-1ac76c31-7ad7-4281-9922-46e5f6fb4bbc.png)
-
+![Creación de dispositivos](https://user-images.githubusercontent.com/43178863/146663219-f5e0f8a2-8019-42df-a01a-066dcf72c428.png)
 ##### Update of Device
 This interface allow update the information of the device
 
@@ -76,8 +73,7 @@ This interface allow delete the device only if this device doesn't have warranti
 ![Eliminación de dispositivo](https://user-images.githubusercontent.com/43178863/146663217-bac80ec9-5f6e-4c17-ae81-2adf48b66068.png)
 ##### Search of Devices
 This interface allow search devices in the database and return the devices by a specific parameters (id, alias,country and year of installation)
-
-![Creación de dispositivos](https://user-images.githubusercontent.com/43178863/146663219-f5e0f8a2-8019-42df-a01a-066dcf72c428.png)
+![Busqueda de dispositivo](https://user-images.githubusercontent.com/43178863/146663218-1ac76c31-7ad7-4281-9922-46e5f6fb4bbc.png)
 
 ### Maintenance information
 Before register a new maintenance, is required create a new Technicians (is used to linked the maintenance with the technician responsable)
@@ -85,12 +81,24 @@ Before register a new maintenance, is required create a new Technicians (is used
 
 This information is important to registered the maintenance, recommendations and status of the device. This is used to do new maintenances by the technicians
 
-![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
 
 #### Create Maintenance
-This interface present the basic inputs, to registered a new maintenance. This 
+This interface present the basic inputs, to registered a new maintenance. 
 
-![Image](https://image.shutterstock.com/image-vector/sample-stamp-grunge-texture-vector-260nw-1389188336.jpg)
+![Creacion mantenimiento](https://user-images.githubusercontent.com/43178863/146663399-8ace74ea-3b20-43ff-98e4-0bb7e5deaf99.png)
+
+#### Search Maintenance
+This interface present the basic inputs, to registered a new maintenance. 
+
+![Busqueda de mantenimientos](https://user-images.githubusercontent.com/43178863/146663405-c8203267-35e8-4383-a30b-a9b628391e59.png)
+
+#### Graphs and Stadistics
+This interface can be used to see data and graphs about the quantity of devices and more. For this, i used the nuget package ChartJs.Blazor (Click here to see the [documentation](https://github.com/mariusmuntean/ChartJs.Blazor) or [the web page](https://www.iheartblazor.com/) )
+
+![Estadisticas](https://user-images.githubusercontent.com/43178863/146663438-c812ac16-9813-4888-87d1-b8d83b858367.png)
+
+
+
 
 
 
