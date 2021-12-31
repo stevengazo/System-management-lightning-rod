@@ -1,0 +1,105 @@
+﻿@using Entities;
+@using Business;
+
+@inject IJSRuntime Js;
+
+<div>
+    <div class="form-group row">
+        <div class="form-group row">
+                <input type="text" @bind="DeviceIdToSearch" class="rounded form-control" placeholder="Serie" />
+        </div>
+        <div class="col">
+                <input type="text" @bind="AliasToSearch" class="rounded form-control" placeholder="Alias" />
+        </div>
+        <div class="col">
+                <select class="rounded form-control" @bind="YearToSearch">
+                    @foreach (var item in Years)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+        </div>
+    </div>
+        <div class="form-group row">
+            <div class="col">
+                <input class="btn-outline-dark form-control" type="button" value="Buscar" @onclick="Search" />
+            </div>
+            <div class="col">
+                <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
+            </div>
+            <div class="col">
+                <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
+            </div>
+    </div>
+    <p class="text-danger">@Message</p>
+</div>
+
+<table class="table table-hover table-striped table-responsive-sm ">
+    <thead>
+        <tr>
+            <th>Numéro de serie</th>
+            <th>Alias</th>
+            <th>Cliente</th>
+            <th>Día del Reporte</th>
+            <th>Encargado</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Incidents)
+        {
+        <tr>
+            <td>@obj.DeviceId</td>
+            <td>@obj.Device.Alias</td>
+            <td>@obj.Device.Client.Name</td>
+            <td>@obj.ReportDate</td>
+            <td>@obj.Technician.TechnicianName</td>
+            <td><a href="incident/view/@obj.IncidentId" >Ver</a></td>
+            <td><a href="incident/update/@obj.IncidentId">Editar</a></td>
+            <td><a  style="color:red" href="incident/delete/@obj.IncidentId">Eliminar</a></td>
+        </tr> 
+        }
+    </tbody>
+</table>
+
+
+@code{
+    string DeviceIdToSearch = null;
+    string AliasToSearch = null;
+    string YearToSearch = null;
+
+    string Message = "";
+
+    List<IncidentEntity> Incidents = new List<IncidentEntity>();
+
+    int[] Years = { 1, 2 };
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Years = B_Incident.GetIncidentsByYears();
+        base.OnInitializedAsync();   
+
+    }
+
+    private void Search()
+    {
+
+
+
+    }
+    private void Clean()
+    {
+        DeviceIdToSearch = null;
+        AliasToSearch = null;
+        YearToSearch = null;
+    }
+    private void Download()
+    {
+        
+    }
+
+}

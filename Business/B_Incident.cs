@@ -27,9 +27,9 @@ namespace Business
                     DB.SaveChanges();
                 }
             }
-            catch(Exception s)
+            catch (Exception s)
             {
-                Console.WriteLine($"{s.Message}") ;
+                Console.WriteLine($"{s.Message}");
 
             }
 
@@ -56,9 +56,9 @@ namespace Business
         /// <returns>List of incidents</returns>
         public static List<IncidentEntity> GetListOfIncidentsByDevice(string _DeviceIdToSearch)
         {
-            using(var DB = new RayosNoDataContext())
+            using (var DB = new RayosNoDataContext())
             {
-                return  (from Incident in DB.Incidents select Incident).Where(I => I.DeviceId == _DeviceIdToSearch).Include(I=>I.Device).Include(I=>I.Device.Client).Include(I => I.Device.SaleMan).Include(I => I.Technician).ToList();
+                return (from Incident in DB.Incidents select Incident).Where(I => I.DeviceId == _DeviceIdToSearch).Include(I => I.Device).Include(I => I.Device.Client).Include(I => I.Device.SaleMan).Include(I => I.Technician).ToList();
             }
         }
 
@@ -68,14 +68,23 @@ namespace Business
         /// <returns></returns>
         public static List<IncidentEntity> GetListOfIncidents()
         {
-            using(var DB = new RayosNoDataContext())
+            using (var DB = new RayosNoDataContext())
             {
                 List<IncidentEntity> incidents = new List<IncidentEntity>();
-                incidents = DB.Incidents.Include(D => D.Device).Include(I=>I.Technician).Include(C => C.Device.Client).ToList();
+                incidents = DB.Incidents.Include(D => D.Device).Include(I => I.Technician).Include(C => C.Device.Client).ToList();
                 return incidents;
             }
         }
 
+
+        public static int[] GetIncidentsByYears()
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                return (from incidents in DB.Incidents select incidents.ReportDate.Year).Distinct().ToArray();
+            }
+            return null;
+        }
 
         public static void Update( IncidentEntity oIncident)
         {
