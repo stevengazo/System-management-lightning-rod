@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class RNMigration : Migration
+    public partial class myRNMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -210,12 +210,12 @@ namespace DataAccess.Migrations
                 {
                     MaintenanceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaintenanceDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StatusOfDevice = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    StatusOfDevice = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SpatOhms = table.Column<float>(type: "real", nullable: false),
                     DeviceOhms = table.Column<float>(type: "real", nullable: false),
                     Ampers = table.Column<float>(type: "real", nullable: false),
                     ReportId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Recomendations = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Recomendations = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DeviceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TechnicianId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -297,7 +297,7 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Salemans",
                 columns: new[] { "SaleManId", "Name", "QuantityOfDevice" },
-                values: new object[] { "a0177cce-ed6c-4b5f-8df4-aa89046f3e03", "sample", null });
+                values: new object[] { "d0c191b0-9f27-4470-be59-b05a140caa39", "sample", null });
 
             migrationBuilder.InsertData(
                 table: "Sectors",
@@ -338,27 +338,27 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "Name", "SectorId" },
-                values: new object[] { "e27929db-bacf-4df5-9fe8-5bf18d317a60", "Prueba", 1 });
+                values: new object[] { "762baaac-614b-40ac-9585-2a8e6385dfab", "Prueba", 1 });
 
             migrationBuilder.InsertData(
                 table: "Devices",
                 columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "IsActive", "IsReplaced", "Latitude", "Longitude", "ModelDeviceId", "Note", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
-                values: new object[] { "1900a88d-0bb4-4ba4-87ef-49d120b7438a", "Prueba", "e27929db-bacf-4df5-9fe8-5bf18d317a60", "506", new DateTime(2021, 12, 18, 0, 0, 0, 0, DateTimeKind.Local), true, false, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "a0177cce-ed6c-4b5f-8df4-aa89046f3e03", 1 });
+                values: new object[] { "b6bf5a27-7701-426b-86a9-07122e62dd9c", "Prueba", "762baaac-614b-40ac-9585-2a8e6385dfab", "506", new DateTime(2022, 1, 20, 0, 0, 0, 0, DateTimeKind.Local), true, false, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "d0c191b0-9f27-4470-be59-b05a140caa39", 1 });
 
             migrationBuilder.InsertData(
                 table: "Devices",
                 columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "IsActive", "IsReplaced", "Latitude", "Longitude", "ModelDeviceId", "Note", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
-                values: new object[] { "cc674dc9-d88f-4546-8a0a-be012e7532e0", "Reempleazo Prueba", "e27929db-bacf-4df5-9fe8-5bf18d317a60", "506", new DateTime(2021, 12, 18, 0, 0, 0, 0, DateTimeKind.Local), false, true, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "a0177cce-ed6c-4b5f-8df4-aa89046f3e03", 1 });
+                values: new object[] { "a0eeb248-fed2-40db-a472-67789a54963b", "Reempleazo Prueba", "762baaac-614b-40ac-9585-2a8e6385dfab", "506", new DateTime(2022, 1, 20, 0, 0, 0, 0, DateTimeKind.Local), false, true, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "d0c191b0-9f27-4470-be59-b05a140caa39", 1 });
 
             migrationBuilder.InsertData(
                 table: "Replacements",
                 columns: new[] { "ReplacementDeviceId", "DeviceId", "NewSerieDevice", "Notes" },
-                values: new object[] { "199aef88-483e-4a9b-8899-86297a256dd8", "cc674dc9-d88f-4546-8a0a-be012e7532e0", "1900a88d-0bb4-4ba4-87ef-49d120b7438a", null });
+                values: new object[] { "e8432f58-db99-4870-9d6c-715e0305f519", "a0eeb248-fed2-40db-a472-67789a54963b", "b6bf5a27-7701-426b-86a9-07122e62dd9c", null });
 
             migrationBuilder.InsertData(
                 table: "Warranties",
                 columns: new[] { "Id", "DateReceived", "DateSend", "DeviceId", "Notes", "StatusId" },
-                values: new object[] { "a3879d4f-3846-4cbe-aef4-3321a41e9f36", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "1900a88d-0bb4-4ba4-87ef-49d120b7438a", null, 1 });
+                values: new object[] { "9885b552-0912-4d79-a7a2-0045e7509c47", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "b6bf5a27-7701-426b-86a9-07122e62dd9c", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_SectorId",

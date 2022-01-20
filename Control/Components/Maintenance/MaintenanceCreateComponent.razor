@@ -5,20 +5,21 @@
 
 
 
-
-
-
 <div>
-<EditForm Model="oMaintenance"> 
+<EditForm Model="oMaintenance" OnValidSubmit="HandleValidSubmit"> 
+    <DataAnnotationsValidator />  
+    <ValidationSummary />  
     <p class="text-danger">@Message</p>
     <div class="form-group">
         <label class="h5"><strong>Fecha de Mantenimiento</strong></label>
         <InputDate class="form-control" @bind-Value="oMaintenance.MaintenanceDate"></InputDate>
         <p><i>Coloque la fecha en la cual se realizó el mantenimiento.</i></p>
+        <ValidationMessage For="@(()=> oMaintenance.MaintenanceDate)"/>
     </div>
     <div class="form-group">
         <label class="h5"><strong>Estado del dispositivo</strong></label>
         <InputTextArea class="form-control" @bind-Value="oMaintenance.StatusOfDevice"></InputTextArea>
+        
         <p><i>Escriba las notas referentes al mantenimiento y al dispositivo. Resumen del mantenimiento (no mayor a 300 caracteres).</i></p>
     </div>
     <div class="form-group">
@@ -44,6 +45,7 @@
         <label class="h5"><strong>Recomendaciones</strong></label>
         <InputTextArea class="form-control" @bind-Value="oMaintenance.Recomendations"></InputTextArea>
         <p><i>Recomendaciones a tomar en cuenta para futuros trabajos.</i></p>
+        <ValidationMessage For="@(()=> oMaintenance.Recomendations)"/>
     </div>
     <div class="form-group">
         <label class="h5"><strong>Numero de Equipo</strong></label>
@@ -108,6 +110,11 @@
         technicians = B_Technician.GetListOftechnicians();
     }
 
+
+
+    private void HandleValidSubmit(){
+        Console.WriteLine("OnValidSubmint");
+    }
 
     /// Check if the data in the object is ok
     private bool CheckValues(out string Message)

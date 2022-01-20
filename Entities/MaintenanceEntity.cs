@@ -13,17 +13,14 @@ namespace Entities
         [Required(ErrorMessage ="Información requerida")]
         public string MaintenanceId { get; set; }
         public DateTime MaintenanceDate { get; set; }
-        [Required(ErrorMessage ="Información Requerida")]
-        [MaxLength(300,ErrorMessage ="Excede la cantidad permitida")]
+        [Required(ErrorMessage ="Información Requerida")]       
         public string StatusOfDevice { get; set; }
         public float SpatOhms { get; set; }
         public float DeviceOhms { get; set; }
         public float Ampers { get; set; }        
         public string ReportId { get; set; }
-        [Required(ErrorMessage = "Información Requerida")]
-        [MaxLength(300, ErrorMessage = "Excede la cantidad permitida")]        
+        [Required(ErrorMessage = "Información Requerida")]        
         public string Recomendations { get; set; }
-
         //Relation With Device 
         public string DeviceId { get; set; }
         public DeviceEntity Device { get; set; }
