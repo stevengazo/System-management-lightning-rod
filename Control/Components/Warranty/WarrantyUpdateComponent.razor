@@ -4,19 +4,6 @@
 
 <EditForm Model="oWarranty">
     <div class="form-group">
-        <label> Referencia:  @oWarranty.Id</label>
-    </div>
-    <div class="form-group">
-        <label>Seleccione el Dispositivo</label>
-        <InputSelect @bind-Value="oWarranty.DeviceId" class="form-control">
-            <option value="0">Seleccione...</option>
-            @foreach (var obj in Devices)
-            {
-                <option value="@obj.Key">@obj.Value  @obj.Key</option>
-            }
-        </InputSelect>
-    </div>
-    <div class="form-group">
         <label>Fecha envío Protocolo</label>
         <InputDate @bind-Value="@oWarranty.DateSend" class="form-control"></InputDate>
     </div>
@@ -37,6 +24,19 @@
            }
         </InputSelect>
     </div>
+
+    <div class="form-group">
+        <label class="h5"><strong>Seleccione el Dispositivo</strong></label>
+        <input type="text" list="list-devices" @bind-value="@oWarranty.DeviceId" class="form-control" />
+        <datalist id="list-devices">
+            @foreach (var obj in Devices)
+            {
+                <option value="@obj.Key">@obj.Value  @obj.Key</option>
+            }
+        </datalist>
+        <p><i>Número de dispositivo </i></p>
+    </div>
+
 </EditForm>
 
 <input type="button" value="Actualizar Registro" class="btn-info" @onclick="UpdateWarranty"/>

@@ -56,24 +56,28 @@
             <InputCheckbox @bind-Value="oDevice.IsActive"></InputCheckbox>
         </div>
         <div class="form-group">
-            <label class="h5">Cliente</label>
-            <InputSelect @bind-Value="oDevice.ClientId" class="form-control">
+            <label class="h5"><strong>Cliente</strong></label>
+            <input type="text" list="list-clients" @bind-value="@oDevice.ClientId" class="form-control" />
+            <datalist id="list-clients">
                 <option value="">Seleccione un Cliente...</option>
                 @foreach (var obj in Clients)
                 {
                     <option value="@obj.Id">@obj.Name</option>
                 }
-            </InputSelect>
-        </div>
+            </datalist>
+            <p><i>El cliente debe ser preregistrado antes de ingresar un nuevo equipo</i></p>
+        </div> 
         <div class="form-group">
-            <label class="h5">Cliente</label>
-            <InputSelect @bind-Value="oDevice.SaleManId" class="form-control">
+            <label class="h5"><strong>Vendedor</strong></label>
+            <input typer="text" list="list-clients" @bind-value="@oDevice.SaleManId" class="form-control" />
+            <datalist id="list-clients">
                 <option value="">Seleccione un Vendedor...</option>
                 @foreach (var obj in SaleMans)
                 {
                     <option value="@obj.SaleManId">@obj.Name</option>
                 }
-            </InputSelect>
+            </datalist>
+            <p><i>El vendedor debe estar previamente registrado</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>Notas del equipo</strong></label>
