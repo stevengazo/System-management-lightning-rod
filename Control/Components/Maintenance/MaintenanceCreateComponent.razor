@@ -48,11 +48,10 @@
         <ValidationMessage For="@(()=> oMaintenance.Recomendations)"/>
     </div>
     <div class="form-group">
-        <label class="h5"><strong>Numero de Equipo</strong></label>
-        <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId">
-            @if (devicesDict.Count != 0)
-            {
-                <option value=""> Seleccione un equipo...</option>
+        <input type="text" list="sample" @bind-value="@oMaintenance.DeviceId" />
+        <datalist id="sample">
+              @if (devicesDict.Count != 0)
+            {                
                 @foreach (var Device in devicesDict)
                 {
                     <option value="@Device.Key">@Device.Value- @Device.Key </option>
@@ -62,7 +61,8 @@
             {
                 <option value="">No hay dispositivos activos</option>
             }
-        </InputSelect>
+        </datalist>
+
     </div>
     <div class="form-group">
         <label class="h5"><strong>Tecnico encargado</strong></label>
