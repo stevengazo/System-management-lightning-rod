@@ -67,9 +67,8 @@
         </div>
         <div class="form-group">
             <label class="h5"><strong>Cliente</strong></label>
-            <input type="text" list="list-clients" @bind-value="@oDevice.ClientId" class="form-control" />
-            <datalist id="list-clients">
-                <option value="">Seleccione un Cliente...</option>
+            <input type="text" list="list-clients" @bind-value="@oDevice.ClientId" class="form-control" placeholder="Seleccione un cliente">/>
+            <datalist id="list-clients">                
                 @foreach (var obj in Clients)
                 {
                     <option value="@obj.Id">@obj.Name</option>
@@ -79,9 +78,8 @@
         </div>       
         <div class="form-group">
             <label class="h5"><strong>Vendedor</strong></label>
-            <input type="text" list="list-salemans" @bind-value="@oDevice.SaleManId" class="form-control" />
+            <input type="text" list="list-salemans" @bind-value="@oDevice.SaleManId" class="form-control" placeholder="Seleccione un vendedor">/>
             <datalist id="list-salemans">
-                <option value="">Seleccione un Vendedor...</option>
                 @foreach (var obj in SaleMans)
                 {
                     <option value="@obj.SaleManId">@obj.Name</option>
