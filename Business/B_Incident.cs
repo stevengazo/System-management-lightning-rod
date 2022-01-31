@@ -128,6 +128,36 @@ namespace Business
             }
             
         }
+        /// <summary>
+        /// This functions calculate the total of incidents by year and return the quantities
+        /// </summary>
+        /// <returns>Dictionary  of integers(year,quantity)</returns>
+        public static Dictionary<int,int> QuantitiesOfIncidentsByYear()
+        {
+            try
+            {
+                using (var DB = new RayosNoDataContext())
+                {
+                    Dictionary<int, int> tmpDict = new Dictionary<int, int>();
+                    var temp = (
+                        from incident in DB.Incidents
+                        select incident.IncidentDate.Year)
+                        .Distinct().ToArray();
+                    foreach (var year in temp)
+                    {
+                        var quantity = (from inciden in DB.Incidents select inciden).Where(I => I.IncidentDate.Year == year).Count();
+                        tmpDict.Add(year, quantity);
+                    }
+                    return tmpDict;
+                }
+            }            
+            catch (Exception r)
+            {
+                Console.WriteLine($"Error: {r.Message}");
+                return null;
+
+            }
+        }
 
         public static IncidentEntity GetIncidentById(string IncidentId)
         {
