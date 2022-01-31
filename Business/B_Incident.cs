@@ -96,6 +96,39 @@ namespace Business
         }
 
 
+
+        /// <summary>
+        /// Get the information and execute the Stored Procedure to search the incident
+        /// </summary>
+        /// <param name="idToSearch">Id of the Device</param>
+        /// <param name="aliasToSearch">Alias of the device</param>
+        /// <param name="yearToSearch">Year of the incident</param>
+        /// <returns></returns>
+        public static List<IncidentEntity> SearchIncidents(string idToSearch = null, string aliasToSearch = null, string yearToSearch= null )
+        {
+            try
+            {
+                using( var DB = new RayosNoDataContext())
+                {
+                    var aux = DB.Incidents.FromSqlInterpolated($"EXEC dbo.searchIncidents @_DeviceId = {idToSearch}, @_Alias = {aliasToSearch}, @_Year = {yearToSearch}");
+                    foreach( var item in aux)
+                    {
+                        item.Device = B_Device.DeviceById(item.DeviceId);
+                        item.Technician = B_Technician.GetTechnicianById(item.TechnicianId);
+
+                    }
+                    return aux.ToList();
+                }
+            }
+            catch(Exception r)
+            {
+                Console.WriteLine($"Error: {r.Message}");
+                return null;
+
+            }
+            
+        }
+
         public static IncidentEntity GetIncidentById(string IncidentId)
         {
             using (var DB = new RayosNoDataContext())

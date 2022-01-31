@@ -1,11 +1,14 @@
-﻿@using Entities;
+﻿@using CsvHelper.Configuration
+@using Entities;
 @using Business;
+@using System.IO
+@using System.Globalization
 
 @inject IJSRuntime Js;
 
 <div>
     <div class="form-group row">
-        <div class="form-group row">
+        <div class="col">
                 <input type="text" @bind="DeviceIdToSearch" class="rounded form-control" placeholder="Serie" />
         </div>
         <div class="col">
@@ -29,7 +32,7 @@
             </div>
             <div class="col">
                 <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
-            </div>
+            </div>       
     </div>
     <p class="text-danger">@Message</p>
 </div>
@@ -68,7 +71,7 @@
 @code{
     string DeviceIdToSearch = null;
     string AliasToSearch = null;
-    string YearToSearch = null;
+    int YearToSearch = 0;
 
     string Message = "";
 
@@ -87,6 +90,17 @@
 
     private void Search()
     {
+        var tmpList= new List<IncidentEntity>();
+        if(YearToSearch != 0)
+        {
+            tmpList = B_Incident.SearchIncidents(DeviceIdToSearch, AliasToSearch, YearToSearch.ToString());    
+        }
+        else
+        {
+            tmpList = B_Incident.SearchIncidents(DeviceIdToSearch, AliasToSearch, null);    
+        }
+
+        Incidents = tmpList;
 
 
 
@@ -95,11 +109,32 @@
     {
         DeviceIdToSearch = null;
         AliasToSearch = null;
-        YearToSearch = string.Empty;
+        YearToSearch = 0;
     }
+   
+
     private void Download()
     {
-        
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+                
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Incidents.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("DevicesConsult.csv", arr);
+            }
+        }
     }
+
+
 
 }
