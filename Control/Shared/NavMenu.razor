@@ -14,29 +14,47 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="device/list">
+            <NavLink class="nav-link"  @onclick="()=>expandSubDevice=!expandSample"  >
                 <span class="oi oi-list" aria-hidden="true"></span> Equipos
             </NavLink>
+            @if (expandSubDevice)
+            {                
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="expand-menu" style="text-align:center" href="device/list"  @onclick="()=> expandSubDevice=!expandSubDevice" >
+                            Buscar Dispositivo
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="expand-menu" style="text-align:center" href="device/create"  @onclick="()=> expandSubDevice=!expandSubDevice" >
+                            Agregar Dispositivo
+                        </NavLink>          
+                    </li>
+                </ul>
+            }
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="maintenance/list">
                 <span class="oi oi-check" aria-hidden="true"></span> Mantenimientos
             </NavLink>
         </li>
+        
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="warranty/list">
                 <span class="oi oi-document" aria-hidden="true"></span> Garantias
             </NavLink>
-        </li>
+        </li>        
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="client/list">
                 <span class="oi oi-people" aria-hidden="true"></span> Clientes
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="saleman/list">
+            <NavLink class="nav-link" >
                 <span class="oi oi-person" aria-hidden="true"></span> Vendedores
             </NavLink>
+           
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="replacement/list">
@@ -78,11 +96,19 @@
 
 @code {
     private bool collapseNavMenu = true;
+    private bool expandSample;
+    private bool expandSubDevice = false;
+    private bool expandSubSaleInstal = false;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    private void setfalse(){
+        expandSubDevice = !expandSubDevice;
+    }
+    
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
+   
 }
