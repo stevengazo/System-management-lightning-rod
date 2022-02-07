@@ -39,7 +39,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "762baaac-614b-40ac-9585-2a8e6385dfab",
+                            Id = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
                             Name = "Prueba",
                             SectorId = 1
                         });
@@ -83,6 +83,9 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("InstallationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("InstallerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -116,6 +119,8 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CountryId");
 
+                    b.HasIndex("InstallerId");
+
                     b.HasIndex("ModelDeviceId");
 
                     b.HasIndex("SaleManId");
@@ -127,30 +132,31 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "b6bf5a27-7701-426b-86a9-07122e62dd9c",
+                            DeviceId = "7175e2c3-f855-442a-9613-a846af722a91",
                             Alias = "Prueba",
-                            ClientId = "762baaac-614b-40ac-9585-2a8e6385dfab",
+                            ClientId = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
                             CountryId = "506",
-                            InstallationDate = new DateTime(2022, 1, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallationDate = new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Local),
                             IsActive = true,
                             IsReplaced = false,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "d0c191b0-9f27-4470-be59-b05a140caa39",
+                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
                             TypeDeviceId = 1
                         },
                         new
                         {
-                            DeviceId = "a0eeb248-fed2-40db-a472-67789a54963b",
+                            DeviceId = "cd93588f-e16c-46e3-943f-c613e9caf0f7",
                             Alias = "Reempleazo Prueba",
-                            ClientId = "762baaac-614b-40ac-9585-2a8e6385dfab",
+                            ClientId = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
                             CountryId = "506",
-                            InstallationDate = new DateTime(2022, 1, 20, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallationDate = new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallerId = "CR-1",
                             IsActive = false,
                             IsReplaced = true,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "d0c191b0-9f27-4470-be59-b05a140caa39",
+                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
                             TypeDeviceId = 1
                         });
                 });
@@ -204,6 +210,31 @@ namespace DataAccess.Migrations
                     b.HasIndex("TechnicianId");
 
                     b.ToTable("Incidents");
+                });
+
+            modelBuilder.Entity("Entities.InstallerEntity", b =>
+                {
+                    b.Property<string>("InstallerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("initDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("InstallerId");
+
+                    b.ToTable("Installers");
+
+                    b.HasData(
+                        new
+                        {
+                            InstallerId = "CR-1",
+                            Name = "Grupo Mecsa",
+                            initDate = new DateTime(2022, 2, 7, 10, 51, 16, 719, DateTimeKind.Local).AddTicks(7157)
+                        });
                 });
 
             modelBuilder.Entity("Entities.MaintenanceEntity", b =>
@@ -294,9 +325,9 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "e8432f58-db99-4870-9d6c-715e0305f519",
-                            DeviceId = "a0eeb248-fed2-40db-a472-67789a54963b",
-                            NewSerieDevice = "b6bf5a27-7701-426b-86a9-07122e62dd9c"
+                            ReplacementDeviceId = "3711b7f2-e590-4bc4-9a7d-309cf2ee2ac7",
+                            DeviceId = "cd93588f-e16c-46e3-943f-c613e9caf0f7",
+                            NewSerieDevice = "7175e2c3-f855-442a-9613-a846af722a91"
                         });
                 });
 
@@ -318,7 +349,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "d0c191b0-9f27-4470-be59-b05a140caa39",
+                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
                             Name = "sample"
                         });
                 });
@@ -480,10 +511,10 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9885b552-0912-4d79-a7a2-0045e7509c47",
+                            Id = "92205c2e-188b-4292-8d71-cc980df22240",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "b6bf5a27-7701-426b-86a9-07122e62dd9c",
+                            DeviceId = "7175e2c3-f855-442a-9613-a846af722a91",
                             StatusId = 1
                         });
                 });
@@ -509,6 +540,10 @@ namespace DataAccess.Migrations
                         .WithMany("Devices")
                         .HasForeignKey("CountryId");
 
+                    b.HasOne("Entities.InstallerEntity", "installer")
+                        .WithMany("devices")
+                        .HasForeignKey("InstallerId");
+
                     b.HasOne("Entities.ModelDeviceEntity", "ModelDevice")
                         .WithMany("Devices")
                         .HasForeignKey("ModelDeviceId")
@@ -528,6 +563,8 @@ namespace DataAccess.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Country");
+
+                    b.Navigation("installer");
 
                     b.Navigation("ModelDevice");
 
@@ -615,6 +652,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Replacements");
 
                     b.Navigation("Warranties");
+                });
+
+            modelBuilder.Entity("Entities.InstallerEntity", b =>
+                {
+                    b.Navigation("devices");
                 });
 
             modelBuilder.Entity("Entities.ModelDeviceEntity", b =>

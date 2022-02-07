@@ -38,6 +38,8 @@ namespace DataAccess
         public DbSet<CountryEntity>  Countries{get;set;}
         public DbSet<SectorEntity>  Sectors {get;set;}
         public DbSet<TechnicianEntity> Technicians {get;set;}
+
+        public DbSet<InstallerEntity> Installers { get; set; }
     #endregion
 
     #region Creating Model and seeding of data
@@ -105,6 +107,16 @@ namespace DataAccess
             model.Entity<TechnicianEntity>().HasData(otech);
             #endregion
 
+            #region Installer
+            InstallerEntity oInstaller = new InstallerEntity()
+            {
+                InstallerId = "CR-1",
+                Name = "Grupo Mecsa",
+                initDate = DateTime.Now
+            };
+            model.Entity<InstallerEntity>().HasData(oInstaller);
+            #endregion
+
             #region Devices
             DeviceEntity oDeviceRemp = new DeviceEntity
             {
@@ -117,7 +129,8 @@ namespace DataAccess
                 ModelDeviceId = oModel.ModelDeviceId,
                 TypeDeviceId = oVtype.TypeDeviceId,
                 IsActive = false,
-                IsReplaced = true
+                IsReplaced = true,
+                InstallerId = oInstaller.InstallerId
             };
             DeviceEntity oDevice = new DeviceEntity
             {
@@ -157,6 +170,8 @@ namespace DataAccess
             };
             model.Entity<ReplacementDeviceEntity>().HasData(oReplace);
             #endregion
+
+
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

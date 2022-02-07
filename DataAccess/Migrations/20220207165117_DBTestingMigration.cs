@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class myRNMigration : Migration
+    public partial class DBTestingMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,6 +17,19 @@ namespace DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.CountryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Installers",
+                columns: table => new
+                {
+                    InstallerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    initDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Installers", x => x.InstallerId);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,6 +146,7 @@ namespace DataAccess.Migrations
                     CountryId = table.Column<string>(type: "nvarchar(4)", nullable: true),
                     ClientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SaleManId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    InstallerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TypeDeviceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -149,6 +163,12 @@ namespace DataAccess.Migrations
                         column: x => x.CountryId,
                         principalTable: "Countries",
                         principalColumn: "CountryId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Devices_Installers_InstallerId",
+                        column: x => x.InstallerId,
+                        principalTable: "Installers",
+                        principalColumn: "InstallerId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Devices_ModelDevices_ModelDeviceId",
@@ -290,6 +310,11 @@ namespace DataAccess.Migrations
                 values: new object[] { "506", "Costa Rica" });
 
             migrationBuilder.InsertData(
+                table: "Installers",
+                columns: new[] { "InstallerId", "Name", "initDate" },
+                values: new object[] { "CR-1", "Grupo Mecsa", new DateTime(2022, 2, 7, 10, 51, 16, 719, DateTimeKind.Local).AddTicks(7157) });
+
+            migrationBuilder.InsertData(
                 table: "ModelDevices",
                 columns: new[] { "ModelDeviceId", "ModelDeviceName" },
                 values: new object[] { 1, "DDCE-100" });
@@ -297,7 +322,7 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Salemans",
                 columns: new[] { "SaleManId", "Name", "QuantityOfDevice" },
-                values: new object[] { "d0c191b0-9f27-4470-be59-b05a140caa39", "sample", null });
+                values: new object[] { "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4", "sample", null });
 
             migrationBuilder.InsertData(
                 table: "Sectors",
@@ -338,27 +363,27 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "Name", "SectorId" },
-                values: new object[] { "762baaac-614b-40ac-9585-2a8e6385dfab", "Prueba", 1 });
+                values: new object[] { "77dd219b-50b0-45b5-8ab5-c3830c68369d", "Prueba", 1 });
 
             migrationBuilder.InsertData(
                 table: "Devices",
-                columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "IsActive", "IsReplaced", "Latitude", "Longitude", "ModelDeviceId", "Note", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
-                values: new object[] { "b6bf5a27-7701-426b-86a9-07122e62dd9c", "Prueba", "762baaac-614b-40ac-9585-2a8e6385dfab", "506", new DateTime(2022, 1, 20, 0, 0, 0, 0, DateTimeKind.Local), true, false, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "d0c191b0-9f27-4470-be59-b05a140caa39", 1 });
+                columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "InstallerId", "IsActive", "IsReplaced", "Latitude", "Longitude", "ModelDeviceId", "Note", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
+                values: new object[] { "7175e2c3-f855-442a-9613-a846af722a91", "Prueba", "77dd219b-50b0-45b5-8ab5-c3830c68369d", "506", new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Local), null, true, false, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4", 1 });
 
             migrationBuilder.InsertData(
                 table: "Devices",
-                columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "IsActive", "IsReplaced", "Latitude", "Longitude", "ModelDeviceId", "Note", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
-                values: new object[] { "a0eeb248-fed2-40db-a472-67789a54963b", "Reempleazo Prueba", "762baaac-614b-40ac-9585-2a8e6385dfab", "506", new DateTime(2022, 1, 20, 0, 0, 0, 0, DateTimeKind.Local), false, true, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "d0c191b0-9f27-4470-be59-b05a140caa39", 1 });
+                columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "InstallerId", "IsActive", "IsReplaced", "Latitude", "Longitude", "ModelDeviceId", "Note", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
+                values: new object[] { "cd93588f-e16c-46e3-943f-c613e9caf0f7", "Reempleazo Prueba", "77dd219b-50b0-45b5-8ab5-c3830c68369d", "506", new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Local), "CR-1", false, true, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4", 1 });
 
             migrationBuilder.InsertData(
                 table: "Replacements",
                 columns: new[] { "ReplacementDeviceId", "DeviceId", "NewSerieDevice", "Notes" },
-                values: new object[] { "e8432f58-db99-4870-9d6c-715e0305f519", "a0eeb248-fed2-40db-a472-67789a54963b", "b6bf5a27-7701-426b-86a9-07122e62dd9c", null });
+                values: new object[] { "3711b7f2-e590-4bc4-9a7d-309cf2ee2ac7", "cd93588f-e16c-46e3-943f-c613e9caf0f7", "7175e2c3-f855-442a-9613-a846af722a91", null });
 
             migrationBuilder.InsertData(
                 table: "Warranties",
                 columns: new[] { "Id", "DateReceived", "DateSend", "DeviceId", "Notes", "StatusId" },
-                values: new object[] { "9885b552-0912-4d79-a7a2-0045e7509c47", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "b6bf5a27-7701-426b-86a9-07122e62dd9c", null, 1 });
+                values: new object[] { "92205c2e-188b-4292-8d71-cc980df22240", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "7175e2c3-f855-442a-9613-a846af722a91", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_SectorId",
@@ -374,6 +399,11 @@ namespace DataAccess.Migrations
                 name: "IX_Devices_CountryId",
                 table: "Devices",
                 column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Devices_InstallerId",
+                table: "Devices",
+                column: "InstallerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_ModelDeviceId",
@@ -455,6 +485,9 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "Installers");
 
             migrationBuilder.DropTable(
                 name: "ModelDevices");
