@@ -1,0 +1,56 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<table class="table table-striped">
+    <thead class="">
+        <tr>
+            <th>
+                N° Serie
+            </th>
+            <td>
+                Cliente
+            </td>
+            <th>
+                Fecha Instalación
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in devices)
+       {
+           <tr>
+                <td>
+                    @item.DeviceId
+                </td>
+                <td>
+                    @item.Client.Name
+                </td>
+                <td>
+                    @item.InstallationDate.ToLongDateString()
+                </td>
+            </tr>
+       }
+    </tbody>
+</table>
+
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+    private List<DeviceEntity> devices = new List<DeviceEntity>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if(id!= null)
+        {
+            devices = B_Device.GetDevicesByInstaller(id);
+        }
+    }
+}

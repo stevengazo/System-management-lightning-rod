@@ -1,0 +1,51 @@
+﻿@using Business;
+@using Entities;
+
+    <hr/>
+    @if (id.ToString() != null){
+    <div class="d-flex flex-column">
+        <div class="flex-column">
+            <label class="font-weight-bold">
+                Id de Instalador:
+            </label>
+            <label>
+                @installer.InstallerId
+            </label>
+            </div>
+        <div class="flex-column">
+            <label class="font-weight-bold">
+                Nombre:
+            </label>
+            <label>
+                @installer.Name
+            </label>
+        </div>
+        <div class="flex-column">
+            <label class="font-weight-bold">
+                Fecha de Inscripción:
+            </label>
+            <label>
+                @installer.initDate
+            </label>
+        </div>
+    </div>   
+}
+
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+
+
+    private InstallerEntity installer = new InstallerEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (id.ToString() != null)
+        {
+            installer = B_Installer.GetInstallerById(id.ToString());    
+        }        
+    }
+}

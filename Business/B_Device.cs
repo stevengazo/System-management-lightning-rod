@@ -173,6 +173,25 @@ namespace Business
             }
         }
 
+        /// <summary>
+        /// Get a list of devices linked with a specific Installer 
+        /// </summary>
+        /// <param name="installerId">Id of the installer to check</param>
+        /// <returns>Null if present error, List of DeviceEntity</returns>
+        public static List<DeviceEntity> GetDevicesByInstaller ( string installerId)
+        {
+            try
+            {                
+                using(var db = new RayosNoDataContext())
+                {
+                    return (from dev in db.Devices select dev).Include(D=>D.Client).Include(D=>D.SaleMan).Where(D => D.InstallerId == installerId).ToList();
+                }
+            }catch(Exception f)
+            {
+                Console.WriteLine($"Error: {f.Message}");
+                return null;
+            }
+        }
 
         public static int CountDevicesBySaleMan(string Salemanid = null)
         {

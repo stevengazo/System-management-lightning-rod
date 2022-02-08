@@ -1,0 +1,66 @@
+﻿@using Business;
+@using Entities;
+
+
+<div ="d-flex flex-row">
+    <div class="p-3">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        ID 
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Registro de Instalador
+                    </th>
+                    <td>
+
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @for(var i = 0; i <= (installers.Count-1); i++)
+                {
+                    var tmp = installers[i].InstallerId;
+                    <tr>
+                       <td>
+                           @installers[i].InstallerId
+                       </td>
+                       <td>
+                           @installers[i].Name
+                       </td>
+                       <td>
+                           @installers[i].initDate.ToLongDateString()
+                       </td>
+                       <td>
+                          <a class="btn-info" href="installer/view/@installers[i].InstallerId" >Ver Detalles</a>
+                       </td>
+                   </tr>
+               }
+            </tbody>
+        </table>
+    </div>
+ 
+</div>
+
+
+
+
+
+@code{
+    private List<InstallerEntity> installers = new List<InstallerEntity>();
+
+
+    protected override async Task  OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        installers =  B_Installer.GetInstallers(); 
+    }
+
+
+
+
+}

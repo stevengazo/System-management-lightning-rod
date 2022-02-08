@@ -31,7 +31,7 @@ namespace Business
                 Console.WriteLine($"Error {e.Message}");
                 return false;
             }
-        } 
+        }
 
         /// <summary>
         /// get a especific register in the database with the id

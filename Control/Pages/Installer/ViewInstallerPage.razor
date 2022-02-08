@@ -1,0 +1,41 @@
+﻿@page  "/installer/view/{installerId}"
+
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2 class="text-center">
+                Información del Instalador
+            </h2>
+            <hr />
+            <a href="installer/list"> 
+                Regresar a la lista de instaladores 
+            </a>
+            <hr />
+            <DetailsInstallerComponent id="@installerId" />
+            <hr />
+            <h4>
+                Lista de Equipos instalados
+            </h4>
+            <ListOfDevicesByInstallerComponent  id="@installerId"/>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+@code{
+    [Parameter]
+    public string installerId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        installerId = installerId;
+    }
+}

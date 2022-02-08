@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Installer\" />
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
