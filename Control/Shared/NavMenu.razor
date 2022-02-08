@@ -21,12 +21,12 @@
             {                
                 <ul class="nav flex-column">
                     <li class="nav-item px-3">
-                        <NavLink class="expand-menu" style="text-align:center" href="device/list"  @onclick="()=> expandSubDevice=!expandSubDevice" >
+                        <NavLink class="expand-menu" style="text-align:center" href="device/list"  @onclick="setFalse" >
                             Buscar Dispositivo
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
-                        <NavLink class="expand-menu" style="text-align:center" href="device/create"  @onclick="()=> expandSubDevice=!expandSubDevice" >
+                        <NavLink class="expand-menu" style="text-align:center" href="device/create"  @onclick="setFalse" >
                             Agregar Dispositivo
                         </NavLink>          
                     </li>
@@ -51,10 +51,34 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" >
-                <span class="oi oi-person" aria-hidden="true"></span> Vendedores
+            <NavLink class="nav-link"  @onclick="()=> expandSubSaleInstal=!expandSubSaleInstal" >
+                <span class="oi oi-person" aria-hidden="true"></span> Ventas
             </NavLink>
-           
+            @if (expandSubSaleInstal)
+            {                
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="expand-menu" style="text-align:center" href="saleman/list"  @onclick="setFalse" >
+                            Buscar Vendedor
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="expand-menu" style="text-align:center" href="saleman/create"  @onclick="setFalse" >
+                            Agregar Vendedor
+                        </NavLink>          
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="expand-menu" style="text-align:center" href="installer/list"  @onclick="setFalse" >
+                            Buscar Instalador
+                        </NavLink>          
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="expand-menu" style="text-align:center" href="device/create"  @onclick="setFalse" >
+                            Agregar Instalador
+                        </NavLink>          
+                    </li>
+                </ul>
+            }
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="replacement/list">
@@ -99,6 +123,16 @@
     private bool expandSample;
     private bool expandSubDevice = false;
     private bool expandSubSaleInstal = false;
+
+
+    private void setFalse()
+    {
+        expandSample = false;
+        expandSubDevice = false;
+        expandSubSaleInstal = false;
+
+
+    }
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
