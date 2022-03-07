@@ -2,6 +2,18 @@
 @using Business;
 
 
+@if(lastMaintenance != null)
+{
+    if(lastMaintenance.MaintenanceDate.AddYears(1) < DateTime.Today)
+    {
+        <div>
+    <label>Ultimo Mantenimiento: @lastMaintenance.MaintenanceDate.ToShortDateString()</label>
+    <label class="text-danger font-weight-bold">El ultimó mantenimiento fue realizado hace más de un año</label>
+        </div>
+    }
+}
+
+
 
 <table class="table table-responsive-sm table-bordered table-hover table-light">
     <thead>
@@ -34,10 +46,11 @@
     [Parameter]
     public string id { get; set;}
     List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
-
+    MaintenanceEntity lastMaintenance = new MaintenanceEntity();
 
     protected override async Task OnInitializedAsync()
     {
         Maintenances = B_Maintenance.ListOfMaintenancesById(id);
+        lastMaintenance = (from maint in Maintenances select maint).OrderByDescending(M => M.MaintenanceDate).FirstOrDefault();
     }
 }

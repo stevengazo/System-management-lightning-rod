@@ -4,6 +4,16 @@
 
 <EditForm Model="@oClient">
     <div class="form-group">
+    <label>Tipo de Cliente</label>
+      <InputSelect @bind-Value="oClient.SectorId" class="form-control">
+            @foreach (var item in sample)
+            {
+                <option value="@item.Key">@item.Value</option>
+            }
+        </InputSelect>
+        <p><i>Sector correspondiente al Cliente</i></p>
+    </div>
+    <div class="form-group">
         <label>Nombre del cliente</label>
         <InputText @bind-Value="oClient.Name" class="form-control"></InputText>
         <p><i>Nombre jurídico del cliente o nombre físico</i></p>
@@ -12,9 +22,9 @@
         <label>Sector del cliente</label>
         <InputSelect @bind-Value="oClient.SectorId" class="form-control">
             @foreach (var item in Sectors)
-           {
-               <option value="@item.SectorId">@item.SectorName</option>
-           }
+            {
+                <option value="@item.SectorId">@item.SectorName</option>
+            }
         </InputSelect>
         <p><i>Sector correspondiente al Cliente</i></p>
     </div>
@@ -25,6 +35,28 @@
 @code{
     ClientEntity oClient = new ClientEntity();
     string Error = "";
+
+    Dictionary<string, string> sample = new Dictionary<string, string>()
+    {
+        { "Htl","Hotelera"},
+        { "Edu","Educación"},
+        { "Inds","Industrial"},
+        { "Red","Residencial"},
+        { "Com","Comercial"},
+        { "Muni","Municipalidades"},
+        { "Segu","Aseguradoras"},
+        { "Hosp","Hospitalario"},
+        { "Telco","Telecomunicaciones"},
+        { "Recr","Recreativo"},
+        { "Finan","Financiero"},
+        { "Serv","Servicios"},
+        { "Inst","Institucional"},
+        { "Aerop","Aeroportuario"},
+        { "Embar","Embarcaciones"},
+        { "Mari","Marinas"},
+        { "Const","Constructora"},
+        { "Otro","Otro"},
+    };
 
     List<SectorEntity> Sectors = new List<SectorEntity>();
 

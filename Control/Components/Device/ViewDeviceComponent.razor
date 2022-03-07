@@ -6,6 +6,23 @@
 
 <div>
     <div>
+        <div class="d-flex flex-column">
+            @if (!oDevice.IsActive)
+            {
+                <label class="text-danger font-weight-bold">Dispositivo marcado como inactivo</label>
+                <label class="text-danger">No se pueden agregar mantenimientos o garantias.</label>
+            }
+            @if (oDevice.IsReplaced)
+            {
+                <label class="text-danger font-weight-bold">Dispositivo Reemplazadado</label>
+            }
+            @if(@oDevice.RecomendedDateOfMaintenance <= DateTime.Today.AddDays(-15) )
+            {
+                <label class="text-danger">La fecha de mantenimiento limite esta próxima a vencer o esta vencida.</label>
+                <label class="text-danger font-weight-bold">Verifica que la garantias de equipo y mantenimientos esten en vigencia</label>
+            }
+        </div>
+        
         <EditForm Model="@oDevice">
             <table class="table table-light table-responsive-sm table-bordered table-striped">
                 <thead>
@@ -37,7 +54,14 @@
                     </tr>
                     <tr>
                         <td>Fecha limite próximo mantenimiento</td>
-                        <td>@oDevice.RecomendedDateOfMaintenance</td>
+                        @if(@oDevice.RecomendedDateOfMaintenance <= DateTime.Today)
+                        {
+                            <td class="text-danger">@oDevice.RecomendedDateOfMaintenance.ToShortDateString()  </td>
+                        }
+                        else
+                        {
+                            <td >@oDevice.RecomendedDateOfMaintenance.ToShortDateString()  </td>
+                        }
                     </tr>
                     <tr>
                         <td>Tipo de equipo</td>

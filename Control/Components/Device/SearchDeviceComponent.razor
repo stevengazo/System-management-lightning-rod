@@ -70,16 +70,34 @@
         <tbody>
             @foreach (var obj in Devices)
             {
-            <tr class="align-middle"> 
-                <td> @obj.DeviceId</td>
-                <td> @obj.Alias</td>
-                <td> @obj.InstallationDate.Date.ToShortDateString()</td>
-                <td> @obj.SaleMan.Name</td>
-                <td> @obj.Client.Name</td>
-                <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
-                <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
-                <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
-            </tr>
+                if(obj.IsActive == false )
+                {
+                    <tr class="align-middle">                 
+                        <td><strike> @obj.DeviceId</strike></td>
+                        <td><strike> @obj.Alias</strike></td>
+                        <td><strike> @obj.InstallationDate.Date.ToShortDateString()</strike></td>
+                        <td><strike> @obj.SaleMan.Name</strike></td>
+                        <td><strike> @obj.Client.Name</strike></td>
+                        <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
+                        <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
+                        <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
+                    </tr>
+
+                }
+                else
+                {
+                    <tr class="align-middle">                 
+                        <td> @obj.DeviceId</td>
+                        <td> @obj.Alias</td>
+                        <td> @obj.InstallationDate.Date.ToShortDateString()</td>
+                        <td> @obj.SaleMan.Name</td>
+                        <td> @obj.Client.Name</td>
+                        <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
+                        <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
+                        <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
+                    </tr>
+                }
+            
             }
         </tbody>
     </table>

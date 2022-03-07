@@ -41,7 +41,7 @@
             <tr>
                 <td> Número de Serie</td>
                 <td> Alias</td>
-                <td> Día recomendado</td>
+                <td> Fecha Limite</td>
                 <td></td>
                 <td></td>
             </tr>
@@ -52,7 +52,13 @@
                 <tr>
                     <td>@i.DeviceId  </td>
                     <td>@i.Alias</td>
-                    <td>@i.RecomendedDateOfMaintenance.ToShortDateString()</td>
+                    @if(@i.RecomendedDateOfMaintenance < DateTime.Today)
+                    {
+                        <td class="text-danger font-weight-bold">@i.RecomendedDateOfMaintenance.ToShortDateString()</td>    
+                    }   
+                    else{
+                        <td>@i.RecomendedDateOfMaintenance.ToShortDateString()</td>    
+                    }
                     <td> <a href="device/view/@i.DeviceId"> Ver </a></td>
                     <td> <a href="device/update/@i.DeviceId"> Modificar</a></td>
                 </tr>

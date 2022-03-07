@@ -1,6 +1,7 @@
 ﻿@using Entities;
 @using Business;
 
+
 <table class=" table table-responsive-sm table-bordered table-hover table-light">
     <thead>
         <tr>
@@ -32,8 +33,13 @@
 
     List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
 
+    WarrantyEntity lastWarranty = new WarrantyEntity();
     protected override async Task OnInitializedAsync()
     {
         Warranties = B_Warranty.ListOfWarrantiesById(id);
+        if (Warranties.Count != 0)
+        {
+            lastWarranty = (from warr in Warranties select warr).OrderByDescending(W => W.DateReceived).FirstOrDefault();
+        }
     }
 }  
