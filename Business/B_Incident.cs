@@ -83,7 +83,6 @@ namespace Business
             {
                 return (from incidents in DB.Incidents select incidents.ReportDate.Year).Distinct().ToArray();
             }
-            return null;
         }
 
         public static void Update( IncidentEntity oIncident)

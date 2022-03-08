@@ -88,8 +88,6 @@ namespace Business
                         return false;
                     }
                 }
-
-                return false;
             }
             catch (Exception ex)
             {

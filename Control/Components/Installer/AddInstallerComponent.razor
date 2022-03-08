@@ -1,0 +1,73 @@
+﻿@using Business;
+@using Entities;
+
+
+<div>
+    <label>
+        País 
+    </label>
+    <select @onchange="handleOnClick">
+        @foreach (var item in dictCountries)
+       {
+           <option value="@item.Key">@item.Value</option>
+       }
+    </select>
+</div>
+
+<EditForm class="form" Model="oInstaller">
+        <div>
+            <label>
+                Referencia
+            </label>      
+            <label>
+                @idCode
+            </label>
+            <InputText @bind-value="@idCode"></InputText>
+        </div>
+        <div>
+            <label>
+                Nombre
+            </label>
+            <InputText class="form-control" @bind-Value="oInstaller.Name"></InputText>
+        </div>
+        <div>
+            <label>
+                Fecha de inscripción
+            </label>
+            <InputDate class="form-control" @bind-Value="oInstaller.initDate" >@DateTime.Today</InputDate>
+        </div>
+</EditForm>
+
+
+
+@code {
+    InstallerEntity oInstaller = new InstallerEntity();
+    Dictionary<string, string> dictCountries = new Dictionary<string, string>();
+    string idCode { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        dictCountries = B_Country.GetDictCountries();
+        idCode = "";
+        await base.OnInitializedAsync();
+    }
+
+    private async Task handleOnClick(ChangeEventArgs e)
+    {
+        var result = B_Installer.GetLastInstaller(e.Value.ToString());
+        if(result != null)
+        {
+            var tmp = result.InstallerId.Split('-');
+            idCode = $"{tmp[0]}-{int.Parse(tmp[1])+1}";
+            oInstaller.InstallerId = idCode;
+        }
+        else
+        {
+            idCode = $"{e}-{1}";
+            oInstaller.InstallerId = idCode;
+        }
+
+    }
+
+
+}

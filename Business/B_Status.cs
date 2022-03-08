@@ -16,5 +16,6 @@ namespace Business
                 return db.Status.ToList();
             }
         }
+
     }
 }

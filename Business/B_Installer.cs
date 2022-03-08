@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business
 {
@@ -30,6 +31,28 @@ namespace Business
             {
                 Console.WriteLine($"Error {e.Message}");
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Search the last entity in the database 
+        /// </summary>
+        /// <param name="_id"></param>
+        /// <returns></returns>
+        public static InstallerEntity GetLastInstaller( string _id)
+        {            
+            try
+            {
+                using(var db = new RayosNoDataContext())
+                {
+                    var tmp = db.Installers.FromSqlInterpolated($"SELECT * FROM Installers WHERE InstallerId LIKE '%{_id}%' ORDER BY InstallerId DESC").FirstOrDefault();
+                    return tmp;
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
+                return null;
             }
         }
 

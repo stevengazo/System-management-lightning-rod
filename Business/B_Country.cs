@@ -92,6 +92,22 @@ namespace Business
             }
         }
 
+        /// <summary>
+        /// Create and return a dictionary with a list of countries
+        /// </summary>
+        /// <returns>Dictionary with countries</returns>
+        public static Dictionary<string,string> GetDictCountries()
+        {
+            using( var db = new RayosNoDataContext())
+            {
+                var result = (from count in db.Countries select count).ToDictionary(C => C.CountryId, C => C.CountryName);
+                if (result != null)
+                {
+                    return result;
+                }
+                return null;
+            }
+        }
 
         public static Dictionary<string,int> DevicesByCountry()
         {

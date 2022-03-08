@@ -4,6 +4,7 @@
 @using System.IO;
 @using CsvHelper;
 @using System.Globalization;
+@using System;
 
 @inject IJSRuntime Js;
 
@@ -47,11 +48,35 @@
         <div class="col">
             <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
         </div>
+        <div class="col-1" >
+            <button  @onclick="changeHidden" class=" border-info">
+                <span class="oi oi-info" aria-hidden="true"  ></span> 
+            </button>            
+        </div>
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
 </div>
 
 <hr />
+<div stylle="font-size:5px;"  hidden="@_bandHidden" class="flex-column">
+    <p>Los equipos poseen las siguientes clasificaciones:</p>
+    <div>
+            <label >
+                <strike>Inactivo</strike>
+            </label>
+      
+            <label style="color:red;">
+                <strike>Reemplazado</strike>
+            </label>
+     
+            <label style="color:orange;">
+                Fecha Limite Mantenimiento cercana
+            </label>             
+    </div>
+    
+    
+    
+</div>
 
 <div>
     <table class="table table-hover table-striped table-responsive-sm ">
@@ -70,46 +95,45 @@
         <tbody>
             @foreach (var obj in Devices)
             {
-                if(obj.IsActive == false && obj.IsReplaced == true )
+                <tr class="align-middle">   
+                @if(obj.IsActive == false && obj.IsReplaced == true )
                 {
-                    <tr class="align-middle">  
                         <td style="color:red;" ><strike> @obj.DeviceId</strike></td>
                         <td style="color:red;"><strike> @obj.Alias</strike></td>
                         <td style="color:red;"><strike> @obj.InstallationDate.Date.ToShortDateString()</strike></td>
                         <td style="color:red;"><strike> @obj.SaleMan.Name</strike></td>
                         <td style="color:red;"><strike> @obj.Client.Name</strike></td>
-                        <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
-                        <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
-                        <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
-                    </tr>
+
 
                 }
                 else if(obj.IsActive == false && obj.IsReplaced != true )
                 {
-                    <tr class="align-middle">                 
-                                                <td><strike> @obj.DeviceId</strike></td>
-                        <td><strike> @obj.Alias</strike></td>
-                        <td><strike> @obj.InstallationDate.Date.ToShortDateString()</strike></td>
-                        <td><strike> @obj.SaleMan.Name</strike></td>
-                        <td><strike> @obj.Client.Name</strike></td>
-                        <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
-                        <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
-                        <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
-                    </tr>
+                    
+                    <td><strike> @obj.Alias</strike></td>
+                    <td><strike> @obj.InstallationDate.Date.ToShortDateString()</strike></td>
+                    <td><strike> @obj.SaleMan.Name</strike></td>
+                    <td><strike> @obj.Client.Name</strike></td>
+                }
+                else if( checkDate(@obj.RecomendedDateOfMaintenance) )
+                {
+                    <td style="color:orange;"> @obj.DeviceId</td>
+                    <td style="color:orange;"> @obj.Alias</td>
+                    <td style="color:orange;"> @obj.InstallationDate.Date.ToShortDateString()</td>
+                    <td style="color:orange;"> @obj.SaleMan.Name</td>
+                    <td style="color:orange;"> @obj.Client.Name</td>
                 }
                 else 
-                {
-                    <tr class="align-middle">                 
-                        <td> @obj.DeviceId</td>
-                        <td> @obj.Alias</td>
-                        <td> @obj.InstallationDate.Date.ToShortDateString()</td>
-                        <td> @obj.SaleMan.Name</td>
-                        <td> @obj.Client.Name</td>
-                        <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
-                        <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
-                        <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
-                    </tr>
-                }            
+                {                                  
+                    <td  > @obj.DeviceId</td>
+                    <td > @obj.Alias</td>
+                    <td > @obj.InstallationDate.Date.ToShortDateString()</td>
+                    <td > @obj.SaleMan.Name</td>
+                    <td > @obj.Client.Name</td>
+                }  
+                <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
+                <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
+                <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
+                </tr>
             }
         </tbody>
     </table>
@@ -138,6 +162,9 @@
 
 
     /// Internal Variables
+    string _hidden;
+    bool _bandHidden = true;
+
     List<int> Years = B_Device.ListOfYears();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     List<CountryEntity> Countries = new List<CountryEntity>();
@@ -152,10 +179,12 @@
         YearToSearch = 0;
         AliasToSearch = null;
         DeviceIdToSearch = null;
+        _bandHidden = true;
     }
 
     protected override async Task OnInitializedAsync()
     {
+        _bandHidden = true;
         Countries = B_Country.ListOfCountries();
         Clean();
     }
@@ -183,7 +212,7 @@
                 {
                     NewLine = Environment.NewLine,
                 };
-                
+
                 using(var csv = new CsvWriter(writter,config))
                 {
                     var arr1 = Devices.ToArray();
@@ -197,6 +226,7 @@
 
     private void Search()
     {
+        _bandHidden = true;
         try
         {
             bool ValidInputs = CheckInputs();
@@ -225,8 +255,35 @@
             Clean();
             ErrorMessage = f.Message;
         }
+    }
 
+    void changeHidden()
+    {
+        if(_bandHidden)
+        {
+            _hidden = "";
+        }
+        else
+        {
+            _hidden = "hidden"; 
+        }  
+        _bandHidden=!_bandHidden;
+    }
 
+    /// <summary>
+    /// Check if the date limit for the maintanance is under 15 days
+    /// </summary>
+    /// <param name="recommendateDate"></param>
+    /// <returns></returns>
+    bool checkDate(DateTime recommendateDate)
+    {
+
+        if( DateTime.Today < recommendateDate && recommendateDate < DateTime.Today.AddDays(15) )
+        {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     #endregion
