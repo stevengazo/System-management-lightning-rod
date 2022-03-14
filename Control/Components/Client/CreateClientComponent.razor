@@ -5,13 +5,17 @@
 <EditForm Model="@oClient">
     <div class="form-group">
     <label>Tipo de Cliente</label>
-      <InputSelect @bind-Value="oClient.SectorId" class="form-control">
+      <Select  class="form-control" @onchange="handleOnchange">
             @foreach (var item in sample)
             {
                 <option value="@item.Key">@item.Value</option>
             }
-        </InputSelect>
+        </Select>
         <p><i>Sector correspondiente al Cliente</i></p>
+    </div>
+    <div class="form-group">        
+          <label>Numero de Referencia</label>
+          <p>@tmpId</p>
     </div>
     <div class="form-group">
         <label>Nombre del cliente</label>
@@ -35,6 +39,7 @@
 @code{
     ClientEntity oClient = new ClientEntity();
     string Error = "";
+    string tmpId = string.Empty;
 
     Dictionary<string, string> sample = new Dictionary<string, string>()
     {
@@ -65,14 +70,34 @@
         Sectors = B_Sectors.ListOfSectors();
     }
 
+    private void handleOnchange(ChangeEventArgs args)
+    {
+        string tmp = B_Client.CheckLastId(args.Value.ToString());
+        if(tmp.Length != 0)
+        {
+            var tmpArray = tmp.Split('-');
+            var num = int.Parse(tmpArray[1]);
+            tmpId = $"{tmpArray[0]}-{num + 1}";    
+        }
+
+    }
+
     private void SaveClient()
     {
         try
         {
-            oClient.Id = Guid.NewGuid().ToString();
-            B_Client.CreateClient(oClient);
-            Error = "";
-            Nav.NavigateTo("client/list");        
+            if(tmpId.Length != 0)
+            {
+                oClient.Id = tmpId;
+                B_Client.CreateClient(oClient);
+                Error = "";
+                Nav.NavigateTo("client/list");            
+            }
+            else
+            {
+                Error = "Seleccione un tipo de cliente";
+            }
+
         }catch (Exception f)
         {
             Error = $" Error: {f.Message}. Intentelo nuevamente.";

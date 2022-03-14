@@ -5,7 +5,13 @@
 
 <div class="align-center form-group row">
     <div class="col">
-        <input class="rounded form-control" type="text" @bind="ClientIdToSearch" placeholder="Id de Referencia"/>
+        <input type="text" class="rounded form-control"  @bind="ClientIdToSearch" list="categories">           </input>
+        <datalist id="categories">
+            @foreach (var item in sample)
+            {
+                <option value="@item.Key">@item.Value</option>
+            }
+        </datalist>
     </div>
     <div class="col">
         <input class="rounded form-control" type="text" @bind="NameToSearch" placeholder="Nombre de Cliente" />
@@ -64,6 +70,28 @@
     string NameToSearch = null;
     string ErrorMessage = null;
     int SectorToSearch = 0;
+
+      Dictionary<string, string> sample = new Dictionary<string, string>()
+    {
+        { "Htl","Hotelera"},
+        { "Edu","Educación"},
+        { "Inds","Industrial"},
+        { "Red","Residencial"},
+        { "Com","Comercial"},
+        { "Muni","Municipalidades"},
+        { "Segu","Aseguradoras"},
+        { "Hosp","Hospitalario"},
+        { "Telco","Telecomunicaciones"},
+        { "Recr","Recreativo"},
+        { "Finan","Financiero"},
+        { "Serv","Servicios"},
+        { "Inst","Institucional"},
+        { "Aerop","Aeroportuario"},
+        { "Embar","Embarcaciones"},
+        { "Mari","Marinas"},
+        { "Const","Constructora"},
+        { "Otro","Otro"},
+    };
 
     protected override async Task OnInitializedAsync()
     {

@@ -68,6 +68,41 @@ namespace Business
         #endregion
         #region ConsultsAndSearch
 
+
+        /// <summary>
+        /// Check the ids in the datase and return the last insert of a specific id.
+        /// </summary>
+        /// <param name="_id">Id to searh</param>
+        /// <returns>ir present error, return a empty string</returns>
+        public static string CheckLastId(string _id)
+        {
+            
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+
+                    var resultObj = (from item
+                                    in db.Clients
+                                     where item.Id.Contains(_id)
+                                     orderby item.Id descending
+                                     select item.Id).FirstOrDefault(); 
+                    if(resultObj != null)
+                    {
+                        return resultObj;
+                    }
+                    else
+                    {
+                        return $"{_id}-{0}";
+                    }
+                }
+            }
+            catch(Exception f)
+            {
+                Console.WriteLine($"Error: {f.Message}");
+                return string.Empty;
+            }
+        }
         /// <summary>
         /// Search clients in the database
         /// </summary>
