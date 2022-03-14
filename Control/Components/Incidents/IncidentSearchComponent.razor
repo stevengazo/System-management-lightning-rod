@@ -9,7 +9,13 @@
 <div>
     <div class="form-group row">
         <div class="col">
-                <input type="text" @bind="DeviceIdToSearch" class="rounded form-control" placeholder="Serie" />
+                <input type="text" @bind="DeviceIdToSearch" list="devicesInDB" class="rounded form-control" placeholder="Serie" />
+                <datalist id="devicesInDB">
+                    @foreach (var dictItem in devices)
+                   {
+                       <option value="@dictItem.Key">@dictItem.Value</option>
+                   }
+                </datalist>
         </div>
         <div class="col">
                 <input type="text" @bind="AliasToSearch" class="rounded form-control" placeholder="Alias" />
@@ -72,7 +78,7 @@
     string DeviceIdToSearch = null;
     string AliasToSearch = null;
     int YearToSearch = 0;
-
+    Dictionary<string, string> devices = new Dictionary<string, string>();
     string Message = "";
 
     List<IncidentEntity> Incidents = new List<IncidentEntity>();
@@ -84,6 +90,7 @@
     protected override async Task OnInitializedAsync()
     {
         Years = B_Incident.GetIncidentsByYears();
+        devices = B_Device.GetDictonaryOfDevicesWithClient();
         base.OnInitializedAsync();   
 
     }
@@ -99,17 +106,35 @@
         {
             tmpList = B_Incident.SearchIncidents(DeviceIdToSearch, AliasToSearch, null);    
         }
-
-        Incidents = tmpList;
+        try
+        {
+            if(tmpList.Count != 0)
+            {
+                Incidents = tmpList;
+                Message = "";
+            }
+            else
+            {
+                Message = $"No hay resultados de la busqueda";
+            }
+        }
+        catch (Exception f)
+        {        
+            Message = $"No hay resultados de la busqueda";   
+        }
 
 
 
     }
+
+
+
     private void Clean()
     {
         DeviceIdToSearch = null;
         AliasToSearch = null;
         YearToSearch = 0;
+        Message = "";
     }
    
 

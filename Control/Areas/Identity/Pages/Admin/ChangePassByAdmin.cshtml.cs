@@ -61,7 +61,6 @@ namespace Control.Areas.Identity.Pages.Admin
                     db.SaveChanges();
                     return true;
                 }
-                return false;
             }
             catch (Exception g ) 
             {
@@ -81,7 +80,6 @@ namespace Control.Areas.Identity.Pages.Admin
                     var query = (from us in db.Users select us).FirstOrDefault(U => U.Id == _id);
                     return query;
                 }
-                return null;
             }
             catch (Exception f)
             {

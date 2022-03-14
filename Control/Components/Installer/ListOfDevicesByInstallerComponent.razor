@@ -32,6 +32,8 @@
                 <td>
                     @item.InstallationDate.ToLongDateString()
                 </td>
+                <td> <a class="btn btn-primary" href="device/view/@item.DeviceId"> Ver </a></td>
+                <td> <a class="btn btn-secondary" href="device/update/@item.DeviceId"> Modificar</a></td>
             </tr>
        }
     </tbody>
