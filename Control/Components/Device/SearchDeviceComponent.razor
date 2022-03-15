@@ -83,11 +83,11 @@
     <table class="table table-hover table-striped table-responsive-sm ">
         <thead>
             <tr>
-                <th> Numero de Serie</th>
-                <th> Alias</th>
-                <th> Fecha de Instalación</th>
-                <th> Vendedor</th>
-                <th> Cliente</th>
+                <th @onclick="handleIdOrder" > Numero de Serie</th>
+                <th @onclick="handleAliasOrder"  > Alias</th>
+                <th @onclick="handleDateOrder" > Fecha de Instalación</th>
+                <th @onclick="handleSaleOrder"  > Vendedor</th>
+                <th @onclick="handleClientOrder"> Cliente</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -162,6 +162,7 @@
 
     public string ErrorMessage { get; set; }
 
+    public bool flagOrder = false;
 
     /// Internal Variables
     string _hidden;
@@ -182,6 +183,121 @@
         AliasToSearch = null;
         DeviceIdToSearch = null;
         _bandHidden = true;
+    }
+
+
+    private void handleClientOrder()
+    {
+      if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.Client.Name ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.Client.Name descending
+                           select devi).ToList();
+            }    
+        }          
+    }
+    private void handleSaleOrder()
+    {
+      if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.SaleMan.Name ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.SaleMan.Name descending
+                           select devi).ToList();
+            }    
+        }          
+    }
+
+    private void handleAliasOrder()
+    {
+        if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.Alias ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.Alias descending
+                           select devi).ToList();
+            }    
+        }        
+    }
+
+
+    private void handleDateOrder()
+    {
+        if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.InstallationDate ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.InstallationDate descending
+                           select devi).ToList();
+            }    
+        }               
+    }
+    private void handleIdOrder()
+    {
+        if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.DeviceId ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.DeviceId descending
+                           select devi).ToList();
+            }    
+        }        
     }
 
     protected override async Task OnInitializedAsync()
