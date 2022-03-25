@@ -1,6 +1,12 @@
-﻿@using Entities;
+﻿@using System.IO;
+@using System.Globalization;
+@using Entities;
 @using Business;
+@using CsvHelper;
+@using CsvHelper.Configuration;
 
+@inject IJSRuntime Js;
+@inject NavigationManager Nav;
 
 <table class="table table-hover table-striped table-responsive-sm ">
     <tbody>
@@ -14,6 +20,16 @@
         </tr>
     </tbody>    
 </table>
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized >
+        <div class="d-sm-flex">
+            <input class="btn-outline-dark form-control" type="button" value="Exportar Equipos" @onclick="Download" />
+        </div>
+    </Authorized>
+</AuthorizeView>
+
 
 
 <p>@Error</p>
@@ -36,5 +52,31 @@
             Error = $"Error: {s.Message}. Intentelo de nuevo o contacte al administrador";
         }
 
+    }
+
+
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            List<DeviceEntity> Devices = new List<DeviceEntity>();
+            Devices = B_Device.GetDevicesByClient(ClientId);
+
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Devices.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs($"Devices of {oClient.Name}.csv", arr);
+            }
+        }
     }
 }

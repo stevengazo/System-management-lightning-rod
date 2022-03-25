@@ -155,7 +155,12 @@ namespace Business
                                          in db.Devices
                                          where devi.SaleManId == id
                                          select devi
-                                         ).Include(D => D.Client).Include(D => D.Country).Include(D => D.SaleMan).Include(D => D.TypeDevice)
+                                         ).Include(D => D.Client)
+                                         .Include(D => D.Country)
+                                         .Include(D => D.SaleMan)
+                                         .Include(D => D.TypeDevice)
+                                         .Include(D => D.ModelDevice)
+                                         .Include(D => D.installer)
                                          .ToList();
                     return ResultDevices;
                 }
@@ -298,6 +303,33 @@ namespace Business
             }
             return Devices;
         }
+
+
+
+        public static List<DeviceEntity> GetDevicesByClient(string _ClientId = null)
+        {
+            List<DeviceEntity> Devices = new List<DeviceEntity>();
+          
+            using (var DB = new RayosNoDataContext())
+            {
+                if (_ClientId != null)
+                {
+                    var aux = (from Device in DB.Devices select Device).Where(D => D.ClientId == _ClientId)
+                        .Include(C => C.Client)
+                        .Include(C => C.installer)
+                        .Include(C => C.TypeDevice)
+                        .Include(C => C.ModelDevice)
+                        .Include(S => S.SaleMan);
+                    Devices = aux.ToList();
+                }
+                else
+                {
+                    return null; 
+                }
+            }
+            return Devices;
+        }
+
 
         public static List<DeviceEntity> GetDevicesByClient(string _ClientId= null, int Quantity=10, int Page=1 )
         {

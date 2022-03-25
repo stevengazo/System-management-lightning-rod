@@ -4,18 +4,45 @@
 
 <div class="row">
     <div class="col">
-        <h2>Sistema Interno - Dispositivos Rayos NO</h2>
-        <p>
-            Sistema de control interno propiedad de Grupo Mecsa para la gestión interna de los
-            dispositivos RAYOS-NO.
-        </p>
-        <p>
-            Este sistema plantea el registro y control de los dispositivos instalados, así como
-            el mantenimiento, garantias y vendedores asignados para un mejor control de los equipos.
-        </p>
+        <AuthorizeView Roles="Administrador,Editor,Lector">
+        <Authorized>
+            <h3>
+                Bienvenido
+            </h3>
+            <GraphComponentDevicesByCountry/>
+        </Authorized>
+        <NotAuthorized>
+            <h2>Sistema Interno - Dispositivos Rayos NO</h2>
+            <p>
+                Sistema de control interno propiedad de Grupo Mecsa para la gestión interna de los
+                dispositivos RAYOS-NO.
+            </p>
+            <p>
+                Este sistema plantea el registro y control de los dispositivos instalados, así como
+                el mantenimiento, garantias y vendedores asignados para un mejor control de los equipos.
+            </p>
+        </NotAuthorized>
+        </AuthorizeView>
+        
     </div>
     <div class="col">
-        <MaintenanceUnrelizedByMonth/>
+        <AuthorizeView Roles="Administrador,Editor,Lector">
+            <Authorized>
+                <h3>Fechas Limite de mantenimiento - Período @DateTime.Today.Year</h3>
+                <MaintenanceUnrelizedByMonth/>
+            </Authorized>
+            <NotAuthorized>
+                <h3>
+                    Inicia sesión
+                </h3>
+                <p>
+                    Debes iniciar sesión para acceder al sistema.
+                </p>
+                <p>
+                    Si no posees una cuenta, comunicate con el administrador del sistema.
+                </p>
+            </NotAuthorized>
+        </AuthorizeView>
     </div>
 </div>
 
