@@ -1,12 +1,12 @@
 ﻿@using Business;
 @using Entities;
-
+@inject NavigationManager nav;
 
 <div>
     <label>
         País 
     </label>
-    <select @onchange="handleOnClick">
+    <select class="form-control" @onchange="handleOnClick" >
         @foreach (var item in dictCountries)
        {
            <option value="@item.Key">@item.Value</option>
@@ -15,29 +15,30 @@
 </div>
 
 <EditForm class="form" Model="oInstaller">
-        <div>
-            <label>
+        <div class="form-group">
+            <label class="col-form-label-lg">
                 Referencia
             </label>      
-            <label>
+            <label class="col-form-label-lg">
                 @idCode
             </label>
-            <InputText @bind-value="@idCode"></InputText>
+            <InputText class="form-control" @bind-Value="@oInstaller.InstallerId" hidden="hidden"></InputText>
         </div>
-        <div>
-            <label>
+        <div class="form-group">
+            <label class="col-form-label-lg">
                 Nombre
             </label>
-            <InputText class="form-control" @bind-Value="oInstaller.Name"></InputText>
+            <InputText class="form-control" @bind-Value="@oInstaller.Name"></InputText>
         </div>
-        <div>
-            <label>
+        <div class="form-group">
+            <label class="col-form-label-lg">
                 Fecha de inscripción
             </label>
-            <InputDate class="form-control" @bind-Value="oInstaller.initDate" >@DateTime.Today</InputDate>
+            <InputDate @bind-Value="@oInstaller.initDate" class="form-control" ></InputDate>
         </div>
 </EditForm>
 
+<button @onclick="save">Save </button>
 
 
 @code {
@@ -63,10 +64,18 @@
         }
         else
         {
-            idCode = $"{e}-{1}";
+            idCode = $"{e.Value}-{1}";
             oInstaller.InstallerId = idCode;
         }
+    }
 
+    private async Task save()
+    {
+        bool flagSuccess = B_Installer.AddInstaller(oInstaller);
+        if (flagSuccess)
+        {
+            nav.NavigateTo("installer/list");
+        }
     }
 
 

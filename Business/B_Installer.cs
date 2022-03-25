@@ -45,7 +45,12 @@ namespace Business
             {
                 using(var db = new RayosNoDataContext())
                 {
-                    var tmp = db.Installers.FromSqlInterpolated($"SELECT * FROM Installers WHERE InstallerId LIKE '%{_id}%' ORDER BY InstallerId DESC").FirstOrDefault();
+                    var tmp = (from inst
+                               in db.Installers
+                               orderby inst.InstallerId descending
+                               where inst.InstallerId.Contains(_id)
+                               select inst
+                               ).FirstOrDefault();
                     return tmp;
                 }
             }
@@ -67,7 +72,8 @@ namespace Business
             {
                 using (var db = new RayosNoDataContext())
                 {
-                    return db.Installers.FirstOrDefault(I => I.InstallerId == _id);
+                    var tmp = db.Installers.FirstOrDefault(I=>I.InstallerId.Equals(_id));
+                    return tmp;
                 }
             }
             catch (Exception e)
@@ -149,5 +155,53 @@ namespace Business
             }
         }
 
+
+        public static async Task<List<InstallerEntity>> Search(string id = null, string name = null)
+        {
+            try
+            {            
+                using (var db = new RayosNoDataContext())
+                {
+                    List<InstallerEntity> result= new List<InstallerEntity>();
+                    if (id!=null && name != null)
+                    {
+                        result = (
+                                from inst
+                                in db.Installers
+                                where inst.InstallerId.Contains(id) && inst.Name.Contains(name)
+                                select inst).ToList();
+                    }
+                    else if (id == null && name != null)
+                    {
+                        result = (
+                                from inst
+                                in db.Installers
+                                where inst.Name.Contains(name)
+                                select inst).ToList();
+                    }
+                    else if (id != null && name == null)
+                    {
+                        result = (
+                                from inst
+                                in db.Installers
+                                where inst.InstallerId.Contains(id)
+                                select inst).ToList();
+                    }
+                    if (result.Count!= 0)
+                    {
+                        return  result.ToList();
+                    }
+                    else
+                    {
+                        return  new List<InstallerEntity>();
+                    }
+                }
+        
+            }
+            catch(Exception f)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
