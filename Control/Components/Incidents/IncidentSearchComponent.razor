@@ -36,9 +36,14 @@
             <div class="col">
                 <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
             </div>
-            <div class="col">
-                <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
-            </div>       
+            <AuthorizeView Roles="Administrador,Editor">
+                <Authorized >
+                    <div class="col">
+                        <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
+                    </div>       
+                </Authorized>
+            </AuthorizeView>
+
     </div>
     <p class="text-danger">@Message</p>
 </div>

@@ -48,9 +48,14 @@
         <div class="col">
             <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanSpaces" />
         </div>
-        <div class="col">
-            <input type="button" value="Generar" class="btn btn-outline-dark form-control" @onclick="Download"/>
-        </div>
+        <AuthorizeView Roles="Administrador,Editor">
+            <Authorized >
+                    <div class="col">
+                    <input type="button" value="Generar" class="btn btn-outline-dark form-control" @onclick="Download"/>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
     <div>

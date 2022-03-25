@@ -45,9 +45,14 @@
         <div class="col">
             <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
         </div>
-        <div class="col">
-            <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
-        </div>
+        <AuthorizeView Roles="Administrador,Editor">
+            <Authorized >
+                <div class="col">
+                    <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+        
         <div class="col-1" >
             <button  @onclick="changeHidden" class=" border-info">
                 <span class="oi oi-info" aria-hidden="true"  ></span> 
@@ -58,6 +63,7 @@
 </div>
 
 <hr />
+
 
 <div stylle="font-size:5px;"  hidden="@_bandHidden" class="flex-column">
     <p>Los equipos poseen las siguientes clasificaciones:</p>
@@ -80,10 +86,10 @@
 </div>
 
 <div>
-    <table class="table table-hover table-striped table-responsive-sm ">
+    <table class="table table-borderless table-hover table-striped table-responsive-sm ">
         <thead>
             <tr>
-                <th @onclick="handleIdOrder" > Numero de Serie</th>
+                <th @onclick="handleIdOrder" > Numero de Serie <span class="oi oi-arrow-thick-top"></span></th>
                 <th @onclick="handleAliasOrder"  > Alias</th>
                 <th @onclick="handleDateOrder" > Fecha de Instalación</th>
                 <th @onclick="handleSaleOrder"  > Vendedor</th>
@@ -140,6 +146,9 @@
         </tbody>
     </table>
 </div>
+
+
+
 
 
 

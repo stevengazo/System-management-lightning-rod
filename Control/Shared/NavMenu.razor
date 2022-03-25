@@ -34,19 +34,19 @@
             }
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="maintenance/list">
-                <span class="oi oi-check" aria-hidden="true"></span> Mantenimientos
+            <NavLink class="nav-link" href="maintenance/list" @onclick="setFalse">
+                <span class="oi oi-check" aria-hidden="true"  ></span> Mantenimientos
             </NavLink>
         </li>
         
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="warranty/list">
+            <NavLink class="nav-link" href="warranty/list" @onclick="setFalse">
                 <span class="oi oi-document" aria-hidden="true"></span> Garantias
             </NavLink>
         </li>        
 
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="client/list">
+            <NavLink class="nav-link" href="client/list" @onclick="setFalse">
                 <span class="oi oi-people" aria-hidden="true"></span> Clientes
             </NavLink>
         </li>
@@ -81,12 +81,12 @@
             }
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="replacement/list">
+            <NavLink class="nav-link" href="replacement/list" @onclick="setFalse">
                 <span class="oi oi-delete" aria-hidden="true"></span> Reemplazos
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="incident/list">
+            <NavLink class="nav-link" href="incident/list" @onclick="setFalse">
                 <span class="oi oi-warning" aria-hidden="true"></span> Incidentes
             </NavLink>
         </li>
@@ -94,7 +94,7 @@
         <AuthorizeView Roles="Editor">
             <Authorized>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="stadistics/index">
+                    <NavLink class="nav-link" href="stadistics/index" @onclick="setFalse">
                         <span class="oi oi-graph" aria-hidden="true"></span> Estadisticas
                     </NavLink>
                 </li>
@@ -105,7 +105,7 @@
         <AuthorizeView Roles="Administrador">
             <Authorized>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="manage/Index">
+                    <NavLink class="nav-link" href="manage/Index" @onclick="setFalse">
                         <span class="oi oi-box" aria-hidden="true"></span> Administración
                     </NavLink>
                 </li>
@@ -139,10 +139,13 @@
     private void setfalse(){
         expandSubDevice = !expandSubDevice;
     }
-    
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
-   
+
+  
+
+
 }

@@ -13,6 +13,7 @@ namespace Business
     public static class B_Client
     {
         #region CRUD
+
         /// <summary>
         /// Create a new Client in the table Clients
         /// </summary>
@@ -25,6 +26,7 @@ namespace Business
                 DB.SaveChanges();
             }
         }
+
         /// <summary>
         /// Return the list of Clients in the database
         /// </summary>
@@ -67,7 +69,6 @@ namespace Business
         }
         #endregion
         #region ConsultsAndSearch
-
 
         /// <summary>
         /// Check the ids in the datase and return the last insert of a specific id.

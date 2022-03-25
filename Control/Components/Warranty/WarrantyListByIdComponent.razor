@@ -1,10 +1,17 @@
 ﻿@using Entities;
 @using Business;
+@using System.Linq;
 
 
 <div class="d-flex flex-column">
-    @if(Warranties.Count != 0)
-    {                
+    @if(Warranties.Count != 0 && lastWarranty != null)
+    {
+        @if(lastWarranty == null)
+        {
+            <label class="text-danger font-weight-bold">
+                No hay garantias validas emitidas
+            </label>
+        }
         @if(lastWarranty.DateReceived.AddYears(1) < DateTime.Today)
         {
             <label>Ultima garantia emitida el @lastWarranty.DateReceived</label>
@@ -49,6 +56,7 @@
 @code {
     [Parameter]
     public string id { get; set; }
+    bool flagWarranty = false;
 
     List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
 
@@ -56,9 +64,15 @@
     protected override async Task OnInitializedAsync()
     {
         Warranties = B_Warranty.ListOfWarrantiesById(id);
+
+
         if (Warranties.Count != 0)
-        {
-            lastWarranty = (from warr in Warranties select warr).Where(W=>W.StatusId== 1).OrderByDescending(W => W.DateReceived).FirstOrDefault();
+        {            
+            lastWarranty = (from warr
+                            in Warranties
+                             orderby warr.DateReceived descending
+                             where warr.StatusId == 1
+                             select warr).FirstOrDefault();           
         }
     }
 }  

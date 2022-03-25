@@ -1,18 +1,24 @@
 ﻿@using Entities;
 @using Business;
 
+<style>
+    thead Tr :hover{
+        color:gray;
+        border: 1px solid gray;
+        border-radius: 5px;
+    }
+      
+</style>
 <div>
     <div style=""  hidden="@_bandHidden" class="flex-column">
         <p>Los equipos poseen las siguientes clasificaciones:</p>
         <div>
             <label >
                 <strike>Inactivo</strike>
-            </label>
-      
+            </label>      
             <label style="color:red;">
                 <strike>Reemplazado</strike>
-            </label>
-     
+            </label>     
             <label style="color:orange;">
                 Fecha Limite Mantenimiento cercana
             </label>             
@@ -26,23 +32,30 @@
         var buttonNumber = i;
         <input type="button" class="btn btn-light" value="@buttonNumber" @onclick="@(e=> ChancePage(e,buttonNumber))" />
     }
-
 </div>
+<button  @onclick="changeHidden" class=" border-info">
+                    <span class="oi oi-info" aria-hidden="true"  ></span> 
+</button>                                       
 
 <div>
-    <table class="table table-hover table-striped table-responsive-sm ">
-        <thead>
+    <table class="table  table-borderless  table-striped table-responsive-sm ">
+        <thead class="justify-content-center align-content-center">
             <tr>
-                <th> Numero de Serie</th>
-                <th> Alias</th>
-                <th> Fecha de Instalación</th>
-                <th> Vendedor</th>
-                <th> Cliente</th>
-                <th>     
-                    <button  @onclick="changeHidden" class=" border-info">
-                    <span class="oi oi-info" aria-hidden="true"  ></span> 
-                </button>            
-                </th>                
+                <th @onclick="()=>handleOrderList(1)">
+                    Numero de Serie
+                </th>
+                <th @onclick="()=>handleOrderList(2)"> 
+                    Alias
+                </th>
+                <th @onclick="()=>handleOrderList(3)"> 
+                    Fecha de Instalación
+                </th>
+                <th @onclick="()=>handleOrderList(4)"> 
+                    Vendedor
+                </th>
+                <th @onclick="()=>handleOrderList(5)"> 
+                    Cliente
+                </th>                                  
             </tr>
         </thead>
         <tbody>
@@ -60,6 +73,7 @@
                     else if(obj.IsActive == false && obj.IsReplaced != true )
                     {
                     
+                        <td><strike> @obj.DeviceId</strike></td>
                         <td><strike> @obj.Alias</strike></td>
                         <td><strike> @obj.InstallationDate.Date.ToShortDateString()</strike></td>
                         <td><strike> @obj.SaleMan.Name</strike></td>
@@ -109,6 +123,7 @@
 
 
     /// Internal Variables 
+    bool flagOrder = false;
     bool _bandHidden = true;
     int NumberOfPages = 1;
     int Quantity = 25;
@@ -119,11 +134,74 @@
 
     #region Methods
 
-     /// <summary>
-    /// Check if the date limit for the maintanance is under 15 days
-    /// </summary>
-    /// <param name="recommendateDate"></param>
-    /// <returns></returns>
+    void handleOrderList(int option = 0)
+    {
+        switch (option)
+        {
+            case 0:            
+                break;
+            case 1:                
+                if (flagOrder)
+                {
+                    Devices = (from dev in Devices orderby dev.DeviceId ascending select dev).ToList();
+                }
+                else
+                {
+                    Devices = (from dev in Devices orderby dev.DeviceId descending select dev).ToList();
+                }
+                flagOrder = !flagOrder;
+                break;
+            case 2:
+                if (flagOrder)
+                {
+                    Devices = (from dev in Devices orderby dev.Alias ascending select dev).ToList();
+                }
+                else
+                {
+                    Devices = (from dev in Devices orderby dev.Alias descending select dev).ToList();
+                }
+                flagOrder = !flagOrder;
+                break;
+            case 3:
+                if (flagOrder)
+                {
+                    Devices = (from dev in Devices orderby dev.InstallationDate ascending select dev).ToList();
+                }
+                else
+                {
+                    Devices = (from dev in Devices orderby dev.InstallationDate descending select dev).ToList();
+                }
+                flagOrder = !flagOrder;
+                break;
+            case 4:
+                if (flagOrder)
+                {
+                    Devices = (from dev in Devices orderby dev.SaleMan.Name ascending select dev).ToList();
+                }
+                else
+                {
+                    Devices = (from dev in Devices orderby dev.SaleMan.Name descending select dev).ToList();
+                }
+                flagOrder = !flagOrder;
+                break;
+            case 5:
+                if (flagOrder)
+                {
+                    Devices = (from dev in Devices orderby dev.Client.Name ascending select dev).ToList();
+                }
+                else
+                {
+                    Devices = (from dev in Devices orderby dev.Client.Name descending select dev).ToList();
+                }
+                flagOrder = !flagOrder;
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
     bool checkDate(DateTime recommendateDate)
     {
 

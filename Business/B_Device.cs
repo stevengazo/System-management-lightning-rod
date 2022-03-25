@@ -109,8 +109,63 @@ namespace Business
 
         #region Search and Consults
 
+        /// <summary>
+        /// Check the limit dates of any device in the database in a especific month
+        /// </summary>
+        /// <param name="idMonth">number of month to search</param>
+        /// <returns>List of devices</returns>
+        public static List<DeviceEntity> GetDevWithOutMainByMonth(int idMonth= 0)
+        {      
+            try
+            {
+                using(  var  db = new RayosNoDataContext())
+                {
+                    if( idMonth!= 0)
+                    {
+                        return (
+                                        from device
+                                        in db.Devices
+                                        where (device.RecomendedDateOfMaintenance.Year == DateTime.Today.Year) && (device.RecomendedDateOfMaintenance.Month == idMonth)
+                                        orderby device.RecomendedDateOfMaintenance ascending
+                                        select device
+                                    ).Include(D => D.Client)
+                                     .Include(D => D.SaleMan).ToList();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    
+                }
+            }
+            catch( Exception rf)
+            {
+                Console.WriteLine($"Error {rf.Message}");
+                return null;
+            }
+        }
 
-
+        public static List<DeviceEntity> GetDevicesBySaleman(string id)
+        {
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+                    var ResultDevices = (from devi
+                                         in db.Devices
+                                         where devi.SaleManId == id
+                                         select devi
+                                         ).Include(D => D.Client).Include(D => D.Country).Include(D => D.SaleMan).Include(D => D.TypeDevice)
+                                         .ToList();
+                    return ResultDevices;
+                }
+            }
+            catch (Exception b)
+            {
+                Console.WriteLine($"Error: {b.Message}");
+                return null;
+            }
+        }
         public static Dictionary<int,int> GetDevicesByYear()
         {
             Dictionary<int, int> Devices = new Dictionary<int, int>();

@@ -1,8 +1,13 @@
-﻿@using Entities;
+﻿@using System.IO;
+@using System.Globalization;
+@using Entities;
 @using Business;
+@using CsvHelper;
+@using CsvHelper.Configuration;
 
 
 
+@inject IJSRuntime Js;
 @inject NavigationManager Nav;
 
 <EditForm Model="oSaleMan">
@@ -18,12 +23,25 @@
     </table>
 </EditForm>
 
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized >
+        <div class="d-sm-flex">
+            <input class="btn-outline-dark form-control" type="button" value="Exportar Equipos" @onclick="Download" />
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+
+
 <p class="text-danger">@message</p>
 
 
 @code{
     [Parameter]
     public string id { get; set; }
+
+
 
     string message;
     SaleManEntity oSaleMan = new SaleManEntity();
@@ -37,6 +55,34 @@
         catch(Exception f)
         {
             message = $"Error {f.Message}";
+        }
+    }
+
+
+
+
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            List<DeviceEntity> Devices = new List<DeviceEntity>();
+            Devices = B_Device.GetDevicesBySaleman(oSaleMan.SaleManId);
+
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Devices.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs($"Devices-{oSaleMan.Name}.csv", arr);
+            }
         }
     }
 }
