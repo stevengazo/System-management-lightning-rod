@@ -67,7 +67,7 @@
         </div>
         <div class="form-group">
             <label class="h5"><strong>Cliente</strong></label>
-            <input type="text" list="list-clients" @bind-value="@oDevice.ClientId" class="form-control" placeholder="Seleccione un cliente">/>
+            <input type="text" list="list-clients" @bind-value="@oDevice.ClientId" class="form-control" placeholder="Seleccione un cliente">
             <datalist id="list-clients">                
                 @foreach (var obj in Clients)
                 {
@@ -78,7 +78,7 @@
         </div>       
         <div class="form-group">
             <label class="h5"><strong>Vendedor</strong></label>
-            <input type="text" list="list-salemans" @bind-value="@oDevice.SaleManId" class="form-control" placeholder="Seleccione un vendedor">/>
+            <input type="text" list="list-salemans" @bind-value="@oDevice.SaleManId" class="form-control" placeholder="Seleccione un vendedor">
             <datalist id="list-salemans">
                 @foreach (var obj in SaleMans)
                 {
@@ -88,10 +88,22 @@
             <p><i>El vendedor debe estar previamente registrado</i></p>
         </div>
         <div class="form-group">
+            <label class="h5"><strong>Instalador</strong></label>
+            <input type="text" list="list-installer" @bind-value="@oDevice.InstallerId" class="form-control" placeholder="Seleccione un instalador">
+            <datalist id="list-installer">
+                @foreach (var obj in installers)
+                {
+                    <option value="@obj.InstallerId">@obj.Name</option>
+                }
+            </datalist>
+            <p><i>El instalador debe estar previamente registrado</i></p>
+        </div>
+        <div class="form-group">
             <label class="h5"><strong>Notas del equipo</strong></label>
             <InputTextArea  @bind-Value="oDevice.Note" class="form-control"></InputTextArea>
             <p><i>Notas Generales del dispositivo</i></p>
         </div>
+
     </EditForm>
     <input type="button" value="Registrar Equipo" @onclick="SaveDevice"  class=" btn-group btn-light"/>
     <div class="text-center" >
@@ -107,6 +119,7 @@
     List<CountryEntity> Countries = new List<CountryEntity>();
     List<TypeDeviceEntity> TDevices = new List<TypeDeviceEntity>();
     List<ModelDeviceEntity> Models = new List<ModelDeviceEntity>();
+    List<InstallerEntity> installers = new List<InstallerEntity>();
     string[] Meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
     string Message;
     protected override async Task OnInitializedAsync()
@@ -116,6 +129,7 @@
         Countries = B_Country.ListOfCountries();
         TDevices = B_TypeDevice.ListOfTDevices();
         Models = B_ModelDevice.ListOfModels();
+        installers = B_Installer.GetInstallers();
 
     }
 

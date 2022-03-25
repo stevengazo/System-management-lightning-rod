@@ -5,10 +5,20 @@
 @using CsvHelper;
 @using CsvHelper.Configuration;
 
+@using Microsoft.AspNetCore.Identity;
 
 
 @inject IJSRuntime Js;
 @inject NavigationManager Nav;
+@inject AuthenticationStateProvider auth;
+
+
+
+@this.user.Identity.Name
+
+
+
+
 
 <EditForm Model="oSaleMan">
     <table class="table">
@@ -22,6 +32,8 @@
         </tbody>
     </table>
 </EditForm>
+
+
 
 
 <AuthorizeView Roles="Administrador,Editor">
@@ -45,11 +57,13 @@
 
     string message;
     SaleManEntity oSaleMan = new SaleManEntity();
-
+    System.Security.Claims.ClaimsPrincipal  user;
     protected override async Task OnInitializedAsync()
-    {
+    {        
         try
         {
+            var tnmp = await auth.GetAuthenticationStateAsync();
+             this.user = tnmp.User;
             oSaleMan = B_SaleMan.SaleManById(id);       
         }
         catch(Exception f)
