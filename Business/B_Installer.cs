@@ -136,6 +136,59 @@ namespace Business
         }
 
         /// <summary>
+        /// Check if exist dependencies of a specific Entity
+        /// </summary>
+        /// <param name="id">Id of the installer to search</param>
+        /// <returns>True if exists dependencies</returns>
+        public static async Task<bool> checkDependencies(string id)
+        {            
+            try
+            {
+                using( var DB = new RayosNoDataContext())
+                {
+                    var results = (from dev in DB.Devices
+                                   where dev.InstallerId == id
+                                   select dev
+                        ).ToList();
+                    if(results.Count!= 0)
+                    {
+                        return  false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+
+                }
+            }
+            catch (Exception f)
+            {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Delete an exist object in the database
+        /// </summary>
+        /// <param name="id">Id of the installer</param>      
+        public static async Task Delete(string id)
+        {
+            try
+            {
+                var installer = GetInstallerById(id);
+                using ( var db = new RayosNoDataContext())
+                {
+                    db.Installers.Remove(installer);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {                
+            }
+        }
+
+        /// <summary>
         /// Get all the installers registered in the DB
         /// </summary>
         /// <returns></returns>

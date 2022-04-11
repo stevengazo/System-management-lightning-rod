@@ -1,0 +1,67 @@
+﻿@using Business;
+@using Entities;
+
+@inject NavigationManager nav;
+
+@if (!flagIsEraseble)
+{
+        <div>
+        <h1>No es posible borrar este instalador</h1>
+        <p>Existen dependencias de equipos a este instalador </p>
+    </div>
+    <div>
+        <button class="btn btn-outline-secondary"> 
+            <a href="installer/list">
+                Regresar 
+            </a>
+        </button>
+    </div>    
+}
+else
+{
+    <div>
+        <h1>¿Deses borrar este instalador?</h1>
+        <p>Este instalador será borrado de la base de datos ¿Deseas proceder? </p>
+    </div>
+    <div>
+        <button class="btn btn-outline-danger" @onclick="Delete">
+            Borrar
+        </button>
+        <button class="btn btn-outline-secondary"> 
+            <a href="installer/list">
+                Regresar 
+            </a>
+        </button>
+    </div>
+}
+
+
+
+
+
+
+
+@code{
+    [Parameter]
+    public string idInstaller {get;set;}
+
+    private string ErrorMessage = "";
+    private bool flagIsEraseble = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if ( !idInstaller.Equals(null))
+        {
+            flagIsEraseble = await B_Installer.checkDependencies(idInstaller);    
+        }
+
+        await base.OnInitializedAsync();   
+    }
+
+    protected async Task Delete()
+    {
+        await B_Installer.Delete(idInstaller);
+        nav.NavigateTo("installer/list");
+    }
+
+}
