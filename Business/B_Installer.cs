@@ -16,7 +16,7 @@ namespace Business
         /// </summary>
         /// <param name="objInstaller">Object to update</param>
         /// <returns>True if update the installer, false if present erros</returns>
-        public static bool UpdateInstaller(InstallerEntity objInstaller)
+        public static async Task UpdateInstaller(InstallerEntity objInstaller)
         {
             try
             {
@@ -24,13 +24,11 @@ namespace Business
                 {
                     db.Installers.Update(objInstaller);
                     db.SaveChanges();
-                    return true;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error {e.Message}");
-                return false;
             }
         }
 

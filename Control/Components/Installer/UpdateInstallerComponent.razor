@@ -1,5 +1,48 @@
-﻿<h3>UpdateInstallerComponent</h3>
+﻿@using Business;
+@using Entities;
+@inject NavigationManager nav;
+
+
+
+<EditForm class="form" Model="oInstaller">
+        <div class="form-group">
+            <label class="col-form-label-lg">
+                Nombre
+            </label>
+            <InputText class="form-control" @bind-Value="@oInstaller.Name"></InputText>
+        </div>
+        <div class="form-group">
+            <label class="col-form-label-lg">
+                Fecha de inscripción
+            </label>
+            <InputDate @bind-Value="@oInstaller.initDate" class="form-control" ></InputDate>
+        </div>
+</EditForm>
+<p><i>Para modificar el país, contacta con el administrador</i></p>
+
+<button @onclick="Update">Actualizar </button>
+
 
 @code {
+    [Parameter]
+    public string idInstaller { get; set; }
+    InstallerEntity oInstaller = new InstallerEntity();
+    Dictionary<string, string> dictCountries = new Dictionary<string, string>();
+    string idCode { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        oInstaller =  B_Installer.GetInstallerById(idInstaller);
+        idCode = "";
+        await base.OnInitializedAsync();
+    }
+
+
+    private async Task Update()
+    {
+        await B_Installer.UpdateInstaller(oInstaller);
+        nav.NavigateTo("installer/list");        
+    }
+
 
 }
