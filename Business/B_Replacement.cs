@@ -135,8 +135,12 @@ namespace Business
             List<ReplacementDeviceEntity> Replacements = new List<ReplacementDeviceEntity>();
             using( var DB = new RayosNoDataContext())
             {
-                Replacements = DB.Replacements.FromSqlInterpolated($@"   SELECT * FROM Replacements
-                                                                    WHERE   Replacements.NewSerieDevice = {IdReplacement} or Replacements.DeviceId ={IdReplacement} ").ToList();
+                Replacements = (
+                                from repl
+                                in DB.Replacements
+                                where repl.ReplacementDeviceId.Contains(IdReplacement) || repl.DeviceId.Contains(IdReplacement)
+                                select repl
+                    ).ToList();
             }
 
             return Replacements;
