@@ -1,0 +1,94 @@
+﻿@using Entities;
+@using Business;
+
+<select class="form-control" @bind="valueMonth" > 
+    <option value="1">enero</option>
+    <option value="2">Febrero</option>
+    <option value="3">Marzo</option>
+    <option value="4">Abril</option>
+    <option value="5">Mayo</option>
+    <option value="6">Junio</option>
+    <option value="7">Julio</option>
+    <option value="8">Agosto</option>
+    <option value="9">Septiembre</option>
+    <option value="10">Octubre</option>
+    <option value="11">Noviembre</option>
+    <option value="12">Diciembre</option>
+</select>
+
+<table class="table table-sm table-hover table-borderless">
+    <thead>
+        <tr>
+            <th>
+                Serie
+            </th>
+            <th>
+                Tiempo Restante
+            </th>            <th>
+                Limite
+            </th>
+            <th>
+                Cliente
+            </th>
+            <th>
+                Vendedor
+            </th>
+        </tr>
+    </thead>
+    <tbody >
+        @foreach (var item in devices)       
+       {
+           <tr class="h6">
+               <td>
+                   @item.DeviceId
+               </td>
+                <td>
+                    @{
+                        TimeSpan time = item.RecomendedDateOfMaintenance.Date - DateTime.Today.Date;
+                    }
+                    @if (time.Days < 1)
+                    {
+                        <h6 class="text-danger">Horas @time.Hours.ToString();
+                        </h6>
+                        
+
+                    }else{
+                        <h6 class="text-warning">Dias @time.Days.ToString();</h6>                        
+                    }  
+                   
+                </td>
+                <td>
+                    @item.RecomendedDateOfMaintenance.ToShortDateString();
+                </td>
+               <td>
+                   @item.Client.Name
+               </td>
+               <td>
+                   @item.SaleMan.Name
+               </td>
+           </tr>
+       }
+    </tbody>
+</table>
+
+
+@code{
+    private List<DeviceEntity> devices = new List<DeviceEntity>();
+
+    int valueMonth =0;
+
+    protected override async Task  OnInitializedAsync()
+    {
+        valueMonth = DateTime.Today.Month;
+        await base.OnInitializedAsync();
+        devices = await CheckDevices();
+
+    }
+    private async Task<List<DeviceEntity>> CheckDevices()
+    {
+        return  B_Device.GetDevWithOutMainByMonth(valueMonth);
+    }
+
+
+}
+

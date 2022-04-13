@@ -1,5 +1,13 @@
-﻿@using Entities;
+﻿@using CsvHelper.Configuration
+@using Entities;
 @using Business;
+@using System.IO;
+@using CsvHelper;
+@using System.Globalization;
+
+@inject IJSRuntime Js;
+
+
 
 
 <div class="form-group row">
@@ -13,12 +21,12 @@
             }
         </select>
     </div>
-    <div class="col"> 
-        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" />
+    <div class="col">   
+        <label class="col-form-label"> Exportar a .csv:</label>
+        <input type="button" value="Generar" class="btn btn-outline-dark form-control" @onclick="Download"
+        />    
     </div>
-    <div class="col">
-        <input type="button" value="Generar" class="btn btn-outline-dark form-control" />
-    </div>
+
 </div>
 
 <div class="align-content-center">
@@ -33,7 +41,7 @@
             <tr>
                 <td> Número de Serie</td>
                 <td> Alias</td>
-                <td> Día recomendado</td>
+                <td> Fecha Limite</td>
                 <td></td>
                 <td></td>
             </tr>
@@ -44,7 +52,13 @@
                 <tr>
                     <td>@i.DeviceId  </td>
                     <td>@i.Alias</td>
-                    <td>@i.RecomendedDateOfMaintenance.ToShortDateString()</td>
+                    @if(@i.RecomendedDateOfMaintenance < DateTime.Today)
+                    {
+                        <td class="text-danger font-weight-bold">@i.RecomendedDateOfMaintenance.ToShortDateString()</td>    
+                    }   
+                    else{
+                        <td>@i.RecomendedDateOfMaintenance.ToShortDateString()</td>    
+                    }
                     <td> <a href="device/view/@i.DeviceId"> Ver </a></td>
                     <td> <a href="device/update/@i.DeviceId"> Modificar</a></td>
                 </tr>
@@ -72,6 +86,29 @@
         int.TryParse(e.Value.ToString(), out int Year);
         var aux = B_Maintenance.GetDevicesWithoutMaintenancesByYear(Year.ToString());
         Devices = aux;
+    }
+    
+
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+                
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Devices.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("DevicesConsult.csv", arr);
+            }
+        }
     }
 
 

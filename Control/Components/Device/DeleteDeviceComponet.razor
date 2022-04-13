@@ -20,6 +20,7 @@
                 <td>@oDevice.SaleMan.Name</td>
             </tr>
         </tbody>
+        hjñlkjlkjklj
     </table>
     <p>Verifica las dependencias y la informacion que vas a eliminar... </p>
     
@@ -43,16 +44,23 @@
 
     private void DeleteDevice()
     {
-        bool BandDependency = B_Device.HaveDependence(oDevice);
-        if (BandDependency)
+        try
         {
-            B_Device.DeleteDevice(oDevice);
-            Nav.NavigateTo("device/list");
-        }
-        else
+            bool BandDependency = B_Device.HaveDependence(oDevice);
+            if (BandDependency)
+            {
+                B_Device.DeleteDevice(oDevice);
+                Nav.NavigateTo("device/list");
+            }
+            else
+            {
+                ErrorMessage = "El equipo tiene vinculos en otras tablas... Elimina los vinculos e intentalo de nuevo";
+            }
+        }catch(Exception f)
         {
-            ErrorMessage = "El equipo tiene vinculos en otras tablas... Elimina los vinculos e intentalo de nuevo";
+            ErrorMessage = $"Error: {f.Message}. Intentelo de nuevo";
         }
+        
 
     }
 }

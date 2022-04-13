@@ -1,8 +1,11 @@
-﻿
-@using Entities;
+﻿@using Entities;
 @using Business;
 
-
+@using CsvHelper;
+@using CsvHelper.Configuration
+@using System.Globalization;
+@using System.IO;
+@inject IJSRuntime Js;
 
 <div style=" margin-top: 22px; ">
     <div class="form-group row">
@@ -28,31 +31,40 @@
             </select>
         </div>
         <div class="col">
-            <select class="rounded form-control" @bind="NameToSearch">
+            <select class="rounded form-control" @bind="TechnicianIdToSearch">
                 <option value="">Técnico</option>
+                @foreach (var item in technicians)
+                {
+                       <option value="@item.TechnicianId.ToString()">@item.TechnicianName</option>
+                }
 
             </select>
         </div>
     </div>    
     <div class="row form-group">
-        <div class="col-3">
+        <div class="col">
             <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="Search" />
         </div>
-        <div class="col-3">
+        <div class="col">
             <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanSpaces" />
         </div>
-        <div class="col-3">
-            <input type="button" value="Generar" class="btn btn-outline-dark form-control" />
-        </div>
+        <AuthorizeView Roles="Administrador,Editor">
+            <Authorized >
+                    <div class="col">
+                    <input type="button" value="Generar" class="btn btn-outline-dark form-control" @onclick="Download"/>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
     <div>
         <table class="table table-hover table-striped table-responsive-sm ">
             <thead>
                 <tr>
-                    <th> Numero Serie</th>
-                    <th> Fecha de Mantenimiento </th>
-                    <th> Técnico</th>
+                    <th @onclick="() => handleClick(1)"> Numero Serie</th>
+                    <th @onclick="() => handleClick(2)"> Fecha de Mantenimiento </th>
+                    <th @onclick="() => handleClick(2)"> Técnico</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -64,6 +76,7 @@
                     <tr>
                         <td> @obj.DeviceId </td>
                         <td> @obj.MaintenanceDate.Date</td>
+                        <td> @obj.Technician.TechnicianName</td>
                         <td> <a class="btn btn-primary"  href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
                         <td> <a class="btn btn-secondary" href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
                         <td> <a class="btn btn-danger" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
@@ -101,14 +114,23 @@
     private int YearToSearch { get; set; }
     private int MonthToSearch { get; set; }
     private string DeviceToSearch { get; set; }
-    private string NameToSearch { get; set; }
+    private string TechnicianIdToSearch { get; set; }    
+    List<TechnicianEntity> technicians = new List<TechnicianEntity>();
+    private bool flagOrder = false;
     #endregion
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        technicians = B_Technician.GetListOftechnicians();
+    }
 
     private void Search()
     {
         try
         {
-            Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, NameToSearch, YearToSearch, MonthToSearch);
+            Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, TechnicianIdToSearch, YearToSearch, MonthToSearch);
             if (Maintenances.Count > 0)
             {
                 ErrorMessage = "";
@@ -126,12 +148,106 @@
         }
     }
 
+    private void handleClick(int option = 0)
+    {
+        switch (option)
+        {
+            case 1:
+                if (flagOrder)
+                {
+                    Maintenances = (
+                        from main
+                        in Maintenances
+                        orderby main.DeviceId ascending
+                        select main
+                    ).ToList();
+                }
+                else
+                {
+                    Maintenances = (
+                        from main
+                        in Maintenances
+                        orderby main.DeviceId descending
+                        select main
+                    ).ToList();                    
+                }
+                flagOrder=!flagOrder; 
+                break;
+            case 2:
+                if (flagOrder)
+                {
+                    Maintenances = (
+                        from main
+                        in Maintenances
+                        orderby main.MaintenanceDate ascending
+                        select main
+                    ).ToList();
+                }
+                else
+                {
+                    Maintenances = (
+                        from main
+                        in Maintenances
+                        orderby main.MaintenanceDate descending
+                        select main
+                    ).ToList();                    
+                }
+                flagOrder=!flagOrder; 
+                break;
+            case 3:
+                            if (flagOrder)
+                {
+                    Maintenances = (
+                        from main
+                        in Maintenances
+                        orderby main.Technician.TechnicianName ascending
+                        select main
+                    ).ToList();
+                }
+                else
+                {
+                    Maintenances = (
+                        from main
+                        in Maintenances
+                        orderby main.Technician.TechnicianName descending
+                        select main
+                    ).ToList();                    
+                }
+                flagOrder=!flagOrder; 
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+                
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Maintenances.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("MaintenancesSearchConsult.csv", arr);
+            }
+        }
+    }
+
     private void CleanSpaces()
     {
         YearToSearch = 0;
         MonthToSearch = 0;
         DeviceToSearch = null;
-        NameToSearch = null;
+        TechnicianIdToSearch = null;
     }
 }
 

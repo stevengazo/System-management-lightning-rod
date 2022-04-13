@@ -1,0 +1,123 @@
+﻿@using Entities;
+@using Business;
+
+
+
+<table class="table table-striped">
+    <thead class="">
+        <tr>
+            <th  @onclick="()=>Order(1)">
+                N° Serie
+            </th>
+            <td  @onclick="()=>Order(2)">
+                Cliente
+            </td>
+            <th  @onclick="()=>Order(3)">
+                Fecha Instalación
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in devices)
+       {
+           <tr>
+                <td>
+                    @item.DeviceId
+                </td>
+                <td @onclick="()=>Order(2)"> 
+                    @item.Client.Name
+                </td>
+                <td @onclick="()=>Order(3)">
+                    @item.InstallationDate.ToLongDateString()
+                </td>
+                <td> <a class="btn btn-primary" href="device/view/@item.DeviceId"> Ver </a></td>
+                <td> <a class="btn btn-secondary" href="device/update/@item.DeviceId"> Modificar</a></td>
+            </tr>
+       }
+    </tbody>
+</table>
+
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+    private List<DeviceEntity> devices = new List<DeviceEntity>();
+
+    private bool flagOrder = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if(id!= null)
+        {
+            devices = B_Device.GetDevicesByInstaller(id);
+        }
+    }
+
+    private async Task Order(int col = 0)
+    {
+        switch (col)
+        {
+            case 1 :
+                if (flagOrder)
+                {
+                    devices = (
+                            from dev in devices
+                            orderby dev.DeviceId ascending
+                            select dev
+                        ).ToList();
+                }
+                else
+                {
+                    devices = (
+                            from dev in devices
+                            orderby dev.DeviceId descending
+                            select dev
+                        ).ToList();
+                }
+                break;
+            case 2 :
+                if (flagOrder)
+                {
+                    devices = (
+                            from dev in devices
+                            orderby dev.Client.Name ascending
+                            select dev
+                        ).ToList();
+                }
+                else
+                {
+                    devices = (
+                            from dev in devices
+                            orderby dev.Client.Name descending
+                            select dev
+                        ).ToList();
+                }
+                break;
+            case 3 :
+                if (flagOrder)
+                {
+                    devices = (
+                            from dev in devices
+                            orderby dev.InstallationDate ascending
+                            select dev
+                        ).ToList();
+                }
+                else
+                {
+                    devices = (
+                            from dev in devices
+                            orderby dev.InstallationDate descending
+                            select dev
+                        ).ToList();
+                }
+                break;
+            default:
+                break;
+        }
+        flagOrder = !flagOrder;
+    }
+}

@@ -16,15 +16,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Users)
+        @foreach (IdentityUser item in Users)
         {
-        <tr>
+            var id = item.Id;
+            <tr>
             <td>@item.UserName</td>
             <td>@item.Email</td>
             <td><a class="btn btn-primary"  href="manage/ViewUser/@item.Id" >Ver</a></td>
-            <td><a class="btn btn-secondary" href="/">Editar</a></td>            
+            <td><a class="btn btn-secondary" href="manage/EditUser/@item.Id">Editar</a></td>            
             <td><a class="btn btn-warning" href="Identity/Admin/ChangePassByAdmin/@item.Id">Cambiar Contraseña </a></td>
-            <td><input type="button" class="btn btn-dark" value="Desactivar"></td>            
+            <td><a class="btn btn-danger" href="manage/DeleteUser/@item.Id">Eliminar </a></td>                       
         </tr>
         }
     </tbody>
@@ -36,12 +37,24 @@
 @code{
     List<IdentityRole> Roles = new List<IdentityRole>();
     List<IdentityUser> Users = new List<IdentityUser>();
-    string message = "";   
+    string message = "";
+    string statusUser = "";
     protected override async Task OnInitializedAsync()
     {
         base.OnInitializedAsync();
         Users = B_Manage.ListOfUsers();
         Roles = B_Manage.GetListOfRoles();
         var x = Users;
+    }
+    private void ChargeList()
+    {
+        Users = B_Manage.ListOfUsers().OrderBy(D=>D.UserName).ToList();
+    }
+
+
+    private void ChangeStatus(string id)
+    {
+     //   var sample = B_Manage.ChangeUserStatus(id);
+        ChargeList();
     }
 }

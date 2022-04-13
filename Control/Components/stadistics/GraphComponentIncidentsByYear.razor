@@ -1,0 +1,57 @@
+﻿@using Entities;
+@using Business;
+@using ChartJs.Blazor.BarChart;
+
+<div>
+    <Chart Config="@_barConfigIncidentsByYear"></Chart>
+    <p><i>La gráfica indica la cantidad de incidentes registrados por año</i></p>
+</div>
+
+
+
+@code{
+    private BarConfig _barConfigIncidentsByYear;
+    private Chart _chart;
+
+    Dictionary<int, int> years_Quantity = new Dictionary<int, int>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        years_Quantity = B_Incident.QuantitiesOfIncidentsByYear();
+        IncidentsByYearChart();
+    }
+
+
+    private void IncidentsByYearChart()
+    {
+        this._barConfigIncidentsByYear = new BarConfig()
+            {
+                Options = new BarOptions
+                {
+                    Responsive = true,
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Incidentes Registrados por Año"
+                    }
+                }
+            };
+        var tmpvalues = new List<int>();
+        foreach (var year in years_Quantity)
+        {
+            this._barConfigIncidentsByYear.Data.Labels.Add(year.Key.ToString());
+            tmpvalues.Add(year.Value);
+
+        }
+
+        BarDataset<int> _barDataSet = new BarDataset<int>(tmpvalues);
+        _barDataSet.Label = "Incidentes por año";
+        _barDataSet.BackgroundColor = ColorUtil.ColorHexString(22, 37, 189);
+        _barDataSet.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
+        _barDataSet.MinBarLength = 20;
+        _barConfigIncidentsByYear.Data.Datasets.Add(_barDataSet);
+
+
+    }
+}

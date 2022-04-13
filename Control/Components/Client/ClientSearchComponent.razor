@@ -5,7 +5,13 @@
 
 <div class="align-center form-group row">
     <div class="col">
-        <input class="rounded form-control" type="text" @bind="ClientIdToSearch" placeholder="Id de Referencia"/>
+        <input type="text" class="rounded form-control"  @bind="ClientIdToSearch" list="categories">           </input>
+        <datalist id="categories">
+            @foreach (var item in sample)
+            {
+                <option value="@item.Key">@item.Value</option>
+            }
+        </datalist>
     </div>
     <div class="col">
         <input class="rounded form-control" type="text" @bind="NameToSearch" placeholder="Nombre de Cliente" />
@@ -28,7 +34,7 @@
         <input type="button" value="Limpiar" class="btn btn-outline-dark form-control " @onclick="CleanValues" />
     </div>
 </div>
-<p class="text-center" style="color:red"> @ErrorMessage</p>
+<p class="text-center text-danger"> @ErrorMessage</p>
 
 
 
@@ -65,6 +71,28 @@
     string ErrorMessage = null;
     int SectorToSearch = 0;
 
+      Dictionary<string, string> sample = new Dictionary<string, string>()
+    {
+        { "Htl","Hotelera"},
+        { "Edu","Educación"},
+        { "Inds","Industrial"},
+        { "Red","Residencial"},
+        { "Com","Comercial"},
+        { "Muni","Municipalidades"},
+        { "Segu","Aseguradoras"},
+        { "Hosp","Hospitalario"},
+        { "Telco","Telecomunicaciones"},
+        { "Recr","Recreativo"},
+        { "Finan","Financiero"},
+        { "Serv","Servicios"},
+        { "Inst","Institucional"},
+        { "Aerop","Aeroportuario"},
+        { "Embar","Embarcaciones"},
+        { "Mari","Marinas"},
+        { "Const","Constructora"},
+        { "Otro","Otro"},
+    };
+
     protected override async Task OnInitializedAsync()
     {
         Sectors = B_Sectors.ListOfSectors();
@@ -91,7 +119,7 @@
         }
         catch (Exception g)
         {
-            ErrorMessage = g.Message;
+            ErrorMessage = $"Error: {g.Message}. Intentelo de nuevo o contacte al administrador.";
         }
     }
 }

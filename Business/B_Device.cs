@@ -109,7 +109,96 @@ namespace Business
 
         #region Search and Consults
 
+        /// <summary>
+        /// Check the limit dates of any device in the database in a especific month
+        /// </summary>
+        /// <param name="idMonth">number of month to search</param>
+        /// <returns>List of devices</returns>
+        public static List<DeviceEntity> GetDevWithOutMainByMonth(int idMonth= 0)
+        {      
+            try
+            {
+                using(  var  db = new RayosNoDataContext())
+                {
+                    if( idMonth!= 0)
+                    {
+                        return (
+                                        from device
+                                        in db.Devices
+                                        where (device.RecomendedDateOfMaintenance.Year == DateTime.Today.Year) && (device.RecomendedDateOfMaintenance.Month == idMonth)
+                                        orderby device.RecomendedDateOfMaintenance ascending
+                                        select device
+                                    ).Include(D => D.Client)
+                                     .Include(D => D.SaleMan).ToList();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    
+                }
+            }
+            catch( Exception rf)
+            {
+                Console.WriteLine($"Error {rf.Message}");
+                return null;
+            }
+        }
 
+        public static List<DeviceEntity> GetDevicesBySaleman(string id)
+        {
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+                    var ResultDevices = (from devi
+                                         in db.Devices
+                                         where devi.SaleManId == id
+                                         select devi
+                                         ).Include(D => D.Client)
+                                         .Include(D => D.Country)
+                                         .Include(D => D.SaleMan)
+                                         .Include(D => D.TypeDevice)
+                                         .Include(D => D.ModelDevice)
+                                         .Include(D => D.installer)
+                                         .ToList();
+                    return ResultDevices;
+                }
+            }
+            catch (Exception b)
+            {
+                Console.WriteLine($"Error: {b.Message}");
+                return null;
+            }
+        }
+        public static Dictionary<int,int> GetDevicesByYear()
+        {
+            Dictionary<int, int> Devices = new Dictionary<int, int>();
+            using (var DB = new RayosNoDataContext())
+            {
+                try
+                {
+                    var tmpYear = (from dev in DB.Devices select dev.InstallationDate.Year).Distinct().ToList();
+                    foreach (var item in tmpYear)
+                    {
+                        var QuantityOfDevices = (
+                            from dev in DB.Devices
+                            where dev.InstallationDate.Year == item
+                            select dev
+                            ).ToList().Count();
+
+                        Devices.Add(item, QuantityOfDevices);
+                    }
+                    return Devices;
+                }
+                catch(Exception b)
+                {
+                    Console.WriteLine($"Error: {b.Message}");
+                    return (new Dictionary<int, int>()); 
+                }
+                
+            }            
+        }
         
         public static List<DeviceEntity> GetListofDevicesActive()
         {
@@ -133,15 +222,36 @@ namespace Business
             using( var DB= new RayosNoDataContext())
             {
                 var aux = (from Device in DB.Devices select Device).Where(D=>D.IsActive== true).Include(D => D.Client);
-                foreach(var a in aux)
-                {
-                    Devices.Add(a.DeviceId, a.Client.Name);
-                }
-               
-                return Devices;
+                var tmp =  (
+                    from dev in aux
+                    where dev.IsActive == true
+                    orderby dev.Client.Name
+                    select new { Key = dev.DeviceId, Value = dev.Client.Name }).ToDictionary(D => D.Key, D => D.Value)
+                    ;
+
+                return tmp;
             }
         }
 
+        /// <summary>
+        /// Get a list of devices linked with a specific Installer 
+        /// </summary>
+        /// <param name="installerId">Id of the installer to check</param>
+        /// <returns>Null if present error, List of DeviceEntity</returns>
+        public static List<DeviceEntity> GetDevicesByInstaller ( string installerId)
+        {
+            try
+            {                
+                using(var db = new RayosNoDataContext())
+                {
+                    return (from dev in db.Devices select dev).Include(D=>D.Client).Include(D=>D.SaleMan).Where(D => D.InstallerId == installerId).ToList();
+                }
+            }catch(Exception f)
+            {
+                Console.WriteLine($"Error: {f.Message}");
+                return null;
+            }
+        }
 
         public static int CountDevicesBySaleMan(string Salemanid = null)
         {
@@ -193,6 +303,33 @@ namespace Business
             }
             return Devices;
         }
+
+
+
+        public static List<DeviceEntity> GetDevicesByClient(string _ClientId = null)
+        {
+            List<DeviceEntity> Devices = new List<DeviceEntity>();
+          
+            using (var DB = new RayosNoDataContext())
+            {
+                if (_ClientId != null)
+                {
+                    var aux = (from Device in DB.Devices select Device).Where(D => D.ClientId == _ClientId)
+                        .Include(C => C.Client)
+                        .Include(C => C.installer)
+                        .Include(C => C.TypeDevice)
+                        .Include(C => C.ModelDevice)
+                        .Include(S => S.SaleMan);
+                    Devices = aux.ToList();
+                }
+                else
+                {
+                    return null; 
+                }
+            }
+            return Devices;
+        }
+
 
         public static List<DeviceEntity> GetDevicesByClient(string _ClientId= null, int Quantity=10, int Page=1 )
         {

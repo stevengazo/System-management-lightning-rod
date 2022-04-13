@@ -9,6 +9,7 @@
      <div>
          <input type="button" value="Eliminar registro" class="btn-danger" @onclick="Delete"/><input type="button" value="Retornar" class="btn-info" @onclick="Back" />
      </div>
+     <p>@Message</p>
 </div>
 
 
@@ -18,6 +19,8 @@
     public string IncidentId { get; set; }
     IncidentEntity oIncident = new IncidentEntity();
 
+    string Message = "";
+
     protected override async Task OnInitializedAsync()
     {
         oIncident = B_Incident.GetIncidentById(IncidentId);
@@ -25,8 +28,16 @@
 
     private void Delete()
     {
-        B_Incident.Delete(oIncident);
-        Back();
+        try
+        {
+            B_Incident.Delete(oIncident);
+            Back();        
+        }
+        catch(Exception g)
+        {
+            Message = $"Error: {g.Message}. Intentelo de nuevo";
+        }
+
     }
     private void Back()
     {

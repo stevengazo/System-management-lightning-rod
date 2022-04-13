@@ -8,21 +8,31 @@
         <div>
             <h2 class="text-center">Información del Dispositivo</h2>
             <hr />
+            <p>Esta sección muestra la información del dispositivo aqui se enlista lo siguiente:</p>
             <a href="device/list"> Regresar a la lista de dispositivos</a>
             <hr />
-            <ViewDeviceComponent id="@DeviceId.ToString()" />
+            <ViewDeviceComponent id="@DeviceId.ToString()"/>
         </div>
+        <hr/>
         <div>
             <h3 class="text-center">Historia de Mantenimientos Registrados</h3>
             <MaintenanceListByIdComponent id="@DeviceId.ToString()" />
         </div>
+        <hr/>
         <div>
             <h3 class="text-center">Historial de Garantias Registradas</h3>
-            <WarrantyListByIdComponent id="@DeviceId.ToString()" />
+            <WarrantyListByIdComponent id="@DeviceId.ToString()"  />
         </div>
+        <hr/>
         <div>
-            <h3 class="text-center">Historial de reemplazos del dispositivo</h3>
+            <h3 class="text-center">Historial de Incidentes del dispositivo</h3>
             <IncidentListComponent _DeviceId="@DeviceId.ToString()" />
+        </div>
+        <hr/>
+        <div>
+            <h4 class="text-center"> Reemplazos del dispositivo </h4>
+            <p><i>A continuación se muestran registros de algún reemplazo del dispositivo en el sistema</i></p>
+            <ReplacementListByDevice DeviceId="@DeviceId.ToString()" />
         </div>
     </Authorized>
     <NotAuthorized>

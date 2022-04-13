@@ -4,19 +4,6 @@
 
 <EditForm Model="oWarranty">
     <div class="form-group">
-        <label> Referencia:  @oWarranty.Id</label>
-    </div>
-    <div class="form-group">
-        <label>Seleccione el Dispositivo</label>
-        <InputSelect @bind-Value="oWarranty.DeviceId" class="form-control">
-            <option value="0">Seleccione...</option>
-            @foreach (var obj in Devices)
-            {
-                <option value="@obj.Key">@obj.Value  @obj.Key</option>
-            }
-        </InputSelect>
-    </div>
-    <div class="form-group">
         <label>Fecha envío Protocolo</label>
         <InputDate @bind-Value="@oWarranty.DateSend" class="form-control"></InputDate>
     </div>
@@ -31,9 +18,25 @@
     <div class="form-group">
         <label>Estatus</label>
         <InputSelect @bind-Value="oWarranty.StatusId" class="form-control">
-            <option value="">Seleccione un estado...</option>
+            @foreach (var item in status)
+           {
+            <option value="@item.StatusId">@item.StatusName</option>   
+           }
         </InputSelect>
     </div>
+
+    <div class="form-group">
+        <label class="h5"><strong>Seleccione el Dispositivo</strong></label>
+        <input type="text" list="list-devices" @bind-value="@oWarranty.DeviceId" class="form-control" />
+        <datalist id="list-devices">
+            @foreach (var obj in Devices)
+            {
+                <option value="@obj.Key">@obj.Value  @obj.Key</option>
+            }
+        </datalist>
+        <p><i>Número de dispositivo </i></p>
+    </div>
+
 </EditForm>
 
 <input type="button" value="Actualizar Registro" class="btn-info" @onclick="UpdateWarranty"/>
@@ -44,15 +47,18 @@
     WarrantyEntity oWarranty = new WarrantyEntity();
     Dictionary<string, string> Devices = new Dictionary<string, string>();
     string[] EstatusType = { "En tramite", "Recibido", "Con Problemas" };
+    List<StatusEntity> status = new List<StatusEntity>();
 
     protected override async Task OnInitializedAsync()
     {
         oWarranty = B_Warranty.WarrantyById(WarrantyId);
+        status = B_Status.GetStatus();
         Devices = B_Device.GetDictonaryOfDevicesWithClient();
     }
 
     private void UpdateWarranty()
     {
+        oWarranty.Status = status.First(S => S.StatusId == oWarranty.StatusId);
 
         B_Warranty.Update(oWarranty);
         Nav.NavigateTo($"warranty/view/{oWarranty.Id}");

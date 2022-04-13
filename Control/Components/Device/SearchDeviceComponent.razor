@@ -1,6 +1,12 @@
-﻿@using Entities;
+﻿@using CsvHelper.Configuration
+@using Entities;
 @using Business;
+@using System.IO;
+@using CsvHelper;
+@using System.Globalization;
+@using System;
 
+@inject IJSRuntime Js;
 
 
 <div>
@@ -39,8 +45,18 @@
         <div class="col">
             <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
         </div>
-        <div class="col">
-            <input class="btn-outline-dark form-control" type="button" value="Exportar" />
+        <AuthorizeView Roles="Administrador,Editor">
+            <Authorized >
+                <div class="col">
+                    <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+        
+        <div class="col-1" >
+            <button  @onclick="changeHidden" class=" border-info">
+                <span class="oi oi-info" aria-hidden="true"  ></span> 
+            </button>            
         </div>
     </div>
     <p class="text-center" style="color:red"> @ErrorMessage</p>
@@ -48,15 +64,36 @@
 
 <hr />
 
+
+<div stylle="font-size:5px;"  hidden="@_bandHidden" class="flex-column">
+    <p>Los equipos poseen las siguientes clasificaciones:</p>
+    <div>
+            <label >
+                <strike>Inactivo</strike>
+            </label>
+      
+            <label style="color:red;">
+                <strike>Reemplazado</strike>
+            </label>
+     
+            <label style="color:orange;">
+                Fecha Limite Mantenimiento cercana
+            </label>             
+    </div>
+    
+    
+    
+</div>
+
 <div>
-    <table class="table table-hover table-striped table-responsive-sm ">
+    <table class="table table-borderless table-hover table-striped table-responsive-sm ">
         <thead>
             <tr>
-                <th> Numero de Serie</th>
-                <th> Alias</th>
-                <th> Fecha de Instalación</th>
-                <th> Vendedor</th>
-                <th> Cliente</th>
+                <th @onclick="handleIdOrder" > Numero de Serie <span class="oi oi-arrow-thick-top"></span></th>
+                <th @onclick="handleAliasOrder"  > Alias</th>
+                <th @onclick="handleDateOrder" > Fecha de Instalación</th>
+                <th @onclick="handleSaleOrder"  > Vendedor</th>
+                <th @onclick="handleClientOrder"> Cliente</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -65,20 +102,53 @@
         <tbody>
             @foreach (var obj in Devices)
             {
-            <tr class="align-middle"> 
-                <td> @obj.DeviceId</td>
-                <td> @obj.Alias</td>
-                <td> @obj.InstallationDate.Date.ToShortDateString()</td>
-                <td> @obj.SaleMan.Name</td>
-                <td> @obj.Client.Name</td>
+                <tr class="align-middle">   
+                @if(obj.IsActive == false && obj.IsReplaced == true )
+                {
+                        <td style="color:red;" ><strike> @obj.DeviceId</strike></td>
+                        <td style="color:red;"><strike> @obj.Alias</strike></td>
+                        <td style="color:red;"><strike> @obj.InstallationDate.Date.ToShortDateString()</strike></td>
+                        <td style="color:red;"><strike> @obj.SaleMan.Name</strike></td>
+                        <td style="color:red;"><strike> @obj.Client.Name</strike></td>
+
+
+                }
+                else if(obj.IsActive == false && obj.IsReplaced != true )
+                {
+                    
+                    <td><strike> @obj.DeviceId</strike></td>
+                    <td><strike> @obj.Alias</strike></td>
+                    <td><strike> @obj.InstallationDate.Date.ToShortDateString()</strike></td>
+                    <td><strike> @obj.SaleMan.Name</strike></td>
+                    <td><strike> @obj.Client.Name</strike></td>
+                }
+                else if( checkDate(@obj.RecomendedDateOfMaintenance) )
+                {
+                    <td style="color:orange;"> @obj.DeviceId</td>
+                    <td style="color:orange;"> @obj.Alias</td>
+                    <td style="color:orange;"> @obj.InstallationDate.Date.ToShortDateString()</td>
+                    <td style="color:orange;"> @obj.SaleMan.Name</td>
+                    <td style="color:orange;"> @obj.Client.Name</td>
+                }
+                else 
+                {                                  
+                    <td  > @obj.DeviceId</td>
+                    <td > @obj.Alias</td>
+                    <td > @obj.InstallationDate.Date.ToShortDateString()</td>
+                    <td > @obj.SaleMan.Name</td>
+                    <td > @obj.Client.Name</td>
+                }  
                 <td> <a class="btn btn-primary" href="device/view/@obj.DeviceId"> Ver </a></td>
                 <td> <a class="btn btn-secondary" href="device/update/@obj.DeviceId"> Modificar</a></td>
                 <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
-            </tr>
+                </tr>
             }
         </tbody>
     </table>
 </div>
+
+
+
 
 
 
@@ -101,8 +171,12 @@
 
     public string ErrorMessage { get; set; }
 
+    public bool flagOrder = false;
 
     /// Internal Variables
+    string _hidden;
+    bool _bandHidden = true;
+
     List<int> Years = B_Device.ListOfYears();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     List<CountryEntity> Countries = new List<CountryEntity>();
@@ -117,10 +191,127 @@
         YearToSearch = 0;
         AliasToSearch = null;
         DeviceIdToSearch = null;
+        _bandHidden = true;
+    }
+
+
+    private void handleClientOrder()
+    {
+      if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.Client.Name ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.Client.Name descending
+                           select devi).ToList();
+            }    
+        }          
+    }
+    private void handleSaleOrder()
+    {
+      if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.SaleMan.Name ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.SaleMan.Name descending
+                           select devi).ToList();
+            }    
+        }          
+    }
+
+    private void handleAliasOrder()
+    {
+        if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.Alias ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.Alias descending
+                           select devi).ToList();
+            }    
+        }        
+    }
+
+
+    private void handleDateOrder()
+    {
+        if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.InstallationDate ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.InstallationDate descending
+                           select devi).ToList();
+            }    
+        }               
+    }
+    private void handleIdOrder()
+    {
+        if(Devices.Count!= 0)
+        {
+            if (flagOrder)
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.DeviceId ascending
+                           select devi).ToList();
+            }
+            else
+            {
+                flagOrder = !flagOrder;
+                Devices = (from devi
+                           in Devices
+                           orderby devi.DeviceId descending
+                           select devi).ToList();
+            }    
+        }        
     }
 
     protected override async Task OnInitializedAsync()
     {
+        _bandHidden = true;
         Countries = B_Country.ListOfCountries();
         Clean();
     }
@@ -137,8 +328,32 @@
         }
     }
 
+
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Devices.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("DevicesConsult.csv", arr);
+            }
+        }
+    }
+
     private void Search()
     {
+        _bandHidden = true;
         try
         {
             bool ValidInputs = CheckInputs();
@@ -167,8 +382,35 @@
             Clean();
             ErrorMessage = f.Message;
         }
+    }
 
+    void changeHidden()
+    {
+        if(_bandHidden)
+        {
+            _hidden = "";
+        }
+        else
+        {
+            _hidden = "hidden"; 
+        }  
+        _bandHidden=!_bandHidden;
+    }
 
+    /// <summary>
+    /// Check if the date limit for the maintanance is under 15 days
+    /// </summary>
+    /// <param name="recommendateDate"></param>
+    /// <returns></returns>
+    bool checkDate(DateTime recommendateDate)
+    {
+
+        if( DateTime.Today < recommendateDate && recommendateDate < DateTime.Today.AddDays(15) )
+        {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     #endregion

@@ -1,0 +1,82 @@
+﻿@using Business;
+@using Entities;
+@inject NavigationManager nav;
+
+<div>
+    <label>
+        País 
+    </label>
+    <select class="form-control" @onchange="handleOnClick" >
+        @foreach (var item in dictCountries)
+       {
+           <option value="@item.Key">@item.Value</option>
+       }
+    </select>
+</div>
+
+<EditForm class="form" Model="oInstaller">
+        <div class="form-group">
+            <label class="col-form-label-lg">
+                Referencia
+            </label>      
+            <label class="col-form-label-lg">
+                @idCode
+            </label>
+            <InputText class="form-control" @bind-Value="@oInstaller.InstallerId" hidden="hidden"></InputText>
+        </div>
+        <div class="form-group">
+            <label class="col-form-label-lg">
+                Nombre
+            </label>
+            <InputText class="form-control" @bind-Value="@oInstaller.Name"></InputText>
+        </div>
+        <div class="form-group">
+            <label class="col-form-label-lg">
+                Fecha de inscripción
+            </label>
+            <InputDate @bind-Value="@oInstaller.initDate" class="form-control" ></InputDate>
+        </div>
+</EditForm>
+
+<button @onclick="save">Save </button>
+
+
+@code {
+    InstallerEntity oInstaller = new InstallerEntity();
+    Dictionary<string, string> dictCountries = new Dictionary<string, string>();
+    string idCode { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        dictCountries = B_Country.GetDictCountries();
+        idCode = "";
+        await base.OnInitializedAsync();
+    }
+
+    private async Task handleOnClick(ChangeEventArgs e)
+    {
+        var result = B_Installer.GetLastInstaller(e.Value.ToString());
+        if(result != null)
+        {
+            var tmp = result.InstallerId.Split('-');
+            idCode = $"{tmp[0]}-{int.Parse(tmp[1])+1}";
+            oInstaller.InstallerId = idCode;
+        }
+        else
+        {
+            idCode = $"{e.Value}-{1}";
+            oInstaller.InstallerId = idCode;
+        }
+    }
+
+    private async Task save()
+    {
+        bool flagSuccess = B_Installer.AddInstaller(oInstaller);
+        if (flagSuccess)
+        {
+            nav.NavigateTo("installer/list");
+        }
+    }
+
+
+}

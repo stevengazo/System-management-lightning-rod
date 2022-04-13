@@ -11,7 +11,7 @@
     <p class="text-center" style="color:red">@message</p>
 </div>
 
-@code{  
+@code{
     [Parameter]
     public string id { get; set; }
     string message;
@@ -24,16 +24,23 @@
 
     private void DeleteClient()
     {
-        var BandDependence = B_Client.HaveDependence(oClient);
-        if (!BandDependence)
+        try
         {
-            B_Client.Delete(oClient);
-            Nav.NavigateTo("client/list");
-        }
-        else
+            var BandDependence = B_Client.HaveDependence(oClient);
+            if (!BandDependence)
+            {
+                B_Client.Delete(oClient);
+                Nav.NavigateTo("client/list");
+            }
+            else
+            {
+                message = $"El cliente {oClient.Name} tiene dependencias en la tabla Equipos.\n Elimine las dependencias e instentelo de nuevo";
+            }        
+        }catch(Exception g)
         {
-            message = $"El cliente {oClient.Name} tiene dependencias en la tabla Equipos.\n Elimine las dependencias e instentelo de nuevo";
+            message = $"Error {g.Message}. Intentelo de nuevo";
         }
+
 
     }
 

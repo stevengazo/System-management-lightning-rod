@@ -37,21 +37,22 @@
         <InputTextArea class="form-control" @bind-Value="oMaintenance.Recomendations"></InputTextArea>
     </div>
     <div class="form-group">
-        <label>Numero de Equipo</label>
-        <InputSelect class="form-control" @bind-Value="oMaintenance.DeviceId">
-            @if (oDevices.Count != 0)
-            {
-                <option value=""> Seleccione un equipo...</option>
-                @foreach (var Device in oDevices)
+        <label class="h5"><strong>Numero de Serie</strong></label>
+        <input type="text" list="sample" @bind-value="@oMaintenance.DeviceId" class="form-control" />
+        <datalist id="sample">
+              @if (devicesDict.Count != 0)
+            {                
+                @foreach (var Device in devicesDict)
                 {
-                    <option value="@Device.DeviceId">@Device.DeviceId - @Device.Client.Name </option>
+                    <option value="@Device.Key">@Device.Value- @Device.Key </option>
                 }
             }
             else
             {
                 <option value="">No hay dispositivos activos</option>
             }
-        </InputSelect>
+        </datalist>
+        <p><i>Numero de serie del dispositivo existente.</i></p>
     </div>
     <div class="form-group">
         <label>Tecnico encargado</label>
@@ -73,36 +74,43 @@
 
 </EditForm>
 <input type="button" value="ActualizarMantenimiento" class="btn-primary" @onclick="UpdateMaintenance" />
+<p>@Message</p>
+
 
 @code{
     [Parameter]
     public string id { get; set; }
 
+    string Message = "";
 
     List<TechnicianEntity> technicians = new List<TechnicianEntity>();
-    List<DeviceEntity> oDevices;
-
+    Dictionary<string, string> devicesDict = new Dictionary<string, string>();
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
-    List<DeviceEntity> Devices = new List<DeviceEntity>();
     protected override async Task OnInitializedAsync()
     {
-        Devices = B_Device.ListOfDevices();
+        devicesDict = B_Device.GetDictonaryOfDevicesWithClient();
         oMaintenance = B_Maintenance.MaintenanceById(id);
 
-        oDevices = B_Device.GetListofDevicesActive();
         technicians = B_Technician.GetListOftechnicians();
     }
 
     private void UpdateMaintenance()
     {
+        try
+        {
+            var tmpTechnician = technicians.Find(T => T.TechnicianId == oMaintenance.TechnicianId);
+            oMaintenance.Technician = tmpTechnician;
+            var tmpDevice = B_Device.DeviceById(oMaintenance.DeviceId);
+            //var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
+            oMaintenance.Device = tmpDevice;
 
+            B_Maintenance.Update(oMaintenance);
+            Nav.NavigateTo("maintenance/list");
+        }
+        catch(Exception f)
+        {
+            Message = $"Error:{f.Message}. Intentelo de nuevo";
+        }
 
-        var tmpTechnician = technicians.Find(T => T.TechnicianId == oMaintenance.TechnicianId);
-        oMaintenance.Technician = tmpTechnician;
-        var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
-        oMaintenance.Device = tmpDevice;
-
-        B_Maintenance.Update(oMaintenance);
-        Nav.NavigateTo("maintenance/list");
     }
 }

@@ -4,24 +4,24 @@
 
 <EditForm Model="oReplacement">
     <div class="form-group">
-        <label>Numero de serie del nuevo dispositivo</label>       
-        <InputSelect @bind-Value="oReplacement.NewSerieDevice" class="form-control">
-            <option value="">Seleccione un equipo...</option>
+        <label>Número de Serie del nuevo dispositivo</label>
+        <input type="text" list="list-devices-new" @bind-value="oReplacement.NewSerieDevice" class="form-control" />
+        <datalist id="list-devices-new">
             @foreach (var item in oDevices)
             {
                 <option value="@item.Key"> @item.Value - @item.Key</option>
             }
-        </InputSelect>
+        </datalist>
     </div>
     <div class="form-group">
-        <label>Numero de serie del dispositivo a reeplazar</label>
-        <InputSelect @bind-Value="oReplacement.DeviceId" class="form-control">
-            <option value="">Seleccione un equipo...</option>
+        <label>Número de serie del dispositivo a reemplazar</label>
+        <input text="text" list="list-devices-old" @bind-value="oReplacement.DeviceId" class="form-control" />
+        <datalist id="list-devices-old">
             @foreach (var item in oDevices)
             {
                 <option value="@item.Key"> @item.Value - @item.Key</option>
             }
-        </InputSelect>
+        </datalist>
     </div>
     <div>
         <label>Notas</label>
@@ -30,21 +30,41 @@
 </EditForm>
 <div class="align-content-center">
     <input  type="button" value="Guardar reemplazo" class="btn-info" @onclick="SaveReplacement"/>
+    <p class="text-danger" >@Message</p>
 </div>
+
 
 @code {
     ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
 
     Dictionary<string, string> oDevices = new Dictionary<string, string>();
+    string Message = "";
 
     protected override async Task OnInitializedAsync()
     {
         oDevices = B_Device.GetDictonaryOfDevicesWithClient();
     }
+
     protected void SaveReplacement()
     {
-        B_Replacement.Create(oReplacement);
-        nav.NavigateTo("replacement/list");
+        try
+        {
+            if( oReplacement.NewSerieDevice.Equals(oReplacement.DeviceId))
+            {
+                Message = "Los numeros de serie son identicos, verifique los dispositivos";
+            }else
+            {
+                B_Replacement.Create(oReplacement);
+                nav.NavigateTo("replacement/list");                            
+            }
+
+        }
+        catch(Exception f)
+        {
+            Message = $"Error: {f.Message}";
+
+        }
+
     }
 
 }

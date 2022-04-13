@@ -3,64 +3,98 @@
 
 @inject NavigationManager Nav;
 
+<!-- INFORMACIÓN DE ERRORES Y PRINCIPAL-->
+<div class="d-flex flex-column ">
 
-<div>
-    <div>
-        <EditForm Model="@oDevice">
-            <table class="table table-light table-responsive-sm table-bordered table-striped">
-                <thead>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Número de serie:</td>
-                        <td>@oDevice.DeviceId</td>
-                    </tr>
-                    <tr>
-                        <td>Alias:</td>
-                        <td>@oDevice.Alias</td>
-                    </tr>
-                    <tr>
-                        <td>Latitud:</td>
-                        <td>@oDevice.Latitude</td>
-                    </tr>
-                    <tr>
-                        <td>Longitud:</td>
-                        <td>@oDevice.Longitude</td>
-                    </tr>
-                    <tr>
-                        <td>País:</td>
-                        <td>@oDevice.Country.CountryName</td>
-                    </tr>
-                    <tr>
-                        <td>Fecha de Instalación:</td>
-                        <td>@oDevice.InstallationDate</td>
-                    </tr>
-                    <tr>
-                        <td>Fecha limite próximo mantenimiento</td>
-                        <td>@oDevice.RecomendedDateOfMaintenance</td>
-                    </tr>
-                    <tr>
-                        <td>Tipo de equipo</td>
-                        <td>@oDevice.TypeDevice.TypeDeviceName</td>
-                    </tr>
-                    <tr>
-                        <td>Modelo:</td>
-                        <td>@oDevice.ModelDevice.ModelDeviceName</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente:</td>
-                        <td><a href="client/view/@oDevice.ClientId"> @oDevice.Client.Name  </a></td>
-                    </tr>
-                    <tr>
-                        <td>Vendedor encargado:</td>
-                        <td><a href="saleman/view/@oDevice.SaleManId">@oDevice.SaleMan.Name</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </EditForm>
-    </div>
-    
+    @if (!oDevice.IsActive)
+    {
+        <label class="text-danger font-weight-bold">Dispositivo marcado como inactivo</label>
+        <label class="text-danger">No se pueden agregar mantenimientos o garantias.</label>
+    }
+    @if (oDevice.IsReplaced)
+    {
+        <label class="text-danger font-weight-bold">Dispositivo Reemplazadado</label>
+    }
+    @if(@oDevice.RecomendedDateOfMaintenance <= DateTime.Today.AddDays(-15) )
+    {
+        <label class="text-danger">La fecha de mantenimiento limite esta próxima a vencer o esta vencida.</label>
+        <label class="text-danger font-weight-bold">Verifica que la garantias de equipo y mantenimientos esten en vigencia</label>
+    }
+
+    @if (checkDate(oDevice.RecomendedDateOfMaintenance))
+    {
+        <label class="text-warning">Quedán menos de 15 días del plazo de la fecha limite de mantenimiento.</label>
+    }
+
+
 </div>
+        
+<EditForm Model="@oDevice">
+    <table class="table table-light table-responsive-sm table-bordered table-hover">
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Número de serie:</td>
+                <td>@oDevice.DeviceId</td>
+            </tr>
+            <tr>
+                <td>Alias:</td>
+                <td>@oDevice.Alias</td>
+            </tr>
+            <tr>
+                <td>Latitud:</td>
+                <td>@oDevice.Latitude</td>
+            </tr>
+            <tr>
+                <td>Longitud:</td>
+                <td>@oDevice.Longitude</td>
+            </tr>
+            <tr>
+                <td>País:</td>
+                <td>@oDevice.Country.CountryName</td>
+            </tr>
+            <tr>
+                <td>Fecha de Instalación:</td>
+                <td>@oDevice.InstallationDate.ToShortDateString()</td>
+            </tr>
+            <tr>
+                <td>Fecha limite próximo mantenimiento</td>
+                @if(@oDevice.RecomendedDateOfMaintenance <= DateTime.Today)
+                {
+                    <td class="text-danger">@oDevice.RecomendedDateOfMaintenance.ToShortDateString()  </td>
+                }
+                else
+                {
+                    <td >@oDevice.RecomendedDateOfMaintenance.ToShortDateString()  </td>
+                }
+            </tr>
+            <tr>
+                <td>Tipo de equipo</td>
+                <td>@oDevice.TypeDevice.TypeDeviceName</td>
+            </tr>
+            <tr>
+                <td>Modelo:</td>
+                <td>@oDevice.ModelDevice.ModelDeviceName</td>
+            </tr>
+            <tr>
+                <td>Cliente:</td>
+                <td><a href="client/view/@oDevice.ClientId"> @oDevice.Client.Name  </a></td>
+            </tr>
+            <tr>
+                <td>Vendedor encargado:</td>
+                <td><a href="saleman/view/@oDevice.SaleManId">@oDevice.SaleMan.Name</a></td>
+            </tr>
+            <tr>
+                <td>Notas generales:</td>
+                <td>@oDevice.Note</td>
+            </tr>
+        </tbody>
+    </table>
+</EditForm>
+
+<p>@Message</p>
+
 
 
 
@@ -71,14 +105,30 @@
     [Parameter]
     public string id { get; set; }
 
-    
+    string Message = "";
 
     DeviceEntity oDevice { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        try
+        {
+            oDevice = B_Device.DeviceById(id);    
+        }catch(Exception f)
+        {
+            Message = $"Error: {f.Message}";
 
-        oDevice = B_Device.DeviceById(id);
+        }      
+    }
 
+    bool checkDate(DateTime recommendateDate)
+    {
+
+        if( DateTime.Today < recommendateDate && recommendateDate < DateTime.Today.AddDays(15) )
+        {
+            return true;
+        }else{
+            return false;
+        }
     }
 }

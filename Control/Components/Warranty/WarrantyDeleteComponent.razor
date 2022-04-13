@@ -11,7 +11,9 @@
         <input class="btn-info" type="button" value="Regresar a la lista" @onclick="BackToList" />
     </div>
 </div>
-
+<p class="text-danger">
+    @message
+</p>
 
 
 
@@ -21,6 +23,8 @@
 
     WarrantyEntity oWarranty = new WarrantyEntity();
 
+    string message = "";
+
     protected override async Task OnInitializedAsync()
     {
         oWarranty = B_Warranty.WarrantyById(WarrantyId);
@@ -28,8 +32,16 @@
 
     private void DeleteWarranty()
     {
-        B_Warranty.Delete(oWarranty);
-        Nav.NavigateTo("warranty/list");
+        try
+        {
+            B_Warranty.Delete(oWarranty);
+            Nav.NavigateTo("warranty/list");        
+        }
+        catch(Exception h)
+        {
+            message = $"Error: {h.Message}";
+        }
+
     }
 
     private void BackToList()

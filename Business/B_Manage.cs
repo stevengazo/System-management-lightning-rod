@@ -20,6 +20,90 @@ namespace Business
         }
 
 
+
+
+        private static bool UserStatus(string id)
+        {
+            using (var db = new IDBContext())
+            {
+                var query = (from user in db.Users select user).FirstOrDefault(U => U.Id == id);
+                if (query.LockoutEnabled)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+
+
+        public static bool DeleteUser(IdentityUser _user)
+        {
+            try
+            {
+                using (var db = new IDBContext())
+                {
+                    db.Users.Remove(_user);
+                    db.SaveChanges();
+                    return true;
+
+                }
+                return false;
+            }
+            catch (Exception v)
+            {
+                Console.WriteLine($"Error {v.Message}");
+                return false;
+            }
+        }
+        public static bool UpdateUser(IdentityUser _user)
+        {
+            try
+            {
+                using (var db = new IDBContext())
+                {
+                    db.Users.Update(_user);
+                    db.SaveChanges();
+                        return true;
+
+                }
+                return false;
+            }
+            catch (Exception v)
+            {
+                Console.WriteLine($"Error {v.Message}");
+                return false;
+            }
+        }
+
+
+
+
+        /// <summary>
+        /// Change the confirmation of the user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>True if the user is confirmed, false if the user it's not confirmed </returns>
+        public static bool ChangeUserStatus(string id)
+        {
+           
+            IdentityUser user = GetUser(id);
+            bool BandEstatus = user.LockoutEnabled;
+
+            using (var db = new IDBContext())
+            {
+                var query = (from use in db.Users select use).FirstOrDefault(U=>U.Id == id);
+                query.LockoutEnabled = !BandEstatus;
+                db.Users.Update(query);
+                db.SaveChanges();
+                return !BandEstatus;
+            }
+            return false;
+        }
+
         /// <summary>
         /// check if exist 
         /// </summary>
@@ -39,6 +123,22 @@ namespace Business
                 {
                     return false;
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Delete an existant rol of an user
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="RoleId"></param>
+        public static void DeleteRol(string UserId, string RoleId)
+        {
+            using (var IdentityDB = new IDBContext())
+            {
+                IdentityUserRole<string> userRole = new IdentityUserRole<string>() { UserId = UserId, RoleId = RoleId };
+                IdentityDB.UserRoles.Remove(userRole);
+                IdentityDB.SaveChanges();
             }
         }
         public static void AddRole(string UserId,string RoleId)

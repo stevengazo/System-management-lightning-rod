@@ -38,6 +38,8 @@ namespace DataAccess
         public DbSet<CountryEntity>  Countries{get;set;}
         public DbSet<SectorEntity>  Sectors {get;set;}
         public DbSet<TechnicianEntity> Technicians {get;set;}
+
+        public DbSet<InstallerEntity> Installers { get; set; }
     #endregion
 
     #region Creating Model and seeding of data
@@ -58,12 +60,16 @@ namespace DataAccess
             model.Entity<CountryEntity>().HasData(oCountry);
             #endregion
 
-
             #region STATUS
             StatusEntity oStatus = new StatusEntity() { StatusId = 1, StatusName = "Garantia Emitida" };
+            StatusEntity oStatus1 = new StatusEntity() { StatusId = 2, StatusName = "Garantia No Emitida" };
+            StatusEntity oStatus2 = new StatusEntity() { StatusId = 3, StatusName = "En tramite" };
+            StatusEntity oStatus3 = new StatusEntity() { StatusId = 4, StatusName = "Con problemas" };
             model.Entity<StatusEntity>().HasData(oStatus);
+            model.Entity<StatusEntity>().HasData(oStatus1);
+            model.Entity<StatusEntity>().HasData(oStatus2);
+            model.Entity<StatusEntity>().HasData(oStatus3);
             #endregion
-
 
             #region SALEMAN
             SaleManEntity oSaleMan = new SaleManEntity();
@@ -101,18 +107,46 @@ namespace DataAccess
             model.Entity<TechnicianEntity>().HasData(otech);
             #endregion
 
-            #region PROJECT
-            DeviceEntity oDevice = new DeviceEntity
+            #region Installer
+            InstallerEntity oInstaller = new InstallerEntity()
+            {
+                InstallerId = "CR-1",
+                Name = "Grupo Mecsa",
+                initDate = DateTime.Now
+            };
+            model.Entity<InstallerEntity>().HasData(oInstaller);
+            #endregion
+
+            #region Devices
+            DeviceEntity oDeviceRemp = new DeviceEntity
             {
                 DeviceId = Guid.NewGuid().ToString(),
-                Alias = "Prueba",
+                InstallationDate = DateTime.Today,
+                Alias = "Reempleazo Prueba",
                 ClientId = oClient.Id,
                 SaleManId = oSaleMan.SaleManId,
                 CountryId = oCountry.CountryId,
                 ModelDeviceId = oModel.ModelDeviceId,
-                TypeDeviceId = oVtype.TypeDeviceId
+                TypeDeviceId = oVtype.TypeDeviceId,
+                IsActive = false,
+                IsReplaced = true,
+                InstallerId = oInstaller.InstallerId
+            };
+            DeviceEntity oDevice = new DeviceEntity
+            {
+                DeviceId = Guid.NewGuid().ToString(),
+                Alias = "Prueba",
+                InstallationDate = DateTime.Today,
+                ClientId = oClient.Id,
+                SaleManId = oSaleMan.SaleManId,
+                CountryId = oCountry.CountryId,
+                ModelDeviceId = oModel.ModelDeviceId,
+                TypeDeviceId = oVtype.TypeDeviceId,
+                IsActive = true,
+                IsReplaced = false
             };
             model.Entity<DeviceEntity>().HasData(oDevice);
+            model.Entity<DeviceEntity>().HasData(oDeviceRemp);
             #endregion
 
             #region MAINTENANCE
@@ -129,9 +163,15 @@ namespace DataAccess
             #endregion
 
             #region REPLACEMENT
-            ReplacementDeviceEntity oReplace = new ReplacementDeviceEntity { ReplacementDeviceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId };
+            ReplacementDeviceEntity oReplace = new ReplacementDeviceEntity { 
+                ReplacementDeviceId = Guid.NewGuid().ToString(), 
+                DeviceId = oDeviceRemp.DeviceId,
+                NewSerieDevice= oDevice.DeviceId
+            };
             model.Entity<ReplacementDeviceEntity>().HasData(oReplace);
             #endregion
+
+
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

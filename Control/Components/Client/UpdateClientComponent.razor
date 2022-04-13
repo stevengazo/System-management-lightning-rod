@@ -24,15 +24,22 @@
 
     private void UpdateClient()
     {
-        if (oClient.Name== null)
+        try
         {
-            Message = "El campo nombre se encuentra vacio";
-        }
-        else 
+            if (oClient.Name== null)
+            {
+                Message = "El campo nombre se encuentra vacio";
+            }
+            else 
+            {
+                B_Client.UpdateClient(oClient);
+                Nav.NavigateTo("client/list");
+            }        
+        }catch(Exception g)
         {
-            B_Client.UpdateClient(oClient);
-            Nav.NavigateTo("client/list");
+            Message = $"Error {g.Message}. Intentelo de nuevo";
         }
+
     }
 
 }

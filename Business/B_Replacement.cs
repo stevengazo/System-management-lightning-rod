@@ -70,14 +70,58 @@ namespace Business
 
         #region Consult
 
+
+        /// <summary>
+        /// Get the quantities of replacements by year
+        /// </summary>
+        /// <returns>Quantity of replacements</returns>
+        public static Dictionary<int,int> GetQuantityOfReplacement()
+        {
+            Dictionary<int,int> dicOfRemplacements = new Dictionary<int,int>();
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+                    var tmpData = (from repl in db.Replacements select  repl.NewSerieDevice);
+
+                    if(tmpData != null)
+                    {
+                        foreach (var item in tmpData)
+                        {
+                            var Year = B_Device.DeviceById(item).InstallationDate.Year;
+                            if (dicOfRemplacements.ContainsKey(Year))
+                            {
+                                dicOfRemplacements[Year] = dicOfRemplacements[Year] + 1;
+                            }
+                            else
+                            {
+                                dicOfRemplacements.Add(Year, 1);
+                            }
+                        }
+                        return dicOfRemplacements;
+                    }
+                    else
+                    {
+                        return new Dictionary<int, int>();
+                    }                    
+                }
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Error: {error.Message}");
+                return new Dictionary<int, int>();
+            }
+
+        }
+
+
+        
         public static ReplacementDeviceEntity GetReplacementById(string ReplacementId = "")
         {
             using(var DB= new RayosNoDataContext())
             {
-                ReplacementDeviceEntity oReplacement = new ReplacementDeviceEntity();
-                var aux = DB.Replacements.FromSqlInterpolated($"select * from Replacements where Replacements.ReplacementDeviceId  = {ReplacementId}");
-                oReplacement = aux.FirstOrDefault();
-                return oReplacement;
+                var aux = (from Rempl in DB.Replacements select Rempl).FirstOrDefault(R=>R.ReplacementDeviceId.Equals(ReplacementId));
+                return aux;
             }
         }
 
@@ -91,9 +135,12 @@ namespace Business
             List<ReplacementDeviceEntity> Replacements = new List<ReplacementDeviceEntity>();
             using( var DB = new RayosNoDataContext())
             {
-                Replacements = DB.Replacements.FromSqlInterpolated($@"   SELECT * FROM Replacements
-                                                                    WHERE   (NewSerieDevice like CONCAT('%',{IdReplacement.ToString()},'%')) 
-                                                                    or     ( DeviceId like CONCAT('%',{IdReplacement.ToString()},'%'))").ToList();
+                Replacements = (
+                                from repl
+                                in DB.Replacements
+                                where repl.ReplacementDeviceId.Contains(IdReplacement) || repl.DeviceId.Contains(IdReplacement)
+                                select repl
+                    ).ToList();
             }
 
             return Replacements;

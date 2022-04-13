@@ -1,0 +1,107 @@
+﻿@using Business;
+@using Microsoft.AspNetCore.Identity;
+
+@inject NavigationManager Nav;
+
+
+
+<div>
+    <div>
+        <p>
+            A continuación podrá ver la información correspondiente al usurio. El cambio de la contraseña no es permitido desde este sitio.
+        </p>
+        <a  href="Identity/Admin/ChangePassByAdmin/@_User.Id">Cambiar Contraseña </a>
+    </div>
+    <div>
+        <EditForm Model="_User">
+            <div class="form-group">
+                <label>Nombre de Usuario</label>
+                <InputText @bind-Value="_User.UserName" class="form-control" > </InputText>
+            </div>
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="text" value="@_User.Email" readonly  class="form-control" />
+                <p> El correo elétronico del usuario no puede ser modificado. Para modificarlo debe crear un nuevo usuario.</p>
+            </div>
+            <div class="form-group">
+                <label>Numero de Teléfono</label>
+                <InputText @bind-Value="_User.PhoneNumber" class="form-control" ></InputText>
+            </div>
+           <div class="form-group">
+                <label>Estado del usuario</label>
+                <select @bind="bandEStatus" class="form-control" >
+                    <option value="false" >Desactivado</option>
+                    <option value="true" >Activado</option>
+                </select>
+                <p> Verifica el nuevo estado para el usuario. <b>Si este es desactivado, no podrá iniciar sesión en el sistema</b>.</p>
+            </div>
+        </EditForm>
+    </div>
+    <div class="container">
+        <button  class="btn btn-success"  @onclick="UpdateUser" >Actualizar</button>
+        <p class="text-danger">@message</p>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+@code{
+    [Parameter]
+    public string UserId { get; set;}
+    private string message;
+    private string bandEStatus;
+
+    IdentityUser _User = new IdentityUser();
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        _User= B_Manage.GetUser(UserId);
+    }
+
+
+
+    private void UpdateUser(){
+        try
+        {
+            Boolean.TryParse(bandEStatus,out bool band);
+            _User.EmailConfirmed = band;
+            bool bandUpdate = false;
+            bandUpdate = B_Manage.UpdateUser(_User);
+
+
+
+            if(bandUpdate)
+            {
+                Nav.NavigateTo("manage/Index");    
+            }
+            else
+            {
+            message = $"Error en la actualización de usuario";    
+            }            
+        }
+        catch(Exception f)
+        {
+            message = $"Error: {f.Message}";
+        }
+    }
+
+    
+
+}
+
+
+
+
+

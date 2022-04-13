@@ -21,13 +21,13 @@ namespace Business
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
                                                                     WHERE	(	DeviceId = {_DeviceId} )                                                          
                                                                     and		(	YEAR(DateSend)= {_Year.ToString()}	)
-                                                                    and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                                                                    and		(	StatusId = {_Estatus})").ToList();
                 }
                 else if ((_DeviceId != null) && (_Estatus != null) && (_Year == 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
                                                                     WHERE	(	DeviceId = {_DeviceId} )
-                                                                    and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                                                                   and		(	StatusId = {_Estatus})").ToList();
                 }
                 else if ((_DeviceId != null) && (_Estatus == null) && (_Year == 0))
                 {
@@ -39,18 +39,18 @@ namespace Business
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
                                                                     WHERE	(	DeviceId = {_DeviceId} )                                                          
                                                                     and		(	YEAR(DateSend)= {_Year.ToString()}	)
-                                                                    and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                                                                    and		(	StatusId = {_Estatus})").ToList();
                 }
                 else if ((_DeviceId == null) && (_Estatus != null) && (_Year != 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
                                                                     WHERE	(	YEAR(DateSend)= {_Year.ToString()}	)
-                                                                    and		(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                                                                    and		(	StatusId = {_Estatus})").ToList();
                 }
                 else if ((_DeviceId == null) && (_Estatus != null) && (_Year == 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	Estatus like CONCAT('%',{_Estatus},'%'))").ToList();
+                                                                    WHERE	StatusId = {_Estatus}").ToList();
                 }
                 else if ((_DeviceId == null) && (_Estatus == null) && (_Year != 0))
                 {
@@ -110,7 +110,7 @@ namespace Business
         {
             using (var DB = new RayosNoDataContext())
             {
-                return DB.Warranties.ToList().LastOrDefault(W => W.Id == id);
+                return DB.Warranties.Include(D => D.Status).FirstOrDefault( W=>W.Id == id);
             }
         }
         public static List<WarrantyEntity> ListOfWarrantiesById(string id)

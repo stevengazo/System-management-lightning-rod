@@ -1,0 +1,33 @@
+﻿@page "/stadistics/index"
+
+
+
+<div class="d-flex flex-column">
+    <div>
+        <h1>Estadisticas Generales</h1>
+        <p>Estadisticas generalaes con base en la información obtenida </p>
+    </div>
+    <div class="d-flex flex-row ">
+        <div class="w-50 p-3 h-75 d-inline-block">
+            <GraphComponentDevicesBySaleman/>
+        </div>
+        <div class="w-50 p-3 h-75 d-inline-block">
+            <GraphComponentDevicesByCountry/>
+        </div>
+    </div>
+    <hr />
+    <div>
+        <div>
+            <GraphComponentMaintenancesByYear/>
+            <hr />
+            <GraphComponentDevicesByYear/>
+            <hr />        
+        </div>
+        <hr />        
+        <GraphComponentIncidentsByYear/>
+    </div>
+    <hr />
+    <div>
+        <GraphComponentReplacementsByYear />
+    </div>
+</div>

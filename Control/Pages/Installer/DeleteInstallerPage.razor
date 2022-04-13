@@ -1,0 +1,30 @@
+﻿@page  "/installer/delete/{installerId}"
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2 class="text-center">
+                Borrar Instalador
+            </h2>
+            <hr />
+            <DeleteInstallerComponent idInstaller="@installerId"/>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+@code{
+    [Parameter]
+    public string installerId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        installerId = installerId;
+    }
+}

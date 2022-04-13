@@ -1,0 +1,137 @@
+﻿@using Entities;
+@using Business;
+@using Microsoft.AspNetCore.Identity;
+
+
+
+
+<div >
+    <div class="form-group row">
+        <label>Seleccione el rol</label>
+        <div class=col>            
+            <select  class="form-control " @bind="@_roleId">
+                <option value="0">Seleccione un Rol</option>
+                @foreach (IdentityRole item in Roles)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }        
+            </select>   
+        </div>
+        <div class=col>
+            <input type="button" class="btn btn-success form-control" value="Añadir Rol" @onclick="AddRol"    />  
+        </div>            
+    </div>
+    <p class="text-center" style="color:red"> @errormessage</p>
+    <div>       
+        
+    </div>
+    <div>
+        <table class="table table-hover table-responsive-sm ">
+    <thead>
+        <tr>
+            <th class="text-sm-center" >Id</th>
+            <th class="text-sm-center">Nombre</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in UserRoles)
+        {
+            var id = item.Id;
+            <tr>                
+                <td class="text-sm-center" >@item.Id</td>
+                <td class="text-sm-center" >@item.Name</td>
+                <td> <button class="btn btn-danger" @onclick="() => DeleteRol(id)" >Borrar Rol </button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+@code{
+    [Parameter]
+    public string UserId { get; set; }
+
+    private string _roleId { get; set; }
+    private IdentityUser _user { get; set; }
+    string errormessage { get; set; }
+
+    List<IdentityRole> Roles { get; set; }
+    List<IdentityRole> UserRoles { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+
+        Roles = B_Manage.GetListOfRoles();
+        ChargeList();
+    }
+
+    private void ChargeList()
+    {
+        UserRoles = B_Manage.GetListOfRolesByUser(UserId); 
+    }
+
+
+    private void DeleteRol(string rolid)
+    {
+        bool bandExists = B_Manage.CheckRole(UserId, rolid);
+        try
+        {
+            if(bandExists)
+            {
+                B_Manage.DeleteRol(UserId, rolid);
+                ChargeList();
+            }
+            else
+            {
+                errormessage = "El usuario no posee el rol";
+            }
+
+        }
+        catch (Exception s)
+        {
+            Console.WriteLine($"Error: {s.Message}");
+            errormessage = s.Message;
+        }
+    }
+
+    private void AddRol()
+    {
+        bool bandExists = B_Manage.CheckRole(UserId, _roleId);
+        try
+        {
+            if(!bandExists)
+            {
+                B_Manage.AddRole(UserId, _roleId);
+                ChargeList();
+            }
+            else
+            {
+                errormessage = "El usuario ya posee el rol";
+            }
+
+        }
+        catch (Exception s)
+        {
+            Console.WriteLine($"Error: {s.Message}");
+            errormessage = s.Message;
+        }
+    }
+
+}

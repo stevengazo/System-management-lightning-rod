@@ -1,5 +1,13 @@
-﻿@using Entities;
+﻿@using CsvHelper.Configuration
+@using Entities;
 @using Business;
+@using System.IO;
+@using CsvHelper;
+@using System.Globalization;
+@using System;
+
+@inject IJSRuntime Js;
+
 
 
 
@@ -11,10 +19,10 @@
         <input type="button" value="Buscar" class="btn btn-outline-dark form-control"  @onclick="Search" />    
     </div>
     <div class="col">
-        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="Search" />
+        <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanValues" />
     </div>
     <div class="col">
-        <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanValues" />
+        <input type="button" value="Exportar" class="btn btn-outline-dark form-control" @onclick="Download" />
     </div>
 </div>
 
@@ -77,6 +85,28 @@
         }
     }
 
+
+    private async Task Download()   
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Replacements.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("DevicesConsult.csv", arr);
+            }
+        }
+    }
 }
 
  

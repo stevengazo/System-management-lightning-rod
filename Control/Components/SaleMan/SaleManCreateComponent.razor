@@ -22,16 +22,23 @@
 
     private void SaveSaleMan()
     {
-        oSaleMan.SaleManId = Guid.NewGuid().ToString();
-        if (oSaleMan.Name== null)
+        try
         {
-            message = "El nombre se encuentra vacio";
-        }
-        else
-        {
+            oSaleMan.SaleManId = Guid.NewGuid().ToString();
+            if (oSaleMan.Name== null)
+            {
+                message = "El nombre se encuentra vacio";
+            }
+            else
+            {
 
-            B_SaleMan.CreateSaleMan(oSaleMan);
-            Nav.NavigateTo("saleman/list");
+                B_SaleMan.CreateSaleMan(oSaleMan);
+                Nav.NavigateTo("saleman/list");
+            }
+        }
+        catch(Exception f)
+        {
+            message = $"Error {f.Message}";
         }
     }
 

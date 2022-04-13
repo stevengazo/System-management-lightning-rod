@@ -69,9 +69,18 @@
     [Parameter]
     public string IncidentId { get; set; }
     IncidentEntity oIncident = new IncidentEntity();
+    string Message = "";
 
     protected override async Task OnInitializedAsync()
     {
-        oIncident = B_Incident.GetIncidentById(IncidentId);
+        try
+        {
+            oIncident = B_Incident.GetIncidentById(IncidentId);        
+        }
+        catch(Exception h)
+        {
+            Message = $"Error: {h.Message}. Intentelo de nuevo";
+        }
+
     }
 }

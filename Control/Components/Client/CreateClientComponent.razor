@@ -4,20 +4,104 @@
 
 <EditForm Model="@oClient">
     <div class="form-group">
+    <label>Tipo de Cliente</label>
+      <Select  class="form-control" @onchange="handleOnchange">
+            @foreach (var item in sample)
+            {
+                <option value="@item.Key">@item.Value</option>
+            }
+        </Select>
+        <p><i>Sector correspondiente al Cliente</i></p>
+    </div>
+    <div class="form-group">        
+          <label>Numero de Referencia</label>
+          <p>@tmpId</p>
+    </div>
+    <div class="form-group">
         <label>Nombre del cliente</label>
         <InputText @bind-Value="oClient.Name" class="form-control"></InputText>
+        <p><i>Nombre jurídico del cliente o nombre físico</i></p>
+    </div>
+    <div class="form-group">
+        <label>Sector del cliente</label>
+        <InputSelect @bind-Value="oClient.SectorId" class="form-control">
+            @foreach (var item in Sectors)
+            {
+                <option value="@item.SectorId">@item.SectorName</option>
+            }
+        </InputSelect>
+        <p><i>Sector correspondiente al Cliente</i></p>
     </div>
     <input type="button" value="Registar Cliente" @onclick="SaveClient" />
 </EditForm>
+<p class="text-danger">@Error</p>
 
 @code{
     ClientEntity oClient = new ClientEntity();
+    string Error = "";
+    string tmpId = string.Empty;
 
+    Dictionary<string, string> sample = new Dictionary<string, string>()
+    {
+        { "Htl","Hotelera"},
+        { "Edu","Educación"},
+        { "Inds","Industrial"},
+        { "Red","Residencial"},
+        { "Com","Comercial"},
+        { "Muni","Municipalidades"},
+        { "Segu","Aseguradoras"},
+        { "Hosp","Hospitalario"},
+        { "Telco","Telecomunicaciones"},
+        { "Recr","Recreativo"},
+        { "Finan","Financiero"},
+        { "Serv","Servicios"},
+        { "Inst","Institucional"},
+        { "Aerop","Aeroportuario"},
+        { "Embar","Embarcaciones"},
+        { "Mari","Marinas"},
+        { "Const","Constructora"},
+        { "Otro","Otro"},
+    };
+
+    List<SectorEntity> Sectors = new List<SectorEntity>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Sectors = B_Sectors.ListOfSectors();
+    }
+
+    private void handleOnchange(ChangeEventArgs args)
+    {
+        string tmp = B_Client.CheckLastId(args.Value.ToString());
+        if(tmp.Length != 0)
+        {
+            var tmpArray = tmp.Split('-');
+            var num = int.Parse(tmpArray[1]);
+            tmpId = $"{tmpArray[0]}-{num + 1}";    
+        }
+
+    }
 
     private void SaveClient()
     {
-        oClient.Id = Guid.NewGuid().ToString();
-        B_Client.CreateClient(oClient);
-        Nav.NavigateTo("client/list");
+        try
+        {
+            if(tmpId.Length != 0)
+            {
+                oClient.Id = tmpId;
+                B_Client.CreateClient(oClient);
+                Error = "";
+                Nav.NavigateTo("client/list");            
+            }
+            else
+            {
+                Error = "Seleccione un tipo de cliente";
+            }
+
+        }catch (Exception f)
+        {
+            Error = $" Error: {f.Message}. Intentelo nuevamente.";
+        } 
+
     }
 }

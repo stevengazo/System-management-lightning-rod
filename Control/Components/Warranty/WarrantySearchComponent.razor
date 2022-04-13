@@ -1,6 +1,11 @@
 ﻿@using Entities;
 @using Business;
 
+@using CsvHelper.Configuration
+@using CsvHelper;
+@using System.Globalization;
+@using System.IO;
+@inject IJSRuntime Js;
 
 
 
@@ -29,23 +34,24 @@
         </div>
         <div class="col">
             <label class="col-form-label">Estado de la garantia</label>
-            <select class="form-control rounded " @bind="@EstatusToSearch">
-                <option value="">Seleccione un estado...</option>
-                <option value="En tramite">En tramite</option>
-                <option value="Recibido">Recibido</option>
-                <option value="Con Problemas">Con Problemas</option>
+            <select class="form-control rounded " @bind="@tmpEstatusToSearch">
+                @foreach (var item in StatusList)
+               {
+                   <option value="@item.StatusId">@item.StatusName</option>
+               }
+                
             </select>
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-3">
+        <div class="col">
             <input type="button" value="Buscar" class="btn btn-outline-dark rounded" @onclick="SearchWarranties" />
         </div>
-        <div class="col-3">
+        <div class="col">
             <input type="button" value="Limpiar" class="btn btn-outline-dark rounded" @onclick="CleanSpaces" />
         </div>
-        <div class="col-3">
-            <input type="button" value="Generar" class="btn btn-outline-dark rounded" />
+        <div class="col">
+            <input type="button" value="Generar" class="btn btn-outline-dark rounded" @onclick="Download"/>
         </div>
     </div>
 
@@ -68,7 +74,8 @@
             {
                 <tr>
                     <td> @obj.DeviceId </td>
-                    <td> @obj.DateSend.ToShortDateString()</td>                   
+                    <td> @obj.DateSend.ToShortDateString()</td>    
+                    <td> @obj.DateReceived.ToShortDateString()</td>
                     <td> <a class="btn btn-primary" href="warranty/view/@obj.Id">Ver</a></td>
                     <td> <a class="btn btn-secondary" href="warranty/update/@obj.Id">Modificar</a></td>
                     <td> <a class="btn btn-danger" href="warranty/delete/@obj.Id">Eliminar</a></td>
@@ -82,6 +89,7 @@
     public List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
     public List<int> Years = new List<int>();
     private Dictionary<string, string> Devices;
+    private List<StatusEntity> StatusList;
 
     #region internal
 
@@ -89,29 +97,74 @@
     private int YearToSearch = 0;
     private string EstatusToSearch = null;
     private string ErrorMessage = "";
+    private int tmpEstatusToSearch = 0;
     #endregion
+
+
+
+
     protected override async Task OnInitializedAsync()
     {
         Years = B_Warranty.GetYearsOfSend();
         Devices = B_Device.GetDictonaryOfDevicesWithClient();
+        StatusList = B_Status.GetStatus();
     }
     private void CleanSpaces()
     {
         DeviceIdToSearch = null;
         YearToSearch = 0;
-        EstatusToSearch = null;
+        tmpEstatusToSearch = 1;
     }
+
+
     private void SearchWarranties()
     {
-        Warranties = B_Warranty.SearchWarranties(DeviceIdToSearch, EstatusToSearch, YearToSearch);
-        if (Warranties.Count <= 0)
+        try
         {
-            ErrorMessage = "No hay coincidencias con los criterios de busqueda";
+            if(tmpEstatusToSearch != 0)
+            {
+                EstatusToSearch = tmpEstatusToSearch.ToString();    
+            }
+
+
+            Warranties = B_Warranty.SearchWarranties(DeviceIdToSearch, EstatusToSearch, YearToSearch);
+            if (Warranties.Count <= 0)
+            {
+                ErrorMessage = "No hay coincidencias con los criterios de busqueda";
+            }
+            else
+            {
+                ErrorMessage = "";
+            }
         }
-        else
+        catch(Exception f)
         {
-            ErrorMessage = "";
+
+            ErrorMessage = $"Error: {f.Message}";
         }
 
+    }
+    
+
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+                
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Warranties.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("WarrantiesSearch.csv", arr);
+            }
+        }
     }
 }

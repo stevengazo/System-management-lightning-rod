@@ -1,0 +1,26 @@
+﻿@page "/Models/Index"
+
+
+
+
+
+
+<AuthorizeView Roles="Administrador,Lector,Editor">
+    <Authorized>
+        <div class="text-center">
+            <h2>Lista de Modelos registrados</h2>  
+            <hr />
+            <ListOfModelsDeviceComponent/>
+        </div>
+    </Authorized>
+    <NotAuthorized>        
+        <NotAvariableComponent> </NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+
+

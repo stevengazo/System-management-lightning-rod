@@ -23,14 +23,11 @@ namespace Entities
         /// <summary>
         /// Longitude of the device
         /// </summary>
-        public float Longitude { get; set; }
+        public string Longitude { get; set; }
         /// <summary>
         /// Latitud of the device
         /// </summary>
-        public float Latitude { get; set; }
-
-
-        
+        public string Latitude { get; set; }
         /// <summary>
         /// Date of the installation of the device
         /// </summary>
@@ -39,11 +36,19 @@ namespace Entities
         /// Limit date of every year to made the device
         /// </summary>
         public DateTime RecomendedDateOfMaintenance { get; set; }
-
         /// <summary>
         /// Especificate if the device is operative 
         /// </summary>
         public bool IsActive { get; set; }
+        /// <summary>
+        /// This property only is used if the device is replacement
+        /// </summary>
+        public bool IsReplaced { get; set; }
+        /// <summary>
+        /// General notes about the device
+        /// </summary>
+        public string Note { get; set; }
+
 
         // Relation with Model
         public int ModelDeviceId { get; set; }
@@ -60,6 +65,10 @@ namespace Entities
         // Relation with SaleMan
         public string SaleManId { get; set; }
         public SaleManEntity SaleMan { get; set; }
+        /// Relation with Installer
+        public string InstallerId { get; set; }
+        public InstallerEntity  installer { get; set; }
+
         /// Relation with TypeDevice
         public int TypeDeviceId { get; set; }
         public TypeDeviceEntity TypeDevice { get; set; }

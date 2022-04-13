@@ -1,0 +1,93 @@
+﻿@using System.IO;
+@using System.Globalization;
+@using Entities;
+@using Business;
+@using CsvHelper;
+@using CsvHelper.Configuration;
+
+@inject IJSRuntime Js;
+<hr/>
+@if (id.ToString() != null){
+    <div class="d-flex flex-column">
+        <div class="flex-column">
+            <label class="font-weight-bold">
+                Id de Instalador:
+            </label>
+            <label>
+                @installer.InstallerId
+            </label>
+            </div>
+        <div class="flex-column">
+            <label class="font-weight-bold">
+                Nombre:
+            </label>
+            <label>
+                @installer.Name
+            </label>
+        </div>
+        <div class="flex-column">
+            <label class="font-weight-bold">
+                Fecha de Inscripción:
+            </label>
+            <label>
+                @installer.initDate
+            </label>
+        </div>
+    </div>   
+}
+
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized >
+        <div class="d-sm-flex">
+            <input class="btn-outline-dark form-control" type="button" value="Exportar Equipos" @onclick="Download" />
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+
+
+
+@code{
+    [Parameter]
+    public string id { get; set; }
+
+
+    private InstallerEntity installer = new InstallerEntity();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        if (id.ToString() != null)
+        {
+            installer = B_Installer.GetInstallerById(id.ToString());    
+        }        
+    }
+
+
+    private void Download()
+    {
+        using( var memoryStream= new MemoryStream())
+        {
+            List<DeviceEntity> Devices = new List<DeviceEntity>();
+            Devices = B_Device.GetDevicesByInstaller(id);
+
+            using( var writter = new StreamWriter(memoryStream))
+            {
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
+
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Devices.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs($"Devices-{installer.Name}.csv", arr);
+            }
+        }
+    }
+}

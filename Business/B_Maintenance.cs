@@ -13,91 +13,191 @@ namespace Business
     public static class B_Maintenance
     {
         #region Consults and others
+
+
+        /// <summary>
+        /// Get an array with the years registered in the Maintance Table
+        /// </summary>
+        /// <returns>Arrays of Years</returns>
+        public static int[] YearsRegistered()
+        {
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+                    return (from main in db.Maintenances select main.MaintenanceDate.Year).Distinct().ToArray();
+                }
+            }
+            catch(Exception h)
+            {
+                Console.WriteLine($"Error: {h.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the quantity of maintenances realized in a specific year, by month
+        /// </summary>
+        /// <param name="Year">Year to consult</param>
+        /// <returns>List of years [key = month, value = Quantity]</returns>
+        public static Dictionary<int,int> GetMaintenancesInYear(int Year= 2020)
+        {
+            try
+            {
+                var result = new Dictionary<int, int>();
+                using (var DB = new RayosNoDataContext())
+                {
+                    var query = (from Maintenance
+                                 in DB.Maintenances
+                                 where Maintenance.MaintenanceDate.Year == Year
+                                 select Maintenance
+                                 ).ToList();
+
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        var tmpquery = (from main in query
+                                        where main.MaintenanceDate.Month == i
+                                        select main).ToList().Count();
+                        result.Add(i, tmpquery);
+                    }
+
+                    return result;
+                }
+            }
+            catch( Exception f)
+            {
+                Console.WriteLine($"Error: {f.Message}");
+                return null;
+            }
+
+        }
        
-        public static List<MaintenanceEntity> GetMaintenancesByConsult(string _Device = "", string _Name ="",int _Year = 0, int _Month=0)
+        public static List<MaintenanceEntity> GetMaintenancesByConsult(string _Device = "", string _TechnicianId ="",int _Year = 0, int _Month=0)
         {
             List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
             using(var DB = new RayosNoDataContext())
             {
-                if ((_Device != null) && (_Name != null) && (_Year != 0) && (_Month != 0))
+                if ((_Device != null) && (_TechnicianId != null) && (_Year != 0) && (_Month != 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
                                                                         WHERE	MaintenanceId like Concat('%',{_Device},'%') 
-		                                                                and (TechnicianName like CONCAT('%',{_Name},'%'))
+		                                                                and (TechnicianId like CONCAT('%',{_TechnicianId},'%'))
 		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()}) 
 		                                                                and (MONTH(maintenanceDate) = {_Month.ToString()})");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device != null) && (_Name == null) && (_Year == 0) && (_Month == 0))
+                else if ((_Device != null) && (_TechnicianId == null) && (_Year == 0) && (_Month == 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
                                                                         WHERE	DeviceId like Concat('%',{_Device},'%')");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device != null) && (_Name != null) && (_Year == 0) && (_Month == 0))
+                else if ((_Device != null) && (_TechnicianId != null) && (_Year == 0) && (_Month == 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
                                                                         WHERE	MaintenanceId like Concat('%',{_Device},'%') 
-		                                                                and (TechnicianName like CONCAT('%',{_Name},'%'))");
+		                                                                and (TechnicianId like CONCAT('%',{_TechnicianId},'%'))");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device != null) && (_Name != null) && (_Year != 0) && (_Month == 0))
+                else if ((_Device != null) && (_TechnicianId != null) && (_Year != 0) && (_Month == 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
                                                                         WHERE	MaintenanceId like Concat('%',{_Device},'%') 
-		                                                                and (TechnicianName like CONCAT('%',{_Name},'%'))
+		                                                                and (TechnicianId like CONCAT('%',{_TechnicianId},'%'))
 		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()})");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device == null) && (_Name == null) && (_Year == 0) && (_Month != 0))
+                else if ((_Device == null) && (_TechnicianId == null) && (_Year == 0) && (_Month != 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
                                                                         WHERE (MONTH(maintenanceDate) = {_Month.ToString()})");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device == null) && (_Name == null) && (_Year != 0) && (_Month != 0))
+                else if ((_Device == null) && (_TechnicianId == null) && (_Year != 0) && (_Month != 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
                                                                         WHERE	 (YEAR(MaintenanceDate ) = {_Year.ToString()}) 
 		                                                                and (MONTH(maintenanceDate) = {_Month.ToString()})");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device == null) && (_Name != null) && (_Year != 0) && (_Month != 0))
+                else if ((_Device == null) && (_TechnicianId != null) && (_Year != 0) && (_Month != 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
-                                                                        WHERE	(TechnicianName like CONCAT('%',{_Name},'%'))
+                                                                        WHERE	(TechnicianId like CONCAT('%',{_TechnicianId},'%'))
 		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()}) 
 		                                                                and (MONTH(maintenanceDate) = {_Month.ToString()})");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device != null) && (_Name == null) && (_Year != 0) && (_Month == 0))
+                else if ((_Device != null) && (_TechnicianId == null) && (_Year != 0) && (_Month == 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
                                                                         WHERE	MaintenanceId like Concat('%',{_Device},'%') 		                                                                
 		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()})");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device == null) && (_Name != null) && (_Year == 0) && (_Month != 0))
+                else if ((_Device == null) && (_TechnicianId != null) && (_Year == 0) && (_Month != 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
-                                                                        WHERE	(TechnicianName like CONCAT('%',{_Name},'%'))
+                                                                        WHERE	(TechnicianId like CONCAT('%',{_TechnicianId},'%'))
 		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()})");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device == null) && (_Name != null) && (_Year == 0) && (_Month == 0))
+                else if ((_Device == null) && (_TechnicianId != null) && (_Year == 0) && (_Month == 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
-                                                                        WHERE	(TechnicianName like CONCAT('%',{_Name},'%'))");
+                                                                        WHERE	(TechnicianId like CONCAT('%',{_TechnicianId},'%'))");
                     Maintenances = aux.ToList();
                 }
-                else if ((_Device == null) && (_Name == null) && (_Year != 0) && (_Month == 0))
+                else if ((_Device == null) && (_TechnicianId == null) && (_Year != 0) && (_Month == 0))
                 {
                     var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
                                                                         WHERE	(YEAR(MaintenanceDate ) = {_Year.ToString()})");
                     Maintenances = aux.ToList();
                 }
-            }            
+                if ((_Device == null) && (_TechnicianId != null) && (_Year != 0) && (_Month == 0))
+                {
+                    var aux = DB.Maintenances.FromSqlInterpolated($@"   SELECT * FROM MAINTENANCES
+                                                                        WHERE	 
+		                                                                 (TechnicianId like CONCAT('%',{_TechnicianId},'%'))
+		                                                                and (YEAR(MaintenanceDate ) = {_Year.ToString()}) 
+		                                                               ");
+                    Maintenances = aux.ToList();
+                }
+            }
+
+
+
+            var technicians =new  List<TechnicianEntity>();
+            using (var db = new RayosNoDataContext())
+            {
+                technicians = db.Technicians.ToList();
+            }
+
+            foreach (var item in Maintenances)
+            {
+                var technician = technicians.Find(T => T.TechnicianId == item.TechnicianId);
+                item.Technician = technician;
+            }
+            
             return Maintenances;
+        }
+
+
+
+        public static Dictionary<int,int> GeQuantityByYears()
+        {
+            Dictionary<int, int> QuantityByYears = new Dictionary<int, int>();
+            List<int> years = new List<int>();
+            using (var DB = new RayosNoDataContext())
+            {
+                years = (from maint in DB.Maintenances select maint.MaintenanceDate.Year).Distinct().ToList();
+                foreach (var item in years)
+                {
+                    var tmp = (from maint in DB.Maintenances select maint).Where(M => M.MaintenanceDate.Year == item).Count();
+                    QuantityByYears.Add(item, tmp);
+                }
+            }
+            return QuantityByYears;
         }
 
         /// <summary>
@@ -205,6 +305,31 @@ namespace Business
                     ///Execute a Stored Procedure saved in the DB
                     var query = DB.Devices.FromSqlInterpolated($"Exec GetDeviceByUnreallizedMaintenanceByYear @_Year={year.ToString()}");
                     //Convert the IQueryable result, to list of DeviceEntity to send to the 
+                    var clients = new List<ClientEntity>();
+                    var models = new List<ModelDeviceEntity>();
+                    var salemans = new List<SaleManEntity>();
+                    var typeofdevice = new List<TypeDeviceEntity>();
+                    var countries = new List<CountryEntity>();
+                    using(var db = new RayosNoDataContext())
+                    {
+                        countries = db.Countries.ToList();
+                        clients = db.Clients.ToList();
+                        models = db.ModelDevices.ToList();
+                        salemans = db.Salemans.ToList();
+                        typeofdevice = db.TypesDevices.ToList();
+
+                    }
+
+                    foreach( var i in query)
+                    {
+                        
+                        var tmp = i.ClientId;;                       
+                        i.Client= clients.Find(C=>C.Id ==tmp);
+                        i.SaleMan = salemans.Find(S => S.SaleManId == i.SaleManId);
+                        i.ModelDevice = models.Find(M => M.ModelDeviceId == i.ModelDeviceId);
+                        i.TypeDevice = typeofdevice.Find(T => T.TypeDeviceId == i.TypeDeviceId);
+                        i.Country = countries.Find(C => C.CountryId == i.CountryId);
+                    }
                     oDevices = query.ToList();
                     return oDevices;
                 }
@@ -298,7 +423,7 @@ namespace Business
         {
             using (var DB = new RayosNoDataContext())
             {
-                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M => M.DeviceId).Where(D=>D.DeviceId==DeviceId).Include(M=>M.Technician);               
+                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M => M.DeviceId).Where(D=>D.DeviceId==DeviceId).Include(M=>M.Technician).Include(M=>M.Device);               
                 return aux.ToList();
             }
         }
@@ -350,12 +475,20 @@ namespace Business
         /// <param name="oMaintenance">New object to insert</param>
         public static void Create(MaintenanceEntity oMaintenance)
         {
-            using( var  DB = new RayosNoDataContext())
+            try
             {
-                DB.Maintenances.Add(oMaintenance);
-                DB.SaveChanges();
-
+                using (var DB = new RayosNoDataContext())
+                {
+                    DB.Maintenances.Add(oMaintenance);
+                    DB.SaveChanges();
+                    DB.Database.ExecuteSqlInterpolated($"EXECUTE  UpdateRecomendedDateOfMaintenance @_DeviceId = {oMaintenance.DeviceId.ToString()}");
+                }
             }
+            catch(Exception f)
+            {
+                Console.WriteLine($"Error: {f.Message}");
+            }
+
         }
         /// <summary>
         /// Update an exist Maintenance in the table Maintenances
@@ -364,9 +497,25 @@ namespace Business
         public static void Update ( MaintenanceEntity oMaintenance)
         {
             using (var DB = new RayosNoDataContext())
-            {
-                DB.Maintenances.Update(oMaintenance);
-                DB.SaveChanges();
+            { 
+                try
+                {
+                    ///Es necesario generar un  SP que consulte los mantenimientos y traiga la ultima fecha
+                    ///Este es un arreglo temporal
+                    var device = B_Device.DeviceById(oMaintenance.DeviceId);
+                    device.RecomendedDateOfMaintenance = oMaintenance.MaintenanceDate.AddYears(1);
+                    B_Device.UpdateDevice(device);
+                }catch(Exception f)
+                {
+                    Console.WriteLine($"Error {f.InnerException}");
+                }
+                finally
+                {
+                    DB.Maintenances.Update(oMaintenance);
+                    DB.SaveChanges();
+                    DB.Database.ExecuteSqlInterpolated($"EXECUTE  UpdateRecomendedDateOfMaintenance @_DeviceId = {oMaintenance.DeviceId.ToString()}");
+                }
+
             }
         }
         /// <summary>
@@ -379,6 +528,7 @@ namespace Business
             {
                 DB.Maintenances.Remove(oMaintenance);
                 DB.SaveChanges();
+                DB.Database.ExecuteSqlInterpolated($"EXECUTE  UpdateRecomendedDateOfMaintenance @_DeviceId = {oMaintenance.DeviceId.ToString()}");
             }
         }
         #endregion

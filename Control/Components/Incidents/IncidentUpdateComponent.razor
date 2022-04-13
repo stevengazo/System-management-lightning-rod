@@ -43,6 +43,17 @@
         <InputText class="form-control" @bind-Value="oIncident.Recomentations"></InputText>
     </div>
     <div class="form-group">
+        <label><strong>Ténico encargado</strong></label>
+        <InputSelect @bind-Value="oIncident.TechnicianId" class="form-control">
+            <option value="">Seleccione un Técnico...</option>
+            @foreach (var obj in technicians)
+            {
+                <option value="@obj.TechnicianId">@obj.TechnicianName</option>
+            }
+        </InputSelect>
+        <p><i>Nombre de la persona que realizó la visita.</i></p>
+    </div>
+    <div class="form-group">
         <label>Numero de serie</label>
         <InputSelect @bind-Value="oIncident.DeviceId" class="form-control">
             <option value="">Seleccione un equipo...</option>
@@ -63,18 +74,32 @@
     [Parameter]
     public string IncidentId { get; set; }
 
+    string Message = "";
+
     IncidentEntity oIncident = new IncidentEntity();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
+    List<TechnicianEntity> technicians = new List<TechnicianEntity>(); 
 
     protected override async Task OnInitializedAsync()
     {
         Devices = B_Device.ListOfDevices().OrderBy(D => D.ClientId).ToList();
         oIncident = B_Incident.GetIncidentById(IncidentId);
+        technicians = B_Technician.GetListOftechnicians();
     }
     private void UpdateIncident()
     {
-        B_Incident.Update(oIncident);
-        Nav.NavigateTo("incident/list");
+        try
+        {
+            oIncident.Device = Devices.First(D => D.DeviceId == oIncident.DeviceId);
+            B_Incident.Update(oIncident);
+            Nav.NavigateTo("incident/list");        
+        }
+        catch(Exception g)
+        {
+            Message = $"Error: {g.Message}";
+
+        }
+    
     }
 
 }   

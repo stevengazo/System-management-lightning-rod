@@ -1,6 +1,33 @@
 ﻿@using Entities;
 @using Business;
+@using System.Linq;
 
+
+<div class="d-flex flex-column">
+    @if(Warranties.Count != 0 && lastWarranty != null)
+    {
+        @if(lastWarranty == null)
+        {
+            <label class="text-danger font-weight-bold">
+                No hay garantias validas emitidas
+            </label>
+        }
+        @if(lastWarranty.DateReceived.AddYears(1) < DateTime.Today)
+        {
+            <label>Ultima garantia emitida el @lastWarranty.DateReceived</label>
+            <label class="text-danger font-weight-bold">La última garantia fue emitida hace más de un año.</label>
+        }
+        else
+        {
+            <label>Ultima garantia emitida el @lastWarranty.DateReceived</label>
+            <label class="text-success font-weight-bold">La ultima garantia fue emitida hace menos de un año.</label>
+        }
+    }else if(Warranties.Count == 0)
+    {
+            <label class="text-warning font-weight-bold ">El equipo @id no posee garantias emitidas.</label>
+            <label class="">Verifica la fecha de activación y la emisión por parte del fabricante.</label>
+    }
+</div>
 <table class=" table table-responsive-sm table-bordered table-hover table-light">
     <thead>
         <tr>
@@ -29,11 +56,23 @@
 @code {
     [Parameter]
     public string id { get; set; }
+    bool flagWarranty = false;
 
     List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
 
+    WarrantyEntity lastWarranty = new WarrantyEntity();
     protected override async Task OnInitializedAsync()
     {
         Warranties = B_Warranty.ListOfWarrantiesById(id);
+
+
+        if (Warranties.Count != 0)
+        {            
+            lastWarranty = (from warr
+                            in Warranties
+                             orderby warr.DateReceived descending
+                             where warr.StatusId == 1
+                             select warr).FirstOrDefault();           
+        }
     }
 }  

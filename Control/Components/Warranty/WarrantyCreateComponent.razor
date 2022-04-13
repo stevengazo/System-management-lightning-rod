@@ -4,59 +4,75 @@
 
 <EditForm Model="oWarranty">
     <div class="form-group">
-        <label>Seleccione el Dispositivo</label>
-        <InputSelect @bind-Value="oWarranty.DeviceId" class="form-control">
+        <label class="h5"><strong>Seleccione el Dispositivo</strong></label>
+        <input type="text" list="list-devices" bind-Value="@oWarranty.DeviceId" class="form-control"/>
+        <datalist id="list-devices">
             <option value="0">Seleccione...</option>
             @foreach (var obj in Devices)
             {
                 <option value="@obj.Key">@obj.Value  @obj.Key</option>
             }
-        </InputSelect>
+        </datalist>
+        <p><i>Número de dispositivo </i></p>
     </div>
+    
     <div class="form-group">
-        <label>Fecha envío Protocolo</label>
+        <label class="h5"><strong>Fecha envío Protocolo</strong></label>
         <InputDate @bind-Value="oWarranty.DateSend" class="form-control" ></InputDate>
+        <p><i>Fecha de envio del protocolo a España</i></p>
     </div>
     <div class="form-group">
-        <label>Fecha recepción Garantía</label>
+        <label class="h5"><strong>Fecha recepción Garantía</strong></label>
         <InputDate @bind-Value="oWarranty.DateReceived" class="form-control"></InputDate>
+        <p><i>Fecha de recepción o estimada de España</i></p>
     </div>
     <div class="form-group">
-        <label>Notas:</label>
+        <label class="h5"><strong>Notas:</strong></label>
         <InputTextArea @bind-Value="oWarranty.Notes" class="form-control"></InputTextArea>
+        <p><i>Notas respectivas a la garantía </i></p>
     </div>
     <div class="form-group">
-        <label>Estatus</label>
+        <label class="h5"><strong>Estatus</strong></label>
         <InputSelect @bind-Value="oWarranty.StatusId" class="form-control">
             <option value="">Seleccione un estado...</option>
-            @foreach (var item in EstatusType)
+            @foreach (var item in status)
             {
-                <option value="@item">@item</option>
+                <option value="@item.StatusId">@item.StatusName</option>
             }
         </InputSelect>
+        <p><i>Estado de la garantía </i></p>
     </div>
 </EditForm>
 
 <input type="button" value="Guardar Registro" class="btn-info" @onclick="SaveWarranty"/>
+<p>@Message</p>
 
 @code{
-    WarrantyEntity oWarranty = new WarrantyEntity();
-    string[] EstatusType = { "En tramite", "Recibido", "Con Problemas" };
+    WarrantyEntity oWarranty = new WarrantyEntity();    
     Dictionary<string, string> Devices = new Dictionary<string, string>();
-
+    List<StatusEntity> status = new List<StatusEntity>();
+    string Message = "";
 
     protected override async Task OnInitializedAsync()
     {
 
         Devices = B_Device.GetDictonaryOfDevicesWithClient();
+        status = B_Status.GetStatus();
     }
 
     private void SaveWarranty()
     {
-        oWarranty.Id = Guid.NewGuid().ToString();
+        try
+        {
+            oWarranty.Id = Guid.NewGuid().ToString();
 
-        B_Warranty.Create(oWarranty);
-        Nav.NavigateTo($"warranty/view/{oWarranty.Id}");
+            B_Warranty.Create(oWarranty);
+            Nav.NavigateTo($"warranty/view/{oWarranty.Id}");        
+        }catch(Exception f)
+        {
+            Message = $"Error: {f.Message}. Intentelo de nuevo";
+        }
+
     }
 
 }

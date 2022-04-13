@@ -1,0 +1,68 @@
+﻿@using Entities;
+@using Business;
+@using ChartJs.Blazor.PieChart;
+@using ChartJs.Blazor.BarChart;
+
+
+
+
+<div >
+    <Chart Config="@_barConfigMaintByYear"/>
+    <p><i>Mantenimientos registrados en la base de datos por año</i></p>
+</div>
+
+
+
+
+@code{
+    private BarConfig _barConfigMaintByYear;
+    private Chart _chart;
+
+    private Dictionary<int, int> MaintanancesByYear = new Dictionary<int, int>();
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        MaintanancesByYear = B_Maintenance.GeQuantityByYears();
+        MaintenanceByYearsChart();
+    }
+
+
+    private void MaintenanceByYearsChart()
+    {
+        _barConfigMaintByYear= new BarConfig()
+            {
+                Options = new BarOptions
+                {
+                    Responsive = true,
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Mantenimientos Por Año"
+                    }
+                }
+            };
+
+        var tmpValues = new List<int>();    
+        var tmplist= new List<int>(MaintanancesByYear.Values);        
+
+
+        foreach (var item in MaintanancesByYear)
+        {            
+            _barConfigMaintByYear.Data.Labels.Add(item.Key.ToString());
+            tmpValues.Add(item.Value);
+        }
+
+        BarDataset<int> _BarDataset = new BarDataset<int>(tmpValues);
+        _BarDataset.Label = "Mantenimientos al año";
+        _BarDataset.BackgroundColor = ColorUtil.ColorHexString(16, 159, 7);
+        _BarDataset.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
+        _BarDataset.BorderColor = ColorUtil.ColorHexString(133, 133, 133);
+        _BarDataset.MinBarLength = 20;
+        _barConfigMaintByYear.Data.Datasets.Add(_BarDataset);
+    }
+
+
+
+
+
+}

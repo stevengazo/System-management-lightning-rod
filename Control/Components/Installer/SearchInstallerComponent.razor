@@ -1,0 +1,111 @@
+﻿@using Entities;
+@using Business;
+
+
+
+
+<div>
+    <div class="form-group row">
+        <div class="col">
+            <input type="text"class="rounded form-control" @bind="@idToSearch" placeholder="Id" />
+        </div>
+        <div class="col">
+            <input type="text"  class="rounded form-control" @bind="@nameToSeach" placeholder="Nombre Instalador" />
+        </div>   
+    </div>
+
+    <div class="form-group row">
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Buscar" @onclick="Search"/>
+        </div>
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="cleanAsync" />
+        </div>
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Exportar" />
+        </div>
+        <div class="col-1" >
+            <button  class=" border-info">
+                <span class="oi oi-info" aria-hidden="true"  ></span> 
+            </button>            
+        </div>
+    </div>
+    <p class="text-center" style="color:red"> @errorMessage</p>
+</div>
+
+<hr/>
+
+<table class="table table-borderless table-hover table-striped table-responsive-sm">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Nombre
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in installers)
+       {
+           <tr>
+               <td>
+                   @item.InstallerId
+               </td>
+               <td>
+                   @item.Name
+               </td>
+               <td>
+                   <a href="installer/view/@item.InstallerId" class="btn btn-outline-info">
+                       Ver
+                   </a>
+               </td>
+               <td>
+                   <a class="btn btn-outline-primary" href="installer/update/@item.InstallerId">
+                       Modificar
+                   </a>                   
+                   <a class="btn btn-outline-danger" href="installer/delete/@item.InstallerId">
+                       Borrar
+                   </a>                   
+               </td>
+           </tr>
+       }
+
+    </tbody>
+</table>
+
+
+
+@code{
+
+
+    #region INTERNAL
+    List<InstallerEntity> installers = new List<InstallerEntity>();
+
+    private string idToSearch= "";
+    private string nameToSeach = "";
+    private string errorMessage = "";
+    #endregion
+
+    private async Task cleanAsync()
+    {
+        idToSearch= null;
+        nameToSeach = null;
+    }
+
+
+    private async Task Search()
+    {
+        installers =await B_Installer.Search(idToSearch, nameToSeach);
+        if(installers.Count== 0)
+        {
+            errorMessage = "No hay coincidencias";
+        }
+        else
+        {
+            errorMessage = "";
+        }
+    }
+
+}

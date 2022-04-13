@@ -1,0 +1,100 @@
+﻿@using Entities;
+@using Business;
+
+
+
+
+
+
+<div>
+    <h2>Lista de Modelos Registrados</h2>
+    <div>
+        <h3>Registrar nuevo modelo en la base de datos</h3>
+        <EditForm Model="ModelD" class="form-inline row ">
+            <div class="col">
+                <label>Id</label>
+                <InputText @bind-Value="ModelD.ModelDeviceName" class="form-control"> </InputText>
+            </div>
+            <div class="col">
+                <label>Acciones</label>
+                <input type="button" value="Agregar" class="btn btn-success" @onclick="AddModel"/>
+            </div>
+        </EditForm>
+        <p>@Message</p>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>
+                        Modelo
+                    </td>
+                    <td>
+                        Acciones
+                    </td>
+            <td>
+            </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ModelDeviceEntity item in ModelsDevices)
+               {
+                   <tr>
+                       <td>@item.ModelDeviceName</td>
+                       <td><a href="Models/Update/@item.ModelDeviceId" class="btn btn-primary" >Editar</a></td>
+                       <td><a href="Models/Delete/@item.ModelDeviceId" class="btn btn-danger">Eliminar</a></td>
+                   </tr>
+               }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@code{
+    private List<ModelDeviceEntity> ModelsDevices = new List<ModelDeviceEntity>();
+
+
+    private ModelDeviceEntity ModelD = new ModelDeviceEntity();
+
+    private string Message = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        ChargeList();
+
+    }
+
+
+    private void ChargeList()
+    {
+        ModelsDevices=  B_ModelDevice.ListOfModels();
+    }
+
+
+    private void AddModel()
+    {
+        try
+        {
+
+            B_ModelDevice.CreateModel(ModelD);
+            ChargeList();
+            ModelD = new ModelDeviceEntity();
+        }   
+        catch(Exception s)
+        {
+            Message = $"Error: {s.Message}";
+        }
+
+    }
+
+
+}

@@ -1,0 +1,29 @@
+﻿@page "/Models/Update/{id}"
+
+
+
+
+<AuthorizeView Roles="Administrador,Lector,Editor">
+    <Authorized>
+        <div class="text-center">
+            <h2>Actualización de Modelo</h2>  
+            <hr />
+            <UpdateModelDeviceComponent Id="@id"/>
+        </div>
+    </Authorized>
+    <NotAuthorized>        
+        <NotAvariableComponent> </NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+@code{
+    [Parameter]
+    public string id  { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+    id = id;
+    } 
+}
