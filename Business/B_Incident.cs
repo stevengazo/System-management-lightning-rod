@@ -76,7 +76,10 @@ namespace Business
             }
         }
 
-
+        /// <summary>
+        /// Get the list of years has incidents registered
+        /// </summary>
+        /// <returns>list of years</returns>
         public static int[] GetIncidentsByYears()
         {
             using (var DB = new RayosNoDataContext())
