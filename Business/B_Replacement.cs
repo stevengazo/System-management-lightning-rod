@@ -71,7 +71,48 @@ namespace Business
         #region Consult
 
 
+        /// <summary>
+        /// Get the quantities of replacements by year
+        /// </summary>
+        /// <returns>Quantity of replacements</returns>
+        public static Dictionary<int,int> GetQuantityOfReplacement()
+        {
+            Dictionary<int,int> dicOfRemplacements = new Dictionary<int,int>();
+            try
+            {
+                using (var db = new RayosNoDataContext())
+                {
+                    var tmpData = (from repl in db.Replacements select  repl.NewSerieDevice);
 
+                    if(tmpData != null)
+                    {
+                        foreach (var item in tmpData)
+                        {
+                            var Year = B_Device.DeviceById(item).InstallationDate.Year;
+                            if (dicOfRemplacements.ContainsKey(Year))
+                            {
+                                dicOfRemplacements[Year] = dicOfRemplacements[Year] + 1;
+                            }
+                            else
+                            {
+                                dicOfRemplacements.Add(Year, 1);
+                            }
+                        }
+                        return dicOfRemplacements;
+                    }
+                    else
+                    {
+                        return new Dictionary<int, int>();
+                    }                    
+                }
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Error: {error.Message}");
+                return new Dictionary<int, int>();
+            }
+
+        }
 
 
         

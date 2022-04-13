@@ -1,0 +1,50 @@
+﻿@using Entities;
+@using Business;
+@using ChartJs.Blazor.PieChart;
+@using ChartJs.Blazor.BarChart;
+
+<div>
+    <Chart Config="@_barConfigReplacementsByYear"/>
+    <p><i>Cantidad de Equipos Reemplazados por año</i></p>
+</div>
+
+@code{
+    private BarConfig _barConfigReplacementsByYear;
+    private Chart _chart;
+
+    Dictionary<int, int> ReplacementsByYear = new Dictionary<int, int>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        ReplacementsByYear = B_Replacement.GetQuantityOfReplacement();
+        ReplacementsGraph();
+    }
+
+    private void ReplacementsGraph()
+    {
+        this._barConfigReplacementsByYear = new BarConfig()
+            {
+                Options = new BarOptions
+                {
+                    Responsive = true,
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Reemplazos registrados por año"
+                    }
+                }
+            };
+        foreach (var item in ReplacementsByYear)
+        {
+            this._barConfigReplacementsByYear.Data.Labels.Add(item.Key.ToString());
+        }        
+        BarDataset<int> _barDataSet = new BarDataset<int>(ReplacementsByYear.Values.ToList());
+        _barDataSet.Label = "Cantidad de Reemplaos por año";
+        _barDataSet.BackgroundColor = ColorUtil.ColorHexString(22, 37, 189);
+        _barDataSet.HoverBorderColor = ColorUtil.ColorHexString(0, 0, 0);
+        _barDataSet.MinBarLength = 20;
+        _barConfigReplacementsByYear.Data.Datasets.Add(_barDataSet);
+    }
+
+}
