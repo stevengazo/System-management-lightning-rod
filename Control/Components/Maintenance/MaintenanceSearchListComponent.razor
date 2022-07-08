@@ -10,7 +10,13 @@
 <div style=" margin-top: 22px; ">
     <div class="form-group row">
         <div class="col">
-            <input type="text" class="rounded form-control" @bind="@DeviceToSearch" placeholder="Id del Dispositivo" />
+            <input type="text" list="idDevices" class="rounded form-control" @bind="@DeviceToSearch" placeholder="Id del Dispositivo" />
+            <datalist id="idDevices">
+            @foreach (var rowDic in DictDevices)
+                {
+                    <option value="@rowDic.Key">@rowDic.Value</option>
+                }
+            </datalist>
         </div>
         <div class="col">
             <select class="rounded form-control" @bind="MonthToSearch">
@@ -111,6 +117,7 @@
     string ErrorMessage { get; set; }
 
     #region Internal Variables
+    private Dictionary<string,string> DictDevices { get; set; }
     private int YearToSearch { get; set; }
     private int MonthToSearch { get; set; }
     private string DeviceToSearch { get; set; }
@@ -124,6 +131,7 @@
     {
         base.OnInitializedAsync();
         technicians = B_Technician.GetListOftechnicians();
+        DictDevices = B_Device.GetDictonaryOfDevicesWithClient();
     }
 
     private void Search()
