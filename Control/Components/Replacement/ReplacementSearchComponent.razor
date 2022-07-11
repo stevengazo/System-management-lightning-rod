@@ -69,7 +69,7 @@
 
     protected override  async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
+        await  base.OnInitializedAsync();
         dicDevices = B_Device.GetDictonaryOfDevicesWithClient();
     }
 
@@ -116,7 +116,7 @@
                     csv.WriteRecords(arr1);
                 }
                 var arr = memoryStream.ToArray();
-                Js.SaveAs("DevicesConsult.csv", arr);
+               await Js.SaveAs("DevicesConsult.csv", arr);
             }
         }
     }
