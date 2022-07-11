@@ -19,25 +19,25 @@ namespace Business
                 if ((_DeviceId != null) && (_Estatus != null) && (_Year != 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                                    Where	(	DeviceId like {"%"+_DeviceId+"%"} )                                                          
                                                                     and		(	YEAR(DateSend)= {_Year.ToString()}	)
                                                                     and		(	StatusId = {_Estatus})").ToList();
                 }
                 else if ((_DeviceId != null) && (_Estatus != null) && (_Year == 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	DeviceId = {_DeviceId} )
+                                                                    Where	(	DeviceId like {"%" + _DeviceId + "%"} )                                                          
                                                                    and		(	StatusId = {_Estatus})").ToList();
                 }
                 else if ((_DeviceId != null) && (_Estatus == null) && (_Year == 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	DeviceId = {_DeviceId} )").ToList();
+                                                                    Where	(	DeviceId like {"%" + _DeviceId + "%"})").ToList();
                 }
                 else if ((_DeviceId != null) && (_Estatus != null) && (_Year != 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                                    WHERE	( DeviceId like {"%" + _DeviceId + "%"} )                                                                                                                    
                                                                     and		(	YEAR(DateSend)= {_Year.ToString()}	)
                                                                     and		(	StatusId = {_Estatus})").ToList();
                 }
@@ -60,7 +60,7 @@ namespace Business
                 else if ((_DeviceId != null) && (_Estatus == null) && (_Year != 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                               WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                               where	(	DeviceId like {"%" + _DeviceId + "%"} )                                                                                                                 
                                                                and		(	YEAR(DateSend)= {_Year.ToString()}	)").ToList();
                 }
 

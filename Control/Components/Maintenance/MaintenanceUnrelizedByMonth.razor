@@ -1,7 +1,7 @@
 ﻿@using Entities;
 @using Business;
 
-<select class="form-control" @bind="valueMonth" > 
+<select class="form-control" @onchange="onchangeHandle"> 
     <option value="1">enero</option>
     <option value="2">Febrero</option>
     <option value="3">Marzo</option>
@@ -15,7 +15,12 @@
     <option value="11">Noviembre</option>
     <option value="12">Diciembre</option>
 </select>
+<hr />
 
+<h4>
+    Mes - @MonthToSelect
+</h4>
+<hr />
 <table class="table table-sm table-hover table-borderless">
     <thead>
         <tr>
@@ -40,7 +45,9 @@
        {
            <tr class="h6">
                <td>
-                   @item.DeviceId
+                   <a href="device/view/@item.DeviceId">
+                       @item.DeviceId
+                   </a>                  
                </td>
                 <td>
                     @{
@@ -72,23 +79,28 @@
 </table>
 
 
+
 @code{
     private List<DeviceEntity> devices = new List<DeviceEntity>();
 
-    int valueMonth =0;
+    int MonthToSelect = 1;
 
     protected override async Task  OnInitializedAsync()
     {
-        valueMonth = DateTime.Today.Month;
+        MonthToSelect = DateTime.Today.Month;
         await base.OnInitializedAsync();
         devices = await CheckDevices();
 
     }
     private async Task<List<DeviceEntity>> CheckDevices()
     {
-        return  B_Device.GetDevWithOutMainByMonth(valueMonth);
+        return  B_Device.GetDevWithOutMainByMonth(MonthToSelect);
     }
 
 
-}
-
+    private async void onchangeHandle( ChangeEventArgs eventArgs)
+    {
+        MonthToSelect = int.Parse(eventArgs.Value.ToString());
+        devices = await CheckDevices();
+    }
+    }

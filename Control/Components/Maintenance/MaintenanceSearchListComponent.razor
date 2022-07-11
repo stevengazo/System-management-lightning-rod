@@ -138,7 +138,7 @@
     {
         try
         {
-            Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, TechnicianIdToSearch, YearToSearch, MonthToSearch);
+            Maintenances = B_Maintenance.SearchMaintenances(DeviceToSearch, TechnicianIdToSearch, YearToSearch, MonthToSearch);
             if (Maintenances.Count > 0)
             {
                 ErrorMessage = "";

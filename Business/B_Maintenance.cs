@@ -72,7 +72,7 @@ namespace Business
 
         }
        
-        public static List<MaintenanceEntity> GetMaintenancesByConsult(string _Device = "", string _TechnicianId ="",int _Year = 0, int _Month=0)
+        public static List<MaintenanceEntity> SearchMaintenances(string _Device = "", string _TechnicianId ="",int _Year = 0, int _Month=0)
         {
             List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
             using(var DB = new RayosNoDataContext())
