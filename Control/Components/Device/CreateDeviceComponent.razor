@@ -7,20 +7,20 @@
         <div class="form-group">
             <label class="h5"> <strong>Numero de Serie:</strong> </label>
             <InputText @bind-Value="oDevice.DeviceId" class="form-control"></InputText>
-            <p><i>Número de serie del equipo</i></p>
+            <p class="text-secondary"><i>Número de serie del equipo</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong> Alias del dispositivo:</strong> </label>
             <InputText @bind-Value="oDevice.Alias" class="form-control"></InputText>
-            <p><i>Alias, ejemplo: "Sector oficina"</i></p>
+            <p class="text-secondary"><i>Alias, ejemplo: "Sector oficina"</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>Longitud</strong></label>
             <InputText @bind-Value="@oDevice.Longitude" class="form-control"></InputText>
-            <p><i>Puede ser dado en grados o decimales</i></p>
+            <p class="text-secondary"><i>Puede ser dado en grados o decimales</i></p>
             <label class="h5">Latitud</label>
             <InputText @bind-Value="@oDevice.Latitude" class="form-control"></InputText>
-            <p><i>Puede ser dado en grados o decimales</i></p>
+            <p class="text-secondary"><i>Puede ser dado en grados o decimales</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>Pais de Instalación</strong></label>
@@ -31,12 +31,12 @@
                     <option value="@item.CountryId">@item.CountryName</option>
                 }
             </InputSelect>
-            <p><i>País en el  cual se realiza la instalación</i></p>
+            <p class="text-secondary"><i>País en el  cual se realiza la instalación</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>Fecha de Instalación</strong></label>
             <InputDate @bind-Value="oDevice.InstallationDate" class="form-control"></InputDate>
-            <p><i>Fecha exacta de la colocación del equipo</i></p>
+            <p class="text-secondary"><i>Fecha exacta de la colocación del equipo</i></p>
         </div>
         <div class="form-group">
             <label class="h5"> <strong>Tipo de Dispositivo</strong></label>
@@ -47,7 +47,7 @@
                     <option value="@item.TypeDeviceId">@item.TypeDeviceName</option>
                 }
             </InputSelect>
-            <p><i>Consultar información con vendedor</i></p>
+            <p class="text-secondary"><i>Consultar información con vendedor</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>Modelo del dispositivo:</strong></label>
@@ -58,12 +58,12 @@
                     <option value="@item.ModelDeviceId">@item.ModelDeviceName</option>		 
 	            }
             </InputSelect>
-            <p><i>Modelo del equipo. Determinado por radio de cobertura</i></p>
+            <p class="text-secondary"><i>Modelo del equipo. Determinado por radio de cobertura</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>En funcionamiento</strong></label>
             <InputCheckbox @bind-Value="oDevice.IsActive"></InputCheckbox>
-            <p><i>Seleccionar si el equipo se encuentra en funcionamiento</i></p>
+            <p class="text-secondary"><i>Seleccionar si el equipo se encuentra en funcionamiento</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>Cliente</strong></label>
@@ -74,7 +74,7 @@
                     <option value="@obj.Id">@obj.Name</option>
                 }
             </datalist>
-            <p><i>El cliente debe ser preregistrado antes de ingresar un nuevo equipo</i></p>
+            <p class="text-secondary"><i>El cliente debe ser preregistrado antes de ingresar un nuevo equipo</i></p>
         </div>       
         <div class="form-group">
             <label class="h5"><strong>Vendedor</strong></label>
@@ -85,7 +85,7 @@
                     <option value="@obj.SaleManId">@obj.Name</option>
                 }
             </datalist>
-            <p><i>El vendedor debe estar previamente registrado</i></p>
+            <p class="text-secondary"><i>El vendedor debe estar previamente registrado</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>Instalador</strong></label>
@@ -96,12 +96,12 @@
                     <option value="@obj.InstallerId">@obj.Name</option>
                 }
             </datalist>
-            <p><i>El instalador debe estar previamente registrado</i></p>
+            <p class="text-secondary"><i>El instalador debe estar previamente registrado</i></p>
         </div>
         <div class="form-group">
             <label class="h5"><strong>Notas del equipo</strong></label>
             <InputTextArea  @bind-Value="oDevice.Note" class="form-control"></InputTextArea>
-            <p><i>Notas Generales del dispositivo</i></p>
+            <p class="text-secondary"><i>Notas Generales del dispositivo</i></p>
         </div>
 
     </EditForm>

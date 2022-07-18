@@ -19,10 +19,10 @@ namespace Business
         public static void CreateCountry(CountryEntity oCountry)
         {
 
-            using (var db = new RayosNoDataContext())
+            using (var CONTEXT = new RayosNoDataContext())
             {
-                db.Countries.Add(oCountry);
-                db.SaveChanges();
+                CONTEXT.Countries.Add(oCountry);
+                CONTEXT.SaveChanges();
             }
 
 
@@ -170,7 +170,7 @@ namespace Business
 
 
         /// <summary>
-        /// Check if exist a country in the db
+        /// Check if exist a country in the CONTEXT
         /// </summary>
         /// <param name="CountryName">Country to search</param>
         /// <returns>True if exits a country, false if not exist or present an error</returns>
