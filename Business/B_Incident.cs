@@ -23,6 +23,7 @@ namespace Business
                 using (var DB = new RayosNoDataContext())
                 {
                     oIncident.IncidentId = Guid.NewGuid().ToString();
+                    oIncident.IsClosed = false;
                     DB.Incidents.Add(oIncident);
                     DB.SaveChanges();
                 }
@@ -61,6 +62,27 @@ namespace Business
                 return (from Incident in DB.Incidents select Incident).Where(I => I.DeviceId == _DeviceIdToSearch).Include(I => I.Device).Include(I => I.Device.Client).Include(I => I.Device.SaleMan).Include(I => I.Technician).ToList();
             }
         }
+
+
+        /// <summary>
+        /// Set a value in a specific incident
+        /// </summary>
+        /// <param name="value">Boolean to set (true is finish) (false is in progress)</param>
+        /// <param name="id">Object to edit</param>
+        public static void ChangeState(bool value = false, string id = "")
+        {
+            var incident = GetIncidentById(id);
+            if(incident!= null)
+            {
+                using(var db= new RayosNoDataContext())
+                {
+                    incident.IsClosed = value;
+                    db.Incidents.Update(incident);
+                    db.SaveChanges();
+                }
+            }
+        }
+
 
         /// <summary>
         /// Consult and return the list of incidents

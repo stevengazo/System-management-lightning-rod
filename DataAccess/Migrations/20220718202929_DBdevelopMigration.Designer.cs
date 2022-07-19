@@ -7,19 +7,22 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayosNoDataContext))]
-    [Migration("20220207165117_DBTestingMigration")]
-    partial class DBTestingMigration
+    [Migration("20220718202929_DBdevelopMigration")]
+    partial class DBdevelopMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Entities.ClientEntity", b =>
                 {
@@ -41,7 +44,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
+                            Id = "b0c04d28-e785-4499-8407-46d90a9b4b79",
                             Name = "Prueba",
                             SectorId = 1
                         });
@@ -134,31 +137,31 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "7175e2c3-f855-442a-9613-a846af722a91",
+                            DeviceId = "50ab2cee-93f5-495f-8bfa-78a3ced76a1c",
                             Alias = "Prueba",
-                            ClientId = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
+                            ClientId = "b0c04d28-e785-4499-8407-46d90a9b4b79",
                             CountryId = "506",
-                            InstallationDate = new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallationDate = new DateTime(2022, 7, 18, 0, 0, 0, 0, DateTimeKind.Local),
                             IsActive = true,
                             IsReplaced = false,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
+                            SaleManId = "647ef26a-9188-422a-a0d1-d9f746a47b04",
                             TypeDeviceId = 1
                         },
                         new
                         {
-                            DeviceId = "cd93588f-e16c-46e3-943f-c613e9caf0f7",
+                            DeviceId = "6755154d-97a8-4db4-9a42-ad69519645d6",
                             Alias = "Reempleazo Prueba",
-                            ClientId = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
+                            ClientId = "b0c04d28-e785-4499-8407-46d90a9b4b79",
                             CountryId = "506",
-                            InstallationDate = new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallationDate = new DateTime(2022, 7, 18, 0, 0, 0, 0, DateTimeKind.Local),
                             InstallerId = "CR-1",
                             IsActive = false,
                             IsReplaced = true,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
+                            SaleManId = "647ef26a-9188-422a-a0d1-d9f746a47b04",
                             TypeDeviceId = 1
                         });
                 });
@@ -180,6 +183,9 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("IncidentDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Recomentations")
                         .HasMaxLength(450)
@@ -235,7 +241,7 @@ namespace DataAccess.Migrations
                         {
                             InstallerId = "CR-1",
                             Name = "Grupo Mecsa",
-                            initDate = new DateTime(2022, 2, 7, 10, 51, 16, 719, DateTimeKind.Local).AddTicks(7157)
+                            initDate = new DateTime(2022, 7, 18, 14, 29, 28, 846, DateTimeKind.Local).AddTicks(4614)
                         });
                 });
 
@@ -286,8 +292,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("ModelDeviceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModelDeviceId"), 1L, 1);
 
                     b.Property<string>("ModelDeviceName")
                         .HasColumnType("nvarchar(max)");
@@ -327,9 +334,9 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "3711b7f2-e590-4bc4-9a7d-309cf2ee2ac7",
-                            DeviceId = "cd93588f-e16c-46e3-943f-c613e9caf0f7",
-                            NewSerieDevice = "7175e2c3-f855-442a-9613-a846af722a91"
+                            ReplacementDeviceId = "ac4e3ba1-cc96-4e89-9ac8-683fc66bbeeb",
+                            DeviceId = "6755154d-97a8-4db4-9a42-ad69519645d6",
+                            NewSerieDevice = "50ab2cee-93f5-495f-8bfa-78a3ced76a1c"
                         });
                 });
 
@@ -351,7 +358,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
+                            SaleManId = "647ef26a-9188-422a-a0d1-d9f746a47b04",
                             Name = "sample"
                         });
                 });
@@ -360,8 +367,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("SectorId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectorId"), 1L, 1);
 
                     b.Property<string>("SectorName")
                         .HasColumnType("nvarchar(max)");
@@ -387,8 +395,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatusId"), 1L, 1);
 
                     b.Property<string>("StatusName")
                         .HasMaxLength(20)
@@ -425,8 +434,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("TechnicianId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TechnicianId"), 1L, 1);
 
                     b.Property<string>("TechnicianName")
                         .HasMaxLength(40)
@@ -448,8 +458,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("TypeDeviceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TypeDeviceId"), 1L, 1);
 
                     b.Property<string>("TypeDeviceName")
                         .HasMaxLength(30)
@@ -496,6 +507,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("DeviceId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("FilesPaths")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
@@ -513,10 +527,11 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "92205c2e-188b-4292-8d71-cc980df22240",
+                            Id = "ff187295-3656-4f1f-a344-272be9db7a63",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "7175e2c3-f855-442a-9613-a846af722a91",
+                            DeviceId = "50ab2cee-93f5-495f-8bfa-78a3ced76a1c",
+                            FilesPaths = "",
                             StatusId = 1
                         });
                 });
@@ -566,13 +581,13 @@ namespace DataAccess.Migrations
 
                     b.Navigation("Country");
 
-                    b.Navigation("installer");
-
                     b.Navigation("ModelDevice");
 
                     b.Navigation("SaleMan");
 
                     b.Navigation("TypeDevice");
+
+                    b.Navigation("installer");
                 });
 
             modelBuilder.Entity("Entities.IncidentEntity", b =>

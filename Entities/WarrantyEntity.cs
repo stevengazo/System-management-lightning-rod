@@ -17,6 +17,8 @@ namespace Entities
         public DateTime DateReceived { get; set; }       
         public string Notes { get; set; }
 
+        public string FilesPaths { get; set; }
+
         // Relation with Device
         public string DeviceId { get; set; }
         public DeviceEntity Device { get; set; }

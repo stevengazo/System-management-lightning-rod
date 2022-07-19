@@ -5,11 +5,15 @@
 
 <AuthorizeView Roles="Administrador,Editor,Lector">
     <Authorized>
-        <div>
+        <div >
+
             <h2 class="text-center">Información del Dispositivo</h2>
             <hr />
-            <p>Esta sección muestra la información del dispositivo aqui se enlista lo siguiente:</p>
-            <a href="device/list"> Regresar a la lista de dispositivos</a>
+            <div class="d-flex flex-row justify-content-between">
+                <p>Esta sección muestra la información del dispositivo aqui se enlista lo siguiente:</p>
+            <a href="device/list" class="btn btn-info"> Lista de dispositivos</a>
+            </div>
+            
             <hr />
             <ViewDeviceComponent id="@DeviceId.ToString()"/>
         </div>

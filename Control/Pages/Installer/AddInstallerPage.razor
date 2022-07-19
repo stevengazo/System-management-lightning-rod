@@ -1,4 +1,25 @@
 ﻿@page "/installer/create"
 
 
-<AddInstallerComponent/>
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <div>
+            <h2>
+                Creación de Instalador
+            </h2>
+            <hr />
+            <div class="d-flex flex-row justify-content-between">
+                <p>
+                    Inserte la información necesaria para la validación
+                </p>
+                <a href="installer/list" class="btn btn-info"> Regresar a la vista de dispositivos</a>
+            </div>
+            <AddInstallerComponent />
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent/>
+    </NotAuthorized>
+</AuthorizeView>
+

@@ -7,8 +7,14 @@
     <Authorized>
         <div>
             <h2 class="text-center">Información del Mantenimiento</h2>
+            <div class="d-flex justify-content-between flex-row">
+                <p>
+                    Información del mantenimiento realizado en el sitio.
+                </p>
+                <a class="btn btn-info" href="maintenance/list">Lista de Mantenimientos</a>
+            </div>
             <hr />
-            <a href="maintenance/list"> Regresar a la lista de Mantenimientos</a>
+            
             <hr />
             <MaintenanceViewComponent id="@MaintenanceId.ToString()" />
         </div>

@@ -9,10 +9,14 @@
         <div class="text-center">
             <h2> Información de la Garantia</h2>
             <hr />
-            <a href="warranty/list">Regresar a la lista de Garantias</a>
+            <div class="d-flex justify-content-between flex-row">
             <p>
                 A continuación se muestra la información realizada a la emisión del la garantia.
             </p>
+                <a href="warranty/list" class="btn btn-sm btn-info">Lista de Garantias</a>
+            </div>
+            
+            
             <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
         </div>
 

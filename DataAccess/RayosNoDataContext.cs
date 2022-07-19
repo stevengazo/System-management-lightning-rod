@@ -154,11 +154,11 @@ namespace DataAccess
             #endregion
 
             #region INCIDENT
-            IncidentEntity oIncident = new IncidentEntity { IncidentId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId ,TechnicianId = otech.TechnicianId};
+            IncidentEntity oIncident = new IncidentEntity { IncidentId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId ,TechnicianId = otech.TechnicianId, IsClosed=false};
             #endregion
 
             #region WARRANTY
-            WarrantyEntity oWarranty = new WarrantyEntity { Id = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId, StatusId=oStatus.StatusId  };
+            WarrantyEntity oWarranty = new WarrantyEntity { Id = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId, StatusId=oStatus.StatusId , FilesPaths="" };
             model.Entity<WarrantyEntity>().HasData(oWarranty);
             #endregion
 

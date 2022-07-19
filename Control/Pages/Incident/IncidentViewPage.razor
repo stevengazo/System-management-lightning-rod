@@ -9,9 +9,10 @@
     <Authorized>
         <div>
             <h2 class="text-center">Información del Incidente</h2>
-            <p>A continuación se muestra la información reelaventa </p>
-            <hr />
-            <a href="incident/list"> Regresar a la lista de incidentes</a>
+            <div class="d-flex flex-row justify-content-between">
+                <p>A continuación se muestra la información reelevante con respecto al incidente </p>
+                <a href="incident/list" class="btn btn-info">Lista de incidentes</a>
+            </div>
             <hr />
             <IncidentViewComponent IncidentId="@IncidentId.ToString()" />
         </div>

@@ -64,16 +64,33 @@
     <tbody>
         @foreach (var obj in Incidents)
         {
-        <tr>
-            <td>@obj.DeviceId</td>
-            <td>@obj.Device.Alias</td>
-            <td>@obj.Device.Client.Name</td>
-            <td>@obj.ReportDate</td>
-            <td>@obj.Technician.TechnicianName</td>
-            <td><a href="incident/view/@obj.IncidentId" >Ver</a></td>
-            <td><a href="incident/update/@obj.IncidentId">Editar</a></td>
-            <td><a  style="color:red" href="incident/delete/@obj.IncidentId">Eliminar</a></td>
-        </tr> 
+            if (!obj.IsClosed )
+            {
+                <tr class="text-danger">
+                    <td>@obj.DeviceId</td>
+                    <td>@obj.Device.Alias</td>
+                    <td>@obj.Device.Client.Name</td>
+                    <td>@obj.ReportDate</td>
+                    <td>@obj.Technician.TechnicianName</td>
+                    <td><a href="incident/view/@obj.IncidentId" >Ver</a></td>
+                    <td><a href="incident/update/@obj.IncidentId">Editar</a></td>
+                    <td><a  style="color:red" href="incident/delete/@obj.IncidentId">Eliminar</a></td>
+                </tr>
+            }
+            else
+            {
+                <tr class="">
+                    <td>@obj.DeviceId</td>
+                    <td>@obj.Device.Alias</td>
+                    <td>@obj.Device.Client.Name</td>
+                    <td>@obj.ReportDate</td>
+                    <td>@obj.Technician.TechnicianName</td>
+                    <td><a href="incident/view/@obj.IncidentId" >Ver</a></td>
+                    <td><a href="incident/update/@obj.IncidentId">Editar</a></td>
+                    <td><a  style="color:red" href="incident/delete/@obj.IncidentId">Eliminar</a></td>
+                </tr>                
+            }
+
         }
     </tbody>
 </table>

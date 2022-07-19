@@ -53,6 +53,10 @@ namespace Entities
         /// </summary>
         public string ContactReportingName { get; set; }
 
+        /// <summary>
+        /// Check if the incident was complete and the customer implement the recommendations
+        /// </summary>
+        public bool IsClosed { get; set; }
 
         //Relation With Device 
         public string DeviceId { get; set; }

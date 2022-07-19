@@ -72,7 +72,7 @@
     </div>
 </EditForm>
 <div>
-    <input  type="button" value="Guardar Incidente" @onclick="SaveIncident"/>
+    <input class="btn btn-success"  type="button" value="Guardar Incidente" @onclick="SaveIncident"/>
 </div>
 <p class="text-danger">@Message</p>
 
@@ -85,7 +85,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Devices = B_Device.ListOfDevices().OrderBy(D=>D.ClientId).ToList();
+        Devices = B_Device.ListOfDevices().Where(D=>D.IsActive==true).OrderBy(D=>D.ClientId).ToList();
         technicians = B_Technician.GetListOftechnicians();
     }
 
