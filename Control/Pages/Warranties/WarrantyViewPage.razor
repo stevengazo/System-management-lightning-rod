@@ -18,6 +18,11 @@
             
             
             <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
+            <hr />
+            <h2>
+                Archivos Anexos
+            </h2>
+            <GetFilesList id="@WarrantyId.ToString()" action="Warranty" />
         </div>
 
     </Authorized>

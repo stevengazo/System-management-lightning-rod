@@ -134,11 +134,30 @@ namespace Business
         }
         public  static void Create (WarrantyEntity oWarranty)
         {
-            using(var DB = new RayosNoDataContext())
+            var path = oWarranty.DeviceId.ToString();
+            var relativePath = $"{path}/{oWarranty.DateSend.Year.ToString()}-Warranty";
+            try
             {
-                DB.Warranties.Add(oWarranty);
-                DB.SaveChanges();
+                /* BASE PATH*/
+
+                B_StorageManage.createFolder(relativePath, oWarranty.Id);
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                using (var DB = new RayosNoDataContext())
+                {
+                    oWarranty.FilesPaths = $"{relativePath}/{oWarranty.Id}";
+                    DB.Warranties.Add(oWarranty);
+                    DB.SaveChanges();
+                }
+            }
+            
+          
+
         }
         public static void Update(WarrantyEntity oWarranty)
         {

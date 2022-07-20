@@ -473,7 +473,7 @@ namespace Business
         /// Create a new Maintenance
         /// </summary>
         /// <param name="oMaintenance">New object to insert</param>
-        public static void Create(MaintenanceEntity oMaintenance)
+        public static async void Create(MaintenanceEntity oMaintenance)
         {
             try
             {
@@ -483,6 +483,12 @@ namespace Business
                     DB.SaveChanges();
                     DB.Database.ExecuteSqlInterpolated($"EXECUTE  UpdateRecomendedDateOfMaintenance @_DeviceId = {oMaintenance.DeviceId.ToString()}");
                 }
+              
+                /* BASE PATH*/
+                var path = oMaintenance.DeviceId.ToString();
+                var relativePath = $"{path}/{oMaintenance.MaintenanceDate.Year.ToString()}-Maintenance";
+                await B_StorageManage.createFolder(relativePath,oMaintenance.MaintenanceId);
+
             }
             catch(Exception f)
             {

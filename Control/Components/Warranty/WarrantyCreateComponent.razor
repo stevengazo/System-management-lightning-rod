@@ -5,7 +5,7 @@
 <EditForm Model="oWarranty">
     <div class="form-group">
         <label class="h5"><strong>Seleccione el Dispositivo</strong></label>
-        <input type="text" list="list-devices" bind-Value="@oWarranty.DeviceId" class="form-control"/>
+        <InputText @bind-Value="oWarranty.DeviceId" list="list-devices" class="form-control" ></InputText>
         <datalist id="list-devices">
             <option value="0">Seleccione...</option>
             @foreach (var obj in Devices)

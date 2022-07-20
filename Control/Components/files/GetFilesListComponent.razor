@@ -1,0 +1,55 @@
+﻿@using Entities;
+@using Business;
+@using System.Linq;
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                    Nombre
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+      
+
+    </tbody>
+</table>
+
+
+@code
+{
+    [Parameter]
+    public string id { get; set; }
+
+    [Parameter]
+    public string action { get; set; }
+
+    Array[] itemsArray;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (action != null)
+        {
+            switch (action) 
+            {
+            case "Warranty":
+                var Object = B_Warranty.WarrantyById(id);
+                var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}/{Object.Id}";
+                itemsArray = B_StorageManage.sample(path);
+                break;                        
+            default:
+                // code block
+                break;
+            }                  
+                        
+        }
+       await base.OnInitializedAsync();
+    }
+
+
+        
+ }
+

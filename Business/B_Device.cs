@@ -62,7 +62,7 @@ namespace Business
         /// Create a new Device object
         /// </summary>
         /// <param name="oDevice">Object type Device</param>
-        public static void CreateDevice(DeviceEntity oDevice)
+        public static async void CreateDevice(DeviceEntity oDevice)
         {
             using (var Db = new RayosNoDataContext())
             {
@@ -70,6 +70,8 @@ namespace Business
                 Db.Devices.Add(oDevice);
                 Db.SaveChanges();
             }
+            // Crea una carpeta para el numero de serie del dispositivo
+           await B_StorageManage.createFolder("/", oDevice.DeviceId.ToString());
         }
 
         /// <summary>
