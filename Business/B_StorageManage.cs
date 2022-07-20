@@ -16,6 +16,22 @@ namespace Business
         private static readonly string UserPassword = "Stega.26";
         private static readonly string basePath = "array1/Sgazo/Dinnteco";
 
+        private static bool CheckConnection()
+        {
+            try
+            {
+                FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
+                ftpClient.Connect();
+                ftpClient.Disconnect();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
+        }
 
         public static string getBasePath()
         {
@@ -26,28 +42,32 @@ namespace Business
             List<Array> tmp= new List<Array>();
             try
             {
-                var fullpath = basePath + "/"+ path;
-                
+                if (CheckConnection()) {
+                    var fullpath = basePath + "/" + path;
 
-                FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
-                
-                ftpClient.Connect();
-                var tmpResults = ftpClient.GetListing(fullpath);
-                ftpClient.Disconnect();
-                if (tmpResults.Length > 0)
-                {
-                    var tmpArray = new string[] { };
-                    var counter = 0;
-                    foreach (FtpListItem item in tmpResults)
+
+                    FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
+
+                    ftpClient.Connect();
+                    var tmpResults = ftpClient.GetListing(fullpath);
+                    ftpClient.Disconnect();
+                    if (tmpResults.Length > 0)
                     {
-                        tmpArray[0] = item.Name.ToString();
-                        tmpArray[1] = item.Type.ToString();
-                        tmpArray[2] = item.FullName.ToString();
+                        var tmpArray = new string[] { };
+                        var counter = 0;
+                        foreach (FtpListItem item in tmpResults)
+                        {
+                            tmpArray[0] = item.Name.ToString();
+                            tmpArray[1] = item.Type.ToString();
+                            tmpArray[2] = item.FullName.ToString();
+                        }
+                        tmp[counter] = tmpArray;
+                        counter++;
                     }
-                    tmp[counter] = tmpArray;
-                    counter++;
+                    return tmp.ToArray();
                 }
-                return tmp.ToArray();
+             
+                return null;
             }
             catch (Exception e)
             {
@@ -70,20 +90,23 @@ namespace Business
         {
             try
             {
-                FtpClient client = new FtpClient(NetworkStoragePath,userName,UserPassword);            
-                if(relativePath == "/")
-                {
-                    var flag =  client.DirectoryExists(namePath);
-                    if(!flag)
+                if (CheckConnection()) {
+                    FtpClient client = new FtpClient(NetworkStoragePath, userName, UserPassword);
+                    if (relativePath == "/")
                     {
-                        await client.CreateDirectoryAsync($"{basePath}/{namePath}");
-                    }
+                        var flag = client.DirectoryExists(namePath);
+                        if (!flag)
+                        {
+                            await client.CreateDirectoryAsync($"{basePath}/{namePath}");
+                        }
 
+                    }
+                    else
+                    {
+                        await client.CreateDirectoryAsync($"{basePath}/{relativePath}/{namePath}");
+                    }
                 }
-                else
-                {
-                    await client.CreateDirectoryAsync($"{basePath}/{relativePath}/{namePath}");
-                }
+                
             }
             catch (Exception e)
             {
