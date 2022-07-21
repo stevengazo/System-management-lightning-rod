@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.IO;
 using FluentFTP;
+using System.Reflection;
 
 namespace Business
 {
@@ -16,7 +17,31 @@ namespace Business
         private static readonly string UserPassword = "Stega.26";
         private static readonly string basePath = "array1/Sgazo/Dinnteco";
 
-        public static bool DownloadFile(string fileName = "", string LocalPath = "", string NetworkPath = "")
+        /// <summary>
+        /// Get an specific data from the FTP server
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="NetworkPath"></param>
+        /// <returns></returns>
+        public static Stream DownloadFileStream(string fileName = "", string NetworkPath = "")
+        {
+            // Get the object used to communicate with the server.
+            var filePath = $"ftp://{NetworkStoragePath}/mnt/{basePath}/{NetworkPath}/";
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(filePath);
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            // This example assumes the FTP site uses anonymous logon.
+            request.Credentials = new NetworkCredential(userName, UserPassword);
+
+            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+            Console.Write(response.ToString());
+            Stream responseStream = response.GetResponseStream();
+            response.Close();
+
+
+            return responseStream;
+        }
+        public static byte[] DownloadFile(string fileName = "", string LocalPath = "", string NetworkPath = "")
         {
             try
             {
@@ -26,24 +51,23 @@ namespace Business
 
                     FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
                     ftpClient.Connect();
-                    ftpClient.DownloadFile($"{LocalPath}/{fileName}", $"{basePath}/{NetworkPath}/{fileName}", FtpLocalExists.Overwrite, FtpVerify.None);
+                    // ftpClient.DownloadFile($"{LocalPath}/{fileName}", $"{basePath}/{NetworkPath}/{fileName}", FtpLocalExists.Overwrite, FtpVerify.None);
+                    ftpClient.Download(out byte[] data, $"{basePath}/{NetworkPath}/{fileName}", 0);
                     ftpClient.Disconnect();
-                    return true;
+                    return data;
 
                 }
                 else
                 {
-                    return false;
+                    return null ;
                 }
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return false;
+                return null;
             }
-
-            return true;
         }
         private static bool CheckConnection()
         {
@@ -122,6 +146,7 @@ namespace Business
                             tmpDict.Add("Name", item.Name);
                             tmpDict.Add("Type", item.Type.ToString());
                             tmpDict.Add("Size", item.Size.ToString());
+                            tmpDict.Add("location", item.FullName.ToString());
 
                             //tmplist.Add(item.FullName.ToString());
 

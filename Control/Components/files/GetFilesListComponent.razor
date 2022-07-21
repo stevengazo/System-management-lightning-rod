@@ -28,6 +28,9 @@
             <td>
                 @item.GetValueOrDefault("Name")
              </td>
+             <td>
+                 @item.GetValueOrDefault("location");
+             </td>
             <td>
                 <DowndloadFileComponent type="@action" idObject="@id" nameFile="@item.GetValueOrDefault("Name")" />
             </td>

@@ -35,15 +35,26 @@
 
         localStorage = Path.Combine(Environment.ContentRootPath, "tmpfiles");
 
-        if(type != null && idObject != null && nameFile != null)
+        if (type != null && idObject != null && nameFile != null)
         {
             switch (type)
             {
                 case "Warranty":
-                    var ObjTemp = B_Warranty.WarrantyById(idObject);
-                    pathFileNasFile = $"{ObjTemp.DeviceId}/{ObjTemp.DateSend.Year.ToString()}-Warranty/{ObjTemp.Id}";
-                    FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
-                    await DownloadFileFromStream();
+                    try
+                    {
+                        var ObjTemp = B_Warranty.WarrantyById(idObject);
+                        pathFileNasFile = $"{ObjTemp.DeviceId}/{ObjTemp.DateSend.Year.ToString()}-Warranty/{ObjTemp.Id}";
+                        //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
+
+                        var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
+                        await DownloadFileFromStream(streamData);
+                    }
+                    catch (Exception f)
+                    {
+                        Console.WriteLine(f.Message);
+                    }
+
+
                     break;
 
                 default:
@@ -64,14 +75,28 @@
         return File.OpenRead($@"{localStorage}/{nameFile}");
     }
 
-    private async Task DownloadFileFromStream()
+    private async Task DownloadFileFromStream(byte[] data = null)
     {
-        var fileStream = GetFileStream();
-        var fileName = nameFile;
+        if (data != null)
+        {
+            var fileStream = new MemoryStream(data);
 
-        using var streamRef = new DotNetStreamReference(stream: fileStream);
+            using var streamRef = new DotNetStreamReference(stream: fileStream);
+            await JS.InvokeVoidAsync("downloadFileFromStream", nameFile, streamRef);
 
-        JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+        }
+        else
+        {
+            var fileStream = GetFileStream();
+            var fileName = nameFile;
+
+            using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+            JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+        }
+
+
+
     }
 
 
