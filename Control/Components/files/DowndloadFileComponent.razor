@@ -1,0 +1,78 @@
+﻿@using Entities;
+@using Business;
+@using System.IO;
+@using Microsoft.AspNetCore.Hosting;
+@using Microsoft.Extensions.Logging;
+@inject IWebHostEnvironment Environment
+@inject IJSRuntime JS
+
+
+<button @onclick="@onclick" class="btn btn-info">
+    Descargar
+</button>
+
+@if (FlagIsReady)
+{
+    <p>
+        lsito para descarga
+    </p>
+}
+
+@code {
+    [Parameter]
+    public string type { get; set; }
+    [Parameter]
+    public string idObject { get; set; }
+    [Parameter]
+    public string nameFile { get; set; }
+
+    private string localStorage = "";
+    bool FlagIsReady = false;
+
+    private async void onclick()
+    {
+        string pathFileNasFile = "";
+
+        localStorage = Path.Combine(Environment.ContentRootPath, "tmpfiles");
+
+        if(type != null && idObject != null && nameFile != null)
+        {
+            switch (type)
+            {
+                case "Warranty":
+                    var ObjTemp = B_Warranty.WarrantyById(idObject);
+                    pathFileNasFile = $"{ObjTemp.DeviceId}/{ObjTemp.DateSend.Year.ToString()}-Warranty/{ObjTemp.Id}";
+                    FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
+                    await DownloadFileFromStream();
+                    break;
+
+                default:
+                    FlagIsReady = false;
+                    break;
+            }
+
+        }
+        else
+        {
+            FlagIsReady = false;
+        }
+    }
+
+
+    private Stream GetFileStream()
+    {
+        return File.OpenRead($@"{localStorage}/{nameFile}");
+    }
+
+    private async Task DownloadFileFromStream()
+    {
+        var fileStream = GetFileStream();
+        var fileName = nameFile;
+
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+
+}

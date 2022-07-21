@@ -10,30 +10,14 @@
             <h2> Información de la Garantia</h2>
             <hr />
             <div class="d-flex justify-content-between flex-row">
-            <p>
-                A continuación se muestra la información realizada a la emisión del la garantia.
-            </p>
+                <p>
+                    A continuación se muestra la información realizada a la emisión del la garantia.
+                </p>
                 <a href="warranty/list" class="btn btn-sm btn-info">Lista de Garantias</a>
             </div>
-            
-            
-            <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
-            <hr />
-            <h2>
-                Archivos Anexos
-             </h2>
-            <div class="d-flex flex-row justify-content-between">
-                <div>
-                    <p>
-                        Archivos anexados a la garantia en tramite.
-                    </p>
-                </div>
-                <div>
-                    <UploadFileComponent type="Warranty" idObject="@WarrantyId.ToString()"/>
-                </div>
 
-            </div>
-            <GetFilesListComponent id="@WarrantyId.ToString()" action="Warranty" />         
+            <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
+
         </div>
 
     </Authorized>
@@ -41,6 +25,38 @@
         <NotAvariableComponent />
     </NotAuthorized>
 </AuthorizeView>
+
+<div>
+    <hr />
+    <h2>
+        Archivos Anexos
+    </h2>
+
+    <AuthorizeView Roles="Administrador,Editor">
+        <Authorized>
+            <div class="d-flex flex-row justify-content-around align-items-center">
+                <div class="">
+                    <h6 class="h6">
+                        Agregar Archivo
+                    </h6>                        
+                        <UploadFileComponent type="Warranty" idObject="@WarrantyId.ToString()" />                
+                </div>
+                <div>
+                    <h6 class="h6">
+                        Lista de Archivos Asociados a la Garantia
+                    </h6>
+                    <GetFilesListComponent id="@WarrantyId.ToString()" action="Warranty" />
+                </div>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <p>
+                No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.
+            </p>
+        </NotAuthorized>
+    </AuthorizeView>
+
+</div>
 
 
 @code {

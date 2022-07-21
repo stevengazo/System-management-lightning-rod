@@ -1,10 +1,13 @@
 ﻿@using Entities;
 @using Business;
 @using System.Linq;
+@using System.IO;
+@using Microsoft.AspNetCore.Hosting;
+@using Microsoft.Extensions.Logging;
+@inject IWebHostEnvironment Environment
 
 
-
-<table class="table table-sm table-light table-hover">
+<table class="table table-sm table-light table-hover table-bordered">
     <thead>
         <tr>
             <th>
@@ -14,20 +17,24 @@
                     Tipo
             </th>
             <th>
-                    Ubicación
+                    Acciones
             </th>
         </tr>
     </thead>
     <tbody>
-      @foreach (var item in itemList)
+      @foreach (Dictionary<string,string> item in itemList)
      {
          <tr>
-             @foreach( var data in item)
-            {
-                <td>
-                    @data
-                </td>
-            }
+            <td>
+                @item.GetValueOrDefault("Name")
+             </td>
+            <td>
+                <DowndloadFileComponent type="@action" idObject="@id" nameFile="@item.GetValueOrDefault("Name")" />
+            </td>
+            <td>
+                <button class="btn btn-danger">Borrar</button>
+            </td>
+            
         </tr>
      }
 
@@ -43,27 +50,38 @@
     [Parameter]
     public string action { get; set; }
 
-    List<Array> itemList = new List<Array>();
+    List<Dictionary<string,string>> itemList = new List<Dictionary<string,string>>();
+
+
 
     protected override async Task OnInitializedAsync()
     {
+     
         if (action != null)
         {
             switch (action) 
             {
-            case "Warranty":
-                var Object = B_Warranty.WarrantyById(id);
-                var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranty/{Object.Id}";
-                itemList =await B_StorageManage.GetListOfFiles(path);
-                break;                        
-            default:
-                // code block
-                break;
+                case "Warranty":
+                    var Object = B_Warranty.WarrantyById(id);
+                    var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranty/{Object.Id}";
+                    itemList =await B_StorageManage.GetListOfFiles(path);
+                    break;                        
+                default:
+                    // code block
+                    break;
             }                  
-                        
+
         }
-       await base.OnInitializedAsync();
+        await base.OnInitializedAsync();
     }
+    /*
+    private void cleanTMPFiles()
+    {
+        string pathTMP =   Path.Combine(Environment.ContentRootPath, "tmpfiles");
+        Directory.Delete($"{pathTMP}",true);
+        Directory.CreateDirectory($"{pathTMP}");
+    }
+    */
 
 
         

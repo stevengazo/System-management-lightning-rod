@@ -1,36 +1,30 @@
-﻿@using System ;
+﻿@using System;
 @using System.IO;
 @using Microsoft.AspNetCore.Hosting;
 @using Microsoft.Extensions.Logging;
 @inject IWebHostEnvironment Environment
+@inject NavigationManager nav
+@inject IJSRuntime JS
 
-@using Business;
-@using Entities;
 
-<label>
-    Agregar nuevo archivo
-</label>
-<div class="form-group d-flex flex-sm-row justify-content-around align-items-center">
+@using Business
+@using Entities
+
+
+<div class="form-group d-flex flex-column justify-content-around align-items-start">
     <p>
-        Tamaño máximo de carga de @maxFileSize KB (@(maxAllowedFiles/1024) MG) 
+        Tamaño máximo de carga de @maxFileSize KB
     </p>
     <InputFile class="form-control form-control-file" OnChange="@LoadFiles" multiple />
-    <button  class="m-lg-1 btn btn-sm btn-light" >Subir Archivos</button>
+    <button class="m-lg-1 btn btn-sm btn-light" @onclick="@onClicked">Subir Archivos</button>
 </div>
 
-@if (isLoading)
-{
-    <p>Uploading...</p>
-}
+
 <p>
     @errorMessage
 </p>
 
 
-<p>
-    ruta 
-    @randomPath
-</p>
 
 
 @code {
@@ -39,56 +33,87 @@
     [Parameter]
     public string idObject { get; set; }
 
-
+    /*INTERNAL VARIABLES*/
     private long maxFileSize = 1048576 * 5;
     private int maxAllowedFiles = 1;
-    private bool isLoading = false;
     private string errorMessage = "";
     private string randomPath = "";
+
+    private InputFileChangeEventArgs _Data = null;
 
     List<FileStream> fileStreams = new List<FileStream>();
 
 
 
-    private async Task LoadFiles(InputFileChangeEventArgs e)
+
+
+    private async Task onClicked()
     {
-        try
+        if (_Data != null)
         {
-            var pathlocal = "";
-            var filename = "";
-            foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+            try
             {
-                var trustedFileName = Path.GetRandomFileName();
-                var pathAux = Path.Combine(Environment.ContentRootPath, "tmpfiles", file.Name);
-                filename = file.Name;
-                await using FileStream writeStream = new(pathAux, FileMode.Create);
-                using var readStream = file.OpenReadStream(maxFileSize);
-                var bytesRead = 0;
-                var totalRead = 0;
-                var buffer = new byte[maxFileSize];
-
-                while ((bytesRead = await readStream.ReadAsync(buffer)) != 0)
+                var pathlocal = "";
+                var filename = "";
+                foreach (var file in _Data.GetMultipleFiles(maxAllowedFiles))
                 {
-                    totalRead += bytesRead;
+                    var trustedFileName = Path.GetRandomFileName();
+                    var pathAux = Path.Combine(Environment.ContentRootPath, "tmpfiles", file.Name);
+                    filename = file.Name;
+                    await using FileStream writeStream = new(pathAux, FileMode.Create);
+                    using var readStream = file.OpenReadStream(maxFileSize);
+                    var bytesRead = 0;
+                    var totalRead = 0;
+                    var buffer = new byte[maxFileSize];
 
-                    await writeStream.WriteAsync(buffer, 0, bytesRead);               
+                    while ((bytesRead = await readStream.ReadAsync(buffer)) != 0)
+                    {
+                        totalRead += bytesRead;
 
-                    StateHasChanged();
+                        await writeStream.WriteAsync(buffer, 0, bytesRead);
+
+                        StateHasChanged();
+                    }
+                    pathlocal = pathAux;
                 }
-                pathlocal = pathAux;
+
+                string pathFileNas = "";
+                switch (type)
+                {
+                    case "Warranty":
+                        var tmpObject = B_Warranty.WarrantyById(idObject);
+                        pathFileNas= $"{tmpObject.DeviceId}/{tmpObject.DateSend.Year.ToString()}-Warranty/{tmpObject.Id}/{filename}";
+                        break;
+                    case "Maintenance":
+                        var maintenance= B_Maintenance.MaintenanceById(idObject);
+                        pathFileNas= $"{maintenance.DeviceId}/{maintenance.MaintenanceDate.Year.ToString()}-Maintenance/{maintenance.MaintenanceId}/{filename}";
+                        break;
+                    default:
+                        break;
+                }
+                 
+                B_StorageManage.uploadFIle(pathlocal, pathFileNas);
+                File.Delete(pathlocal);
+                errorMessage = "Archivo Cargado, favor refresque la pagina";                
             }
-            var tmpObject = B_Warranty.WarrantyById(idObject);
-            string pathFileNas = $"{tmpObject.DeviceId}/{tmpObject.DateSend.Year.ToString()}-Warranty/{tmpObject.Id}/{filename}";
-            B_StorageManage.uploadFIle(pathlocal, pathFileNas);
-            File.Delete(pathlocal);
-
-        }catch (Exception f)
-        {
-            Console.WriteLine(f.Message);
+            catch (Exception f)
+            {
+                Console.WriteLine(f.Message);
+                errorMessage = f.Message;
+            }
         }
-
+        else
+        {
+            errorMessage = "No hay datos cargados";
+        }
     }
 
-   
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        _Data = e;
+    }
+
+
 }
 

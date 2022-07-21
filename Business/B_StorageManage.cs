@@ -16,6 +16,35 @@ namespace Business
         private static readonly string UserPassword = "Stega.26";
         private static readonly string basePath = "array1/Sgazo/Dinnteco";
 
+        public static bool DownloadFile(string fileName = "", string LocalPath = "", string NetworkPath = "")
+        {
+            try
+            {
+                var FlagConexion = CheckConnection();
+                if (FlagConexion)
+                {
+
+                    FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
+                    ftpClient.Connect();
+                    ftpClient.DownloadFile($"{LocalPath}/{fileName}", $"{basePath}/{NetworkPath}/{fileName}", FtpLocalExists.Overwrite, FtpVerify.None);
+                    ftpClient.Disconnect();
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+
+            return true;
+        }
         private static bool CheckConnection()
         {
             try
@@ -65,19 +94,16 @@ namespace Business
            
          }
 
-        public static async Task downloadFile(string relativePath = "", string FileName = "")
-        {
-            throw new NotImplementedException();
-        }
+       
 
         /// <summary>
         /// Get a list of files in a especific path
         /// </summary>
         /// <param name="path">relative path to consult. Dinnteco/<Path></param>
         /// <returns></returns>
-        public static async Task< List<Array>> GetListOfFiles(string path = "")
+        public static async Task< List<Dictionary<string,string>> >GetListOfFiles(string path = "")
         {
-            List<Array> tmp = new List<Array>();
+            List<Dictionary<string,string>> tmp = new List<Dictionary<string,string>>();
             try
             {
                 if (CheckConnection())
@@ -92,11 +118,15 @@ namespace Business
                         foreach(var item in tmpResults)
                         {
                             List<string> tmplist = new List<string>();
-                            tmplist.Add(item.Name);
-                            tmplist.Add(item.Type.ToString());
-                            tmplist.Add(item.FullName.ToString());
-                            var arraytoPush = tmplist.ToArray();
-                           tmp.Add(arraytoPush);
+                            Dictionary<string, string> tmpDict = new Dictionary<string, string>();
+                            tmpDict.Add("Name", item.Name);
+                            tmpDict.Add("Type", item.Type.ToString());
+                            tmpDict.Add("Size", item.Size.ToString());
+
+                            //tmplist.Add(item.FullName.ToString());
+
+
+                            tmp.Add(tmpDict);
                         }                    
                     }
                 }
