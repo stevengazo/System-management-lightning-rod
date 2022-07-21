@@ -335,6 +335,7 @@ namespace Business
                 }
                 catch (Exception d)
                 {
+                    Console.WriteLine(d.Message);
                     List<DeviceEntity> i = new List<DeviceEntity>();
                     return i;
                 }
@@ -365,6 +366,7 @@ namespace Business
                 }
                 catch (Exception f)
                 {
+                    Console.WriteLine(f.Message);
                 }
             }
         }

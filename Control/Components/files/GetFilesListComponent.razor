@@ -4,16 +4,32 @@
 
 
 
-<table class="table">
+<table class="table table-sm table-light table-hover">
     <thead>
         <tr>
             <th>
                     Nombre
             </th>
+            <th>
+                    Tipo
+            </th>
+            <th>
+                    Ubicación
+            </th>
         </tr>
     </thead>
     <tbody>
-      
+      @foreach (var item in itemList)
+     {
+         <tr>
+             @foreach( var data in item)
+            {
+                <td>
+                    @data
+                </td>
+            }
+        </tr>
+     }
 
     </tbody>
 </table>
@@ -27,7 +43,7 @@
     [Parameter]
     public string action { get; set; }
 
-    Array[] itemsArray;
+    List<Array> itemList = new List<Array>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,8 +53,8 @@
             {
             case "Warranty":
                 var Object = B_Warranty.WarrantyById(id);
-                var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}/{Object.Id}";
-                itemsArray = B_StorageManage.sample(path);
+                var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranty/{Object.Id}";
+                itemList =await B_StorageManage.GetListOfFiles(path);
                 break;                        
             default:
                 // code block

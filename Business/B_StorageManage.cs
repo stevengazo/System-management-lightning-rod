@@ -35,51 +35,85 @@ namespace Business
 
         public static string getBasePath()
         {
+
             return basePath;
         }
-        public static Array[] sample(string path = "")
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileData"></param>
+        /// <param name="storagePath">ruta para almacenar el archivo</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static void uploadFIle(string localpath = "", string storagePath ="")
         {
-            List<Array> tmp= new List<Array>();
+
             try
             {
-                if (CheckConnection()) {
+                var tmp = $"{basePath}/{storagePath}/";
+
+                FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
+                ftpClient.Connect();             
+                ftpClient.UploadFile(localpath,tmp,FtpRemoteExists.Overwrite,true,FtpVerify.None);
+                ftpClient.Disconnect();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);              
+            }
+           
+         }
+
+        public static async Task downloadFile(string relativePath = "", string FileName = "")
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get a list of files in a especific path
+        /// </summary>
+        /// <param name="path">relative path to consult. Dinnteco/<Path></param>
+        /// <returns></returns>
+        public static async Task< List<Array>> GetListOfFiles(string path = "")
+        {
+            List<Array> tmp = new List<Array>();
+            try
+            {
+                if (CheckConnection())
+                {
                     var fullpath = basePath + "/" + path;
-
-
                     FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
-
                     ftpClient.Connect();
                     var tmpResults = ftpClient.GetListing(fullpath);
-                    ftpClient.Disconnect();
-                    if (tmpResults.Length > 0)
-                    {
-                        var tmpArray = new string[] { };
-                        var counter = 0;
-                        foreach (FtpListItem item in tmpResults)
+                    ftpClient.Disconnect();                  
+                    if(tmpResults != null)
+                    {                        
+                        foreach(var item in tmpResults)
                         {
-                            tmpArray[0] = item.Name.ToString();
-                            tmpArray[1] = item.Type.ToString();
-                            tmpArray[2] = item.FullName.ToString();
-                        }
-                        tmp[counter] = tmpArray;
-                        counter++;
+                            List<string> tmplist = new List<string>();
+                            tmplist.Add(item.Name);
+                            tmplist.Add(item.Type.ToString());
+                            tmplist.Add(item.FullName.ToString());
+                            var arraytoPush = tmplist.ToArray();
+                           tmp.Add(arraytoPush);
+                        }                    
                     }
-                    return tmp.ToArray();
                 }
-             
-                return null;
+                return tmp;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return null;
-
-
             }
-
-
         }
 
+
+        public static async Task< bool> DeleteFile(string relativePath = "", string namePath = "")
+        {
+           throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Create a new folder in the NAS Storage 
@@ -90,7 +124,8 @@ namespace Business
         {
             try
             {
-                if (CheckConnection()) {
+                if (CheckConnection())
+                {
                     FtpClient client = new FtpClient(NetworkStoragePath, userName, UserPassword);
                     if (relativePath == "/")
                     {
@@ -106,7 +141,7 @@ namespace Business
                         await client.CreateDirectoryAsync($"{basePath}/{relativePath}/{namePath}");
                     }
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -114,7 +149,7 @@ namespace Business
             }
 
         }
-        
+
 
 
     }

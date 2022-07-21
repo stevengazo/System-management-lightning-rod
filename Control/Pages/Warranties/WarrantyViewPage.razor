@@ -21,8 +21,19 @@
             <hr />
             <h2>
                 Archivos Anexos
-            </h2>
-            <GetFilesList id="@WarrantyId.ToString()" action="Warranty" />
+             </h2>
+            <div class="d-flex flex-row justify-content-between">
+                <div>
+                    <p>
+                        Archivos anexados a la garantia en tramite.
+                    </p>
+                </div>
+                <div>
+                    <UploadFileComponent type="Warranty" idObject="@WarrantyId.ToString()"/>
+                </div>
+
+            </div>
+            <GetFilesListComponent id="@WarrantyId.ToString()" action="Warranty" />         
         </div>
 
     </Authorized>
