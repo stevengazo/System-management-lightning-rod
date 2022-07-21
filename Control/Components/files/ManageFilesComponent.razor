@@ -13,12 +13,19 @@
 <div class="d-flex flex-row justify-content-around">
     <!-- Añadir archivo -->
     <div>
-        <div class="form-group d-flex flex-column justify-content-around align-items-start">
-            <p>
+        <div class="form-group d-flex flex-column justify-content-around align-items-center">
+            <div>
+            <p class="text-sm-left">
                 Tamaño máximo de carga de @maxFileSize KB
             </p>
-            <InputFile class="form-control form-control-file" OnChange="@LoadFiles" multiple />
-            <button class="m-lg-1 btn btn-sm btn-light" @onclick="@onClicked">Subir Archivos</button>
+            </div>
+            <div>
+                <InputFile class="form-control form-control-file" OnChange="@LoadFiles" multiple />
+            </div>
+            <div>
+                <button class="m-lg-1 btn btn-sm btn-outline-success" @onclick="@onClicked">Subir Archivos</button>
+            </div>
+            
         </div>
         <p>
             @errorMessage
@@ -36,7 +43,7 @@
                         Nombre
                     </th>
                     <th>
-                        Tipo
+                        Tamaño
                     </th>
                     <th>
                         Acciones
@@ -51,24 +58,18 @@
                             @item.GetValueOrDefault("Name")
                         </td>
                         <td>
-                            @item.GetValueOrDefault("location");
+                            @item.GetValueOrDefault("Size") KB
                         </td>
                         <td>
                             <DowndloadFileComponent type="@Type" idObject="@idObject" nameFile="@item.GetValueOrDefault("Name")" />
                         </td>
                         <td>
-                            @if (!isDeleted)
+                            @if (true)
                             {
                                 string name = item.GetValueOrDefault("Name");
                                 <button class="btn btn-danger" @onclick="() =>onclickeddELETE(name) ">
                                     Borrar
                                 </button>
-                            }
-                            else
-                            {
-                                <label class="text-danger">
-                                    Borrado
-                                </label>
                             }
                         </td>
                     </tr>
@@ -110,6 +111,16 @@
                     var Object = B_Warranty.WarrantyById(idObject);
                     var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranty/{Object.Id}";
                     itemList = await B_StorageManage.GetListOfFiles(path);
+                    break;
+                case "Maintenance":
+                    var ObjectMain = B_Maintenance.MaintenanceById(idObject);
+                    var pathMain = $"{ObjectMain.DeviceId}/{ ObjectMain.MaintenanceDate.Year.ToString()}-Maintenance/{ObjectMain.MaintenanceId}";
+                    itemList = await B_StorageManage.GetListOfFiles(pathMain);
+                    break;
+                case "Incident":
+                    var ObjectInci = B_Incident.GetIncidentById(idObject);
+                    var pathInci = $"{ObjectInci.DeviceId}/{ ObjectInci.IncidentDate.Year.ToString()}-Incident/{ObjectInci.IncidentId}";
+                    itemList = await B_StorageManage.GetListOfFiles(pathInci);
                     break;
                 default:
                     // code block
@@ -175,6 +186,10 @@
                         var maintenance = B_Maintenance.MaintenanceById(idObject);
                         pathFileNas = $"{maintenance.DeviceId}/{maintenance.MaintenanceDate.Year.ToString()}-Maintenance/{maintenance.MaintenanceId}/{filename}";
                         break;
+                    case "Incident":
+                        var Incident = B_Incident.GetIncidentById(idObject);
+                        pathFileNas = $"{Incident.DeviceId}/{Incident.IncidentDate.Year.ToString()}-Incident/{Incident.IncidentId}/{filename}";
+                        break;
                     default:
                         break;
                 }
@@ -214,6 +229,14 @@
                 case "Warranty":
                     var tmpOBject = B_Warranty.WarrantyById(idObject);
                     tmpPath = $"{tmpOBject.DeviceId}/{tmpOBject.DateSend.Year.ToString()}-Warranty/{tmpOBject.Id}";
+                    break;
+                case "Maintenance":
+                    var tmpOBjectMain =  B_Maintenance.MaintenanceById(idObject);
+                    tmpPath = $"{tmpOBjectMain.DeviceId}/{tmpOBjectMain.MaintenanceDate.Year.ToString()}-Maintenance/{tmpOBjectMain.MaintenanceId}";
+                    break;
+                case "Incident":
+                    var tmpOBjecInci =  B_Incident.GetIncidentById(idObject);
+                    tmpPath = $"{tmpOBjecInci.DeviceId}/{tmpOBjecInci.IncidentDate.Year.ToString()}-Incident/{tmpOBjecInci.IncidentId}";
                     break;
                 default:
                     break;

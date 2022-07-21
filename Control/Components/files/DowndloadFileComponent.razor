@@ -57,6 +57,40 @@
 
                     break;
 
+                case "Maintenance":
+                    try
+                    {
+                        var ObjTempMain = B_Maintenance.MaintenanceById(idObject);
+                        pathFileNasFile = $"{ObjTempMain.DeviceId}/{ObjTempMain.MaintenanceDate.Year.ToString()}-Maintenance/{ObjTempMain.MaintenanceId}";
+                        //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
+
+                        var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
+                        await DownloadFileFromStream(streamData);
+                    }
+                    catch (Exception f)
+                    {
+                        Console.WriteLine(f.Message);
+                    }
+
+
+                    break;
+                case "Incident":
+                    try
+                    {
+                        var objIncident = B_Incident.GetIncidentById(idObject);
+                        pathFileNasFile = $"{objIncident.DeviceId}/{objIncident.IncidentDate.Year.ToString()}-Incident/{objIncident.IncidentId}";
+                        //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
+
+                        var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
+                        await DownloadFileFromStream(streamData);
+                    }
+                    catch (Exception f)
+                    {
+                        Console.WriteLine(f.Message);
+                    }
+
+
+                    break;
                 default:
                     FlagIsReady = false;
                     break;

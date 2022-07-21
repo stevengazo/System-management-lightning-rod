@@ -26,6 +26,29 @@
 
 
 
+<div>
+    <hr />
+    <h2>
+        Archivos Anexos
+    </h2>
+
+    <AuthorizeView Roles="Administrador,Editor">
+        <Authorized>
+           <ManageFilesComponent idObject="@MaintenanceId.ToString()" Type="Maintenance" />
+        </Authorized>
+        <NotAuthorized>
+            <p>
+                No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.
+            </p>
+        </NotAuthorized>
+    </AuthorizeView>
+
+</div>
+
+
+
+
+
 
 
 @code{
