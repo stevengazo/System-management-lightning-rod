@@ -35,9 +35,8 @@
                 <DowndloadFileComponent type="@action" idObject="@id" nameFile="@item.GetValueOrDefault("Name")" />
             </td>
             <td>
-                <button class="btn btn-danger">Borrar</button>
-            </td>
-            
+                <DeleteFileComponent idObject="@id" Type="@action" nameFile="@item.GetValueOrDefault("Name")" />
+            </td>           
         </tr>
      }
 

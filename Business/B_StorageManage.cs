@@ -41,6 +41,14 @@ namespace Business
 
             return responseStream;
         }
+       
+        /// <summary>
+        /// Get an specific file from the FTP Server
+        /// </summary>
+        /// <param name="fileName">Name of the file</param>
+        /// <param name="LocalPath">Local file</param>
+        /// <param name="NetworkPath">Path where is located the file</param>
+        /// <returns>Array of bytes</returns>
         public static byte[] DownloadFile(string fileName = "", string LocalPath = "", string NetworkPath = "")
         {
             try
@@ -86,10 +94,14 @@ namespace Business
 
         }
 
+
+        /// <summary>
+        /// Return the base path of the FTP Server
+        /// </summary>
+        /// <returns></returns>
         public static string getBasePath()
         {
-
-            return basePath;
+            return $"{NetworkStoragePath}/{basePath}"  ;
         }
 
         /// <summary>
@@ -119,6 +131,34 @@ namespace Business
          }
 
        
+       public static bool DeleteFile(string NetWorkPath = "", string fileName = "")
+        {
+            try
+            {
+                if (NetWorkPath.Equals("") || fileName.Equals("") || !CheckConnection() )
+                {
+                    return false;
+                }
+                else
+                {
+                    FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
+                    var filePath = $"{basePath}/{NetWorkPath}/{fileName}";
+                    ftpClient.Connect();
+                    ftpClient.DeleteFile(filePath);
+                    ftpClient.Disconnect();
+
+                    return true;
+                }
+            }
+            catch (Exception f)
+            {
+                Console.WriteLine(f.Message);
+                return false;   
+            }
+
+
+        }
+
 
         /// <summary>
         /// Get a list of files in a especific path
@@ -165,10 +205,7 @@ namespace Business
         }
 
 
-        public static async Task< bool> DeleteFile(string relativePath = "", string namePath = "")
-        {
-           throw new NotImplementedException();
-        }
+     
 
         /// <summary>
         /// Create a new folder in the NAS Storage 
@@ -189,23 +226,17 @@ namespace Business
                         {
                             await client.CreateDirectoryAsync($"{basePath}/{namePath}");
                         }
-
                     }
                     else
                     {
                         await client.CreateDirectoryAsync($"{basePath}/{relativePath}/{namePath}");
                     }
                 }
-
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-
         }
-
-
-
     }
 }

@@ -1,0 +1,54 @@
+﻿@using Business;
+@using Entities;
+
+
+
+@if(!isDeleted){
+    <button class="btn btn-danger" @onclick="@onclicked">
+        Borrar
+    </button>
+}else{
+    <label class="text-danger">
+        Borrado
+    </label>
+}
+
+@code {
+    [Parameter]
+    public string idObject { get; set; }
+    [Parameter]
+    public string Type{ get; set; }
+    [Parameter]
+    public string nameFile { get; set; }
+
+    private bool isDeleted = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();   
+    }
+
+
+    private void onclicked()
+    {
+        isDeleted = !isDeleted;
+        try
+        {
+            var tmpPath = "";
+            switch (Type)
+            {
+                case "Warranty":
+                    var tmpOBject = B_Warranty.WarrantyById(idObject);
+                    tmpPath = $"{tmpOBject.DeviceId}/{tmpOBject.DateSend.Year.ToString()}-Warranty/{tmpOBject.Id}";
+                    break;
+                default:
+                    break;
+            }
+            isDeleted = B_StorageManage.DeleteFile(tmpPath, nameFile);                  
+        }catch(Exception r)
+        {
+            Console.WriteLine(r.Message);
+        }
+    }
+}
