@@ -34,20 +34,7 @@
 
     <AuthorizeView Roles="Administrador,Editor">
         <Authorized>
-            <div class="d-flex flex-row justify-content-around align-items-center">
-                <div class="">
-                    <h6 class="h6">
-                        Agregar Archivo
-                    </h6>                        
-                        <UploadFileComponent type="Warranty" idObject="@WarrantyId.ToString()" />                
-                </div>
-                <div>
-                    <h6 class="h6">
-                        Lista de Archivos Asociados a la Garantia
-                    </h6>
-                    <GetFilesListComponent id="@WarrantyId.ToString()" action="Warranty" />
-                </div>
-            </div>
+           <ManageFilesComponent idObject="@WarrantyId.ToString()" Type="Warranty" />
         </Authorized>
         <NotAuthorized>
             <p>

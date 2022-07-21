@@ -7,41 +7,7 @@
 @inject IWebHostEnvironment Environment
 
 
-<table class="table table-sm table-light table-hover table-bordered">
-    <thead>
-        <tr>
-            <th>
-                    Nombre
-            </th>
-            <th>
-                    Tipo
-            </th>
-            <th>
-                    Acciones
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-      @foreach (Dictionary<string,string> item in itemList)
-     {
-         <tr>
-            <td>
-                @item.GetValueOrDefault("Name")
-             </td>
-             <td>
-                 @item.GetValueOrDefault("location");
-             </td>
-            <td>
-                <DowndloadFileComponent type="@action" idObject="@id" nameFile="@item.GetValueOrDefault("Name")" />
-            </td>
-            <td>
-                <DeleteFileComponent idObject="@id" Type="@action" nameFile="@item.GetValueOrDefault("Name")" />
-            </td>           
-        </tr>
-     }
 
-    </tbody>
-</table>
 
 
 @code
@@ -52,28 +18,14 @@
     [Parameter]
     public string action { get; set; }
 
-    List<Dictionary<string,string>> itemList = new List<Dictionary<string,string>>();
+    
 
 
 
     protected override async Task OnInitializedAsync()
     {
      
-        if (action != null)
-        {
-            switch (action) 
-            {
-                case "Warranty":
-                    var Object = B_Warranty.WarrantyById(id);
-                    var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranty/{Object.Id}";
-                    itemList =await B_StorageManage.GetListOfFiles(path);
-                    break;                        
-                default:
-                    // code block
-                    break;
-            }                  
-
-        }
+      
         await base.OnInitializedAsync();
     }
     /*
