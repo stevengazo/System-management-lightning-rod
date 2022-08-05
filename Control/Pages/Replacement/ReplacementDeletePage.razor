@@ -1,21 +1,20 @@
-﻿@page "/replacement/update/{Replacementid}"
+﻿@page "/replacement/delete/{Replacementid}"
 
 
 
-<AuthorizeView Roles="Administrador,Editor">
+<AuthorizeView Roles="Administrador,Lector,Editor">
     <Authorized>
         <div>
-            <h1> Actualización del Reemplazo</h1>
+            <h1> Eliminación de Registro</h1>
             <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
             <hr />
-            <ReplacementUpdateComponent Id="@ReplacementId.ToString()" />
+            <ReplacementDeleteComponent ReplacementId="@ReplacementId.ToString()"></ReplacementDeleteComponent>
         </div>
     </Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>
 </AuthorizeView>
-
 
 
 @code{

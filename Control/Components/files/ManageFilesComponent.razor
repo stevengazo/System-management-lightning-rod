@@ -16,7 +16,7 @@
         <div class="form-group d-flex flex-column justify-content-around align-items-center">
             <div>
             <p class="text-sm-left">
-                Tamaño máximo de carga de @maxFileSize KB
+                Tamaño máximo de carga de @sizeMB MB
             </p>
             </div>
             <div>
@@ -85,11 +85,12 @@
     [Parameter]
     public string Type { get; set; }
 
-
+    private long sizeMB { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
+        sizeMB = (maxFileSize / 1024)/1024 ;
         await GetList();
 
         await base.OnInitializedAsync();

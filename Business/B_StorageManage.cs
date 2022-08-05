@@ -13,9 +13,9 @@ namespace Business
     public static class B_StorageManage
     {
         private static readonly string NetworkStoragePath = $@"192.168.1.5";
-        private static readonly string userName = "Sgazo";
-        private static readonly string UserPassword = "Stega.26";
-        private static readonly string basePath = "array1/Sgazo/Dinnteco";
+        private static readonly string userName = "AppUser";
+        private static readonly string UserPassword = "ApUser2020$";
+        private static readonly string basePath = "array1/Dinnteco";
 
         /// <summary>
         /// Get an specific data from the FTP server

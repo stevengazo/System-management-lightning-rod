@@ -20,16 +20,29 @@
         <hr/>
         <div>
             <h3 class="text-center">Historia de Mantenimientos Registrados</h3>
+            <p>
+                A continuación se muestra la información correspondiente a todos los mantenimientos registrados de este equipo.<br />
+                Seleccione el registro para ver más información
+
+            </p>
             <MaintenanceListByIdComponent id="@DeviceId.ToString()" />
         </div>
         <hr/>
         <div>
             <h3 class="text-center">Historial de Garantias Registradas</h3>
+            <p>
+                Estas son todas la garantias tramitadas del dispositivo, con el fabricante. Si desea ver más información por favor<br />
+                seleccione el registro que aplique.
+            </p>
             <WarrantyListByIdComponent id="@DeviceId.ToString()"  />
         </div>
         <hr/>
         <div>
             <h3 class="text-center">Historial de Incidentes del dispositivo</h3>
+            <p>
+                En esta sección se muestran todos los incidentes registrados del dispositivo.<br />
+                Seleccione el registro para ver más información.
+            </p>
             <IncidentListComponent _DeviceId="@DeviceId.ToString()" />
         </div>
         <hr/>
