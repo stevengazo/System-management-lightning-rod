@@ -1,20 +1,34 @@
 ﻿@page "/saleman/delete/{SaleManId}"
 
 
-<div>
-    <h2 class="text-center">Eliminar Vendedor</h2>
-        <div class="d-flex flex-row justify-content-between">
-        <p>
-    
-        </p>
-        <a href="saleman/list" class="btn btn-sm btn-info "> Regresar a la lista de vendedores</a>
-    </div>
-    <hr />
 
-    <SalemanDeleteComponent SaleMandId="@SaleManId.ToString()"/>
-</div>
 
-@code{
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+
+
+            <div>
+                <h2 class="text-center">Eliminar Vendedor</h2>
+                <div class="d-flex flex-row justify-content-between">
+                    <p>
+
+                    </p>
+                    <a href="saleman/list" class="btn btn-sm btn-info "> Regresar a la lista de vendedores</a>
+                </div>
+                <hr />
+                <SalemanDeleteComponent SaleMandId="@SaleManId.ToString()" />
+            </div>
+        </Animate>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+@code {
     [Parameter]
     public string SaleManId { get; set; }
     protected override async Task OnInitializedAsync()

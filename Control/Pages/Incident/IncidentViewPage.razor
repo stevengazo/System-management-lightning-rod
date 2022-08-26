@@ -1,4 +1,4 @@
-﻿@page  "/incident/view/{IncidentId}"
+﻿@page "/incident/view/{IncidentId}"
 
 
 
@@ -6,44 +6,35 @@
 
 
 <AuthorizeView Roles="Administrador,Editor,Lector">
-    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-        <div>
-            <h2 class="text-center">Información del Incidente</h2>
-            <div class="d-flex flex-row justify-content-between">
-                <p>A continuación se muestra la información reelevante con respecto al incidente </p>
-                <a href="incident/list" class="btn btn-info">Lista de incidentes</a>
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div>
+                <h2 class="text-center">Información del Incidente</h2>
+                <div class="d-flex flex-row justify-content-between">
+                    <p>A continuación se muestra la información reelevante con respecto al incidente </p>
+                    <a href="incident/list" class="btn btn-info">Lista de incidentes</a>
+                </div>
+                <hr />
+                <IncidentViewComponent IncidentId="@IncidentId.ToString()" />
             </div>
-            <hr />
-            <IncidentViewComponent IncidentId="@IncidentId.ToString()" />
-        </div>
-    </Animate></Authorized>
+            <div>
+                <hr />
+                <h2>
+                    Archivos Anexos
+                </h2>
+                <ManageFilesComponent idObject="@IncidentId.ToString()" Type="Incident" />
+            </div>
+        </Animate>
+    </Authorized>
     <NotAuthorized>
-        <NotAvariableComponent/>
+        <NotAvariableComponent />
     </NotAuthorized>
 </AuthorizeView>
-<div>
-    <hr />
-    <h2>
-        Archivos Anexos
-    </h2>
-
-    <AuthorizeView Roles="Administrador,Editor">
-        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-           <ManageFilesComponent idObject="@IncidentId.ToString()" Type="Incident" />
-        </Animate></Authorized>
-        <NotAuthorized>
-            <p>
-                No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.
-            </p>
-        </NotAuthorized>
-    </AuthorizeView>
-
-</div>
 
 
 
 
-@code{
+@code {
     [Parameter]
     public string IncidentId { get; set; }
 

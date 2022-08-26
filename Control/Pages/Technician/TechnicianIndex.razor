@@ -5,8 +5,8 @@
 
 
 
-    <AuthorizeView Roles="Administrador,Editor,Lector">
-        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+    <AuthorizeView Roles="Administrador,Editor">
+        <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
             <div>
                 <div>
                     <h2>Lista de técnicos</h2>
@@ -21,7 +21,7 @@
             </div>
         </Animate></Authorized>
         <NotAuthorized>
-
+                    <NotAvariableComponent></NotAvariableComponent>
         </NotAuthorized>
     </AuthorizeView>
 

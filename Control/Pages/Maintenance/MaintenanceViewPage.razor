@@ -1,54 +1,52 @@
-﻿@page  "/maintenance/view/{MaintenanceId}"
+﻿@page "/maintenance/view/{MaintenanceId}"
 @inject IToastService toastService
 
 
 
-<AuthorizeView Roles="Administrador,Editor">
-    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.2)" Delay="TimeSpan.FromSeconds(0)">
+<AuthorizeView Roles="Administrador,Editor,Lector">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.2)" Delay="TimeSpan.FromSeconds(0)">
 
-   
 
-        <div>
-            <h2 class="text-center">Información del Mantenimiento</h2>
-            <div class="d-flex justify-content-between flex-row">
-                <p>
-                    Información del mantenimiento realizado en el sitio.
-                </p>
-                <a class="btn btn-info" href="maintenance/list">Lista de Mantenimientos</a>
+
+            <div>
+                <h2 class="text-center">Información del Mantenimiento</h2>
+                <div class="d-flex justify-content-between flex-row">
+                    <p>
+                        Información del mantenimiento realizado en el sitio.
+                    </p>
+                    <a class="btn btn-info" href="maintenance/list">Lista de Mantenimientos</a>
+                </div>
+                <hr />
+
+                <hr />
+
+
+                <MaintenanceViewComponent id="@MaintenanceId.ToString()" />
             </div>
-            <hr />
-            
-            <hr />
-
-           
-            <MaintenanceViewComponent id="@MaintenanceId.ToString()" />
-        </div>
-    </Animate></Authorized>
+        </Animate>
+    </Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>
 </AuthorizeView>
 
 
-
-<div>
-    <hr />
-    <h2>
-        Archivos Anexos
-    </h2>
-
-    <AuthorizeView Roles="Administrador,Editor">
-        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-           <ManageFilesComponent idObject="@MaintenanceId.ToString()" Type="Maintenance" />
-        </Animate></Authorized>
-        <NotAuthorized>
-            <p>
-                No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.
-            </p>
-        </NotAuthorized>
-    </AuthorizeView>
-
-</div>
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div>
+                <hr />
+                <h2>
+                    Archivos Anexos
+                </h2>
+                <ManageFilesComponent idObject="@MaintenanceId.ToString()" Type="Maintenance" />
+            </div>
+        </Animate>
+    </Authorized>
+    <NotAuthorized>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 
@@ -56,12 +54,13 @@
 
 
 
-@code{
+
+@code {
     [Parameter]
     public string MaintenanceId { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();    
+        await base.OnInitializedAsync();
         MaintenanceId = MaintenanceId;
 
     }

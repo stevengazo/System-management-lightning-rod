@@ -37,7 +37,7 @@
                 <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
             </div>
             <AuthorizeView Roles="Administrador,Editor">
-                <Authorized ><Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+                <Authorized ><Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
                     <div class="col">
                         <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
                     </div>       

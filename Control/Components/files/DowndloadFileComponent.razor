@@ -5,16 +5,17 @@
 @using Microsoft.Extensions.Logging;
 @inject IWebHostEnvironment Environment
 @inject IJSRuntime JS
+@inject IToastService toastService
 
 
-<button @onclick="@onclick" class="btn btn-info">
+<button @onclick="@(()=>{  onclick();})" class="btn btn-info">
     Descargar
 </button>
 
 @if (FlagIsReady)
 {
     <p>
-        lsito para descarga
+        Listo Para descargar
     </p>
 }
 
@@ -29,10 +30,13 @@
     private string localStorage = "";
     bool FlagIsReady = false;
 
+
+    
+
     private async void onclick()
     {
+       
         string pathFileNasFile = "";
-
         localStorage = Path.Combine(Environment.ContentRootPath, "tmpfiles");
 
         if (type != null && idObject != null && nameFile != null)
@@ -42,12 +46,14 @@
                 case "Warranty":
                     try
                     {
+
                         var ObjTemp = B_Warranty.WarrantyById(idObject);
                         pathFileNasFile = $"{ObjTemp.DeviceId}/{ObjTemp.DateSend.Year.ToString()}-Warranty/{ObjTemp.Id}";
                         //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
-
+                      
                         var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
-                        await DownloadFileFromStream(streamData);
+                        toastService.ShowSuccess("Archivo Descargado", "Aviso");
+                      await  DownloadFileFromStream(streamData);
                     }
                     catch (Exception f)
                     {
@@ -65,7 +71,8 @@
                         //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
 
                         var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
-                        await DownloadFileFromStream(streamData);
+                     await   DownloadFileFromStream(streamData);
+                                                toastService.ShowSuccess("Archivo Descargado", "Aviso");
                     }
                     catch (Exception f)
                     {
@@ -82,7 +89,8 @@
                         //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
 
                         var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
-                        await DownloadFileFromStream(streamData);
+                    await     DownloadFileFromStream(streamData);
+                                                toastService.ShowSuccess("Archivo Descargado", "Aviso");
                     }
                     catch (Exception f)
                     {

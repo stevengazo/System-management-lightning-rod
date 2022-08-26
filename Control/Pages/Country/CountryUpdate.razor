@@ -5,7 +5,7 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h2>Actualización de País</h2>
             <UpdateCountryComponent id="@CountryId.ToString()" />

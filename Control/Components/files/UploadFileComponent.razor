@@ -5,24 +5,30 @@
 @inject IWebHostEnvironment Environment
 @inject NavigationManager nav
 @inject IJSRuntime JS
+@inject IToastService toastService
 
 
 @using Business
 @using Entities
 
 
-<div class="form-group d-flex flex-column justify-content-around align-items-start">
-    <p>
-        Tamaño máximo de carga de @maxFileSize KB
-    </p>
-    <InputFile class="form-control form-control-file" OnChange="@LoadFiles" multiple />
-    <button class="m-lg-1 btn btn-sm btn-light" @onclick="@onClicked">Subir Archivos</button>
-</div>
-
-
-<p>
-    @errorMessage
-</p>
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <div class="form-group d-flex flex-column justify-content-around align-items-start">
+            <p>
+                Tamaño máximo de carga de @maxFileSize KB
+            </p>
+            <InputFile class="form-control form-control-file" OnChange="@LoadFiles" multiple />
+            <button class="m-lg-1 btn btn-sm btn-light" @onclick="@onClicked">Subir Archivos</button>
+        </div>
+        <p>
+            @errorMessage
+        </p>
+    </Authorized>
+    <NotAuthorized>
+        No se puede realizar la carga de información
+    </NotAuthorized>
+</AuthorizeView>
 
 
 
@@ -37,7 +43,7 @@
     private long maxFileSize = 1048576 * 5;
     private int maxAllowedFiles = 1;
     private string errorMessage = "";
- 
+
 
     private InputFileChangeEventArgs _Data = null;
 
@@ -82,24 +88,27 @@
                 {
                     case "Warranty":
                         var tmpObject = B_Warranty.WarrantyById(idObject);
-                        pathFileNas= $"{tmpObject.DeviceId}/{tmpObject.DateSend.Year.ToString()}-Warranty/{tmpObject.Id}/{filename}";
+                        pathFileNas = $"{tmpObject.DeviceId}/{tmpObject.DateSend.Year.ToString()}-Warranty/{tmpObject.Id}/{filename}";
                         break;
                     case "Maintenance":
-                        var maintenance= B_Maintenance.MaintenanceById(idObject);
-                        pathFileNas= $"{maintenance.DeviceId}/{maintenance.MaintenanceDate.Year.ToString()}-Maintenance/{maintenance.MaintenanceId}/{filename}";
+                        var maintenance = B_Maintenance.MaintenanceById(idObject);
+                        pathFileNas = $"{maintenance.DeviceId}/{maintenance.MaintenanceDate.Year.ToString()}-Maintenance/{maintenance.MaintenanceId}/{filename}";
                         break;
                     default:
                         break;
                 }
-                 
+
                 B_StorageManage.uploadFIle(pathlocal, pathFileNas);
                 File.Delete(pathlocal);
-                errorMessage = "Archivo Cargado, favor refresque la pagina";                
+                errorMessage = "";
+                toastService.ShowSuccess("Archivo Cargado", "Aviso");
+
             }
             catch (Exception f)
             {
                 Console.WriteLine(f.Message);
                 errorMessage = f.Message;
+                toastService.ShowError("El tamaño del archivo no es valido", "Error");
             }
         }
         else

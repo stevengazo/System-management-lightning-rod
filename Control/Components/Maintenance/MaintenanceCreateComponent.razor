@@ -149,7 +149,7 @@
             if (bandCheck)
             {
                 B_Maintenance.Create(oMaintenance);
-                toastService.ShowInfo("Espere...");
+                toastService.ShowInfo("Buscando recurso solicitado...","Información");
                 Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");                
             }
         }

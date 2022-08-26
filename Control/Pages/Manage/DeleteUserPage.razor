@@ -2,7 +2,7 @@
 
 
 <AuthorizeView Roles="Administrador">
-    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <h1>Información del Usuario</h1>
         <ViewUserComponent UserId="@UserId.ToString()"></ViewUserComponent>
         <hr />        

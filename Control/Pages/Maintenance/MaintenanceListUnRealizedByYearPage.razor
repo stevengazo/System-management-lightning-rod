@@ -5,19 +5,21 @@
 
 
 
-<AuthorizeView Roles="Administrador,Editor">
-    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-        <div class="text-center">
-            <h1> Lista de Dispositivos sin mantenimiento</h1>
-            <p>
-                A continuación se presenta los equipos que no presentan
-                mantenimientos en los plazos en los plazos seleccionados.
-            </p>
-        </div>
-        <MaintenanceUnrealizedComponent />
-    </Animate></Authorized>
+<AuthorizeView Roles="Administrador,Editor,Lector">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div class="text-center">
+                <h1> Lista de Dispositivos sin mantenimiento</h1>
+                <p>
+                    A continuación se presenta los equipos que no presentan
+                    mantenimientos en los plazos en los plazos seleccionados.
+                </p>
+            </div>
+            <MaintenanceUnrealizedComponent />
+        </Animate>
+    </Authorized>
     <NotAuthorized>
-        <NotAvariableComponent />
+        <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>
 </AuthorizeView>
 

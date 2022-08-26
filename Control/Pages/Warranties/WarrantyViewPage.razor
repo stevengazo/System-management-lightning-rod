@@ -4,47 +4,49 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
 
-        <div class="text-center">
-            <h2> Información de la Garantia</h2>
-            <hr />
-            <div class="d-flex justify-content-between flex-row">
-                <p>
-                    A continuación se muestra la información realizada a la emisión del la garantia.
-                </p>
-                <a href="warranty/list" class="btn btn-sm btn-info">Lista de Garantias</a>
+            <div class="text-center">
+                <h2> Información de la Garantia</h2>
+                <hr />
+                <div class="d-flex justify-content-between flex-row">
+                    <p>
+                        A continuación se muestra la información realizada a la emisión del la garantia.
+                    </p>
+                    <a href="warranty/list" class="btn btn-sm btn-info">Lista de Garantias</a>
+                </div>
+
+                <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
+
             </div>
 
-            <WarrantyViewComponent WarrantyId="@WarrantyId.ToString()" />
-
-        </div>
-
-    </Animate></Authorized>
+        </Animate>
+    </Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>
 </AuthorizeView>
 
-<div>
-    <hr />
-    <h2>
-        Archivos Anexos
-    </h2>
+<AuthorizeView Roles="Administrador,Editor,Lector">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div>
+                <hr />
+                <h2>
+                    Archivos Anexos
+                </h2>
+                <ManageFilesComponent idObject="@WarrantyId.ToString()" Type="Warranty" />
+            </div>
 
-    <AuthorizeView Roles="Administrador,Editor">
-        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-           <ManageFilesComponent idObject="@WarrantyId.ToString()" Type="Warranty" />
-        </Animate></Authorized>
-        <NotAuthorized>
-            <p>
-                No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.
-            </p>
-        </NotAuthorized>
-    </AuthorizeView>
-
-</div>
-
+        </Animate>
+    </Authorized>
+    <NotAuthorized>
+        <p>
+            No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     [Parameter]

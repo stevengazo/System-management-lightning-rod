@@ -1,16 +1,28 @@
 ﻿@page "/installer/list"
 
-<h3>
-    Lista de Instaladores 
-</h3>
-<hr/>
-<p>
-    Lista de instaladores registrados en la base de datos. Estos instaladores corresponden a los instaladores autorizados para realizar la instalación de equipos.
-</p>
-
-<div class="justify-content-center align-content-center">
-    <SearchInstallerComponent/>
-</div>    
 
 
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <h3>
+                Lista de Instaladores
+            </h3>
+            <hr />
+            <p>
+                Lista de instaladores registrados en la base de datos. Estos instaladores corresponden a los instaladores autorizados para realizar la instalación de equipos.
+            </p>
+
+            <div class="justify-content-center align-content-center">
+                <SearchInstallerComponent />
+            </div>
+
+        </Animate>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
 

@@ -2,22 +2,34 @@
 @using Entities;
 
 
+@inject IToastService toastService
 
-@if(!isDeleted){
-    <button class="btn btn-danger" @onclick="@onclicked">
-        Borrar
-    </button>
-}else{
-    <label class="text-danger">
-        Borrado
-    </label>
-}
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        @if (!isDeleted)
+        {
+            <button class="btn btn-danger" @onclick="@onclicked">
+                Borrar
+            </button>
+        }
+        else
+        {
+            <label class="text-info">
+                Borrado
+            </label>
+        }
+    </Authorized>
+    <NotAuthorized>
+       
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
     [Parameter]
     public string idObject { get; set; }
     [Parameter]
-    public string Type{ get; set; }
+    public string Type { get; set; }
     [Parameter]
     public string nameFile { get; set; }
 
@@ -26,7 +38,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();   
+        base.OnInitializedAsync();
     }
 
 
@@ -45,8 +57,10 @@
                 default:
                     break;
             }
-            isDeleted = B_StorageManage.DeleteFile(tmpPath, nameFile);                  
-        }catch(Exception r)
+            isDeleted = B_StorageManage.DeleteFile(tmpPath, nameFile);
+            toastService.ShowWarning("El archivo fue eliminado", "Advertencia");
+        }
+        catch (Exception r)
         {
             Console.WriteLine(r.Message);
         }

@@ -1,7 +1,11 @@
 ﻿@page "/saleman/update/{SaleManId}"
 
 
-<div>
+
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+                <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+        <div>
     <h2 class="text-center">Actualizar Vendedor</h2>
     <hr />
         <div class="d-flex flex-row justify-content-between">
@@ -14,6 +18,12 @@
     <SaleManUpdateComponet id="@SaleManId.ToString()"/>
 </div>
 
+        </Animate>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code{

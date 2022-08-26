@@ -45,7 +45,7 @@
                 <td> @obj.DeviceId </td>
                 <td> @obj.DateSend</td>
                 <td> @obj.DateReceived</td>
-                <td> <a class="btn btn-primary" href="warranty/view/@obj.Id" @onclick="@(() => toastService.ShowInfo("Espere..."))" >Ver</a></td>
+                <td> <a class="btn btn-primary" href="warranty/view/@obj.Id" @onclick="@(() => toastService.ShowInfo("Buscando recurso solicitado...","Información"))" >Ver</a></td>
                 <td> <a class="btn btn-secondary" href="warranty/update/@obj.Id">Modificar</a></td>
                 <td> <a class="btn btn-danger" href="warranty/delete/@obj.Id">Eliminar</a></td>
             </tr>
