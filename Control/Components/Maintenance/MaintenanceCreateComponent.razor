@@ -1,7 +1,7 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
-
+@inject IToastService toastService
 
 
 
@@ -149,6 +149,7 @@
             if (bandCheck)
             {
                 B_Maintenance.Create(oMaintenance);
+                toastService.ShowInfo("Espere...");
                 Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");                
             }
         }

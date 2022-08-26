@@ -4,8 +4,8 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-            <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.2)" Delay="TimeSpan.FromSeconds(0)">
+
    
 
         <div>
@@ -23,7 +23,6 @@
            
             <MaintenanceViewComponent id="@MaintenanceId.ToString()" />
         </div>
-    </Animate>
     </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />

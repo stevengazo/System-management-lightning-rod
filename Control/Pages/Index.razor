@@ -27,10 +27,10 @@
     </div>
     <div class="col">
         <AuthorizeView Roles="Administrador,Editor,Lector">
-            <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <Authorized>    
                 <h3>Fechas Limite de mantenimiento - Período @DateTime.Today.Year</h3>
                 <MaintenanceUnrelizedByMonth/>
-            </Animate></Authorized>
+            </Authorized>
             <NotAuthorized>
                 <h3>
                     Inicia sesión

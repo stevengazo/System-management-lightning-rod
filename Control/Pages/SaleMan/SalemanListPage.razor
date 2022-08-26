@@ -5,7 +5,16 @@
 
 <div class="text-center">
     <h2>Lista de Vendedores</h2>
-    <a href="saleman/create" class="btn btn-sm btn-outline-success"> Agregar nuevo vendedor</a>   
-    <hr/>
-    <SaleManSearchComponent/>
+    <a href="saleman/create" class="btn btn-sm btn-outline-success"> Agregar nuevo vendedor</a>
+    <hr />
+    <AuthorizeView Roles="Administrador,Editor,Lector">
+        <Authorized>
+                    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <SaleManSearchComponent />
+            </Animate>
+        </Authorized>
+        <NotAuthorized>
+            <NotAvariableComponent></NotAvariableComponent>
+        </NotAuthorized>
+    </AuthorizeView>
 </div>
