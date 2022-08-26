@@ -132,15 +132,14 @@ namespace Business
                 return aux.ToList();
             }
         }
-        public  static void Create (WarrantyEntity oWarranty)
+        public  static async Task Create (WarrantyEntity oWarranty)
         {
             var path = oWarranty.DeviceId.ToString();
             var relativePath = $"{path}/{oWarranty.DateSend.Year.ToString()}-Warranty";
             try
             {
                 /* BASE PATH*/
-
-                B_StorageManage.createFolder(relativePath, oWarranty.Id);
+               await B_StorageManage.createFolder(relativePath, oWarranty.Id);
             }
             catch (Exception e)
             {

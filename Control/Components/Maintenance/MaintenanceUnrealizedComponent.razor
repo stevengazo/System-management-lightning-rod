@@ -29,11 +29,7 @@
 
 </div>
 
-<div class="align-content-center">
-   
-    
-    
- </div>
+
 
 <div>
     <table class="table table-responsive-sm table-bordered table-hover table-light">
@@ -75,7 +71,6 @@
 
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     List<int> listYear = new List<int>();
-    int SelectYear = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -89,7 +84,7 @@
     }
     
 
-    private void Download()
+    private async Task Download()
     {
         using( var memoryStream= new MemoryStream())
         {
@@ -106,7 +101,7 @@
                     csv.WriteRecords(arr1);
                 }
                 var arr = memoryStream.ToArray();
-                Js.SaveAs("DevicesConsult.csv", arr);
+               await Js.SaveAs("DevicesConsult.csv", arr);
             }
         }
     }

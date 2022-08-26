@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-Control-A547B3AF-CB5B-469D-9F26-827D5869101D</UserSecretsId>
     <Platforms>AnyCPU;x64</Platforms>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
     <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
   </ItemGroup>

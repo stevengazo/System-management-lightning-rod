@@ -9,12 +9,10 @@
         <h1>No es posible borrar este instalador</h1>
         <p>Existen dependencias de equipos a este instalador </p>
     </div>
-    <div>
-        <button class="btn btn-outline-secondary"> 
-            <a href="installer/list">
+    <div>        
+            <a  class="btn btn-outline-secondary" href="installer/list">
                 Regresar 
-            </a>
-        </button>
+            </a>   
     </div>    
 }
 else
@@ -27,12 +25,10 @@ else
         <button class="btn btn-outline-danger" @onclick="Delete">
             Borrar
         </button>
-        <button class="btn btn-outline-secondary"> 
-            <a href="installer/list">
+            <a  class="btn btn-outline-secondary" href="installer/list">
                 Regresar 
             </a>
-        </button>
-    </div>
+            </div>
 }
 
 
@@ -45,14 +41,13 @@ else
     [Parameter]
     public string idInstaller {get;set;}
 
-    private string ErrorMessage = "";
     private bool flagIsEraseble = false;
 
     protected override async Task OnInitializedAsync()
     {
         if ( !idInstaller.Equals(null))
         {
-            flagIsEraseble = await B_Installer.checkDependencies(idInstaller);    
+            this.flagIsEraseble = await B_Installer.checkDependencies(idInstaller);    
         }
 
         await base.OnInitializedAsync();   

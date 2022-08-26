@@ -37,11 +37,11 @@
 @code{
     List<IdentityRole> Roles = new List<IdentityRole>();
     List<IdentityUser> Users = new List<IdentityUser>();
-    string message = "";
+
     string statusUser = "";
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
+     await  base.OnInitializedAsync();
         Users = B_Manage.ListOfUsers();
         Roles = B_Manage.GetListOfRoles();
         var x = Users;

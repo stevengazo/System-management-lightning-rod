@@ -16,13 +16,13 @@ namespace Business
         /// Create a new incident in the database
         /// </summary>
         /// <param name="oIncident">Incident to registered</param>
-        public static void CreateIncident(IncidentEntity oIncident)
+        public static async Task CreateIncident(IncidentEntity oIncident)
         {
             var path = oIncident.DeviceId.ToString();
             var relativePath = $"{path}/{oIncident.IncidentDate.Year.ToString()}-Incident";
             try
             {
-                B_StorageManage.createFolder(relativePath, oIncident.IncidentId);
+             await  B_StorageManage.createFolder(relativePath, oIncident.IncidentId);
                 using (var DB = new RayosNoDataContext())
                 {
                     oIncident.IncidentId = Guid.NewGuid().ToString();

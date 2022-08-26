@@ -59,13 +59,14 @@
     </div>
     <div class="form-group">
         <label>Numero de serie</label>
-        <InputSelect @bind-Value="oIncident.DeviceId" class="form-control">
+        <input type="text" @bind="@oIncident.DeviceId" list="listaEquipos" class="form-control" placeholder="Numero de serie">
+        <datalist id="listaEquipos">
             <option value="">Seleccione un equipo...</option>
             @foreach (var obj in Devices)
             {
                 <option value="@obj.DeviceId">@obj.Client.Name - @obj.DeviceId </option>
             }
-        </InputSelect>
+        </datalist>  
     </div>
 </EditForm>
 <div>

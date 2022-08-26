@@ -11,7 +11,7 @@ namespace Control.Helpers
     {
         public static async Task<object> SaveAs( this IJSRuntime js, string nameFile, byte[] file)
         {
-            return js.InvokeAsync<object>("saveAsFile", nameFile, Convert.ToBase64String(file));
+            return await js.InvokeAsync<object>("saveAsFile", nameFile, Convert.ToBase64String(file));
         }
     }
 }

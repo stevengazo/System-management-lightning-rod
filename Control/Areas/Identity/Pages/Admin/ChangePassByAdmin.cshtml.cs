@@ -89,7 +89,6 @@ namespace Control.Areas.Identity.Pages.Admin
         }
 
       
-        [HttpGet]
         public async Task<IActionResult> OnGetAsync(string id="")
         {
             IdentityUser user = new IdentityUser();
@@ -98,7 +97,6 @@ namespace Control.Areas.Identity.Pages.Admin
             return Page();
         }
 
-        [HttpPost]
         public async Task<IActionResult> OnPostAsync(string id = "", string password="",string cpassword = "")
         {
             bool BandSuccess = false ;

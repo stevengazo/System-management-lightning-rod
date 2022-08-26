@@ -51,7 +51,6 @@ namespace Business
                     return true;
 
                 }
-                return false;
             }
             catch (Exception v)
             {
@@ -70,7 +69,6 @@ namespace Business
                         return true;
 
                 }
-                return false;
             }
             catch (Exception v)
             {
@@ -101,7 +99,6 @@ namespace Business
                 db.SaveChanges();
                 return !BandEstatus;
             }
-            return false;
         }
 
         /// <summary>

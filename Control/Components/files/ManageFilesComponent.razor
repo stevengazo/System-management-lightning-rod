@@ -135,7 +135,6 @@
     private long maxFileSize = 1048576 * 5;
     private int maxAllowedFiles = 1;
     private string errorMessage = "";
-    private string randomPath = "";
 
     private InputFileChangeEventArgs _Data = null;
 
@@ -218,7 +217,7 @@
     private bool isDeleted = false;
 
 
-    private void onclickeddELETE(string nameFile)
+    private async Task onclickeddELETE(string nameFile)
     {
 
         isDeleted = !isDeleted;
@@ -243,7 +242,7 @@
                     break;
             }
             isDeleted = B_StorageManage.DeleteFile(tmpPath, nameFile);
-            GetList();
+            await GetList();
         }
         catch (Exception r)
         {

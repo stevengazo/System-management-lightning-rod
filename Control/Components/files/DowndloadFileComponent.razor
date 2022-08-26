@@ -126,7 +126,7 @@
 
             using var streamRef = new DotNetStreamReference(stream: fileStream);
 
-            JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+            await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
         }
 
 

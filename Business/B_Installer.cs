@@ -161,6 +161,7 @@ namespace Business
             }
             catch (Exception f)
             {
+                Console.WriteLine(f.Message);
                 return false;
             }
         }
@@ -181,8 +182,9 @@ namespace Business
                     db.SaveChanges();
                 }
             }
-            catch (Exception e)
-            {                
+            catch (Exception e)            
+            {
+                Console.Write(e.Message);
             }
         }
 
@@ -251,6 +253,7 @@ namespace Business
             }
             catch(Exception f)
             {
+                Console.WriteLine(f.Message);
                 throw new NotImplementedException();
             }
         }

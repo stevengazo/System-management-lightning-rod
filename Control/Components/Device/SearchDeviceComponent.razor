@@ -329,7 +329,7 @@
     }
 
 
-    private void Download()
+    private async Task Download()
     {
         using( var memoryStream= new MemoryStream())
         {
@@ -346,7 +346,7 @@
                     csv.WriteRecords(arr1);
                 }
                 var arr = memoryStream.ToArray();
-                Js.SaveAs("DevicesConsult.csv", arr);
+                await  Js.SaveAs("DevicesConsult.csv", arr);
             }
         }
     }
@@ -388,11 +388,11 @@
     {
         if(_bandHidden)
         {
-            _hidden = "";
+            this._hidden = "";
         }
         else
         {
-            _hidden = "hidden"; 
+            this._hidden = "hidden"; 
         }  
         _bandHidden=!_bandHidden;
     }
