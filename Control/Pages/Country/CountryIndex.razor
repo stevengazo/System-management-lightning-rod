@@ -5,7 +5,7 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h2>Lista de Paises Registrados</h2>
             <div class="d-flex flex-row justify-content-start align-content-center">
@@ -16,7 +16,7 @@
             <ListOfCountriesComponent/>
 
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent/>
     </NotAuthorized>

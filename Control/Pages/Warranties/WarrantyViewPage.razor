@@ -4,7 +4,7 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
 
         <div class="text-center">
             <h2> Información de la Garantia</h2>
@@ -20,7 +20,7 @@
 
         </div>
 
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>
@@ -33,9 +33,9 @@
     </h2>
 
     <AuthorizeView Roles="Administrador,Editor">
-        <Authorized>
+        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
            <ManageFilesComponent idObject="@WarrantyId.ToString()" Type="Warranty" />
-        </Authorized>
+        </Animate></Authorized>
         <NotAuthorized>
             <p>
                 No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.

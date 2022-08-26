@@ -37,11 +37,11 @@
                 <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
             </div>
             <AuthorizeView Roles="Administrador,Editor">
-                <Authorized >
+                <Authorized ><Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
                     <div class="col">
                         <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
                     </div>       
-                </Authorized>
+                </Animate></Authorized>
             </AuthorizeView>
 
     </div>

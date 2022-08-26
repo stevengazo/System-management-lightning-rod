@@ -6,7 +6,7 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h1> Lista de Dispositivos sin mantenimiento</h1>
             <p>
@@ -15,7 +15,7 @@
             </p>
         </div>
         <MaintenanceUnrealizedComponent />
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

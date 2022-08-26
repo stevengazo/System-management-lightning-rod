@@ -5,7 +5,7 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class=" align-content-center   text-center">
             <h2>
                 Lista de Reemplazos de Dispositivos
@@ -16,7 +16,7 @@
             <hr />
             <ReplacementSearchComponent></ReplacementSearchComponent>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

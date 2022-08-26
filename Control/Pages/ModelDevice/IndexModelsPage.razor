@@ -6,13 +6,13 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2>Lista de Modelos registrados</h2>  
             <hr />
             <ListOfModelsDeviceComponent/>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>        
         <NotAvariableComponent> </NotAvariableComponent>
     </NotAuthorized>

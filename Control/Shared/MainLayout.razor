@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
+@using Blazored.Toast.Configuration
 
 <div class="page">
     <div class="sidebar overflow-auto">
@@ -15,5 +16,14 @@
         <div class="content px-4">
             @Body
         </div>
+
+        <BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="5"
+                IconType="IconType.Material"
+                MaxToastCount="3"
+                ShowProgressBar="true"
+                RemoveToastsOnNavigation="true"
+                />
+         
     </div>    
 </div>

@@ -3,14 +3,14 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h1> Información del reemplazo respectivo</h1>
             <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
             <hr />
             <ReplacementViewComponent ReplacementId="@ReplacementId.ToString()" />
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

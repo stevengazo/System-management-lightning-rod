@@ -3,14 +3,14 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="align-content-center">
             <h2 class="text-center"> Creación de un nuevo registro de reemplazo</h2>
             <p></p>
             <hr />
             <ReplacementCreateComponent />
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

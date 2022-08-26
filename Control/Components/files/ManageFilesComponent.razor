@@ -7,7 +7,7 @@
 @inject IWebHostEnvironment Environment
 @inject NavigationManager nav
 @inject IJSRuntime JS
-
+@inject IToastService toastService
 
 
 <div class="d-flex flex-row justify-content-around">
@@ -90,6 +90,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+
         sizeMB = (maxFileSize / 1024)/1024 ;
         await GetList();
 

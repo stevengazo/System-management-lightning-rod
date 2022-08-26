@@ -5,7 +5,7 @@
 
 
 <AuthorizeView Roles="Administrador">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <h2>Administración</h2>
         <hr />
         <div>
@@ -26,7 +26,7 @@
                 <ListOfRolesComponent></ListOfRolesComponent>
             </div>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>

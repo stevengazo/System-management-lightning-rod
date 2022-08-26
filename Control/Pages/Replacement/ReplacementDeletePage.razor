@@ -3,14 +3,14 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h1> Eliminación de Registro</h1>
             <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
             <hr />
             <ReplacementDeleteComponent ReplacementId="@ReplacementId.ToString()"></ReplacementDeleteComponent>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

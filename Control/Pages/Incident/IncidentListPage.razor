@@ -4,7 +4,7 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2>Lista de incidentes registrados</h2>
             <p>A continuación se presenta la información respectiva a los incidentes con los dispositivos registrados en la base de datos. Esto se realiza con el fin de determinar las recomendaciones necesarias a cada dispositivo.</p>
@@ -12,7 +12,7 @@
             <hr />            
             <IncidentSearchComponent/>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <h1 class="text-danger h1">
             Contenido no disponible

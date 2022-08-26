@@ -6,7 +6,7 @@
 
 
 <AuthorizeView Roles="Administrador,Editor,Lector">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h2 class="text-center">Información del Incidente</h2>
             <div class="d-flex flex-row justify-content-between">
@@ -16,7 +16,7 @@
             <hr />
             <IncidentViewComponent IncidentId="@IncidentId.ToString()" />
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent/>
     </NotAuthorized>
@@ -28,9 +28,9 @@
     </h2>
 
     <AuthorizeView Roles="Administrador,Editor">
-        <Authorized>
+        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
            <ManageFilesComponent idObject="@IncidentId.ToString()" Type="Incident" />
-        </Authorized>
+        </Animate></Authorized>
         <NotAuthorized>
             <p>
                 No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.

@@ -6,7 +6,7 @@
 
 
     <AuthorizeView Roles="Administrador,Editor,Lector">
-        <Authorized>
+        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
             <div>
                 <div>
                     <h2>Lista de técnicos</h2>
@@ -19,7 +19,7 @@
                     <ListOfTechniciansComponent />
                 </div>
             </div>
-        </Authorized>
+        </Animate></Authorized>
         <NotAuthorized>
 
         </NotAuthorized>

@@ -4,7 +4,7 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2> Creación de nuevo registro</h2>
             <div class="d-flex justify-content-between flex-row">
@@ -17,7 +17,7 @@
 
             <WarrantyCreateComponent></WarrantyCreateComponent>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

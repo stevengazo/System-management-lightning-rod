@@ -2,7 +2,7 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div >
             <div class="text-center">
                 <h2> Registro de Mantenimientos</h2>
@@ -18,7 +18,7 @@
             <hr />    
             <MaintenanceCreateComponent></MaintenanceCreateComponent>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>

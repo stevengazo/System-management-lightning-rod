@@ -2,7 +2,7 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h2 class="text-center">Eliminación del Incidente</h2>
             <hr />
@@ -10,7 +10,7 @@
             <hr />
             <IncidentDeleteComponent IncidentId="@IncidentId" />
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent/>
     </NotAuthorized>

@@ -4,7 +4,8 @@
 
 
 <AuthorizeView Roles="Administrador,Editor,Lector">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+                    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div >
 
             <h2 class="text-center">Información del Dispositivo</h2>
@@ -51,7 +52,8 @@
             <p><i>A continuación se muestran registros de algún reemplazo del dispositivo en el sistema</i></p>
             <ReplacementListByDevice DeviceId="@DeviceId.ToString()" />
         </div>
-    </Authorized>
+        </Animate>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>

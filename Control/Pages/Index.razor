@@ -5,12 +5,12 @@
 <div class="row">
     <div class="col">
         <AuthorizeView Roles="Administrador,Editor,Lector">
-        <Authorized>
+        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
             <h3>
                 Bienvenido
             </h3>
             <GraphComponentDevicesByCountry/>
-        </Authorized>
+        </Animate></Authorized>
         <NotAuthorized>
             <h2>Sistema Interno - Dispositivos Rayos NO</h2>
             <p>
@@ -27,10 +27,10 @@
     </div>
     <div class="col">
         <AuthorizeView Roles="Administrador,Editor,Lector">
-            <Authorized>
+            <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
                 <h3>Fechas Limite de mantenimiento - Período @DateTime.Today.Year</h3>
                 <MaintenanceUnrelizedByMonth/>
-            </Authorized>
+            </Animate></Authorized>
             <NotAuthorized>
                 <h3>
                     Inicia sesión

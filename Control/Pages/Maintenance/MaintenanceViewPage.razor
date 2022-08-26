@@ -1,10 +1,13 @@
 ﻿@page  "/maintenance/view/{MaintenanceId}"
-
+@inject IToastService toastService
 
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+   
+
         <div>
             <h2 class="text-center">Información del Mantenimiento</h2>
             <div class="d-flex justify-content-between flex-row">
@@ -16,9 +19,12 @@
             <hr />
             
             <hr />
+
+           
             <MaintenanceViewComponent id="@MaintenanceId.ToString()" />
         </div>
-    </Authorized>
+    </Animate>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>
@@ -33,9 +39,9 @@
     </h2>
 
     <AuthorizeView Roles="Administrador,Editor">
-        <Authorized>
+        <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
            <ManageFilesComponent idObject="@MaintenanceId.ToString()" Type="Maintenance" />
-        </Authorized>
+        </Animate></Authorized>
         <NotAuthorized>
             <p>
                 No posee derechos para modificar los archivos asociados. Favor contacte con un administrador o editor.
@@ -56,6 +62,8 @@
     public string MaintenanceId { get; set; }
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();    
         MaintenanceId = MaintenanceId;
+
     }
 }

@@ -8,7 +8,7 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeRight" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2>
                 Lista de Garantias emitidas por dispositivo
@@ -20,7 +20,7 @@
 
             <WarrantySearchComponent />
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <h1 class="text-danger h1">
             Contenido no disponible
