@@ -3,15 +3,17 @@
 
 
 
-<AuthorizeView Roles="Administrador,Editor">
-    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-        <div>
-            <h2>Eliminación de País</h2>
-            <DeleteCountryComponent id="@CountryId.ToString()" />
-        </div>
-    </Animate></Authorized>
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div>
+                <h2>Eliminación de País</h2>
+                <DeleteCountryComponent id="@CountryId.ToString()" />
+            </div>
+        </Animate>
+    </Authorized>
     <NotAuthorized>
-        <NotAvariableComponent/>
+        <NotAvariableComponent />
     </NotAuthorized>
 </AuthorizeView>
 

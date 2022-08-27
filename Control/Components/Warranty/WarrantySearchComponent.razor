@@ -6,88 +6,89 @@
 @using System.Globalization;
 @using System.IO;
 @inject IJSRuntime Js;
+@inject IToastService toastService
 
 
 
 
-    <div class="form-group row">
-        <div class="col">
-            <label class="col-form-label">Serie del Equipo</label>
-            <input type="text" list="list-series" @bind="@DeviceIdToSearch" class="form-control" placeholder="Equipo">
-            <datalist id="list-series">
-                 
-                @foreach (var it in Devices)
-                {
-                    <option value="@it.Key"> @it.Value - @it.Key </option>
-                }
-            </datalist>
+<div class="form-group row">
+    <div class="col">
+        <label class="col-form-label">Serie del Equipo</label>
+        <input type="text" list="list-series" @bind="@DeviceIdToSearch" class="form-control" placeholder="Equipo">
+        <datalist id="list-series">
 
-        </div>
-        <div class="col">
-            <label class="col-form-label">Envio de cerfificado</label>
-            <select class="form-control rounded" @bind="@YearToSearch">
-                <option value="0">Seleccione un año...</option>
-                @foreach (var item in Years)
-                {
-                    <option value="@item">@item</option>
-
-                }
-            </select>
-        </div>
-        <div class="col">
-            <label class="col-form-label">Estado de la garantia</label>
-            <select class="form-control rounded " @bind="@tmpEstatusToSearch">
-                @foreach (var item in StatusList)
-               {
-                   <option value="@item.StatusId">@item.StatusName</option>
-               }
-                
-            </select>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col">
-            <input type="button" value="Buscar" class="btn btn-outline-dark rounded" @onclick="SearchWarranties" />
-        </div>
-        <div class="col">
-            <input type="button" value="Limpiar" class="btn btn-outline-dark rounded" @onclick="CleanSpaces" />
-        </div>
-        <div class="col">
-            <input type="button" value="Generar" class="btn btn-outline-dark rounded" @onclick="Download"/>
-        </div>
-    </div>
-
-    <p class="text-center" style="color:red"> @ErrorMessage</p>
-
-
-    <table class=" table table-hover table-striped table-responsive-sm ">
-        <thead>
-            <tr>
-                <th> Numero de Serie del equipo </th>
-                <th> Fecha Envio España</th>
-                <th> Fecha Recepción España</th>
-                <th> </th>
-                <th> </th>
-                <th> </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var obj in Warranties)
+            @foreach (var it in Devices)
             {
-                <tr>
-                    <td> @obj.DeviceId </td>
-                    <td> @obj.DateSend.ToShortDateString()</td>    
-                    <td> @obj.DateReceived.ToShortDateString()</td>
-                    <td> <a class="btn btn-primary" href="warranty/view/@obj.Id">Ver</a></td>
-                    <td> <a class="btn btn-secondary" href="warranty/update/@obj.Id">Modificar</a></td>
-                    <td> <a class="btn btn-danger" href="warranty/delete/@obj.Id">Eliminar</a></td>
-                </tr>
+                <option value="@it.Key"> @it.Value - @it.Key </option>
             }
-        </tbody>
-    </table>
+        </datalist>
+
+    </div>
+    <div class="col">
+        <label class="col-form-label">Envio de cerfificado</label>
+        <select class="form-control rounded" @bind="@YearToSearch">
+            <option value="0">Seleccione un año...</option>
+            @foreach (var item in Years)
+            {
+                <option value="@item">@item</option>
+
+            }
+        </select>
+    </div>
+    <div class="col">
+        <label class="col-form-label">Estado de la garantia</label>
+        <select class="form-control rounded " @bind="@tmpEstatusToSearch">
+            @foreach (var item in StatusList)
+            {
+                <option value="@item.StatusId">@item.StatusName</option>
+            }
+
+        </select>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col">
+        <input type="button" value="Buscar" class="btn btn-outline-dark rounded" @onclick="SearchWarranties" />
+    </div>
+    <div class="col">
+        <input type="button" value="Limpiar" class="btn btn-outline-dark rounded" @onclick="CleanSpaces" />
+    </div>
+    <div class="col">
+        <input type="button" value="Generar" class="btn btn-outline-dark rounded" @onclick="Download" />
+    </div>
+</div>
+
+<p class="text-center" style="color:red"> @ErrorMessage</p>
 
 
-@code{
+<table class=" table table-hover table-striped table-responsive-sm ">
+    <thead>
+        <tr>
+            <th> Numero de Serie del equipo </th>
+            <th> Fecha Envio España</th>
+            <th> Fecha Recepción España</th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Warranties)
+        {
+            <tr>
+                <td> @obj.DeviceId </td>
+                <td> @obj.DateSend.ToShortDateString()</td>
+                <td> @obj.DateReceived.ToShortDateString()</td>
+                <td> <a class="btn btn-primary" href="warranty/view/@obj.Id">Ver</a></td>
+                <td> <a class="btn btn-secondary" href="warranty/update/@obj.Id">Modificar</a></td>
+                <td> <a class="btn btn-danger" href="warranty/delete/@obj.Id">Eliminar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
     public List<WarrantyEntity> Warranties = new List<WarrantyEntity>();
     public List<int> Years = new List<int>();
     private Dictionary<string, string> Devices;
@@ -123,43 +124,43 @@
     {
         try
         {
-            if(tmpEstatusToSearch != 0)
+            if (tmpEstatusToSearch != 0)
             {
-                EstatusToSearch = tmpEstatusToSearch.ToString();    
+                EstatusToSearch = tmpEstatusToSearch.ToString();
             }
 
 
             Warranties = B_Warranty.SearchWarranties(DeviceIdToSearch, EstatusToSearch, YearToSearch);
             if (Warranties.Count <= 0)
             {
-                ErrorMessage = "No hay coincidencias con los criterios de busqueda";
+                toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
             }
             else
             {
                 ErrorMessage = "";
             }
         }
-        catch(Exception f)
+        catch (Exception f)
         {
 
             ErrorMessage = $"Error: {f.Message}";
         }
 
     }
-    
+
 
     private void Download()
     {
-        using( var memoryStream= new MemoryStream())
+        using (var memoryStream = new MemoryStream())
         {
-            using( var writter = new StreamWriter(memoryStream))
+            using (var writter = new StreamWriter(memoryStream))
             {
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    NewLine = Environment.NewLine,
-                };
-                
-                using(var csv = new CsvWriter(writter,config))
+                    {
+                        NewLine = Environment.NewLine,
+                    };
+
+                using (var csv = new CsvWriter(writter, config))
                 {
                     var arr1 = Warranties.ToArray();
                     csv.WriteRecords(arr1);

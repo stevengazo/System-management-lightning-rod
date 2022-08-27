@@ -1,16 +1,18 @@
-﻿@page  "/installer/delete/{installerId}"
+﻿@page "/installer/delete/{installerId}"
 
 
-<AuthorizeView Roles="Administrador,Editor">
-    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-        <div>
-            <h2 class="text-center">
-                Borrar Instalador
-            </h2>
-            <hr />
-            <DeleteInstallerComponent idInstaller="@installerId"/>
-        </div>
-    </Animate></Authorized>
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div>
+                <h2 class="text-center">
+                    Borrar Instalador
+                </h2>
+                <hr />
+                <DeleteInstallerComponent idInstaller="@installerId" />
+            </div>
+        </Animate>
+    </Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>
@@ -20,7 +22,7 @@
 
 
 
-@code{
+@code {
     [Parameter]
     public string installerId { get; set; }
     protected override async Task OnInitializedAsync()

@@ -6,6 +6,8 @@
 
 @inject IJSRuntime Js;
 
+@inject IToastService toastService
+
 <div>
     <div class="form-group row">
         <div class="col">
@@ -113,7 +115,7 @@
     {
         Years = B_Incident.GetIncidentsByYears().ToList();
         devices = B_Device.GetDictonaryOfDevicesWithClient();
-        base.OnInitializedAsync();   
+       await  base.OnInitializedAsync();   
 
     }
 
@@ -137,16 +139,15 @@
             }
             else
             {
-                Message = $"No hay resultados de la busqueda";
+             toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
+                Message = $"";
             }
         }
         catch (Exception f)
         {        
-            Message = $"No hay resultados de la busqueda";   
+                         toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
+            Message = $"";   
         }
-
-
-
     }
 
 

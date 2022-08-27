@@ -5,7 +5,7 @@
 
 <div class="align-center form-group row">
     <div class="col">
-        <input type="text" class="rounded form-control"  @bind="ClientIdToSearch" list="categories">           </input>
+        <input type="text" class="rounded form-control" @bind="ClientIdToSearch" list="categories">           </input>
         <datalist id="categories">
             @foreach (var item in sample)
             {
@@ -17,7 +17,7 @@
         <input class="rounded form-control" type="text" @bind="NameToSearch" placeholder="Nombre de Cliente" />
     </div>
     <div class="col">
-        <select class="rounded form-control"  @bind="SectorToSearch" >
+        <select class="rounded form-control" @bind="SectorToSearch">
             <option value=0>Sector</option>
             @foreach (var item in Sectors)
             {
@@ -62,7 +62,7 @@
 
 
 
-@code{
+@code {
     List<ClientEntity> Clients = new List<ClientEntity>();
     List<ClientEntity> tmpClients = new List<ClientEntity>();
     List<SectorEntity> Sectors = new List<SectorEntity>();
@@ -71,7 +71,7 @@
     string ErrorMessage = null;
     int SectorToSearch = 0;
 
-      Dictionary<string, string> sample = new Dictionary<string, string>()
+    Dictionary<string, string> sample = new Dictionary<string, string>()
     {
         { "Htl","Hotelera"},
         { "Edu","Educación"},

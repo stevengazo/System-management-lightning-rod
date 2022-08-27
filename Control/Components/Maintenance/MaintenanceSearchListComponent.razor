@@ -146,7 +146,8 @@
             }
             else
             {
-                ErrorMessage = "No hay mantenimientos que coindicidan con los criterios de busqueda...";
+                toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
+                
             }
             CleanSpaces();
 

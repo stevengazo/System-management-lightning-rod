@@ -7,7 +7,7 @@
 @using System;
 
 @inject IJSRuntime Js;
-
+@inject IToastService toastService
 
 <div>
     <div class="form-group row">
@@ -203,7 +203,7 @@
 
     private void handleClientOrder()
     {
-      if(Devices.Count!= 0)
+        if(Devices.Count!= 0)
         {
             if (flagOrder)
             {
@@ -225,7 +225,7 @@
     }
     private void handleSaleOrder()
     {
-      if(Devices.Count!= 0)
+        if(Devices.Count!= 0)
         {
             if (flagOrder)
             {
@@ -368,7 +368,7 @@
                 Devices = B_Device.GetDevicesByConsult(DeviceIdToSearch, AliasToSearch, YearToSearch, CountryToSearch);
                 if (Devices.Count <= 0)
                 {
-                    ErrorMessage = "No hay dispositivos que cumplan con los criterios de busqueda....";
+                    toastService.ShowError("No hay coincidencias con el parametro de busqueda", "Error");                   
                     Clean();
                 }
                 else
@@ -378,7 +378,8 @@
             }
             else
             {
-                ErrorMessage = "No hay criterios para buscar";
+                toastService.ShowError("No hay información para buscar", "Error");
+           
             }
 
         }

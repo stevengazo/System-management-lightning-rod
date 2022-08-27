@@ -7,6 +7,7 @@
 @using System;
 
 @inject IJSRuntime Js;
+@inject IToastService toastService
 
 
 
@@ -22,7 +23,7 @@
         </datalist>
     </div>
     <div class="col">
-        <input type="button" value="Buscar" class="btn btn-outline-dark form-control"  @onclick="Search" />    
+        <input type="button" value="Buscar" class="btn btn-outline-dark form-control" @onclick="Search" />
     </div>
     <div class="col">
         <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanValues" />
@@ -61,15 +62,15 @@
 </table>
 
 
-@code{
+@code {
     List<ReplacementDeviceEntity> Replacements = new List<ReplacementDeviceEntity>();
     Dictionary<string, string> dicDevices = new Dictionary<string, string>();
     string IDToSearch = null;
     string ErrorMessage = null;
 
-    protected override  async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        await  base.OnInitializedAsync();
+        await base.OnInitializedAsync();
         dicDevices = B_Device.GetDictonaryOfDevicesWithClient();
     }
 
@@ -89,7 +90,7 @@
             }
             else
             {
-                ErrorMessage = "No hay coincidencias en la base de datos";
+                toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
             }
         }
         catch (Exception c)
@@ -99,27 +100,26 @@
     }
 
 
-    private async Task Download()   
+    private async Task Download()
     {
-        using( var memoryStream= new MemoryStream())
+        using (var memoryStream = new MemoryStream())
         {
-            using( var writter = new StreamWriter(memoryStream))
+            using (var writter = new StreamWriter(memoryStream))
             {
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    NewLine = Environment.NewLine,
-                };
+                    {
+                        NewLine = Environment.NewLine,
+                    };
 
-                using(var csv = new CsvWriter(writter,config))
+                using (var csv = new CsvWriter(writter, config))
                 {
                     var arr1 = Replacements.ToArray();
                     csv.WriteRecords(arr1);
                 }
                 var arr = memoryStream.ToArray();
-               await Js.SaveAs("DevicesConsult.csv", arr);
+                await Js.SaveAs("DevicesConsult.csv", arr);
             }
         }
     }
 }
 
- 
