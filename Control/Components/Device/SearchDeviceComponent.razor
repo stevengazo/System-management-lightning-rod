@@ -180,7 +180,6 @@
     public bool flagOrder = false;
 
     /// Internal Variables
-    string _hidden;
     bool _bandHidden = true;
 
     List<int> Years = B_Device.ListOfYears();
@@ -392,15 +391,7 @@
     }
 
     void changeHidden()
-    {
-        if(_bandHidden)
-        {
-            this._hidden = "";
-        }
-        else
-        {
-            this._hidden = "hidden"; 
-        }  
+    {        
         _bandHidden=!_bandHidden;
     }
 

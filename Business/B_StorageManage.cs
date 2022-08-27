@@ -175,7 +175,7 @@ namespace Business
                     var fullpath = basePath + "/" + path;
                     FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
                     ftpClient.Connect();
-                    var tmpResults = ftpClient.GetListing(fullpath);
+                    var tmpResults =  await ftpClient.GetListingAsync();
                     ftpClient.Disconnect();                  
                     if(tmpResults != null)
                     {                        
@@ -187,10 +187,7 @@ namespace Business
                             tmpDict.Add("Type", item.Type.ToString());
                             tmpDict.Add("Size", item.Size.ToString());
                             tmpDict.Add("location", item.FullName.ToString());
-
                             //tmplist.Add(item.FullName.ToString());
-
-
                             tmp.Add(tmpDict);
                         }                    
                     }

@@ -23,7 +23,7 @@ namespace Business
                 using (var db = new RayosNoDataContext())
                 {
                     db.Installers.Update(objInstaller);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                 }
             }
             catch (Exception e)
@@ -144,10 +144,10 @@ namespace Business
             {
                 using( var DB = new RayosNoDataContext())
                 {
-                    var results = (from dev in DB.Devices
+                    var results = await (from dev in DB.Devices
                                    where dev.InstallerId == id
                                    select dev
-                        ).ToList();
+                        ).ToListAsync();
                     if(results.Count!= 0)
                     {
                         return  false;
@@ -179,7 +179,7 @@ namespace Business
                 using ( var db = new RayosNoDataContext())
                 {
                     db.Installers.Remove(installer);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();    
                 }
             }
             catch (Exception e)            
@@ -218,31 +218,31 @@ namespace Business
                     List<InstallerEntity> result= new List<InstallerEntity>();
                     if (id!=null && name != null)
                     {
-                        result = (
+                        result = await (
                                 from inst
                                 in db.Installers
                                 where inst.InstallerId.Contains(id) && inst.Name.Contains(name)
-                                select inst).ToList();
+                                select inst).ToListAsync();
                     }
                     else if (id == null && name != null)
                     {
-                        result = (
+                        result = await (
                                 from inst
                                 in db.Installers
                                 where inst.Name.Contains(name)
-                                select inst).ToList();
+                                select inst).ToListAsync();
                     }
                     else if (id != null && name == null)
                     {
-                        result = (
+                        result = await (
                                 from inst
                                 in db.Installers
                                 where inst.InstallerId.Contains(id)
-                                select inst).ToList();
+                                select inst).ToListAsync();
                     }
                     if (result.Count!= 0)
                     {
-                        return  result.ToList();
+                        return result.ToList();
                     }
                     else
                     {
