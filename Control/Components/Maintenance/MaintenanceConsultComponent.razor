@@ -1,5 +1,6 @@
 ﻿@using Entities;
 @using Business;
+@inject IToastService toastService
 
 
 
@@ -78,6 +79,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         Years = B_Maintenance.ListOfYears();
     }
 
@@ -90,12 +92,11 @@
         if (bandYear && BandMonth)
         {           
             maintenances = B_Maintenance.GetMaintenancesByYearAndMonth(SelectedYear, SelectedMonth);
-            ErrorMessage = "";
-           
+
         }
         else
         {
-            ErrorMessage = "Verifique los campos e intentelo de nuevo...";
+            toastService.ShowError("Verifique los campos e intentelo de nuevo", "Error");
         }
     }
 }
