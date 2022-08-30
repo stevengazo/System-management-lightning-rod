@@ -487,9 +487,8 @@ namespace Business
                 }
               
                 /* BASE PATH*/
-                var path = oMaintenance.DeviceId.ToString();
-                var relativePath = $"{path}/{oMaintenance.MaintenanceDate.Year.ToString()}-Maintenance";
-                await B_StorageManage.createFolder(relativePath,oMaintenance.MaintenanceId);
+                var relativePath = $"/{oMaintenance.DeviceId}/{oMaintenance.MaintenanceDate.Year.ToString()}-Maintenance";
+                await B_StorageManage.createFolderAsync(relativePath, oMaintenance.MaintenanceId);
 
             }
             catch(Exception f)

@@ -71,7 +71,7 @@ namespace Business
                 Db.SaveChanges();
             }
             // Crea una carpeta para el numero de serie del dispositivo
-           await B_StorageManage.createFolder("/", oDevice.DeviceId.ToString());
+            await B_StorageManage.createFolderAsync("/", oDevice.DeviceId);
         }
 
         /// <summary>

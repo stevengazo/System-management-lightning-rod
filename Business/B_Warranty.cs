@@ -141,6 +141,7 @@ namespace Business
                     await DB.Warranties.AddAsync(oWarranty);
                     await DB.SaveChangesAsync();
                 }
+                await B_StorageManage.createFolderAsync($"/{oWarranty.DeviceId}/{oWarranty.DateSend.Year.ToString()}-Warranties", oWarranty.Id);
                 return true;
             }
             catch (Exception e)
