@@ -15,7 +15,7 @@ namespace Business
         private static readonly string NetworkStoragePath = $@"192.168.1.5";
         private static readonly string userName = "AppUser";
         private static readonly string UserPassword = "ApUser2020$";
-        private static readonly string basePath = "array1/Dinnteco";
+        public static readonly string basePath = "array1/Dinnteco";
 
         /// <summary>
         /// Get an specific data from the FTP server
@@ -129,8 +129,7 @@ namespace Business
             }
            
          }
-
-       
+     
        public static bool DeleteFile(string NetWorkPath = "", string fileName = "")
         {
             try
@@ -201,9 +200,7 @@ namespace Business
             }
         }
 
-
-     
-
+    
         /// <summary>
         /// Create a new folder in the NAS Storage 
         /// </summary>
@@ -233,6 +230,35 @@ namespace Business
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Check if the folder exist and create a new directory
+        /// </summary>
+        /// <param name="RelativePath">Relative Path in the nas /{DeviceId}/{Year-Type}</param>
+        /// <param name="DirectoryName">Name of the folder to create sample {DirectoryName}</param>
+        /// <returns></returns>
+        public static async Task<bool> createFolderAsync(string RelativePath = "", string DirectoryName= "Sample")
+        {
+            try
+            {
+                var pathString = $"{basePath}{RelativePath}/{DirectoryName}";
+                FtpClient ClientFTP = new FtpClient(NetworkStoragePath, userName, UserPassword);
+                await ClientFTP.ConnectAsync();
+                var ExistsFlag = await ClientFTP.DirectoryExistsAsync(pathString);
+                if (!ExistsFlag)
+                {
+                    await ClientFTP.CreateDirectoryAsync(pathString, true);
+                    await ClientFTP.DisconnectAsync();
+                    return true; 
+                }
+                return false;
+            }
+            catch (Exception e ) 
+            {
+                Console.WriteLine(e.Message);
+                return false;
             }
         }
     }
