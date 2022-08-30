@@ -1,7 +1,7 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
-
+@inject AuthenticationStateProvider authStateProvider
 
 
 <EditForm Model="oMaintenance">
@@ -94,7 +94,7 @@
         technicians = B_Technician.GetListOftechnicians();
     }
 
-    private void UpdateMaintenance()
+    private async Task UpdateMaintenance()
     {
         try
         {
@@ -103,7 +103,9 @@
             var tmpDevice = B_Device.DeviceById(oMaintenance.DeviceId);
             //var tmpDevice = oDevices.Find(D => D.DeviceId == oMaintenance.DeviceId);
             oMaintenance.Device = tmpDevice;
-
+            oMaintenance.lastEdition = DateTime.Today;
+            var tmp = await authStateProvider.GetAuthenticationStateAsync();
+            oMaintenance.lastEditor = tmp.User.Identity.Name;
             B_Maintenance.Update(oMaintenance);
             Nav.NavigateTo("maintenance/list");
         }

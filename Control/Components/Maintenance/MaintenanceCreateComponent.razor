@@ -2,7 +2,7 @@
 @using Business;
 @inject NavigationManager Nav;
 @inject IToastService toastService
-
+@inject AuthenticationStateProvider authStateProvider
 
 
 <div>
@@ -139,10 +139,14 @@
     }
 
 
-    private void SaveMaintenance()
+    private async Task SaveMaintenance()
     {
         try
         {
+            oMaintenance.lastEdition = DateTime.Today;
+            var tmp = await authStateProvider.GetAuthenticationStateAsync();
+            oMaintenance.Author = tmp.User.Identity.Name;
+            oMaintenance.lastEditor = tmp.User.Identity.Name;
             oMaintenance.MaintenanceId = Guid.NewGuid().ToString();
             bool bandCheck = CheckValues(out string Messageinfo);
             Message = Messageinfo;

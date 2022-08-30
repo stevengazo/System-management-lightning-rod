@@ -1,16 +1,14 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using DataAccess;
 
 #nullable disable
 
 namespace DataAccess.Migrations
 {
-    public partial class DBdevelopMigration : Migration
+    public partial class DevelopMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            
             migrationBuilder.CreateTable(
                 name: "Countries",
                 columns: table => new
@@ -198,6 +196,9 @@ namespace DataAccess.Migrations
                     ReportDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IncidentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RevisionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    lastEditor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    lastEdition = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SendReportDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReportDescripcion = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
                     RevisionInformation = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true),
@@ -235,6 +236,9 @@ namespace DataAccess.Migrations
                     DeviceOhms = table.Column<float>(type: "real", nullable: false),
                     Ampers = table.Column<float>(type: "real", nullable: false),
                     ReportId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    lastEditor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    lastEdition = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Recomendations = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DeviceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     TechnicianId = table.Column<int>(type: "int", nullable: false)
@@ -282,7 +286,9 @@ namespace DataAccess.Migrations
                     DateSend = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateReceived = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FilesPaths = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    lastEditor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    lastEdition = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeviceId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     StatusId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -310,7 +316,7 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Installers",
                 columns: new[] { "InstallerId", "Name", "initDate" },
-                values: new object[] { "CR-1", "Grupo Mecsa", new DateTime(2022, 7, 18, 14, 29, 28, 846, DateTimeKind.Local).AddTicks(4614) });
+                values: new object[] { "CR-1", "Grupo Mecsa", new DateTime(2022, 8, 29, 19, 8, 48, 739, DateTimeKind.Local).AddTicks(669) });
 
             migrationBuilder.InsertData(
                 table: "ModelDevices",
@@ -320,7 +326,7 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Salemans",
                 columns: new[] { "SaleManId", "Name", "QuantityOfDevice" },
-                values: new object[] { "647ef26a-9188-422a-a0d1-d9f746a47b04", "sample", null });
+                values: new object[] { "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9", "sample", null });
 
             migrationBuilder.InsertData(
                 table: "Sectors",
@@ -361,27 +367,27 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "Name", "SectorId" },
-                values: new object[] { "b0c04d28-e785-4499-8407-46d90a9b4b79", "Prueba", 1 });
+                values: new object[] { "d3c0b643-527f-4d8e-842c-38ad50bd5476", "Prueba", 1 });
 
             migrationBuilder.InsertData(
                 table: "Devices",
                 columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "InstallerId", "IsActive", "IsReplaced", "Latitude", "Longitude", "ModelDeviceId", "Note", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
-                values: new object[] { "50ab2cee-93f5-495f-8bfa-78a3ced76a1c", "Prueba", "b0c04d28-e785-4499-8407-46d90a9b4b79", "506", new DateTime(2022, 7, 18, 0, 0, 0, 0, DateTimeKind.Local), null, true, false, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "647ef26a-9188-422a-a0d1-d9f746a47b04", 1 });
+                values: new object[] { "d7a014e2-8e3c-4a56-8871-6cad0db15a81", "Reempleazo Prueba", "d3c0b643-527f-4d8e-842c-38ad50bd5476", "506", new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local), "CR-1", false, true, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9", 1 });
 
             migrationBuilder.InsertData(
                 table: "Devices",
                 columns: new[] { "DeviceId", "Alias", "ClientId", "CountryId", "InstallationDate", "InstallerId", "IsActive", "IsReplaced", "Latitude", "Longitude", "ModelDeviceId", "Note", "RecomendedDateOfMaintenance", "SaleManId", "TypeDeviceId" },
-                values: new object[] { "6755154d-97a8-4db4-9a42-ad69519645d6", "Reempleazo Prueba", "b0c04d28-e785-4499-8407-46d90a9b4b79", "506", new DateTime(2022, 7, 18, 0, 0, 0, 0, DateTimeKind.Local), "CR-1", false, true, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "647ef26a-9188-422a-a0d1-d9f746a47b04", 1 });
+                values: new object[] { "ea9f30a3-3ea4-435f-a1d7-8d49a760e515", "Prueba", "d3c0b643-527f-4d8e-842c-38ad50bd5476", "506", new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local), null, true, false, null, null, 1, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9", 1 });
 
             migrationBuilder.InsertData(
                 table: "Replacements",
                 columns: new[] { "ReplacementDeviceId", "DeviceId", "NewSerieDevice", "Notes" },
-                values: new object[] { "ac4e3ba1-cc96-4e89-9ac8-683fc66bbeeb", "6755154d-97a8-4db4-9a42-ad69519645d6", "50ab2cee-93f5-495f-8bfa-78a3ced76a1c", null });
+                values: new object[] { "a16e414b-d6e5-475f-b4f0-2525198a8473", "d7a014e2-8e3c-4a56-8871-6cad0db15a81", "ea9f30a3-3ea4-435f-a1d7-8d49a760e515", null });
 
             migrationBuilder.InsertData(
                 table: "Warranties",
-                columns: new[] { "Id", "DateReceived", "DateSend", "DeviceId", "FilesPaths", "Notes", "StatusId" },
-                values: new object[] { "ff187295-3656-4f1f-a344-272be9db7a63", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "50ab2cee-93f5-495f-8bfa-78a3ced76a1c", "", null, 1 });
+                columns: new[] { "Id", "Author", "DateReceived", "DateSend", "DeviceId", "Notes", "StatusId", "lastEdition", "lastEditor" },
+                values: new object[] { "4052dd2e-43f7-4603-b5f2-ab4d6bf1448e", "system", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "ea9f30a3-3ea4-435f-a1d7-8d49a760e515", null, 1, new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local), "system" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_SectorId",
@@ -452,6 +458,7 @@ namespace DataAccess.Migrations
                 name: "IX_Warranties_StatusId",
                 table: "Warranties",
                 column: "StatusId");
+
             StoredProcedure.ExecuteSP(migrationBuilder);
         }
 

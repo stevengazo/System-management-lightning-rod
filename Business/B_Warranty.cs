@@ -132,31 +132,22 @@ namespace Business
                 return aux.ToList();
             }
         }
-        public  static async Task Create (WarrantyEntity oWarranty)
+        public static async Task<bool> CreateAsync (WarrantyEntity oWarranty)
         {
-            var path = oWarranty.DeviceId.ToString();
-            var relativePath = $"{path}/{oWarranty.DateSend.Year.ToString()}-Warranty";
             try
             {
-                /* BASE PATH*/
-               await B_StorageManage.createFolder(relativePath, oWarranty.Id);
+                using (var DB = new RayosNoDataContext())
+                {
+                    await DB.Warranties.AddAsync(oWarranty);
+                    await DB.SaveChangesAsync();
+                }
+                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                return false;
             }
-            finally
-            {
-                using (var DB = new RayosNoDataContext())
-                {
-                    oWarranty.FilesPaths = $"{relativePath}/{oWarranty.Id}";
-                    DB.Warranties.Add(oWarranty);
-                    DB.SaveChanges();
-                }
-            }
-            
-          
-
         }
         public static void Update(WarrantyEntity oWarranty)
         {

@@ -42,7 +42,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b0c04d28-e785-4499-8407-46d90a9b4b79",
+                            Id = "d3c0b643-527f-4d8e-842c-38ad50bd5476",
                             Name = "Prueba",
                             SectorId = 1
                         });
@@ -135,31 +135,31 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "50ab2cee-93f5-495f-8bfa-78a3ced76a1c",
+                            DeviceId = "ea9f30a3-3ea4-435f-a1d7-8d49a760e515",
                             Alias = "Prueba",
-                            ClientId = "b0c04d28-e785-4499-8407-46d90a9b4b79",
+                            ClientId = "d3c0b643-527f-4d8e-842c-38ad50bd5476",
                             CountryId = "506",
-                            InstallationDate = new DateTime(2022, 7, 18, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallationDate = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             IsActive = true,
                             IsReplaced = false,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "647ef26a-9188-422a-a0d1-d9f746a47b04",
+                            SaleManId = "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9",
                             TypeDeviceId = 1
                         },
                         new
                         {
-                            DeviceId = "6755154d-97a8-4db4-9a42-ad69519645d6",
+                            DeviceId = "d7a014e2-8e3c-4a56-8871-6cad0db15a81",
                             Alias = "Reempleazo Prueba",
-                            ClientId = "b0c04d28-e785-4499-8407-46d90a9b4b79",
+                            ClientId = "d3c0b643-527f-4d8e-842c-38ad50bd5476",
                             CountryId = "506",
-                            InstallationDate = new DateTime(2022, 7, 18, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallationDate = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             InstallerId = "CR-1",
                             IsActive = false,
                             IsReplaced = true,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "647ef26a-9188-422a-a0d1-d9f746a47b04",
+                            SaleManId = "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9",
                             TypeDeviceId = 1
                         });
                 });
@@ -168,6 +168,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<string>("IncidentId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactReportingName")
                         .HasColumnType("nvarchar(max)");
@@ -209,6 +212,12 @@ namespace DataAccess.Migrations
                     b.Property<int>("TechnicianId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("lastEdition")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("lastEditor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("IncidentId");
 
                     b.HasIndex("DeviceId");
@@ -239,7 +248,7 @@ namespace DataAccess.Migrations
                         {
                             InstallerId = "CR-1",
                             Name = "Grupo Mecsa",
-                            initDate = new DateTime(2022, 7, 18, 14, 29, 28, 846, DateTimeKind.Local).AddTicks(4614)
+                            initDate = new DateTime(2022, 8, 29, 19, 8, 48, 739, DateTimeKind.Local).AddTicks(669)
                         });
                 });
 
@@ -250,6 +259,9 @@ namespace DataAccess.Migrations
 
                     b.Property<float>("Ampers")
                         .HasColumnType("real");
+
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeviceId")
                         .HasColumnType("nvarchar(450)");
@@ -276,6 +288,12 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("TechnicianId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("lastEdition")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("lastEditor")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MaintenanceId");
 
@@ -332,9 +350,9 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "ac4e3ba1-cc96-4e89-9ac8-683fc66bbeeb",
-                            DeviceId = "6755154d-97a8-4db4-9a42-ad69519645d6",
-                            NewSerieDevice = "50ab2cee-93f5-495f-8bfa-78a3ced76a1c"
+                            ReplacementDeviceId = "a16e414b-d6e5-475f-b4f0-2525198a8473",
+                            DeviceId = "d7a014e2-8e3c-4a56-8871-6cad0db15a81",
+                            NewSerieDevice = "ea9f30a3-3ea4-435f-a1d7-8d49a760e515"
                         });
                 });
 
@@ -356,7 +374,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "647ef26a-9188-422a-a0d1-d9f746a47b04",
+                            SaleManId = "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9",
                             Name = "sample"
                         });
                 });
@@ -496,6 +514,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateReceived")
                         .HasColumnType("datetime2");
 
@@ -505,14 +526,17 @@ namespace DataAccess.Migrations
                     b.Property<string>("DeviceId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FilesPaths")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("lastEdition")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("lastEditor")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -525,12 +549,14 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ff187295-3656-4f1f-a344-272be9db7a63",
+                            Id = "4052dd2e-43f7-4603-b5f2-ab4d6bf1448e",
+                            Author = "system",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "50ab2cee-93f5-495f-8bfa-78a3ced76a1c",
-                            FilesPaths = "",
-                            StatusId = 1
+                            DeviceId = "ea9f30a3-3ea4-435f-a1d7-8d49a760e515",
+                            StatusId = 1,
+                            lastEdition = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local),
+                            lastEditor = "system"
                         });
                 });
 

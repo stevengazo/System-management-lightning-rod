@@ -1,7 +1,7 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
-
+@inject AuthenticationStateProvider authStateProvider
 
 
 
@@ -91,11 +91,14 @@
         oIncident = B_Incident.GetIncidentById(IncidentId);
         technicians = B_Technician.GetListOftechnicians();
     }
-    private void UpdateIncident()
+    private async Task UpdateIncident()
     {
         try
-        {
+        {            
             oIncident.Device = Devices.First(D => D.DeviceId == oIncident.DeviceId);
+            var lasEditor = await authStateProvider.GetAuthenticationStateAsync();
+            oIncident.lastEditor = lasEditor.User.Identity.Name;
+            oIncident.lastEdition = DateTime.Today;
             B_Incident.Update(oIncident);
             Nav.NavigateTo("incident/list");        
         }

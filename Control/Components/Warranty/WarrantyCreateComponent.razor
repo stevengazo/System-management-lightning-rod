@@ -1,6 +1,9 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
+@inject AuthenticationStateProvider authStateProvider
+@inject IToastService toastService
+
 
 <EditForm Model="oWarranty">
     <div class="form-group">
@@ -25,11 +28,6 @@
         <label class="h5"><strong>Fecha recepción Garantía</strong></label>
         <InputDate @bind-Value="oWarranty.DateReceived" class="form-control"></InputDate>
         <p><i>Fecha de recepción o estimada de España</i></p>
-    </div>
-    <div class="form-group">
-        <label class="h5"><strong>Ruta de los Archivos de Garantía:</strong></label>
-        <InputTextArea @bind-Value="oWarranty.FilesPaths" class="form-control"></InputTextArea>
-        <p><i>Ruta interna del NAS, donde se encuentran almancenados los archivos referentes a la garantia </i></p>
     </div>
     <div class="form-group">
         <label class="h5"><strong>Notas:</strong></label>
@@ -65,19 +63,25 @@
         status = B_Status.GetStatus();
     }
 
-    private void filepath(ChangeEventArgs e){
-        var path = e.Value;
-        oWarranty.FilesPaths = path.ToString();
-    }
-
-    private void SaveWarranty()
+    private async Task SaveWarranty()
     {
         try
         {
             oWarranty.Id = Guid.NewGuid().ToString();
+            oWarranty.lastEdition= DateTime.Today;
+            var contextmp = await authStateProvider.GetAuthenticationStateAsync();
+            oWarranty.Author = contextmp.User.Identity.Name;
+            oWarranty.lastEditor = contextmp.User.Identity.Name;
+            var result = await B_Warranty.CreateAsync(oWarranty);
+            if (result)
+            {
+                Nav.NavigateTo($"warranty/view/{oWarranty.Id}");
+            }
+            else
+            {
+                toastService.ShowError("Error interno....", "Aviso");
+            }
 
-            B_Warranty.Create(oWarranty);
-            Nav.NavigateTo($"warranty/view/{oWarranty.Id}");        
         }catch(Exception f)
         {
             Message = $"Error: {f.Message}. Intentelo de nuevo";

@@ -15,9 +15,9 @@
     <div>
         <div class="form-group d-flex flex-column justify-content-around align-items-center">
             <div>
-            <p class="text-sm-left">
-                Tamaño máximo de carga de @sizeMB MB
-            </p>
+                <p class="text-sm-left">
+                    Tamaño máximo de carga de @sizeMB MB
+                </p>
             </div>
             <div>
                 <InputFile class="form-control form-control-file" OnChange="@LoadFiles" multiple />
@@ -25,7 +25,7 @@
             <div>
                 <button class="m-lg-1 btn btn-sm btn-outline-success" @onclick="@onClicked">Subir Archivos</button>
             </div>
-            
+
         </div>
         <p>
             @errorMessage
@@ -61,7 +61,7 @@
                             @item.GetValueOrDefault("Size") KB
                         </td>
                         <td>
-                            <DowndloadFileComponent type="@Type"  idObject="@idObject" nameFile="@item.GetValueOrDefault("Name")" />
+                            <DowndloadFileComponent type="@Type" idObject="@idObject" nameFile="@item.GetValueOrDefault("Name")" />
                         </td>
                         <td>
                             @if (true)
@@ -91,44 +91,47 @@
     protected override async Task OnInitializedAsync()
     {
 
-        sizeMB = (maxFileSize / 1024)/1024 ;
+        sizeMB = (maxFileSize / 1024) / 1024;
         await GetList();
 
         await base.OnInitializedAsync();
     }
-
-
-
-
     // GetList()
     List<Dictionary<string, string>> itemList = new List<Dictionary<string, string>>();
 
     private async Task GetList()
     {
-        if (Type != null)
+        try
         {
-            switch (Type)
+            if (Type != null)
             {
-                case "Warranty":
-                    var Object = B_Warranty.WarrantyById(idObject);
-                    var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranty/{Object.Id}";
-                    itemList = await B_StorageManage.GetListOfFiles(path);
-                    break;
-                case "Maintenance":
-                    var ObjectMain = B_Maintenance.MaintenanceById(idObject);
-                    var pathMain = $"{ObjectMain.DeviceId}/{ ObjectMain.MaintenanceDate.Year.ToString()}-Maintenance/{ObjectMain.MaintenanceId}";
-                    itemList = await B_StorageManage.GetListOfFiles(pathMain);
-                    break;
-                case "Incident":
-                    var ObjectInci = B_Incident.GetIncidentById(idObject);
-                    var pathInci = $"{ObjectInci.DeviceId}/{ ObjectInci.IncidentDate.Year.ToString()}-Incident/{ObjectInci.IncidentId}";
-                    itemList = await B_StorageManage.GetListOfFiles(pathInci);
-                    break;
-                default:
-                    // code block
-                    break;
-            }
+                switch (Type)
+                {
+                    case "Warranty":
+                        var Object = B_Warranty.WarrantyById(idObject);
+                        var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranty/{Object.Id}";
+                        itemList = await B_StorageManage.GetListOfFiles(path);
+                        break;
+                    case "Maintenance":
+                        var ObjectMain = B_Maintenance.MaintenanceById(idObject);
+                        var pathMain = $"{ObjectMain.DeviceId}/{ ObjectMain.MaintenanceDate.Year.ToString()}-Maintenance/{ObjectMain.MaintenanceId}";
+                        itemList = await B_StorageManage.GetListOfFiles(pathMain);
+                        break;
+                    case "Incident":
+                        var ObjectInci = B_Incident.GetIncidentById(idObject);
+                        var pathInci = $"{ObjectInci.DeviceId}/{ ObjectInci.IncidentDate.Year.ToString()}-Incident/{ObjectInci.IncidentId}";
+                        itemList = await B_StorageManage.GetListOfFiles(pathInci);
+                        break;
+                    default:
+                        // code block
+                        break;
+                }
 
+            }
+        }
+        catch (Exception f)
+        {
+            toastService.ShowError($"Error: {f.Message}", "Internal Error");
         }
     }
 
@@ -232,11 +235,11 @@
                     tmpPath = $"{tmpOBject.DeviceId}/{tmpOBject.DateSend.Year.ToString()}-Warranty/{tmpOBject.Id}";
                     break;
                 case "Maintenance":
-                    var tmpOBjectMain =  B_Maintenance.MaintenanceById(idObject);
+                    var tmpOBjectMain = B_Maintenance.MaintenanceById(idObject);
                     tmpPath = $"{tmpOBjectMain.DeviceId}/{tmpOBjectMain.MaintenanceDate.Year.ToString()}-Maintenance/{tmpOBjectMain.MaintenanceId}";
                     break;
                 case "Incident":
-                    var tmpOBjecInci =  B_Incident.GetIncidentById(idObject);
+                    var tmpOBjecInci = B_Incident.GetIncidentById(idObject);
                     tmpPath = $"{tmpOBjecInci.DeviceId}/{tmpOBjecInci.IncidentDate.Year.ToString()}-Incident/{tmpOBjecInci.IncidentId}";
                     break;
                 default:
