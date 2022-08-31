@@ -159,10 +159,14 @@
         _Data = e;
     }
 
+    /**
+     * Load file into the NAS
+     */
     private async Task onClicked()
     {
         if (_Data != null)
         {
+            toastService.ShowInfo("Guardando Archivo", "Atención");
             try
             {
                 var pathlocal = "";
@@ -204,18 +208,21 @@
                         break;
                 }
                 B_StorageManage.uploadFIle(pathlocal, pathFileNas);
-                File.Delete(pathlocal);                
+                File.Delete(pathlocal);
+                toastService.ShowSuccess("Archivo Guardado", "Atención");
                 await GetList();
             }
             catch (Exception f)
             {
                 Console.WriteLine(f.Message);
                 errorMessage = f.Message;
+                toastService.ShowError("Error Interno", "Error");
             }
         }
         else
         {
-            errorMessage = "No hay datos cargados";
+            errorMessage = "";
+            toastService.ShowError("No hay archivos para cargar", "Error");
         }
     }
 
@@ -227,7 +234,6 @@
 
     private async Task onclickeddELETE(string nameFile)
     {
-
         isDeleted = !isDeleted;
         try
         {
@@ -236,25 +242,27 @@
             {
                 case "Warranty":
                     var tmpOBject = B_Warranty.WarrantyById(idObject);
-                    tmpPath = $"{tmpOBject.DeviceId}/{tmpOBject.DateSend.Year.ToString()}-Warranty/{tmpOBject.Id}";
+                    tmpPath = $"{tmpOBject.DeviceId}/{tmpOBject.DateSend.Year.ToString()}-Warranties/{tmpOBject.Id}";
                     break;
                 case "Maintenance":
                     var tmpOBjectMain = B_Maintenance.MaintenanceById(idObject);
-                    tmpPath = $"{tmpOBjectMain.DeviceId}/{tmpOBjectMain.MaintenanceDate.Year.ToString()}-Maintenance/{tmpOBjectMain.MaintenanceId}";
+                    tmpPath = $"{tmpOBjectMain.DeviceId}/{tmpOBjectMain.MaintenanceDate.Year.ToString()}-Maintenances/{tmpOBjectMain.MaintenanceId}";
                     break;
                 case "Incident":
                     var tmpOBjecInci = B_Incident.GetIncidentById(idObject);
-                    tmpPath = $"{tmpOBjecInci.DeviceId}/{tmpOBjecInci.IncidentDate.Year.ToString()}-Incident/{tmpOBjecInci.IncidentId}";
+                    tmpPath = $"{tmpOBjecInci.DeviceId}/{tmpOBjecInci.IncidentDate.Year.ToString()}-Incidents/{tmpOBjecInci.IncidentId}";
                     break;
                 default:
                     break;
             }
             isDeleted = B_StorageManage.DeleteFile(tmpPath, nameFile);
             await GetList();
+            toastService.ShowWarning($"{nameFile} borrado del servidor", "Atención");
         }
         catch (Exception r)
         {
             Console.WriteLine(r.Message);
+            toastService.ShowError("Error interno...", "Atención");
         }
     }
 
