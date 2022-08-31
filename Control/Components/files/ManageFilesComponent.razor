@@ -50,31 +50,43 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (Dictionary<string, string> item in itemList)
-                {
+            @if (itemList != null)
+            {
+                <tbody>
+                    @foreach (Dictionary<string, string> item in itemList)
+                    {
+                        <tr>
+                            <td>
+                                @item.GetValueOrDefault("Name")
+                            </td>
+                            <td>
+                                @item.GetValueOrDefault("Size") KB
+                            </td>
+                            <td>
+                                <DowndloadFileComponent type="@Type" idObject="@idObject" nameFile="@item.GetValueOrDefault("Name")" />
+                            </td>
+                            <td>
+                                @if (true)
+                                {
+                                    string name = item.GetValueOrDefault("Name");
+                                    <button class="btn btn-danger" @onclick="() =>onclickeddELETE(name) ">
+                                        Borrar
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tbody>
                     <tr>
-                        <td>
-                            @item.GetValueOrDefault("Name")
-                        </td>
-                        <td>
-                            @item.GetValueOrDefault("Size") KB
-                        </td>
-                        <td>
-                            <DowndloadFileComponent type="@Type" idObject="@idObject" nameFile="@item.GetValueOrDefault("Name")" />
-                        </td>
-                        <td>
-                            @if (true)
-                            {
-                                string name = item.GetValueOrDefault("Name");
-                                <button class="btn btn-danger" @onclick="() =>onclickeddELETE(name) ">
-                                    Borrar
-                                </button>
-                            }
-                        </td>
+
                     </tr>
-                }
-            </tbody>
+                </tbody>                
+            }
+
         </table>
     </div>
 </div>
@@ -90,13 +102,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-
         sizeMB = (maxFileSize / 1024) / 1024;
         await GetList();
-
         await base.OnInitializedAsync();
     }
-    // GetList()
+
+    // Item List to Render
     List<Dictionary<string, string>> itemList = new List<Dictionary<string, string>>();
 
     private async Task GetList()
@@ -109,24 +120,23 @@
                 {
                     case "Warranty":
                         var Object = B_Warranty.WarrantyById(idObject);
-                        var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranty/{Object.Id}";
+                        var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranties/{Object.Id}";
                         itemList = await B_StorageManage.GetListOfFiles(path);
                         break;
                     case "Maintenance":
                         var ObjectMain = B_Maintenance.MaintenanceById(idObject);
-                        var pathMain = $"{ObjectMain.DeviceId}/{ ObjectMain.MaintenanceDate.Year.ToString()}-Maintenance/{ObjectMain.MaintenanceId}";
+                        var pathMain = $"{ObjectMain.DeviceId}/{ ObjectMain.MaintenanceDate.Year.ToString()}-Maintenances/{ObjectMain.MaintenanceId}";
                         itemList = await B_StorageManage.GetListOfFiles(pathMain);
                         break;
                     case "Incident":
                         var ObjectInci = B_Incident.GetIncidentById(idObject);
-                        var pathInci = $"{ObjectInci.DeviceId}/{ ObjectInci.IncidentDate.Year.ToString()}-Incident/{ObjectInci.IncidentId}";
+                        var pathInci = $"{ObjectInci.DeviceId}/{ ObjectInci.IncidentDate.Year.ToString()}-Incidents/{ObjectInci.IncidentId}";
                         itemList = await B_StorageManage.GetListOfFiles(pathInci);
                         break;
                     default:
                         // code block
                         break;
                 }
-
             }
         }
         catch (Exception f)
@@ -167,40 +177,34 @@
                     var bytesRead = 0;
                     var totalRead = 0;
                     var buffer = new byte[maxFileSize];
-
                     while ((bytesRead = await readStream.ReadAsync(buffer)) != 0)
                     {
                         totalRead += bytesRead;
-
                         await writeStream.WriteAsync(buffer, 0, bytesRead);
-
                         StateHasChanged();
                     }
                     pathlocal = pathAux;
                 }
-
                 string pathFileNas = "";
                 switch (Type)
                 {
                     case "Warranty":
                         var tmpObject = B_Warranty.WarrantyById(idObject);
-                        pathFileNas = $"{tmpObject.DeviceId}/{tmpObject.DateSend.Year.ToString()}-Warranty/{tmpObject.Id}/{filename}";
+                        pathFileNas = $"{tmpObject.DeviceId}/{tmpObject.DateSend.Year.ToString()}-Warranties/{tmpObject.Id}/{filename}";
                         break;
                     case "Maintenance":
                         var maintenance = B_Maintenance.MaintenanceById(idObject);
-                        pathFileNas = $"{maintenance.DeviceId}/{maintenance.MaintenanceDate.Year.ToString()}-Maintenance/{maintenance.MaintenanceId}/{filename}";
+                        pathFileNas = $"{maintenance.DeviceId}/{maintenance.MaintenanceDate.Year.ToString()}-Maintenances/{maintenance.MaintenanceId}/{filename}";
                         break;
                     case "Incident":
                         var Incident = B_Incident.GetIncidentById(idObject);
-                        pathFileNas = $"{Incident.DeviceId}/{Incident.IncidentDate.Year.ToString()}-Incident/{Incident.IncidentId}/{filename}";
+                        pathFileNas = $"{Incident.DeviceId}/{Incident.IncidentDate.Year.ToString()}-Incidents/{Incident.IncidentId}/{filename}";
                         break;
                     default:
                         break;
                 }
-
                 B_StorageManage.uploadFIle(pathlocal, pathFileNas);
-                File.Delete(pathlocal);
-                //errorMessage = "Archivo Cargado, favor refresque la pagina";
+                File.Delete(pathlocal);                
                 await GetList();
             }
             catch (Exception f)

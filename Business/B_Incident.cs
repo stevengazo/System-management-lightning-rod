@@ -19,7 +19,7 @@ namespace Business
         public static async Task CreateIncident(IncidentEntity oIncident)
         {
             var path = oIncident.DeviceId.ToString();
-            var relativePath = $"{path}/{oIncident.IncidentDate.Year.ToString()}-Incident";
+            var relativePath = $"{path}/{oIncident.IncidentDate.Year.ToString()}-Incidents";
             try
             {
              await  B_StorageManage.createFolder(relativePath, oIncident.IncidentId);

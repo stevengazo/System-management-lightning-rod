@@ -16,31 +16,6 @@ namespace Business
         private static readonly string userName = "AppUser";
         private static readonly string UserPassword = "ApUser2020$";
         public static readonly string basePath = "array1/Dinnteco";
-
-        /// <summary>
-        /// Get an specific data from the FTP server
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="NetworkPath"></param>
-        /// <returns></returns>
-        public static Stream DownloadFileStream(string fileName = "", string NetworkPath = "")
-        {
-            // Get the object used to communicate with the server.
-            var filePath = $"ftp://{NetworkStoragePath}/mnt/{basePath}/{NetworkPath}/";
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(filePath);
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-
-            // This example assumes the FTP site uses anonymous logon.
-            request.Credentials = new NetworkCredential(userName, UserPassword);
-
-            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-            Console.Write(response.ToString());
-            Stream responseStream = response.GetResponseStream();
-            response.Close();
-
-
-            return responseStream;
-        }
        
         /// <summary>
         /// Get an specific file from the FTP Server
@@ -56,20 +31,17 @@ namespace Business
                 var FlagConexion = CheckConnection();
                 if (FlagConexion)
                 {
-
                     FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
                     ftpClient.Connect();
                     // ftpClient.DownloadFile($"{LocalPath}/{fileName}", $"{basePath}/{NetworkPath}/{fileName}", FtpLocalExists.Overwrite, FtpVerify.None);
                     ftpClient.Download(out byte[] data, $"{basePath}/{NetworkPath}/{fileName}", 0);
                     ftpClient.Disconnect();
                     return data;
-
                 }
                 else
                 {
                     return null ;
                 }
-
             }
             catch (Exception ex)
             {
@@ -113,11 +85,9 @@ namespace Business
         /// <exception cref="NotImplementedException"></exception>
         public static void uploadFIle(string localpath = "", string storagePath ="")
         {
-
             try
             {
                 var tmp = $"{basePath}/{storagePath}/";
-
                 FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
                 ftpClient.Connect();             
                 ftpClient.UploadFile(localpath,tmp,FtpRemoteExists.Overwrite,true,FtpVerify.None);
@@ -126,10 +96,15 @@ namespace Business
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);              
-            }
-           
+            }           
          }
      
+        /// <summary>
+        /// Delete an existent file in the NAS
+        /// </summary>
+        /// <param name="NetWorkPath">route of the file</param>
+        /// <param name="fileName">name of the file to delete</param>
+        /// <returns>True if the file was delete, false if present errors</returns>
        public static bool DeleteFile(string NetWorkPath = "", string fileName = "")
         {
             try
@@ -164,34 +139,35 @@ namespace Business
         /// </summary>
         /// <param name="path">relative path to consult. Dinnteco/<Path></param>
         /// <returns></returns>
-        public static async Task< List<Dictionary<string,string>> >GetListOfFiles(string path = "")
+        public static async Task< List<Dictionary<string,string>> >GetListOfFiles(string RelativePath = "")
         {
-            List<Dictionary<string,string>> tmp = new List<Dictionary<string,string>>();
             try
             {
-                if (CheckConnection())
+                string fullPath = $"{basePath}/{RelativePath}";
+                // list to return
+                var list = new List<Dictionary<string,string>>();
+                // variable to save the FTPClient
+                FtpClient clientFTP = new FtpClient(NetworkStoragePath, userName, UserPassword);
+                await clientFTP.ConnectAsync();
+                var resultFlag = await clientFTP.DirectoryExistsAsync(fullPath);
+                if (resultFlag)
                 {
-                    var fullpath = basePath + "/" + path;
-                    FtpClient ftpClient = new FtpClient(NetworkStoragePath, userName, UserPassword);
-                    ftpClient.Connect();
-                    var tmpResults =  await ftpClient.GetListingAsync();
-                    ftpClient.Disconnect();                  
-                    if(tmpResults != null)
-                    {                        
-                        foreach(var item in tmpResults)
+                    var results = clientFTP.GetListing(fullPath);
+                    if (results.Length>0)
+                    {
+                        foreach (var item in results)
                         {
-                            List<string> tmplist = new List<string>();
-                            Dictionary<string, string> tmpDict = new Dictionary<string, string>();
-                            tmpDict.Add("Name", item.Name);
+                            var tmpDict = new Dictionary<string, string>();
+                            tmpDict.Add("Name", item.Name.ToString());
                             tmpDict.Add("Type", item.Type.ToString());
                             tmpDict.Add("Size", item.Size.ToString());
-                            tmpDict.Add("location", item.FullName.ToString());
-                            //tmplist.Add(item.FullName.ToString());
-                            tmp.Add(tmpDict);
-                        }                    
+                            tmpDict.Add("Location", item.FullName.ToString());
+                            list.Add(tmpDict);
+                        }
                     }
                 }
-                return tmp;
+                await clientFTP.DisconnectAsync();
+                return list;
             }
             catch (Exception e)
             {
