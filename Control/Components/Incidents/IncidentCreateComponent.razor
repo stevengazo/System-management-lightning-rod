@@ -99,7 +99,8 @@
             oIncident.lastEdition = DateTime.Today;
             oIncident.Author = tmp.User.Identity.Name;
             oIncident.lastEditor = tmp.User.Identity.Name;
-            B_Incident.CreateIncident(oIncident);
+            await B_Incident.CreateIncident(oIncident);
+            await B_StorageManage.createFolderAsync($"{oIncident.DeviceId}/{oIncident.IncidentDate.Year.ToString()}-Incidents", oIncident.IncidentId);
             Nav.NavigateTo("incident/list");
         }
         catch(Exception f)

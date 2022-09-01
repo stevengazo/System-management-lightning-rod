@@ -10,7 +10,7 @@
 @inject IToastService toastService
 
 
-<div class="d-flex flex-row justify-content-around">
+<div class="d-flex flex-row justify-content-around border rounded mb-3">
     <!-- Añadir archivo -->
     <div>
         <div class="form-group d-flex flex-column justify-content-around align-items-center">
@@ -20,19 +20,12 @@
                 </p>
             </div>
             <div>
-                <InputFile class="form-control form-control-file" OnChange="@LoadFiles" multiple />
+                <InputFile class="form-control-file" OnChange="@LoadFiles" multiple />
             </div>
             <div>
                 <button class="m-lg-1 btn btn-sm btn-outline-success" @onclick="@onClicked">Subir Archivos</button>
             </div>
-
         </div>
-        <p>
-            @errorMessage
-        </p>
-
-
-
     </div>
     <!-- Tabla Contenidos -->
     <div>
@@ -111,9 +104,10 @@
     List<Dictionary<string, string>> itemList = new List<Dictionary<string, string>>();
 
     private async Task GetList()
-    {
+    {        
         try
         {
+            toastService.ShowInfo("Busando actualizaciones en el NAS", "Atención");
             if (Type != null)
             {
                 switch (Type)
@@ -137,6 +131,15 @@
                         // code block
                         break;
                 }
+            }
+            if(itemList.Count == 0)
+            {
+                toastService.ClearAll();
+                toastService.ShowInfo("No hay información disponible en el NAS", "Atención");
+            }
+            else
+            {
+                toastService.ShowInfo("Elementos recuperados del NAS", "Atención");                
             }
         }
         catch (Exception f)
@@ -233,10 +236,11 @@
 
 
     private async Task onclickeddELETE(string nameFile)
-    {
+    {        
         isDeleted = !isDeleted;
         try
         {
+            toastService.ShowInfo($"Borrando {nameFile}", "Atención");
             var tmpPath = "";
             switch (Type)
             {
