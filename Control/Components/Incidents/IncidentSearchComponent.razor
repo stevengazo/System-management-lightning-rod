@@ -4,8 +4,17 @@
 @using System.IO
 @using System.Globalization
 
-@inject IJSRuntime Js;
+@using Microsoft.AspNetCore.Hosting;
+@using Microsoft.Extensions.Logging;
+@inject IWebHostEnvironment Env
 
+@using System;
+@using DocumentFormat.OpenXml;
+@using DocumentFormat.OpenXml.Packaging;
+@using DocumentFormat.OpenXml.Spreadsheet;
+
+
+@inject IJSRuntime Js;
 @inject IToastService toastService
 
 <div>
@@ -42,10 +51,10 @@
                 <Authorized ><Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
                     <div class="col">
                         <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
+                        <input class="btn-outline-dark form-control" type="button" value="Pruebas" @onclick="test"/>
                     </div>       
                 </Animate></Authorized>
             </AuthorizeView>
-
     </div>
     <p class="text-danger">@Message</p>
 </div>
@@ -110,6 +119,42 @@
     List<int> Years = new List<int>();
 
 
+    private async Task test()
+    {
+        var PathEnv = Path.Combine(Env.ContentRootPath, "tmpfiles","file.xlxs");
+        // Create a spreadsheet document by supplying the file name.  
+        SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.
+            Create(PathEnv, SpreadsheetDocumentType.Workbook);
+
+        // Add a WorkbookPart to the document.  
+        WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
+        workbookpart.Workbook = new Workbook();
+
+
+        // Add a WorksheetPart to the WorkbookPart.  
+        WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
+        worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+        // Add Sheets to the Workbook.  
+        Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.
+            AppendChild<Sheets>(new Sheets());
+
+        // Append a new worksheet and associate it with the workbook.  
+        Sheet sheet = new Sheet()
+        {
+            Id = spreadsheetDocument.WorkbookPart.
+            GetIdOfPart(worksheetPart),
+            SheetId = 1,
+            Name = "prueba"
+        };
+        sheets.Append(sheet);
+
+
+        // Close the document.  
+        spreadsheetDocument.Close();
+      
+    }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -162,7 +207,7 @@
    
 
     private void Download()
-    {
+    {        
         using( var memoryStream= new MemoryStream())
         {
             using( var writter = new StreamWriter(memoryStream))
