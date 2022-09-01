@@ -20,41 +20,43 @@
 <div>
     <div class="form-group row">
         <div class="col">
-                <input type="text" @bind="DeviceIdToSearch" list="devicesInDB" class="rounded form-control" placeholder="Serie" />
-                <datalist id="devicesInDB">
-                    @foreach (var dictItem in devices)
-                   {
-                       <option value="@dictItem.Key">@dictItem.Value</option>
-                   }
-                </datalist>
+            <input type="text" @bind="DeviceIdToSearch" list="devicesInDB" class="rounded form-control" placeholder="Serie" />
+            <datalist id="devicesInDB">
+                @foreach (var dictItem in devices)
+                {
+                    <option value="@dictItem.Key">@dictItem.Value</option>
+                }
+            </datalist>
         </div>
         <div class="col">
-                <input type="text" @bind="AliasToSearch" class="rounded form-control" placeholder="Alias" />
+            <input type="text" @bind="AliasToSearch" class="rounded form-control" placeholder="Alias" />
         </div>
         <div class="col">
-                <select class="rounded form-control" @bind="YearToSearch">
-                    @foreach (var item in Years)
-                    {
-                        <option value="@item">@item</option>
-                    }
-                </select>
+            <select class="rounded form-control" @bind="YearToSearch">
+                @foreach (var item in Years)
+                {
+                    <option value="@item">@item</option>
+                }
+            </select>
         </div>
     </div>
-        <div class="form-group row">
-            <div class="col">
-                <input class="btn-outline-dark form-control" type="button" value="Buscar" @onclick="Search" />
-            </div>
-            <div class="col">
-                <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
-            </div>
-            <AuthorizeView Roles="Administrador,Editor">
-                <Authorized ><Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+    <div class="form-group row">
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Buscar" @onclick="Search" />
+        </div>
+        <div class="col">
+            <input class="btn-outline-dark form-control" type="button" value="Limpiar" @onclick="Clean" />
+        </div>
+        <AuthorizeView Roles="Administrador,Editor">
+            <Authorized>
+                <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
                     <div class="col">
-                        <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download"/>
-                        <input class="btn-outline-dark form-control" type="button" value="Pruebas" @onclick="test"/>
-                    </div>       
-                </Animate></Authorized>
-            </AuthorizeView>
+                        <input class="btn-outline-dark form-control" type="button" value="Exportar" @onclick="Download" />
+                        <input class="btn-outline-dark form-control" type="button" value="Pruebas" @onclick="test" />
+                    </div>
+                </Animate>
+            </Authorized>
+        </AuthorizeView>
     </div>
     <p class="text-danger">@Message</p>
 </div>
@@ -75,7 +77,7 @@
     <tbody>
         @foreach (var obj in Incidents)
         {
-            if (!obj.IsClosed )
+            if (!obj.IsClosed)
             {
                 <tr class="text-danger">
                     <td>@obj.DeviceId</td>
@@ -96,10 +98,10 @@
                     <td>@obj.Device.Client.Name</td>
                     <td>@obj.ReportDate</td>
                     <td>@obj.Technician.TechnicianName</td>
-                    <td><a href="incident/view/@obj.IncidentId" class="btn btn-info " >Ver</a></td>
+                    <td><a href="incident/view/@obj.IncidentId" class="btn btn-info ">Ver</a></td>
                     <td><a href="incident/update/@obj.IncidentId" class="btn btn-success">Editar</a></td>
                     <td><a href="incident/delete/@obj.IncidentId" class="btn btn-danger">Eliminar</a></td>
-                </tr>                
+                </tr>
             }
 
         }
@@ -107,7 +109,7 @@
 </table>
 
 
-@code{
+@code {
     string DeviceIdToSearch = null;
     string AliasToSearch = null;
     int YearToSearch = 0;
@@ -121,38 +123,37 @@
 
     private async Task test()
     {
-        var PathEnv = Path.Combine(Env.ContentRootPath, "tmpfiles","file.xlxs");
-        // Create a spreadsheet document by supplying the file name.  
+        string date = DateTime.Today.ToShortDateString().Replace('/', '_');
+        var PathEnv = Path.Combine(Env.ContentRootPath, "tmpfiles", $"Report-Incidents-{date}.xlxs");
+        // Create a spreadsheet document by supplying the file name.
         SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.
-            Create(PathEnv, SpreadsheetDocumentType.Workbook);
-
-        // Add a WorkbookPart to the document.  
+        Create(PathEnv, SpreadsheetDocumentType.Workbook);
+        // Add a WorkbookPart to the document.
         WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
         workbookpart.Workbook = new Workbook();
-
-
-        // Add a WorksheetPart to the WorkbookPart.  
+        // Add a WorksheetPart to the WorkbookPart.
         WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
         worksheetPart.Worksheet = new Worksheet(new SheetData());
 
-        // Add Sheets to the Workbook.  
+        // Add Sheets to the Workbook.
         Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.
             AppendChild<Sheets>(new Sheets());
 
-        // Append a new worksheet and associate it with the workbook.  
+        // Append a new worksheet and associate it with the workbook.
         Sheet sheet = new Sheet()
-        {
-            Id = spreadsheetDocument.WorkbookPart.
-            GetIdOfPart(worksheetPart),
-            SheetId = 1,
-            Name = "prueba"
-        };
+            {
+                Id = spreadsheetDocument.WorkbookPart.
+                GetIdOfPart(worksheetPart),
+                SheetId = 1,
+                Name = "prueba"
+            };
         sheets.Append(sheet);
 
-
-        // Close the document.  
+        // Close the document.
         spreadsheetDocument.Close();
-      
+
+        // Download the document
+
     }
 
 
@@ -160,38 +161,38 @@
     {
         Years = B_Incident.GetIncidentsByYears().ToList();
         devices = B_Device.GetDictonaryOfDevicesWithClient();
-       await  base.OnInitializedAsync();   
+        await base.OnInitializedAsync();
 
     }
 
     private void Search()
     {
-        var tmpList= new List<IncidentEntity>();
-        if(YearToSearch != 0)
+        var tmpList = new List<IncidentEntity>();
+        if (YearToSearch != 0)
         {
-            tmpList = B_Incident.SearchIncidents(DeviceIdToSearch, AliasToSearch, YearToSearch.ToString());    
+            tmpList = B_Incident.SearchIncidents(DeviceIdToSearch, AliasToSearch, YearToSearch.ToString());
         }
         else
         {
-            tmpList = B_Incident.SearchIncidents(DeviceIdToSearch, AliasToSearch, null);    
+            tmpList = B_Incident.SearchIncidents(DeviceIdToSearch, AliasToSearch, null);
         }
         try
         {
-            if(tmpList.Count != 0)
+            if (tmpList.Count != 0)
             {
                 Incidents = tmpList;
                 Message = "";
             }
             else
             {
-             toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
+                toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
                 Message = $"";
             }
         }
         catch (Exception f)
-        {        
-                         toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
-            Message = $"";   
+        {
+            toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
+            Message = $"";
         }
     }
 
@@ -204,20 +205,20 @@
         YearToSearch = 0;
         Message = "";
     }
-   
+
 
     private void Download()
-    {        
-        using( var memoryStream= new MemoryStream())
+    {
+        using (var memoryStream = new MemoryStream())
         {
-            using( var writter = new StreamWriter(memoryStream))
+            using (var writter = new StreamWriter(memoryStream))
             {
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    NewLine = Environment.NewLine,
-                };
-                
-                using(var csv = new CsvWriter(writter,config))
+                    {
+                        NewLine = Environment.NewLine,
+                    };
+
+                using (var csv = new CsvWriter(writter, config))
                 {
                     var arr1 = Incidents.ToArray();
                     csv.WriteRecords(arr1);
