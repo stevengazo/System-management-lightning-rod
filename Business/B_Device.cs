@@ -534,8 +534,16 @@ namespace Business
         {
             using (var Db = new RayosNoDataContext())
             {
-                var query = Db.Devices.Include(D => D.SaleMan).Include(D => D.Client).Include(D => D.Country).Include(D => D.ModelDevice).Include(D => D.TypeDevice).ToList().LastOrDefault(D => D.DeviceId == id);
-                return query;
+                var ObjectReturn = (
+                        from device in Db.Devices
+                        select device
+                    ).Include(D => D.SaleMan)
+                    .Include(D => D.Client)
+                    .Include(D => D.Country) 
+                    .Include(D=> D.ModelDevice)
+                    .Include(D => D.TypeDevice)
+                    .FirstOrDefault(D => D.DeviceId.Equals(id));
+                return ObjectReturn;
             }
         }
 
