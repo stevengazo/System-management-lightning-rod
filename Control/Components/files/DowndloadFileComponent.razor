@@ -31,11 +31,11 @@
     bool FlagIsReady = false;
 
 
-    
+
 
     private async void onclick()
     {
-       
+
         string pathFileNasFile = "";
         localStorage = Path.Combine(Environment.ContentRootPath, "tmpfiles");
 
@@ -48,15 +48,16 @@
                     {
 
                         var ObjTemp = B_Warranty.WarrantyById(idObject);
-                        pathFileNasFile = $"{ObjTemp.DeviceId}/{ObjTemp.DateSend.Year.ToString()}-Warranty/{ObjTemp.Id}";
+                        pathFileNasFile = $"{ObjTemp.DeviceId}/{ObjTemp.DateSend.Year.ToString()}-Warranties/{ObjTemp.Id}";
                         //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
-                      
+
                         var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
                         toastService.ShowSuccess("Archivo Descargado", "Aviso");
-                      await  DownloadFileFromStream(streamData);
+                        await  DownloadFileFromStream(streamData);
                     }
                     catch (Exception f)
                     {
+                        toastService.ShowError($"Error: {f.Message}");
                         Console.WriteLine(f.Message);
                     }
 
@@ -67,7 +68,7 @@
                     try
                     {
                         var ObjTempMain = B_Maintenance.MaintenanceById(idObject);
-                        pathFileNasFile = $"{ObjTempMain.DeviceId}/{ObjTempMain.MaintenanceDate.Year.ToString()}-Maintenance/{ObjTempMain.MaintenanceId}";
+                        pathFileNasFile = $"{ObjTempMain.DeviceId}/{ObjTempMain.MaintenanceDate.Year.ToString()}-Maintenances/{ObjTempMain.MaintenanceId}";
                         //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
 
                         var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
@@ -85,7 +86,7 @@
                     try
                     {
                         var objIncident = B_Incident.GetIncidentById(idObject);
-                        pathFileNasFile = $"{objIncident.DeviceId}/{objIncident.IncidentDate.Year.ToString()}-Incident/{objIncident.IncidentId}";
+                        pathFileNasFile = $"{objIncident.DeviceId}/{objIncident.IncidentDate.Year.ToString()}-Incidents/{objIncident.IncidentId}";
                         //FlagIsReady = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);
 
                         var streamData = B_StorageManage.DownloadFile(nameFile, localStorage, pathFileNasFile);

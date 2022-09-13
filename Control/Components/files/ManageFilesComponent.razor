@@ -162,11 +162,21 @@
         _Data = e;
     }
 
+
+    private async Task CreatePathFolder()
+    {
+        var localDirectory = Environment.ContentRootPath;
+        var tmpFilesPath = Path.Combine(localDirectory, "tmpfiles");
+        System.IO.Directory.CreateDirectory(tmpFilesPath);
+    }
+
+
     /**
      * Load file into the NAS
      */
     private async Task onClicked()
     {
+        await CreatePathFolder();
         if (_Data != null)
         {
             toastService.ShowInfo("Guardando Archivo", "Atención");
@@ -219,7 +229,7 @@
             {
                 Console.WriteLine(f.Message);
                 errorMessage = f.Message;
-                toastService.ShowError("Error Interno", "Error");
+                toastService.ShowError($"Error {f.Message} ", "Error");
             }
         }
         else
