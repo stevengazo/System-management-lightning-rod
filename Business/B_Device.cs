@@ -398,6 +398,8 @@ namespace Business
                 {
                     var clientsIds = (from clid in Devices select clid.ClientId).Distinct().ToArray();
                     var SalemanIds = (from salId in Devices select salId.SaleManId).Distinct().ToArray();
+//                    var models = (from modeltmp in DB.ModelDevices select modeltmp).Distinct().ToArray();
+
                     List<ClientEntity> cli = new List<ClientEntity>();
                     List<SaleManEntity> sal = new List<SaleManEntity>();
                     foreach (var item in clientsIds)
@@ -408,6 +410,7 @@ namespace Business
                     {
                         sal = (from saleman in DB.Salemans select saleman).Where(C => C.SaleManId == item).ToList();
                     }
+
                     var query = (
                         from Client in cli
                         join dev in Devices on Client.Id equals dev.ClientId
