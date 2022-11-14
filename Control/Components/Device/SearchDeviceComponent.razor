@@ -647,6 +647,8 @@
         workRow.Append(CreateCell("Fecha Limite de Mantenimiento", 2U));
         workRow.Append(CreateCell("Modelo", 2U));
         workRow.Append(CreateCell("País", 2U));
+        workRow.Append(CreateCell("Estado", 2U));
+        workRow.Append(CreateCell("Reemplazado", 2U));
         workRow.Append(CreateCell("Vendedor", 2U));
         workRow.Append(CreateCell("Cliente", 2U));
         return workRow;
@@ -658,10 +660,20 @@
         tRow.Append(CreateCell(testmodel.Alias));
         tRow.Append(CreateCell(testmodel.Longitude));
         tRow.Append(CreateCell(testmodel.Latitude));
-        tRow.Append(CreateCell(testmodel.InstallationDate.ToString()));
-        tRow.Append(CreateCell(testmodel.RecomendedDateOfMaintenance.ToString()));
+        tRow.Append(CreateCell(testmodel.InstallationDate.ToShortDateString()));
+        tRow.Append(CreateCell(testmodel.RecomendedDateOfMaintenance.ToShortDateString()));
         tRow.Append(CreateCell(testmodel.ModelDeviceId.ToString()));
         tRow.Append(CreateCell(testmodel.CountryId));
+        if(testmodel.IsActive){
+            tRow.Append(CreateCell("Activo"));
+        }else{
+            tRow.Append(CreateCell("Inactivo"));
+        }
+        if(testmodel.IsReplaced){
+            tRow.Append(CreateCell("Reemplazado"));
+        }else{
+            tRow.Append(CreateCell("No aplica"));
+        }
         tRow.Append(CreateCell(testmodel.SaleMan.Name));
         tRow.Append(CreateCell(testmodel.Client.Name));
         return tRow;
