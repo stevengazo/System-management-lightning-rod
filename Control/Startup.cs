@@ -1,5 +1,5 @@
 using Control.Areas.Identity;
-using Control.Data;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -36,17 +36,14 @@ namespace Control
             services.AddBlazoredToast();
             services.AddDbContext<IDBContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("IdentityConnection")));
-            
+                    Configuration.GetConnectionString("IdentityConnection")));            
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IDBContext>();
-
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-            services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddSingleton<WeatherForecastService>();            
+            services.AddDatabaseDeveloperPageExceptionFilter();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
