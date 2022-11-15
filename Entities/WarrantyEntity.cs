@@ -16,6 +16,9 @@ namespace Entities
         public DateTime DateSend { get; set; }
         public DateTime DateReceived { get; set; }       
         public string Notes { get; set; }
+        public string Author { get; set; }
+        public string lastEditor { get; set; }
+        public DateTime lastEdition { get; set; }
 
         // Relation with Device
         public string DeviceId { get; set; }

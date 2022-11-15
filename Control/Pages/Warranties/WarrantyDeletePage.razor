@@ -7,12 +7,12 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2> Eliminación de la Garantia</h2>
             <WarrantyDeleteComponent WarrantyId="@WarrantyId.ToString()" />
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

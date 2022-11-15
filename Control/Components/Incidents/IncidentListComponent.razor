@@ -1,6 +1,11 @@
 ﻿@using Entities;
 @using Business;
 
+<p>
+    <span class="text-danger">Los incidentes marcados en ojo aún no han sido cerrados.</span> <br>
+     Es necesario verificar que las recomendaciones hayan sido acatadas.
+</p>
+
 <table class="table table-hover table-striped table-responsive-sm ">
     <thead>
         <tr>
@@ -17,16 +22,33 @@
     <tbody>
         @foreach (var obj in Incidents)
         {
-        <tr>
-            <td>@obj.DeviceId</td>
+            if(obj.IsClosed)
+            {
+            <tr>
+                <td>@obj.DeviceId</td>
             <td>@obj.Device.Alias</td>
             <td>@obj.Device.Client.Name</td>
             <td>@obj.ReportDate</td>
             <td>@obj.Technician.TechnicianName</td>
-            <td><a href="incident/view/@obj.IncidentId" >Ver</a></td>
-            <td><a href="incident/update/@obj.IncidentId">Editar</a></td>
-            <td><a  style="color:red" href="incident/delete/@obj.IncidentId">Eliminar</a></td>
-        </tr> 
+                        <td ><button class="btn btn-info"><a class=" text-light nav-link" href="incident/view/@obj.IncidentId" >Ver</a> </button></td>
+            <td ><button class="btn btn-success"><a class=" text-light nav-link" href="incident/update/@obj.IncidentId">Editar</a></button></td>
+            <td ><button class="btn btn-danger"><a  class=" text-light nav-link" href="incident/delete/@obj.IncidentId">Eliminar</a></button></td>
+                </tr>
+            }
+            else
+            {
+             <tr >
+                <td class="text-danger">@obj.DeviceId</td>
+            <td class="text-danger">@obj.Device.Alias</td>
+            <td class="text-danger">@obj.Device.Client.Name</td>
+            <td class="text-danger">@obj.ReportDate</td>
+            <td class="text-danger">@obj.Technician.TechnicianName</td>
+            <td ><button class="btn btn-info"><a class=" text-light nav-link" href="incident/view/@obj.IncidentId" >Ver</a> </button></td>
+            <td ><button class="btn btn-success"><a class=" text-light nav-link" href="incident/update/@obj.IncidentId">Editar</a></button></td>
+            <td ><button class="btn btn-danger"><a  class=" text-light nav-link" href="incident/delete/@obj.IncidentId">Eliminar</a></button></td>
+        </tr>
+            }        
+
         }
     </tbody>
 </table>

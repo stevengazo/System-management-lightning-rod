@@ -4,13 +4,13 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2>Eliminación de usuario</h2>  
             <hr />
             <DeleteModelDeviceComponent Id="@id"/>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>        
         <NotAvariableComponent> </NotAvariableComponent>
     </NotAuthorized>

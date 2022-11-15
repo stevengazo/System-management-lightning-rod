@@ -1,0 +1,27 @@
+﻿@page "/replacement/delete/{Replacementid}"
+
+
+
+<AuthorizeView Roles="Administrador">
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+        <div>
+            <h1> Eliminación de Registro</h1>
+            <p>A continuación se detalla la información respectiva del reemplazo realizado</p>
+            <hr />
+            <ReplacementDeleteComponent ReplacementId="@ReplacementId.ToString()"></ReplacementDeleteComponent>
+        </div>
+    </Animate></Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code{
+    [Parameter]
+    public string ReplacementId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ReplacementId = ReplacementId;
+    }
+}

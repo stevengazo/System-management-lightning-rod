@@ -1,0 +1,46 @@
+﻿@using Entities;
+@using Business;
+@inject NavigationManager nav;
+
+
+<div>
+    <h2>¿Deseas eliminar el registro?</h2>
+    <p> Verifica la información antes de eliminar el registro  @replacement.ReplacementDeviceId</p>
+     <div>
+         <input type="button" value="Eliminar registro" class="btn-danger" @onclick="Delete"/><input type="button" value="Retornar" class="btn-info" @onclick="Back" />
+     </div>
+     <p>@Message</p>
+</div>
+
+
+
+@code{
+    [Parameter]
+    public string ReplacementId { get; set; }
+    ReplacementDeviceEntity replacement = new();
+
+    string Message = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        replacement = B_Replacement.GetReplacementById(ReplacementId);
+    }
+
+    private void Delete()
+    {
+        try
+        {
+            B_Replacement.Delete(replacement);
+            Back();        
+        }
+        catch(Exception g)
+        {
+            Message = $"Error: {g.Message}. Intentelo de nuevo";
+        }
+
+    }
+    private void Back()
+    {
+        nav.NavigateTo("replacement/list");
+    }
+}

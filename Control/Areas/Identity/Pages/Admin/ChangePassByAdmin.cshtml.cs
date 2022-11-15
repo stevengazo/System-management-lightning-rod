@@ -54,13 +54,11 @@ namespace Control.Areas.Identity.Pages.Admin
         {
             try
             {
-                using (var db = new IDBContext())
-                {
-                    user.PasswordHash = _passwordHash;
-                    db.Users.Update(user);
-                    db.SaveChanges();
-                    return true;
-                }
+                using var db = new IDBContext();
+                user.PasswordHash = _passwordHash;
+                db.Users.Update(user);
+                db.SaveChanges();
+                return true;
             }
             catch (Exception g ) 
             {
@@ -75,11 +73,9 @@ namespace Control.Areas.Identity.Pages.Admin
         {
             try
             {
-                using (var db = new IDBContext())
-                {
-                    var query = (from us in db.Users select us).FirstOrDefault(U => U.Id == _id);
-                    return query;
-                }
+                using var db = new IDBContext();
+                var query = (from us in db.Users select us).FirstOrDefault(U => U.Id == _id);
+                return query;
             }
             catch (Exception f)
             {
@@ -89,19 +85,14 @@ namespace Control.Areas.Identity.Pages.Admin
         }
 
       
-        [HttpGet]
-        public async Task<IActionResult> OnGetAsync(string id="")
-        {
-            IdentityUser user = new IdentityUser();
-            user = GetUser(id);
-            ViewData["User"] = user;
+        public IActionResult OnGetAsync(string id="")
+        {                        
+            ViewData["User"] = GetUser(id);
             return Page();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> OnPostAsync(string id = "", string password="",string cpassword = "")
+        public IActionResult OnPostAsync(string id = "", string password="",string cpassword = "")
         {
-            bool BandSuccess = false ;
             var _user = GetUser(id);
             string error = "";
 
@@ -118,7 +109,7 @@ namespace Control.Areas.Identity.Pages.Admin
                 }
                 else
                 {
-
+                    bool BandSuccess;
                     var tmp = _userManager.PasswordHasher;
                     var tmpHasher = tmp.HashPassword(_user, password);
                     BandSuccess = ChangePassword(_user, tmpHasher);

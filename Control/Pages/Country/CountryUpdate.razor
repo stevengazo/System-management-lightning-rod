@@ -5,12 +5,12 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h2>Actualización de País</h2>
             <UpdateCountryComponent id="@CountryId.ToString()" />
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent/>
     </NotAuthorized>

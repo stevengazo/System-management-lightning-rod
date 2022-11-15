@@ -4,7 +4,8 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h2 class="text-center">Actualizar dispositivo</h2>
             <hr />
@@ -12,9 +13,12 @@
             <hr />
             <UpdateDeviceComponent Id="@DeviceId.ToString()" />
         </div>
-    </Authorized>
+        </Animate>
+    </Animate></Authorized>
     <NotAuthorized>
+`       <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <NotAvariableComponent></NotAvariableComponent>
+        </Animate>
     </NotAuthorized>
 </AuthorizeView>
 

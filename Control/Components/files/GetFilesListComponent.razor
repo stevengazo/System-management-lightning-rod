@@ -1,0 +1,43 @@
+﻿@using Entities;
+@using Business;
+@using System.Linq;
+@using System.IO;
+@using Microsoft.AspNetCore.Hosting;
+@using Microsoft.Extensions.Logging;
+@inject IWebHostEnvironment Environment
+
+
+
+
+
+@code
+{
+    [Parameter]
+    public string id { get; set; }
+
+    [Parameter]
+    public string action { get; set; }
+
+    
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+     
+      
+        await base.OnInitializedAsync();
+    }
+    /*
+    private void cleanTMPFiles()
+    {
+        string pathTMP =   Path.Combine(Environment.ContentRootPath, "tmpfiles");
+        Directory.Delete($"{pathTMP}",true);
+        Directory.CreateDirectory($"{pathTMP}");
+    }
+    */
+
+
+        
+ }
+

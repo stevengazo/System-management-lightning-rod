@@ -4,7 +4,7 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h2 class="text-center">
                 Actualizar información de instalador
@@ -16,7 +16,7 @@
             <hr />
             <UpdateInstallerComponent idInstaller="@installerId"/>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

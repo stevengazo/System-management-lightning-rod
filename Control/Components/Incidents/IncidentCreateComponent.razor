@@ -1,6 +1,7 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
+@inject AuthenticationStateProvider authStateProvider
 
 <EditForm Model="oIncident">
     <div class="form-group">
@@ -61,18 +62,19 @@
     </div>
     <div class="form-group">
         <label><strong>Numero de serie</strong></label>
-        <InputSelect @bind-Value="oIncident.DeviceId" class="form-control">
+        <input type="text" @bind="@oIncident.DeviceId" list="listaEquipos" class="form-control" placeholder="Numero de serie">
+        <datalist id="listaEquipos">
             <option value="">Seleccione un equipo...</option>
             @foreach (var obj in Devices)
             {
                 <option value="@obj.DeviceId">@obj.Client.Name - @obj.DeviceId </option>
             }
-        </InputSelect>
+        </datalist>           
         <p><i>Cliente y numero de serie del dispositivo.</i></p>
     </div>
 </EditForm>
 <div>
-    <input  type="button" value="Guardar Incidente" @onclick="SaveIncident"/>
+    <input class="btn btn-success"  type="button" value="Guardar Incidente" @onclick="SaveIncident"/>
 </div>
 <p class="text-danger">@Message</p>
 
@@ -85,16 +87,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Devices = B_Device.ListOfDevices().OrderBy(D=>D.ClientId).ToList();
+        Devices = B_Device.ListOfDevices().Where(D=>D.IsActive==true).OrderBy(D=>D.ClientId).ToList();
         technicians = B_Technician.GetListOftechnicians();
     }
 
-    private void SaveIncident()
+    private async Task SaveIncident()
     {
         try
         {
-            
-            B_Incident.CreateIncident(oIncident);
+            var tmp = await authStateProvider.GetAuthenticationStateAsync();
+            oIncident.lastEdition = DateTime.Today;
+            oIncident.Author = tmp.User.Identity.Name;
+            oIncident.lastEditor = tmp.User.Identity.Name;
+            await B_Incident.CreateIncident(oIncident);
+            await B_StorageManage.createFolderAsync($"{oIncident.DeviceId}/{oIncident.IncidentDate.Year.ToString()}-Incidents", oIncident.IncidentId);
             Nav.NavigateTo("incident/list");
         }
         catch(Exception f)

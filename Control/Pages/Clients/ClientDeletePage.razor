@@ -2,15 +2,27 @@
 
 
 
-<div>
-    <h2 class="text-center">Eliminar Cliente</h2>
-    <hr />
-    <DeleteClientComponent id="@ClientId.ToString()"/>
-</div>
+
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div>
+                <h2 class="text-center">Eliminar Cliente</h2>
+                <hr />
+                <DeleteClientComponent id="@ClientId.ToString()" />
+            </div>
+
+        </Animate>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 
-@code{
+
+@code {
     [Parameter]
     public string ClientId { get; set; }
     protected override async Task OnInitializedAsync()

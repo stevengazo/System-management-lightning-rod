@@ -5,17 +5,18 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class=" align-content-center   text-center">
             <h2>
                 Lista de Reemplazos de Dispositivos
             </h2>
             <p>A continuación se muestra la lista de dispositivos reemplazados por motivos de garantia, debido a daños.</p>
-            <a href="replacement/create"> Registrar nuevo reemplazo</a>
+                <a href="replacement/create"   class="btn btn-sm btn-outline-success" > Registrar nuevo reemplazo</a>
+            
             <hr />
             <ReplacementSearchComponent></ReplacementSearchComponent>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

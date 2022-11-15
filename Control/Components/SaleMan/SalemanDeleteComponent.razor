@@ -9,8 +9,12 @@
         ¿Deseas borrar el vendedor @oSaleMan.Name?
     </h3>
     <p> Verifica las dependencias en el campo "Id Vendedor" en los registro de la tabla Equipos</p>
-    <input type="button" class="btn-danger" value="Deseo eliminar el vendedor" @onclick="DeleteSaleMan" />
-    <input type="button" class="btn-light" value="Regresar a lista de vendedores" @onclick="BackLink" />
+    <div class="d-flex flex-row justify-content-center">
+        <input type="button" class="btn btn-danger" value="Eliminar el vendedor" @onclick="DeleteSaleMan" />
+        <div></div>
+    <input type="button" class="btn btn-light" value="Regresar a lista de vendedores" @onclick="BackLink" />
+    </div>
+    
     <p class="text-center" style="color:red">@message</p>
 </div>
 

@@ -24,9 +24,12 @@ namespace Entities
         /// Date of assistance of the technician and review the device
         /// </summary>
         public DateTime RevisionDate { get; set; }
+        public string Author { get; set; }
+        public string lastEditor { get; set; }
+        public DateTime lastEdition { get; set; }
         /// <summary>
         /// Day when Mecsa send the report for the customer
-        /// </summary>
+        /// </summary>       
         public DateTime SendReportDate { get; set; }
         /// <summary>
         /// Description of the incident made it by the client
@@ -53,6 +56,10 @@ namespace Entities
         /// </summary>
         public string ContactReportingName { get; set; }
 
+        /// <summary>
+        /// Check if the incident was complete and the customer implement the recommendations
+        /// </summary>
+        public bool IsClosed { get; set; }
 
         //Relation With Device 
         public string DeviceId { get; set; }

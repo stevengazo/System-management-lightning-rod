@@ -68,14 +68,27 @@ namespace Control.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            _ = (ExistDB()) ? ViewData["FlagDB"] = 0 : ViewData["FlagDB"] = 1;
+      
             ViewData["FistUse"] = NotExistsUsers();
+         
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             
         }
 
+
+        private bool ExistDB()
+        {
+            var sample = _IDBContext.Database.CanConnect();
+            return sample;
+        }
+
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            ViewData["FistUse"] = NotExistsUsers();
+
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)

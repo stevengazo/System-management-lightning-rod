@@ -16,12 +16,11 @@
 
 @code{
     private BarConfig _barConfigMaintByYear;
-    private Chart _chart;
 
     private Dictionary<int, int> MaintanancesByYear = new Dictionary<int, int>();
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
+       await base.OnInitializedAsync();
         MaintanancesByYear = B_Maintenance.GeQuantityByYears();
         MaintenanceByYearsChart();
     }

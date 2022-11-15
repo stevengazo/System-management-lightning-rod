@@ -1,8 +1,8 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
-
-
+@inject IToastService toastService
+@inject AuthenticationStateProvider authStateProvider
 
 
 <div>
@@ -93,7 +93,7 @@
 
 
 
-<input type="button" value="Registrar Mantenimiento" class="btn-primary" @onclick="SaveMaintenance">
+<input type="button" value="Registrar Mantenimiento" class="btn btn-outline-success" @onclick="SaveMaintenance">
 
 <p class="text-danger">@Message</p>
 
@@ -139,16 +139,21 @@
     }
 
 
-    private void SaveMaintenance()
+    private async Task SaveMaintenance()
     {
         try
         {
+            oMaintenance.lastEdition = DateTime.Today;
+            var tmp = await authStateProvider.GetAuthenticationStateAsync();
+            oMaintenance.Author = tmp.User.Identity.Name;
+            oMaintenance.lastEditor = tmp.User.Identity.Name;
             oMaintenance.MaintenanceId = Guid.NewGuid().ToString();
             bool bandCheck = CheckValues(out string Messageinfo);
             Message = Messageinfo;
             if (bandCheck)
             {
                 B_Maintenance.Create(oMaintenance);
+                toastService.ShowInfo("Buscando recurso solicitado...","Información");
                 Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");                
             }
         }

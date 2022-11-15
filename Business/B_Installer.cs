@@ -20,11 +20,9 @@ namespace Business
         {
             try
             {
-                using (var db = new RayosNoDataContext())
-                {
-                    db.Installers.Update(objInstaller);
-                    db.SaveChanges();
-                }
+                using var db = new RayosNoDataContext();
+                db.Installers.Update(objInstaller);
+                await db.SaveChangesAsync();
             }
             catch (Exception e)
             {
@@ -41,16 +39,14 @@ namespace Business
         {            
             try
             {
-                using(var db = new RayosNoDataContext())
-                {
-                    var tmp = (from inst
-                               in db.Installers
-                               orderby inst.InstallerId descending
-                               where inst.InstallerId.Contains(_id)
-                               select inst
-                               ).FirstOrDefault();
-                    return tmp;
-                }
+                using var db = new RayosNoDataContext();
+                var tmp = (from inst
+                           in db.Installers
+                           orderby inst.InstallerId descending
+                           where inst.InstallerId.Contains(_id)
+                           select inst
+                           ).FirstOrDefault();
+                return tmp;
             }
             catch(Exception e)
             {
@@ -68,11 +64,9 @@ namespace Business
         {
             try
             {
-                using (var db = new RayosNoDataContext())
-                {
-                    var tmp = db.Installers.FirstOrDefault(I=>I.InstallerId.Equals(_id));
-                    return tmp;
-                }
+                using var db = new RayosNoDataContext();
+                var tmp = db.Installers.FirstOrDefault(I => I.InstallerId.Equals(_id));
+                return tmp;
             }
             catch (Exception e)
             {
@@ -90,17 +84,15 @@ namespace Business
         {
             try
             {
-                using (var db = new RayosNoDataContext())
+                using var db = new RayosNoDataContext();
+                var tmpResult = db.Installers.FirstOrDefault(I => I.InstallerId == _id);
+                if (tmpResult != null)
                 {
-                    var tmpResult =  db.Installers.FirstOrDefault(I => I.InstallerId == _id);
-                    if(tmpResult != null)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             catch (Exception e)
@@ -119,12 +111,10 @@ namespace Business
         {
             try
             {
-                using (var db = new RayosNoDataContext())
-                {
-                    db.Installers.Add(objInstaller);
-                    db.SaveChanges();
-                    return true;
-                }
+                using var db = new RayosNoDataContext();
+                db.Installers.Add(objInstaller);
+                db.SaveChanges();
+                return true;
             }
             catch (Exception e)
             {
@@ -142,25 +132,23 @@ namespace Business
         {            
             try
             {
-                using( var DB = new RayosNoDataContext())
+                using var DB = new RayosNoDataContext();
+                var results = await (from dev in DB.Devices
+                                     where dev.InstallerId == id
+                                     select dev
+                    ).ToListAsync();
+                if (results.Count != 0)
                 {
-                    var results = (from dev in DB.Devices
-                                   where dev.InstallerId == id
-                                   select dev
-                        ).ToList();
-                    if(results.Count!= 0)
-                    {
-                        return  false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-
+                    return false;
+                }
+                else
+                {
+                    return true;
                 }
             }
             catch (Exception f)
             {
+                Console.WriteLine(f.Message);
                 return false;
             }
         }
@@ -175,14 +163,13 @@ namespace Business
             try
             {
                 var installer = GetInstallerById(id);
-                using ( var db = new RayosNoDataContext())
-                {
-                    db.Installers.Remove(installer);
-                    db.SaveChanges();
-                }
+                using var db = new RayosNoDataContext();
+                db.Installers.Remove(installer);
+                await db.SaveChangesAsync();
             }
-            catch (Exception e)
-            {                
+            catch (Exception e)            
+            {
+                Console.Write(e.Message);
             }
         }
 
@@ -194,10 +181,8 @@ namespace Business
         {
             try
             {
-                using (var db = new RayosNoDataContext())
-                {
-                    return db.Installers.ToList();
-                }
+                using var db = new RayosNoDataContext();
+                return db.Installers.ToList();
             }
             catch (Exception e)
             {
@@ -210,47 +195,46 @@ namespace Business
         public static async Task<List<InstallerEntity>> Search(string id = null, string name = null)
         {
             try
-            {            
-                using (var db = new RayosNoDataContext())
+            {
+                using var db = new RayosNoDataContext();
+                List<InstallerEntity> result = new();
+                if (id != null && name != null)
                 {
-                    List<InstallerEntity> result= new List<InstallerEntity>();
-                    if (id!=null && name != null)
-                    {
-                        result = (
-                                from inst
-                                in db.Installers
-                                where inst.InstallerId.Contains(id) && inst.Name.Contains(name)
-                                select inst).ToList();
-                    }
-                    else if (id == null && name != null)
-                    {
-                        result = (
-                                from inst
-                                in db.Installers
-                                where inst.Name.Contains(name)
-                                select inst).ToList();
-                    }
-                    else if (id != null && name == null)
-                    {
-                        result = (
-                                from inst
-                                in db.Installers
-                                where inst.InstallerId.Contains(id)
-                                select inst).ToList();
-                    }
-                    if (result.Count!= 0)
-                    {
-                        return  result.ToList();
-                    }
-                    else
-                    {
-                        return  new List<InstallerEntity>();
-                    }
+                    result = await (
+                            from inst
+                            in db.Installers
+                            where inst.InstallerId.Contains(id) && inst.Name.Contains(name)
+                            select inst).ToListAsync();
                 }
-        
+                else if (id == null && name != null)
+                {
+                    result = await (
+                            from inst
+                            in db.Installers
+                            where inst.Name.Contains(name)
+                            select inst).ToListAsync();
+                }
+                else if (id != null && name == null)
+                {
+                    result = await (
+                            from inst
+                            in db.Installers
+                            where inst.InstallerId.Contains(id)
+                            select inst).ToListAsync();
+                }
+                if (result.Count != 0)
+                {
+                    return result.ToList();
+                }
+                else
+                {
+                    return new List<InstallerEntity>();
+                }
+
             }
             catch(Exception f)
             {
+                Console.WriteLine(f.Message);
                 throw new NotImplementedException();
             }
         }

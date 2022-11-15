@@ -4,13 +4,13 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2>Actualización de Modelo</h2>  
             <hr />
             <UpdateModelDeviceComponent Id="@id"/>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>        
         <NotAvariableComponent> </NotAvariableComponent>
     </NotAuthorized>

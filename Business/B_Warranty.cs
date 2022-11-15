@@ -19,25 +19,25 @@ namespace Business
                 if ((_DeviceId != null) && (_Estatus != null) && (_Year != 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                                    Where	(	DeviceId like {"%"+_DeviceId+"%"} )                                                          
                                                                     and		(	YEAR(DateSend)= {_Year.ToString()}	)
                                                                     and		(	StatusId = {_Estatus})").ToList();
                 }
                 else if ((_DeviceId != null) && (_Estatus != null) && (_Year == 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	DeviceId = {_DeviceId} )
+                                                                    Where	(	DeviceId like {"%" + _DeviceId + "%"} )                                                          
                                                                    and		(	StatusId = {_Estatus})").ToList();
                 }
                 else if ((_DeviceId != null) && (_Estatus == null) && (_Year == 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	DeviceId = {_DeviceId} )").ToList();
+                                                                    Where	(	DeviceId like {"%" + _DeviceId + "%"})").ToList();
                 }
                 else if ((_DeviceId != null) && (_Estatus != null) && (_Year != 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                                    WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                                    WHERE	( DeviceId like {"%" + _DeviceId + "%"} )                                                                                                                    
                                                                     and		(	YEAR(DateSend)= {_Year.ToString()}	)
                                                                     and		(	StatusId = {_Estatus})").ToList();
                 }
@@ -60,7 +60,7 @@ namespace Business
                 else if ((_DeviceId != null) && (_Estatus == null) && (_Year != 0))
                 {
                     aux = DB.Warranties.FromSqlInterpolated($@"SELECT * FROM Warranties
-                                                               WHERE	(	DeviceId = {_DeviceId} )                                                          
+                                                               where	(	DeviceId like {"%" + _DeviceId + "%"} )                                                                                                                 
                                                                and		(	YEAR(DateSend)= {_Year.ToString()}	)").ToList();
                 }
 
@@ -132,12 +132,22 @@ namespace Business
                 return aux.ToList();
             }
         }
-        public  static void Create (WarrantyEntity oWarranty)
+        public static async Task<bool> CreateAsync (WarrantyEntity oWarranty)
         {
-            using(var DB = new RayosNoDataContext())
+            try
             {
-                DB.Warranties.Add(oWarranty);
-                DB.SaveChanges();
+                using (var DB = new RayosNoDataContext())
+                {
+                    await DB.Warranties.AddAsync(oWarranty);
+                    await DB.SaveChangesAsync();
+                }
+                await B_StorageManage.createFolderAsync($"/{oWarranty.DeviceId}/{oWarranty.DateSend.Year.ToString()}-Warranties", oWarranty.Id);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
             }
         }
         public static void Update(WarrantyEntity oWarranty)

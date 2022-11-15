@@ -150,15 +150,37 @@ namespace DataAccess
             #endregion
 
             #region MAINTENANCE
-            MaintenanceEntity oMaintenance = new MaintenanceEntity { MaintenanceId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId, TechnicianId=otech.TechnicianId };
+            MaintenanceEntity oMaintenance = new MaintenanceEntity {
+                MaintenanceId = Guid.NewGuid().ToString(),
+                DeviceId = oDevice.DeviceId,
+                TechnicianId = otech.TechnicianId,
+                Author = "system",
+                lastEditor = "system",
+                lastEdition = DateTime.Today,
+            };
             #endregion
 
             #region INCIDENT
-            IncidentEntity oIncident = new IncidentEntity { IncidentId = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId ,TechnicianId = otech.TechnicianId};
+            IncidentEntity oIncident = new IncidentEntity { 
+                IncidentId = Guid.NewGuid().ToString(), 
+                DeviceId = oDevice.DeviceId ,
+                TechnicianId = otech.TechnicianId, 
+                IsClosed=false,
+                Author = "system",
+                lastEditor = "system",
+                lastEdition = DateTime.Today
+            };
             #endregion
 
             #region WARRANTY
-            WarrantyEntity oWarranty = new WarrantyEntity { Id = Guid.NewGuid().ToString(), DeviceId = oDevice.DeviceId, StatusId=oStatus.StatusId  };
+            WarrantyEntity oWarranty = new WarrantyEntity { 
+                Id = Guid.NewGuid().ToString(), 
+                DeviceId = oDevice.DeviceId, 
+                StatusId=oStatus.StatusId , 
+                Author = "system",
+                lastEditor = "system",
+                lastEdition = DateTime.Today,
+            };
             model.Entity<WarrantyEntity>().HasData(oWarranty);
             #endregion
 

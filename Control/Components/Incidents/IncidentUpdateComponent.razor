@@ -1,7 +1,7 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
-
+@inject AuthenticationStateProvider authStateProvider
 
 
 
@@ -54,14 +54,19 @@
         <p><i>Nombre de la persona que realizó la visita.</i></p>
     </div>
     <div class="form-group">
+        <label>Esta Finalizado?</label>
+        <InputCheckbox class="form-control" @bind-Value="oIncident.IsClosed"></InputCheckbox>
+    </div>
+    <div class="form-group">
         <label>Numero de serie</label>
-        <InputSelect @bind-Value="oIncident.DeviceId" class="form-control">
+        <input type="text" @bind="@oIncident.DeviceId" list="listaEquipos" class="form-control" placeholder="Numero de serie">
+        <datalist id="listaEquipos">
             <option value="">Seleccione un equipo...</option>
             @foreach (var obj in Devices)
             {
                 <option value="@obj.DeviceId">@obj.Client.Name - @obj.DeviceId </option>
             }
-        </InputSelect>
+        </datalist>  
     </div>
 </EditForm>
 <div>
@@ -86,11 +91,14 @@
         oIncident = B_Incident.GetIncidentById(IncidentId);
         technicians = B_Technician.GetListOftechnicians();
     }
-    private void UpdateIncident()
+    private async Task UpdateIncident()
     {
         try
-        {
+        {            
             oIncident.Device = Devices.First(D => D.DeviceId == oIncident.DeviceId);
+            var lasEditor = await authStateProvider.GetAuthenticationStateAsync();
+            oIncident.lastEditor = lasEditor.User.Identity.Name;
+            oIncident.lastEdition = DateTime.Today;
             B_Incident.Update(oIncident);
             Nav.NavigateTo("incident/list");        
         }

@@ -1,18 +1,20 @@
-﻿@page  "/incident/delete/{IncidentId}"
+﻿@page "/incident/delete/{IncidentId}"
 
 
-<AuthorizeView Roles="Administrador,Editor">
+<AuthorizeView Roles="Administrador">
     <Authorized>
-        <div>
-            <h2 class="text-center">Eliminación del Incidente</h2>
-            <hr />
-            <a href="incident/list"> Regresar a la lista de incidentes</a>
-            <hr />
-            <IncidentDeleteComponent IncidentId="@IncidentId" />
-        </div>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div>
+                <h2 class="text-center">Eliminación del Incidente</h2>
+                <hr />
+                <a href="incident/list"> Regresar a la lista de incidentes</a>
+                <hr />
+                <IncidentDeleteComponent IncidentId="@IncidentId" />
+            </div>
+        </Animate>
     </Authorized>
     <NotAuthorized>
-        <NotAvariableComponent/>
+        <NotAvariableComponent />
     </NotAuthorized>
 </AuthorizeView>
 
@@ -22,7 +24,7 @@
 
 
 
-@code{
+@code {
     [Parameter]
     public string IncidentId { get; set; }
 

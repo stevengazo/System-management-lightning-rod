@@ -15,8 +15,21 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="Control.styles.css" rel="stylesheet" />
+    <link href="_content/Blazored.Toast/blazored-toast.min.css" rel="stylesheet" />
+    <script src="_content/BlazorAnimate/blazorAnimateInterop.js"></script>
 </head>
 <body>
+     <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+    <!-- This is the glue between Blazor and Chart.js -->
+    <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
+
+
+
     <component type="typeof(App)" render-mode="ServerPrerendered" />
 
     <div id="blazor-error-ui">
@@ -33,14 +46,7 @@
     <script src="./js/Utilities.js"></script>
     <script src="_framework/blazor.server.js"></script>
 
-    <!-- Chart.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-
-    <!-- This is the glue between Blazor and Chart.js -->
-    <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
+   
 
 </body>
 

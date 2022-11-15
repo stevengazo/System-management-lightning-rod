@@ -4,26 +4,17 @@
 
 
 <AuthorizeView Roles="Administrador,Lector,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2>Lista de incidentes registrados</h2>
             <p>A continuación se presenta la información respectiva a los incidentes con los dispositivos registrados en la base de datos. Esto se realiza con el fin de determinar las recomendaciones necesarias a cada dispositivo.</p>
-            <a href="incident/create"> Registro de nuevo incidente</a>
+            <a href="incident/create" class="btn btn-outline-success"> Registro de nuevo incidente</a>
             <hr />            
             <IncidentSearchComponent/>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
-        <h1 class="text-danger h1">
-            Contenido no disponible
-        </h1>
-        <p>
-            No posee las credenciales necesarias o no ha iniciado sesión. Por favor compruebe que haya iniciado sesión.
-        </p>
-        <p><a href="Identity/Account/Login">Inicie sesión para validar su información</a></p>
-        <p>
-            Si el problema persiste contacte al encargado.
-        </p>
+             <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>
 </AuthorizeView>
 

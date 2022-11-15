@@ -45,9 +45,11 @@
 
 <AuthorizeView Roles="Administrador,Editor">
     <Authorized >
+       <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="d-sm-flex">
             <input class="btn-outline-dark form-control" type="button" value="Exportar Equipos" @onclick="Download" />
         </div>
+    </Animate>
     </Authorized>
 </AuthorizeView>
 

@@ -113,6 +113,7 @@
     {
         try
         {
+            await base.OnInitializedAsync();
             oDevice = B_Device.DeviceById(id);    
         }catch(Exception f)
         {

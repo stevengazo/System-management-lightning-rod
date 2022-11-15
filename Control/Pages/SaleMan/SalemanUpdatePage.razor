@@ -1,14 +1,29 @@
 ﻿@page "/saleman/update/{SaleManId}"
 
 
-<div>
+
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+                <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+        <div>
     <h2 class="text-center">Actualizar Vendedor</h2>
     <hr />
-    <a href="saleman/list"> Regresar a la lista de vendedores</a>
+        <div class="d-flex flex-row justify-content-between">
+        <p>
+            Modifique la información del vendedor.
+        </p>
+        <a href="saleman/list" class="btn btn-sm btn-info "> Lista de vendedores</a>
+    </div>
     <hr />
     <SaleManUpdateComponet id="@SaleManId.ToString()"/>
 </div>
 
+        </Animate>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent></NotAvariableComponent>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code{

@@ -17,7 +17,13 @@
 <div style=" margin-top: 22px; ">
     <div class="form-group row">
         <div class="col">
-            <input type="text" class="rounded form-control" @bind="@DeviceToSearch" placeholder="Id del Dispositivo" />
+            <input type="text" list="idDevices" class="rounded form-control" @bind="@DeviceToSearch" placeholder="Id del Dispositivo" />
+            <datalist id="idDevices">
+            @foreach (var rowDic in DictDevices)
+                {
+                    <option value="@rowDic.Key">@rowDic.Value</option>
+                }
+            </datalist>
         </div>
         <div class="col">
             <select class="rounded form-control" @bind="MonthToSearch">
@@ -56,11 +62,11 @@
             <input type="button" value="Limpiar" class="btn btn-outline-dark form-control" @onclick="CleanSpaces" />
         </div>
         <AuthorizeView Roles="Administrador,Editor">
-            <Authorized >
+            <Authorized ><Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
                     <div class="col">
                     <input type="button" value="Generar" class="btn btn-outline-dark form-control" @onclick="Download"/>
                 </div>
-            </Authorized>
+            </Animate></Authorized>
         </AuthorizeView>
 
     </div>
@@ -84,7 +90,7 @@
                         <td> @obj.DeviceId </td>
                         <td> @obj.MaintenanceDate.Date</td>
                         <td> @obj.Technician.TechnicianName</td>
-                        <td> <a class="btn btn-primary"  href="maintenance/view/@obj.MaintenanceId"> Ver </a></td>
+                        <td> <a class="btn btn-primary"   href="maintenance/view/@obj.MaintenanceId"  @onclick="@(() => toastService.ShowInfo("Buscando recurso solicitado...","Información"))" > Ver </a></td>
                         <td> <a class="btn btn-secondary" href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
                         <td> <a class="btn btn-danger" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
                     </tr>
@@ -93,7 +99,6 @@
         </table>
     </div>
 </div>
-
 
 
 
@@ -118,6 +123,7 @@
     string ErrorMessage { get; set; }
 
     #region Internal Variables
+    private Dictionary<string,string> DictDevices { get; set; }
     private int YearToSearch { get; set; }
     private int MonthToSearch { get; set; }
     private string DeviceToSearch { get; set; }
@@ -131,20 +137,22 @@
     {
         base.OnInitializedAsync();
         technicians = B_Technician.GetListOftechnicians();
+        DictDevices = B_Device.GetDictonaryOfDevicesWithClient();
     }
 
     private void Search()
     {
         try
         {
-            Maintenances = B_Maintenance.GetMaintenancesByConsult(DeviceToSearch, TechnicianIdToSearch, YearToSearch, MonthToSearch);
+            Maintenances = B_Maintenance.SearchMaintenances(DeviceToSearch, TechnicianIdToSearch, YearToSearch, MonthToSearch);
             if (Maintenances.Count > 0)
             {
                 ErrorMessage = "";
             }
             else
             {
-                ErrorMessage = "No hay mantenimientos que coindicidan con los criterios de busqueda...";
+                toastService.ShowError("No hay coincidencias con los parametros de busqueda", "Error");
+                
             }
             CleanSpaces();
 

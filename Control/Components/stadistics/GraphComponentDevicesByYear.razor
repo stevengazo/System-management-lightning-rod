@@ -16,14 +16,12 @@
 
 @code{
     private BarConfig _barConfigDeviceByYear;
-    private Chart _chart;
 
     Dictionary<int, int> DevicesInstalledByYear = new Dictionary<int, int>();
 
-
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
+       await base.OnInitializedAsync();
         DevicesInstalledByYear = B_Device.GetDevicesByYear();
         DevicesByYearsChart();
 

@@ -62,7 +62,7 @@ namespace Business
         /// Create a new Device object
         /// </summary>
         /// <param name="oDevice">Object type Device</param>
-        public static void CreateDevice(DeviceEntity oDevice)
+        public static async void CreateDevice(DeviceEntity oDevice)
         {
             using (var Db = new RayosNoDataContext())
             {
@@ -70,6 +70,8 @@ namespace Business
                 Db.Devices.Add(oDevice);
                 Db.SaveChanges();
             }
+            // Crea una carpeta para el numero de serie del dispositivo
+            await B_StorageManage.createFolderAsync("/", oDevice.DeviceId);
         }
 
         /// <summary>
@@ -535,8 +537,16 @@ namespace Business
         {
             using (var Db = new RayosNoDataContext())
             {
-                var query = Db.Devices.Include(D => D.SaleMan).Include(D => D.Client).Include(D => D.Country).Include(D => D.ModelDevice).Include(D => D.TypeDevice).ToList().LastOrDefault(D => D.DeviceId == id);
-                return query;
+                var ObjectReturn = (
+                        from device in Db.Devices
+                        select device
+                    ).Include(D => D.SaleMan)
+                    .Include(D => D.Client)
+                    .Include(D => D.Country) 
+                    .Include(D=> D.ModelDevice)
+                    .Include(D => D.TypeDevice)
+                    .FirstOrDefault(D => D.DeviceId.Equals(id));
+                return ObjectReturn;
             }
         }
 

@@ -11,13 +11,12 @@
 
 @code{
     private BarConfig _barConfigIncidentsByYear;
-    private Chart _chart;
 
     Dictionary<int, int> years_Quantity = new Dictionary<int, int>();
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
+        await base.OnInitializedAsync();
         years_Quantity = B_Incident.QuantitiesOfIncidentsByYear();
         IncidentsByYearChart();
     }

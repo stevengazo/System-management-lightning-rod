@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayosNoDataContext))]
@@ -15,9 +17,10 @@ namespace DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Entities.ClientEntity", b =>
                 {
@@ -39,7 +42,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
+                            Id = "d3c0b643-527f-4d8e-842c-38ad50bd5476",
                             Name = "Prueba",
                             SectorId = 1
                         });
@@ -132,31 +135,31 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            DeviceId = "7175e2c3-f855-442a-9613-a846af722a91",
+                            DeviceId = "ea9f30a3-3ea4-435f-a1d7-8d49a760e515",
                             Alias = "Prueba",
-                            ClientId = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
+                            ClientId = "d3c0b643-527f-4d8e-842c-38ad50bd5476",
                             CountryId = "506",
-                            InstallationDate = new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallationDate = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             IsActive = true,
                             IsReplaced = false,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
+                            SaleManId = "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9",
                             TypeDeviceId = 1
                         },
                         new
                         {
-                            DeviceId = "cd93588f-e16c-46e3-943f-c613e9caf0f7",
+                            DeviceId = "d7a014e2-8e3c-4a56-8871-6cad0db15a81",
                             Alias = "Reempleazo Prueba",
-                            ClientId = "77dd219b-50b0-45b5-8ab5-c3830c68369d",
+                            ClientId = "d3c0b643-527f-4d8e-842c-38ad50bd5476",
                             CountryId = "506",
-                            InstallationDate = new DateTime(2022, 2, 7, 0, 0, 0, 0, DateTimeKind.Local),
+                            InstallationDate = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local),
                             InstallerId = "CR-1",
                             IsActive = false,
                             IsReplaced = true,
                             ModelDeviceId = 1,
                             RecomendedDateOfMaintenance = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
+                            SaleManId = "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9",
                             TypeDeviceId = 1
                         });
                 });
@@ -165,6 +168,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<string>("IncidentId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ContactReportingName")
                         .HasColumnType("nvarchar(max)");
@@ -178,6 +184,9 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("IncidentDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Recomentations")
                         .HasMaxLength(450)
@@ -202,6 +211,12 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("TechnicianId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("lastEdition")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("lastEditor")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IncidentId");
 
@@ -233,7 +248,7 @@ namespace DataAccess.Migrations
                         {
                             InstallerId = "CR-1",
                             Name = "Grupo Mecsa",
-                            initDate = new DateTime(2022, 2, 7, 10, 51, 16, 719, DateTimeKind.Local).AddTicks(7157)
+                            initDate = new DateTime(2022, 8, 29, 19, 8, 48, 739, DateTimeKind.Local).AddTicks(669)
                         });
                 });
 
@@ -244,6 +259,9 @@ namespace DataAccess.Migrations
 
                     b.Property<float>("Ampers")
                         .HasColumnType("real");
+
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeviceId")
                         .HasColumnType("nvarchar(450)");
@@ -271,6 +289,12 @@ namespace DataAccess.Migrations
                     b.Property<int>("TechnicianId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("lastEdition")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("lastEditor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("MaintenanceId");
 
                     b.HasIndex("DeviceId");
@@ -284,8 +308,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("ModelDeviceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ModelDeviceId"), 1L, 1);
 
                     b.Property<string>("ModelDeviceName")
                         .HasColumnType("nvarchar(max)");
@@ -325,9 +350,9 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ReplacementDeviceId = "3711b7f2-e590-4bc4-9a7d-309cf2ee2ac7",
-                            DeviceId = "cd93588f-e16c-46e3-943f-c613e9caf0f7",
-                            NewSerieDevice = "7175e2c3-f855-442a-9613-a846af722a91"
+                            ReplacementDeviceId = "a16e414b-d6e5-475f-b4f0-2525198a8473",
+                            DeviceId = "d7a014e2-8e3c-4a56-8871-6cad0db15a81",
+                            NewSerieDevice = "ea9f30a3-3ea4-435f-a1d7-8d49a760e515"
                         });
                 });
 
@@ -349,7 +374,7 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            SaleManId = "9ff1dd6f-411d-4cbc-8035-f6c188f8d5b4",
+                            SaleManId = "d79cc567-8f23-44cd-9cee-7ffdc32fa0e9",
                             Name = "sample"
                         });
                 });
@@ -358,8 +383,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("SectorId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectorId"), 1L, 1);
 
                     b.Property<string>("SectorName")
                         .HasColumnType("nvarchar(max)");
@@ -385,8 +411,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatusId"), 1L, 1);
 
                     b.Property<string>("StatusName")
                         .HasMaxLength(20)
@@ -423,8 +450,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("TechnicianId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TechnicianId"), 1L, 1);
 
                     b.Property<string>("TechnicianName")
                         .HasMaxLength(40)
@@ -446,8 +474,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("TypeDeviceId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TypeDeviceId"), 1L, 1);
 
                     b.Property<string>("TypeDeviceName")
                         .HasMaxLength(30)
@@ -485,6 +514,9 @@ namespace DataAccess.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateReceived")
                         .HasColumnType("datetime2");
 
@@ -500,6 +532,12 @@ namespace DataAccess.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("lastEdition")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("lastEditor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DeviceId");
@@ -511,11 +549,14 @@ namespace DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "92205c2e-188b-4292-8d71-cc980df22240",
+                            Id = "4052dd2e-43f7-4603-b5f2-ab4d6bf1448e",
+                            Author = "system",
                             DateReceived = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateSend = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DeviceId = "7175e2c3-f855-442a-9613-a846af722a91",
-                            StatusId = 1
+                            DeviceId = "ea9f30a3-3ea4-435f-a1d7-8d49a760e515",
+                            StatusId = 1,
+                            lastEdition = new DateTime(2022, 8, 29, 0, 0, 0, 0, DateTimeKind.Local),
+                            lastEditor = "system"
                         });
                 });
 
@@ -564,13 +605,13 @@ namespace DataAccess.Migrations
 
                     b.Navigation("Country");
 
-                    b.Navigation("installer");
-
                     b.Navigation("ModelDevice");
 
                     b.Navigation("SaleMan");
 
                     b.Navigation("TypeDevice");
+
+                    b.Navigation("installer");
                 });
 
             modelBuilder.Entity("Entities.IncidentEntity", b =>

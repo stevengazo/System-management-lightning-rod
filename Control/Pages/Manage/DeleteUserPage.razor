@@ -2,12 +2,12 @@
 
 
 <AuthorizeView Roles="Administrador">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <h1>Información del Usuario</h1>
         <ViewUserComponent UserId="@UserId.ToString()"></ViewUserComponent>
         <hr />        
         <ManageRolesByIdComponent UserId="@UserId.ToString()"/>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <h2 class="text-danger">No posee autorización para ver esta pagina</h2>
     </NotAuthorized>

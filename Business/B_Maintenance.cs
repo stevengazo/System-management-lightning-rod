@@ -72,7 +72,7 @@ namespace Business
 
         }
        
-        public static List<MaintenanceEntity> GetMaintenancesByConsult(string _Device = "", string _TechnicianId ="",int _Year = 0, int _Month=0)
+        public static List<MaintenanceEntity> SearchMaintenances(string _Device = "", string _TechnicianId ="",int _Year = 0, int _Month=0)
         {
             List<MaintenanceEntity> Maintenances = new List<MaintenanceEntity>();
             using(var DB = new RayosNoDataContext())
@@ -335,6 +335,7 @@ namespace Business
                 }
                 catch (Exception d)
                 {
+                    Console.WriteLine(d.Message);
                     List<DeviceEntity> i = new List<DeviceEntity>();
                     return i;
                 }
@@ -365,6 +366,7 @@ namespace Business
                 }
                 catch (Exception f)
                 {
+                    Console.WriteLine(f.Message);
                 }
             }
         }
@@ -473,7 +475,7 @@ namespace Business
         /// Create a new Maintenance
         /// </summary>
         /// <param name="oMaintenance">New object to insert</param>
-        public static void Create(MaintenanceEntity oMaintenance)
+        public static async void Create(MaintenanceEntity oMaintenance)
         {
             try
             {
@@ -483,6 +485,11 @@ namespace Business
                     DB.SaveChanges();
                     DB.Database.ExecuteSqlInterpolated($"EXECUTE  UpdateRecomendedDateOfMaintenance @_DeviceId = {oMaintenance.DeviceId.ToString()}");
                 }
+              
+                /* BASE PATH*/
+                var relativePath = $"/{oMaintenance.DeviceId}/{oMaintenance.MaintenanceDate.Year.ToString()}-Maintenance";
+                await B_StorageManage.createFolderAsync(relativePath, oMaintenance.MaintenanceId);
+
             }
             catch(Exception f)
             {

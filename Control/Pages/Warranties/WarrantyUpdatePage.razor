@@ -5,14 +5,14 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div class="text-center">
             <h2> Creación de nuevo registro</h2>
             <hr />
             <a href="warranty/list">Regresar a la lista de Garantias</a>
             <WarrantyUpdateComponent WarrantyId="@WarrantyId.ToString()"></WarrantyUpdateComponent>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

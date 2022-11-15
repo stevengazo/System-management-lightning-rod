@@ -1,6 +1,7 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
+@inject AuthenticationStateProvider authStateProvider
 
 <EditForm Model="oWarranty">
     <div class="form-group">
@@ -56,10 +57,12 @@
         Devices = B_Device.GetDictonaryOfDevicesWithClient();
     }
 
-    private void UpdateWarranty()
+    private async Task UpdateWarranty()
     {
         oWarranty.Status = status.First(S => S.StatusId == oWarranty.StatusId);
-
+        oWarranty.lastEdition = DateTime.Today;
+        var tmpUsercontext = await authStateProvider.GetAuthenticationStateAsync();
+        oWarranty.lastEditor = tmpUsercontext.User.Identity.Name;
         B_Warranty.Update(oWarranty);
         Nav.NavigateTo($"warranty/view/{oWarranty.Id}");
     }

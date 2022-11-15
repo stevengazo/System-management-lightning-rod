@@ -3,8 +3,8 @@
 
 
 
-<AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+<AuthorizeView Roles="Administrador,Lector">
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div>
             <h2 class="text-center">
                 Información del Instalador
@@ -21,7 +21,7 @@
             </h4>
             <ListOfDevicesByInstallerComponent  id="@installerId"/>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

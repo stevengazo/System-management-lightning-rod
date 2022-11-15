@@ -5,6 +5,7 @@
 
 
 
+
 <table class="table table-light table-responsive-sm table-bordered">
     <thead>
         <tr>
@@ -64,6 +65,28 @@
     </tbody>
 </table>
 
+@if (oIncident.IsClosed== true)
+{
+    <p class="text-success">
+        Este incidente se encuentra cerrado. 
+    </p>
+}
+else
+{
+    <div class="d-flex flex-row justify-content-around">
+    <p class="text-danger">
+       <b>
+           Este incidente se encuentra abierto. El cliente aún no ha seguido las recomendaciones necesarias.<br>
+           Este caso debe ser cerrado, cuando se hayan inmplementado las medidas necesarias de protección
+       </b> 
+       
+    </p>
+    <button class="btn btn-outline-success" @onclick="onclickState">
+           Marcar como Cerrado
+       </button>
+    </div>
+
+}
 
 @code{
     [Parameter]
@@ -82,5 +105,11 @@
             Message = $"Error: {h.Message}. Intentelo de nuevo";
         }
 
+    }
+
+    private async void onclickState()
+    {
+        B_Incident.ChangeState(!oIncident.IsClosed, oIncident.IncidentId);
+        oIncident.IsClosed = !oIncident.IsClosed;
     }
 }

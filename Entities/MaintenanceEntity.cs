@@ -19,6 +19,9 @@ namespace Entities
         public float DeviceOhms { get; set; }
         public float Ampers { get; set; }        
         public string ReportId { get; set; }
+        public string Author { get; set; }
+        public string lastEditor { get; set; }
+        public DateTime lastEdition { get; set; }
         [Required(ErrorMessage = "Información Requerida")]        
         public string Recomendations { get; set; }
         //Relation With Device 

@@ -1,0 +1,285 @@
+﻿@using Entities;
+@using Business;
+@using System.Linq;
+@using System.IO;
+@using Microsoft.AspNetCore.Hosting;
+@using Microsoft.Extensions.Logging;
+@inject IWebHostEnvironment Environment
+@inject NavigationManager nav
+@inject IJSRuntime JS
+@inject IToastService toastService
+
+
+<div class="d-flex flex-row justify-content-around border rounded mb-3">
+    <!-- Añadir archivo -->
+    <div>
+        <div class="form-group d-flex flex-column justify-content-around align-items-center">
+            <div>
+                <p class="text-sm-left">
+                    Tamaño máximo de carga de @sizeMB MB
+                </p>
+            </div>
+            <div>
+                <InputFile class="form-control-file" OnChange="@LoadFiles" multiple />
+            </div>
+            <div>
+                <button class="m-lg-1 btn btn-sm btn-outline-success" @onclick="@onClicked">Subir Archivos</button>
+            </div>
+        </div>
+    </div>
+    <!-- Tabla Contenidos -->
+    <div>
+        <table class="table table-sm table-light table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Tamaño
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+            </thead>
+            @if (itemList != null)
+            {
+                <tbody>
+                    @foreach (Dictionary<string, string> item in itemList)
+                    {
+                        <tr>
+                            <td>
+                                @item.GetValueOrDefault("Name")
+                            </td>
+                            <td>
+                                @item.GetValueOrDefault("Size") KB
+                            </td>
+                            <td>
+                                <DowndloadFileComponent type="@Type" idObject="@idObject" nameFile="@item.GetValueOrDefault("Name")" />
+                            </td>
+                            <td>
+                                @if (true)
+                                {
+                                    string name = item.GetValueOrDefault("Name");
+                                    <button class="btn btn-danger" @onclick="() =>onclickeddELETE(name) ">
+                                        Borrar
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    <tr>
+
+                    </tr>
+                </tbody>                
+            }
+
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string idObject { get; set; }
+    [Parameter]
+    public string Type { get; set; }
+
+    private long sizeMB { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        sizeMB = (maxFileSize / 1024) / 1024;
+        await GetList();
+        await base.OnInitializedAsync();
+    }
+
+    // Item List to Render
+    List<Dictionary<string, string>> itemList = new List<Dictionary<string, string>>();
+
+    private async Task GetList()
+    {        
+        try
+        {
+            toastService.ShowInfo("Busando actualizaciones en el NAS", "Atención");
+            if (Type != null)
+            {
+                switch (Type)
+                {
+                    case "Warranty":
+                        var Object = B_Warranty.WarrantyById(idObject);
+                        var path = $"{Object.DeviceId}/{Object.DateSend.Year.ToString()}-Warranties/{Object.Id}";
+                        itemList = await B_StorageManage.GetListOfFiles(path);
+                        break;
+                    case "Maintenance":
+                        var ObjectMain = B_Maintenance.MaintenanceById(idObject);
+                        var pathMain = $"{ObjectMain.DeviceId}/{ ObjectMain.MaintenanceDate.Year.ToString()}-Maintenances/{ObjectMain.MaintenanceId}";
+                        itemList = await B_StorageManage.GetListOfFiles(pathMain);
+                        break;
+                    case "Incident":
+                        var ObjectInci = B_Incident.GetIncidentById(idObject);
+                        var pathInci = $"{ObjectInci.DeviceId}/{ ObjectInci.IncidentDate.Year.ToString()}-Incidents/{ObjectInci.IncidentId}";
+                        itemList = await B_StorageManage.GetListOfFiles(pathInci);
+                        break;
+                    default:
+                        // code block
+                        break;
+                }
+            }
+            if(itemList.Count == 0)
+            {
+                toastService.ClearAll();
+                toastService.ShowInfo("No hay información disponible en el NAS", "Atención");
+            }
+            else
+            {
+                toastService.ShowInfo("Elementos recuperados del NAS", "Atención");                
+            }
+        }
+        catch (Exception f)
+        {
+            toastService.ShowError($"Error: {f.Message}", "Internal Error");
+        }
+    }
+
+    /*INTERNAL VARIABLES*/
+    private long maxFileSize = 1048576 * 5;
+    private int maxAllowedFiles = 1;
+    private string errorMessage = "";
+
+    private InputFileChangeEventArgs _Data = null;
+
+    List<FileStream> fileStreams = new List<FileStream>();
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        _Data = e;
+    }
+
+
+    private async Task CreatePathFolder()
+    {
+        var localDirectory = Environment.ContentRootPath;
+        var tmpFilesPath = Path.Combine(localDirectory, "tmpfiles");
+        System.IO.Directory.CreateDirectory(tmpFilesPath);
+    }
+
+
+    /**
+     * Load file into the NAS
+     */
+    private async Task onClicked()
+    {
+        await CreatePathFolder();
+        if (_Data != null)
+        {
+            toastService.ShowInfo("Guardando Archivo", "Atención");
+            try
+            {
+                var pathlocal = "";
+                var filename = "";
+                foreach (var file in _Data.GetMultipleFiles(maxAllowedFiles))
+                {
+                    var trustedFileName = Path.GetRandomFileName();
+                    var pathAux = Path.Combine(Environment.ContentRootPath, "tmpfiles", file.Name);
+                    filename = file.Name;
+                    await using FileStream writeStream = new(pathAux, FileMode.Create);
+                    using var readStream = file.OpenReadStream(maxFileSize);
+                    var bytesRead = 0;
+                    var totalRead = 0;
+                    var buffer = new byte[maxFileSize];
+                    while ((bytesRead = await readStream.ReadAsync(buffer)) != 0)
+                    {
+                        totalRead += bytesRead;
+                        await writeStream.WriteAsync(buffer, 0, bytesRead);
+                        StateHasChanged();
+                    }
+                    pathlocal = pathAux;
+                }
+                string pathFileNas = "";
+                switch (Type)
+                {
+                    case "Warranty":
+                        var tmpObject = B_Warranty.WarrantyById(idObject);
+                        pathFileNas = $"{tmpObject.DeviceId}/{tmpObject.DateSend.Year.ToString()}-Warranties/{tmpObject.Id}/{filename}";
+                        break;
+                    case "Maintenance":
+                        var maintenance = B_Maintenance.MaintenanceById(idObject);
+                        pathFileNas = $"{maintenance.DeviceId}/{maintenance.MaintenanceDate.Year.ToString()}-Maintenances/{maintenance.MaintenanceId}/{filename}";
+                        break;
+                    case "Incident":
+                        var Incident = B_Incident.GetIncidentById(idObject);
+                        pathFileNas = $"{Incident.DeviceId}/{Incident.IncidentDate.Year.ToString()}-Incidents/{Incident.IncidentId}/{filename}";
+                        break;
+                    default:
+                        break;
+                }
+                B_StorageManage.uploadFIle(pathlocal, pathFileNas);
+                File.Delete(pathlocal);
+                toastService.ShowSuccess("Archivo Guardado", "Atención");
+                await GetList();
+            }
+            catch (Exception f)
+            {
+                Console.WriteLine(f.Message);
+                errorMessage = f.Message;
+                toastService.ShowError($"Error {f.Message} ", "Error");
+            }
+        }
+        else
+        {
+            errorMessage = "";
+            toastService.ShowError("No hay archivos para cargar", "Error");
+        }
+    }
+
+
+
+    /* DELETE FILE*/
+    private bool isDeleted = false;
+
+
+    private async Task onclickeddELETE(string nameFile)
+    {        
+        isDeleted = !isDeleted;
+        try
+        {
+            toastService.ShowInfo($"Borrando {nameFile}", "Atención");
+            var tmpPath = "";
+            switch (Type)
+            {
+                case "Warranty":
+                    var tmpOBject = B_Warranty.WarrantyById(idObject);
+                    tmpPath = $"{tmpOBject.DeviceId}/{tmpOBject.DateSend.Year.ToString()}-Warranties/{tmpOBject.Id}";
+                    break;
+                case "Maintenance":
+                    var tmpOBjectMain = B_Maintenance.MaintenanceById(idObject);
+                    tmpPath = $"{tmpOBjectMain.DeviceId}/{tmpOBjectMain.MaintenanceDate.Year.ToString()}-Maintenances/{tmpOBjectMain.MaintenanceId}";
+                    break;
+                case "Incident":
+                    var tmpOBjecInci = B_Incident.GetIncidentById(idObject);
+                    tmpPath = $"{tmpOBjecInci.DeviceId}/{tmpOBjecInci.IncidentDate.Year.ToString()}-Incidents/{tmpOBjecInci.IncidentId}";
+                    break;
+                default:
+                    break;
+            }
+            isDeleted = B_StorageManage.DeleteFile(tmpPath, nameFile);
+            await GetList();
+            toastService.ShowWarning($"{nameFile} borrado del servidor", "Atención");
+        }
+        catch (Exception r)
+        {
+            Console.WriteLine(r.Message);
+            toastService.ShowError("Error interno...", "Atención");
+        }
+    }
+
+
+
+}

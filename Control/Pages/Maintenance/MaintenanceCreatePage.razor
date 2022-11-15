@@ -2,17 +2,23 @@
 
 
 <AuthorizeView Roles="Administrador,Editor">
-    <Authorized>
+    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
         <div >
             <div class="text-center">
                 <h2> Registro de Mantenimientos</h2>
             <hr />
-            <a href="maintenance/list">Regresar a la lista de Mantenimientos</a>          
+            <div class="d-flex flex-row justify-content-between">
+                <p>
+                    Ingrese la información necesaria para el registro del mantenimiento.
+                </p>
+                <a href="maintenance/list" class="btn btn-sm btn-info">Lista de Mantenimientos</a>         
+            </div>
+  
             </div>
             <hr />    
             <MaintenanceCreateComponent></MaintenanceCreateComponent>
         </div>
-    </Authorized>
+    </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>

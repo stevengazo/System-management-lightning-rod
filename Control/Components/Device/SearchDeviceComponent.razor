@@ -13,7 +13,7 @@
 @using X15 = DocumentFormat.OpenXml.Office2013.Excel;
 
 @inject IJSRuntime Js;
-
+@inject IToastService toastService
 
 <div>
     <div class="form-group row">
@@ -71,7 +71,7 @@
 <hr />
 
 
-<div stylle="font-size:5px;" hidden="@_bandHidden" class="flex-column">
+<div stylle="font-size:5px;"  hidden="@_bandHidden" class="flex-column">
     <p>Los equipos poseen las siguientes clasificaciones:</p>
     <div>
         <label>
@@ -92,20 +92,23 @@
 </div>
 
 <div>
+            <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
     <table class="table table-borderless table-hover table-striped table-responsive-sm ">
         <thead>
             <tr>
-                <th @onclick="handleIdOrder"> Numero de Serie <span class="oi oi-arrow-thick-top"></span></th>
-                <th @onclick="handleAliasOrder"> Alias</th>
-                <th @onclick="handleDateOrder"> Fecha de Instalación</th>
-                <th @onclick="handleSaleOrder"> Vendedor</th>
+                <th @onclick="handleIdOrder" > Numero de Serie <span class="oi oi-arrow-thick-top"></span></th>
+                <th @onclick="handleAliasOrder"  > Alias</th>
+                <th @onclick="handleDateOrder" > Fecha de Instalación</th>
+                <th @onclick="handleSaleOrder"  > Vendedor</th>
                 <th @onclick="handleClientOrder"> Cliente</th>
                 <th></th>
                 <th></th>
                 <th></th>
             </tr>
         </thead>
+
         <tbody>
+            
             @foreach (var obj in Devices)
             {
                 <tr class="align-middle">
@@ -149,8 +152,11 @@
                     <td> <a class="btn btn-danger" href="device/delete/@obj.DeviceId"> Eliminar</a></td>
                 </tr>
             }
+        
         </tbody>
+        
     </table>
+    </Animate>
 </div>
 
 
@@ -183,7 +189,6 @@
     public bool flagOrder = false;
 
     /// Internal Variables
-    string _hidden;
     bool _bandHidden = true;
 
     List<int> Years = B_Device.ListOfYears();
@@ -206,7 +211,7 @@
 
     private void handleClientOrder()
     {
-        if (Devices.Count != 0)
+      if(Devices.Count!= 0)
         {
             if (flagOrder)
             {
@@ -228,7 +233,7 @@
     }
     private void handleSaleOrder()
     {
-        if (Devices.Count != 0)
+      if(Devices.Count!= 0)
         {
             if (flagOrder)
             {
@@ -338,20 +343,25 @@
     }
 
 
-    private void Download()
+    private async Task Download()
     {
         try
         {
             using (var memoryStream = new MemoryStream())
             {
-                var package = SpreadsheetDocument.Create(memoryStream, SpreadsheetDocumentType.Workbook);
-                CreatePartsForExcel(package, Devices);
-                package.Close();
-                Js.SaveAs("DevicesConsult.xlsx", memoryStream.ToArray());
-            }
-        }
-        catch(Exception r){
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    NewLine = Environment.NewLine,
+                };
 
+                using(var csv = new CsvWriter(writter,config))
+                {
+                    var arr1 = Devices.ToArray();
+                    csv.WriteRecords(arr1);
+                }
+                var arr = memoryStream.ToArray();
+                Js.SaveAs("DevicesConsult.csv", arr);
+            }
         }
 
     }
@@ -367,7 +377,7 @@
                 Devices = B_Device.GetDevicesByConsult(DeviceIdToSearch, AliasToSearch, YearToSearch, CountryToSearch);
                 if (Devices.Count <= 0)
                 {
-                    ErrorMessage = "No hay dispositivos que cumplan con los criterios de busqueda....";
+                    toastService.ShowError("No hay coincidencias con el parametro de busqueda", "Error");                   
                     Clean();
                 }
                 else
@@ -377,7 +387,8 @@
             }
             else
             {
-                ErrorMessage = "No hay criterios para buscar";
+                toastService.ShowError("No hay información para buscar", "Error");
+           
             }
 
         }
@@ -391,15 +402,15 @@
 
     void changeHidden()
     {
-        if (_bandHidden)
+        if(_bandHidden)
         {
             _hidden = "";
         }
         else
         {
-            _hidden = "hidden";
-        }
-        _bandHidden = !_bandHidden;
+            _hidden = "hidden"; 
+        }  
+        _bandHidden=!_bandHidden;
     }
 
     /// <summary>

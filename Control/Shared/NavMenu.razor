@@ -6,85 +6,92 @@
 </div>
 
 
-<div class="@NavMenuCssClass" >
+<div class="@NavMenuCssClass">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
-        <li class="nav-item px-3" >
-            <NavLink class="nav-link"  @onclick="()=>expandSubDevice=!expandSample"  >
-                <span class="oi oi-list" aria-hidden="true"></span> Equipos
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="()=> expandSubSaleInstal=!expandSubSaleInstal">
+                <span class="oi oi-person" aria-hidden="true"></span> Ventas
             </NavLink>
-            @if (expandSubDevice)
-            {                
-                <ul class="nav flex-column">
+            @if (expandSubSaleInstal)
+            {
+                <ul class="nav flex-column" @onfocusout="setFalse">
                     <li class="nav-item px-3">
-                        <NavLink class="expand-menu" style="text-align:center" href="device/list"  @onclick="setFalse" >
-                            Buscar Dispositivo
+                        <NavLink class="expand-menu" style="text-align:center" href="saleman/list" @onclick="setFalse">
+                            Buscar Vendedor
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
-                        <NavLink class="expand-menu" style="text-align:center" href="device/create"  @onclick="setFalse" >
-                            Agregar Dispositivo
-                        </NavLink>          
+                        <NavLink class="expand-menu" style="text-align:center" href="saleman/create" @onclick="setFalse">
+                            Agregar Vendedor
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="expand-menu" style="text-align:center" href="installer/list" @onclick="setFalse">
+                            Buscar Instalador
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="expand-menu" style="text-align:center" href="installer/create" @onclick="setFalse">
+                            Agregar Instalador
+                        </NavLink>
                     </li>
                 </ul>
             }
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="maintenance/list" @onclick="setFalse">
-                <span class="oi oi-check" aria-hidden="true"  ></span> Mantenimientos
-            </NavLink>
-        </li>
-        
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="warranty/list" @onclick="setFalse">
-                <span class="oi oi-document" aria-hidden="true"></span> Garantias
-            </NavLink>
-        </li>        
 
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="client/list" @onclick="setFalse">
                 <span class="oi oi-people" aria-hidden="true"></span> Clientes
             </NavLink>
         </li>
+
         <li class="nav-item px-3">
-            <NavLink class="nav-link"  @onclick="()=> expandSubSaleInstal=!expandSubSaleInstal" >
-                <span class="oi oi-person" aria-hidden="true"></span> Ventas
+            <NavLink class="nav-link" @onclick="()=>expandSubDevice=!expandSample">
+                <span class="oi oi-list" aria-hidden="true"></span> Equipos
             </NavLink>
-            @if (expandSubSaleInstal)
-            {                
-                <ul class="nav flex-column" @onfocusout="setFalse">
+            @if (expandSubDevice)
+            {
+                <ul class="nav flex-column">
                     <li class="nav-item px-3">
-                        <NavLink class="expand-menu" style="text-align:center" href="saleman/list"  @onclick="setFalse" >
-                            Buscar Vendedor
+                        <NavLink class="expand-menu" style="text-align:center" href="device/list" @onclick="setFalse">
+                            Buscar Dispositivo
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
-                        <NavLink class="expand-menu" style="text-align:center" href="saleman/create"  @onclick="setFalse" >
-                            Agregar Vendedor
-                        </NavLink>          
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="expand-menu" style="text-align:center" href="installer/list"  @onclick="setFalse" >
-                            Buscar Instalador
-                        </NavLink>          
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="expand-menu" style="text-align:center" href="installer/create"  @onclick="setFalse" >
-                            Agregar Instalador
-                        </NavLink>          
+                        <NavLink class="expand-menu" style="text-align:center" href="device/create" @onclick="setFalse">
+                            Agregar Dispositivo
+                        </NavLink>
                     </li>
                 </ul>
             }
         </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="maintenance/list" @onclick="setFalse">
+                <span class="oi oi-check" aria-hidden="true"></span> Mantenimientos
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="warranty/list" @onclick="setFalse">
+                <span class="oi oi-document" aria-hidden="true"></span> Garantias
+            </NavLink>
+        </li>
+
+
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="replacement/list" @onclick="setFalse">
                 <span class="oi oi-delete" aria-hidden="true"></span> Reemplazos
             </NavLink>
         </li>
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="incident/list" @onclick="setFalse">
                 <span class="oi oi-warning" aria-hidden="true"></span> Incidentes
@@ -131,12 +138,13 @@
         expandSubDevice = false;
         expandSubSaleInstal = false;
     }
-    
+
 
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void setfalse(){
+    private void setfalse()
+    {
         expandSubDevice = !expandSubDevice;
     }
 
@@ -145,7 +153,7 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-  
+
 
 
 }

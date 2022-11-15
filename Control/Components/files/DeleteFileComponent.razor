@@ -1,0 +1,68 @@
+﻿@using Business;
+@using Entities;
+
+
+@inject IToastService toastService
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        @if (!isDeleted)
+        {
+            <button class="btn btn-danger" @onclick="@onclicked">
+                Borrar
+            </button>
+        }
+        else
+        {
+            <label class="text-info">
+                Borrado
+            </label>
+        }
+    </Authorized>
+    <NotAuthorized>
+       
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    [Parameter]
+    public string idObject { get; set; }
+    [Parameter]
+    public string Type { get; set; }
+    [Parameter]
+    public string nameFile { get; set; }
+
+    private bool isDeleted = false;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+    }
+
+
+    private void onclicked()
+    {
+        isDeleted = !isDeleted;
+        try
+        {
+            var tmpPath = "";
+            switch (Type)
+            {
+                case "Warranty":
+                    var tmpOBject = B_Warranty.WarrantyById(idObject);
+                    tmpPath = $"{tmpOBject.DeviceId}/{tmpOBject.DateSend.Year.ToString()}-Warranty/{tmpOBject.Id}";
+                    break;
+                default:
+                    break;
+            }
+            isDeleted = B_StorageManage.DeleteFile(tmpPath, nameFile);
+            toastService.ShowWarning("El archivo fue eliminado", "Advertencia");
+        }
+        catch (Exception r)
+        {
+            Console.WriteLine(r.Message);
+        }
+    }
+}

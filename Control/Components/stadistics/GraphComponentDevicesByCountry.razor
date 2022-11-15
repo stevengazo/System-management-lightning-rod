@@ -16,12 +16,11 @@
 
 @code{
     private PieConfig _configurationPieChartCountrie;     
-    private Chart _chart;
 
     private Dictionary<string, int> QuantityOfDevices = new Dictionary<string, int>();
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
+       await base.OnInitializedAsync();
         QuantityOfDevices = B_Country.DevicesByCountry();
         PieChartQuantityOfDeviceByCountries();
     }

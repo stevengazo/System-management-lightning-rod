@@ -26,7 +26,6 @@
 
 @code{
     private BarConfig _BarConfig;
-    private Chart _Chart;
     Dictionary<int, int> MaintenancesByMonth = new Dictionary<int, int>();
 
 
@@ -37,7 +36,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
+        await base.OnInitializedAsync();
         ListOfYears = B_Maintenance.YearsRegistered();  
         _BarConfig = new BarConfig()
         {

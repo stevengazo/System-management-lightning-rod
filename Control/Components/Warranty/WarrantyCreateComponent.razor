@@ -1,11 +1,14 @@
 ﻿@using Entities;
 @using Business;
 @inject NavigationManager Nav;
+@inject AuthenticationStateProvider authStateProvider
+@inject IToastService toastService
+
 
 <EditForm Model="oWarranty">
     <div class="form-group">
         <label class="h5"><strong>Seleccione el Dispositivo</strong></label>
-        <input type="text" list="list-devices" bind-Value="@oWarranty.DeviceId" class="form-control"/>
+        <InputText @bind-Value="oWarranty.DeviceId" list="list-devices" class="form-control" ></InputText>
         <datalist id="list-devices">
             <option value="0">Seleccione...</option>
             @foreach (var obj in Devices)
@@ -44,7 +47,7 @@
     </div>
 </EditForm>
 
-<input type="button" value="Guardar Registro" class="btn-info" @onclick="SaveWarranty"/>
+<input type="button" value="Guardar Registro" class="btn btn-info" @onclick="SaveWarranty"/>
 <p>@Message</p>
 
 @code{
@@ -60,14 +63,25 @@
         status = B_Status.GetStatus();
     }
 
-    private void SaveWarranty()
+    private async Task SaveWarranty()
     {
         try
         {
             oWarranty.Id = Guid.NewGuid().ToString();
+            oWarranty.lastEdition= DateTime.Today;
+            var contextmp = await authStateProvider.GetAuthenticationStateAsync();
+            oWarranty.Author = contextmp.User.Identity.Name;
+            oWarranty.lastEditor = contextmp.User.Identity.Name;
+            var result = await B_Warranty.CreateAsync(oWarranty);
+            if (result)
+            {
+                Nav.NavigateTo($"warranty/view/{oWarranty.Id}");
+            }
+            else
+            {
+                toastService.ShowError("Error interno....", "Aviso");
+            }
 
-            B_Warranty.Create(oWarranty);
-            Nav.NavigateTo($"warranty/view/{oWarranty.Id}");        
         }catch(Exception f)
         {
             Message = $"Error: {f.Message}. Intentelo de nuevo";
