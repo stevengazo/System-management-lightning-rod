@@ -1,4 +1,5 @@
-﻿@using Entities;
+﻿
+@using Entities;
 @using Business;
 
 @using CsvHelper.Configuration
@@ -38,6 +39,7 @@
     <div class="col">
         <label class="col-form-label">Estado de la garantia</label>
         <select class="form-control rounded " @bind="@tmpEstatusToSearch">
+            <option value="0">Estado.</option>
             @foreach (var item in StatusList)
             {
                 <option value="@item.StatusId">@item.StatusName</option>
@@ -116,7 +118,8 @@
     {
         DeviceIdToSearch = null;
         YearToSearch = 0;
-        tmpEstatusToSearch = 1;
+        tmpEstatusToSearch = 0;
+        Warranties.Clear();
     }
 
 
@@ -139,6 +142,9 @@
             {
                 ErrorMessage = "";
             }
+            DeviceIdToSearch = null;
+            YearToSearch = 0;
+            tmpEstatusToSearch = 0;
         }
         catch (Exception f)
         {
