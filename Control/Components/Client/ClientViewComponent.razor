@@ -314,13 +314,48 @@
         {
             Row workRow = new Row();
             workRow.Append(CreateCell("Id de Cliente", 2U));
+            workRow.Append(CreateCell("Alias", 2U));
+            workRow.Append(CreateCell("Fecha instalación", 2U));
+            workRow.Append(CreateCell("Latitud", 2U));
+            workRow.Append(CreateCell("Longitud", 2U));
+            workRow.Append(CreateCell("Fecha Limite de mantenimiento", 2U));
+            workRow.Append(CreateCell("País", 2U));
+            workRow.Append(CreateCell("Estado", 2U));
+            workRow.Append(CreateCell("Reemplazo", 2U));
+            workRow.Append(CreateCell("Vendedor", 2U));
+            workRow.Append(CreateCell("Cliente", 2U));
+            workRow.Append(CreateCell("Notas", 2U));
             return workRow;
         }
         public Row GenerateRowForChildPartDetail(DeviceEntity testmodel)
         {
             Row tRow = new Row();
             tRow.Append(CreateCell(testmodel.DeviceId ));
-
+            tRow.Append(CreateCell(testmodel.Alias ));
+            tRow.Append(CreateCell(testmodel.InstallationDate.ToShortDateString() ));
+            tRow.Append(CreateCell(testmodel.Latitude ));
+            tRow.Append(CreateCell(testmodel.Longitude));
+            tRow.Append(CreateCell(testmodel.RecomendedDateOfMaintenance.ToShortDateString() ));
+            tRow.Append(CreateCell(testmodel.CountryId));
+            if(testmodel.IsActive){
+                tRow.Append(CreateCell("Activo" ));
+            }else{
+            tRow.Append(CreateCell("Inactivo"));
+            }
+            if(testmodel.IsReplaced){
+                tRow.Append(CreateCell("Sí" ));
+            }else{
+                tRow.Append(CreateCell("No"));
+            }
+            tRow.Append(CreateCell(testmodel.Client.Name));
+            tRow.Append(CreateCell(testmodel.SaleMan.Name));            
+            var montActual = DateTime.Today.Month;
+            var yearActual = DateTime.Today.Year;
+            if( testmodel.RecomendedDateOfMaintenance.Month == montActual && testmodel.RecomendedDateOfMaintenance.Year == yearActual ){
+                tRow.Append(CreateCell("Equipo en su mes límite de mantenimiento" ));
+            }else{
+                tRow.Append(CreateCell("" ));
+            }
             return tRow;
         }
         public Cell CreateCell(string text)
