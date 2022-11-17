@@ -15,6 +15,27 @@ namespace DataAccess
         public static void ExecuteSP(MigrationBuilder migrationBuilder)
         {
 			#region Stored Procedures
+			var spDevicesWithoutWarrantiesByYear = $@"-- =============================================
+-- Author:		Steven Gazo
+-- Create date: 16/11/2022
+-- Description:	Get devices without warrantly in a specific year
+-- =============================================
+CREATE PROCEDURE  GetDevicesWithoutWarrantiesByYear
+	-- Add the parameters for the stored procedure here
+	@_Year varchar(4) = '1'
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	SELECT  D.* FROM DEVICES AS D
+	left join (Select * from Warranties
+				where Year(Warranties.DateSend) = @_Year) AS TMP ON TMP.DeviceId = D.DeviceId 
+	where TMP.Id is null and D.IsActive = 1
+END
+GO
+";
+			migrationBuilder.Sql(spDevicesWithoutWarrantiesByYear);
 			var spSearchIncidents = $@"
 		-- =============================================
 -- Author:		Steven Fabricio Gazo Maliaño

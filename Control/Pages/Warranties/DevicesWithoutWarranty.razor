@@ -1,0 +1,23 @@
+﻿@page "/warranty/deviceswithoutwarranties"
+
+
+<AuthorizeView Roles="Administrador,Editor">
+    <Authorized>
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div class="text-center">
+                <h2> Dispositivos sin garantias tramitadas</h2>
+                <p>
+                    El sistema muestra los equipos activos que no posean garantias activas en un plazo especifico
+                </p>
+                <DevicesWithoutWarrantyByYear></DevicesWithoutWarrantyByYear>
+            </div>
+        </Animate>
+    </Authorized>
+    <NotAuthorized>
+        <NotAvariableComponent />
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code{
+}
