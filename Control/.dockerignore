@@ -19,9 +19,11 @@
 **/node_modules
 **/npm-debug.log
 **/obj
+**/appsettings.json
+# the Docker image
+**/appsettings.*.json
+**/appsettings.Development.json
 **/secrets.dev.yaml
 **/values.dev.yaml
-**/appsettings.json
-**/appsettings.development.json
 LICENSE
 README.md

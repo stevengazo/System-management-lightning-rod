@@ -27,14 +27,27 @@ namespace IdentityDataAccess
         /// connection string and set the value
         /// </summary>
         public string GetConnectionString(string connectionStringName = "IdentityConnection")
-        {
-            var builder = new ConfigurationBuilder()
+        {           
+            var ConnectionString = Environment.GetEnvironmentVariable(connectionStringName);
+
+            if(ConnectionString != null)
+            {
+                MyConnectionString = ConnectionString;
+                return MyConnectionString;
+            }
+            else
+            {
+                var builder = new ConfigurationBuilder()
                               .SetBasePath(Directory.GetCurrentDirectory())
                               .AddJsonFile("appsettings.json")
                               .AddEnvironmentVariables();
-            Configuration = builder.Build();
-            MyConnectionString = Configuration.GetConnectionString(connectionStringName);
-            return MyConnectionString;
+                Configuration = builder.Build();
+                MyConnectionString = Configuration.GetConnectionString(connectionStringName);
+                return MyConnectionString;
+            }
+
+            
+
         }
 
         public IDBContext() 

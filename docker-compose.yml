@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  control:
+    image: ${DOCKER_REGISTRY-}control
+    build:
+        context: .
+        dockerfile: Control/Dockerfile
+    ports:
+        - 80:80
+    depends_on:
+        - "db"
+    environment:
+      - IdentityConnection= Data Source=db;Initial Catalog=IdentityRayosNo;User ID=SA;Password=Password123
+      - RayosNoConnection= Data Source=db;Initial Catalog=RNTesting;User ID=SA;Password=Password123
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y 
+      - SA_PASSWORD=Password123

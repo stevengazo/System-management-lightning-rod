@@ -209,12 +209,21 @@ namespace DataAccess
         /// </summary>
         private void GetConnectionString (string connectionStringName = "RayosNoConnection")
         {
-            var builder = new ConfigurationBuilder()
+            var sample = Environment.GetEnvironmentVariable(connectionStringName);
+            if (!string.IsNullOrEmpty(sample)) {
+                MyConnectionString = sample;
+            }
+            else
+            {
+                var builder = new ConfigurationBuilder()
                               .SetBasePath(Directory.GetCurrentDirectory())
-                              .AddJsonFile("appsettings.json") 
-                              .AddEnvironmentVariables(); 
-            Configuration = builder.Build();
-            MyConnectionString = Configuration.GetConnectionString(connectionStringName);
+                              .AddJsonFile("appsettings.json")
+                              .AddEnvironmentVariables();
+                Configuration = builder.Build();
+                MyConnectionString = Configuration.GetConnectionString(connectionStringName);
+            }
+
+            
         }
 
     }

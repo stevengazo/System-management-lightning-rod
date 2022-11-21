@@ -33,10 +33,24 @@ namespace Control
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            string dbIdentity = Environment.GetEnvironmentVariable("IdentityConnection");
+            string dbRayosNO = Environment.GetEnvironmentVariable("RNTesting");
+
+            
             services.AddBlazoredToast();
-            services.AddDbContext<IDBContext>(options =>
+           if (dbIdentity != null)
+            {
+                services.AddDbContext<IDBContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("IdentityConnection")));            
+                    dbIdentity));
+            }
+            else
+            {
+                services.AddDbContext<IDBContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("IdentityConnection")));
+            }
+            
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IDBContext>();
