@@ -96,7 +96,7 @@
     protected override async Task OnInitializedAsync()
     {
         sizeMB = (maxFileSize / 1024) / 1024;
-        await GetList();
+        Task.Run(GetList);
         await base.OnInitializedAsync();
     }
 
@@ -107,7 +107,7 @@
     {        
         try
         {
-            toastService.ShowInfo("Busando actualizaciones en el NAS", "Atención");
+            toastService.ShowInfo("Buscando actualizaciones en el NAS", "Atención");
             if (Type != null)
             {
                 switch (Type)
@@ -131,16 +131,21 @@
                         // code block
                         break;
                 }
+            }  
+            if(itemList != null){
+                if (itemList.Count == 0)
+                {
+                    toastService.ClearAll();
+                    toastService.ShowInfo("No hay información disponible en el NAS", "Atención");
+                }
+                else
+                {
+                    toastService.ShowInfo("Elementos recuperados del NAS", "Atención");
+                }
+            }else{
+                toastService.ShowInfo("Error interno, intentelo más tarde", "Atención");
             }
-            if(itemList.Count == 0)
-            {
-                toastService.ClearAll();
-                toastService.ShowInfo("No hay información disponible en el NAS", "Atención");
-            }
-            else
-            {
-                toastService.ShowInfo("Elementos recuperados del NAS", "Atención");                
-            }
+
         }
         catch (Exception f)
         {

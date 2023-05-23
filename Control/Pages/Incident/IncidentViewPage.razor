@@ -8,7 +8,7 @@
 <AuthorizeView Roles="Administrador,Editor,Lector">
     <Authorized>
         <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-            <div>
+            <div class="text-center  border rounded p-2 mb-2" style="border: 1px solid gray">
                 <h2 class="text-center">Información del Incidente</h2>
                 <div class="d-flex flex-row justify-content-between">
                     <p>A continuación se muestra la información reelevante con respecto al incidente </p>
@@ -17,7 +17,7 @@
                 <hr />
                 <IncidentViewComponent IncidentId="@IncidentId.ToString()" />
             </div>
-            <div>
+            <div class="text-center  border rounded p-2 mb-2" style="border: 1px solid gray">
                 <hr />
                 <h2>
                     Archivos Anexos

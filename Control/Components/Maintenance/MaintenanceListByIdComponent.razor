@@ -62,7 +62,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Maintenances = B_Maintenance.ListOfMaintenancesById(id);
+        Maintenances = B_Maintenance.ListOfMaintenancesById(id);        
         lastMaintenance = (from maint in Maintenances select maint).OrderByDescending(M => M.MaintenanceDate).FirstOrDefault();
     }
 }

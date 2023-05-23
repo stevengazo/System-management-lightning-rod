@@ -6,7 +6,7 @@
 <AuthorizeView Roles="Administrador,Editor,Lector">
     <Authorized>
         <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-            <div>
+            <div class="text-center  border rounded p-2 mb-2" style="border: 1px solid gray">
                 <h2 class="text-center">Información del Vendedor</h2>
                 <hr />
                 <div class="d-flex flex-row justify-content-between">
@@ -19,7 +19,7 @@
                 <hr />
                 <SalemanViewComponent id="@SaleManId.ToString()" />
             </div>
-            <div>
+            <div class="text-center  border rounded p-2 mb-2" style="border: 1px solid gray">
                 <h3 class="text-center"> Lista de dispositivos Pertenecientes al vendedor</h3>
                 <p class="text-center">
                     A continuación se muestra la lista de dispositivos pertenecientes al

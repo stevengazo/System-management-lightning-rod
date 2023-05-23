@@ -425,7 +425,7 @@ namespace Business
         {
             using (var DB = new RayosNoDataContext())
             {
-                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderBy(M => M.DeviceId).Where(D=>D.DeviceId==DeviceId).Include(M=>M.Technician).Include(M=>M.Device);               
+                IEnumerable<MaintenanceEntity> aux = DB.Maintenances.OrderByDescending(M => M.MaintenanceDate).Where(D=>D.DeviceId==DeviceId).Include(M=>M.Technician).Include(M=>M.Device);               
                 return aux.ToList();
             }
         }
