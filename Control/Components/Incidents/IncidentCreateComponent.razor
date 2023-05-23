@@ -62,14 +62,23 @@
     </div>
     <div class="form-group">
         <label><strong>Numero de serie</strong></label>
-        <input type="text" @bind="@oIncident.DeviceId" list="listaEquipos" class="form-control" placeholder="Numero de serie">
-        <datalist id="listaEquipos">
-            <option value="">Seleccione un equipo...</option>
-            @foreach (var obj in Devices)
-            {
-                <option value="@obj.DeviceId">@obj.Client.Name - @obj.DeviceId </option>
-            }
-        </datalist>           
+        @if (string.IsNullOrEmpty(DeviceId))
+        {
+            <input type="text" @bind="@oIncident.DeviceId" list="listaEquipos" class="form-control" placeholder="Numero de serie">
+            <datalist id="listaEquipos">
+                <option value="">Seleccione un equipo...</option>
+                @foreach (var obj in Devices)
+                {
+                    <option value="@obj.DeviceId">@obj.Client.Name - @obj.DeviceId </option>
+                }
+            </datalist>
+        }
+        else
+        {
+            <input type="text" @bind="@DeviceId"  class="form-control" placeholder="Numero de serie" readonly>
+        }
+
+     
         <p><i>Cliente y numero de serie del dispositivo.</i></p>
     </div>
 </EditForm>
@@ -79,6 +88,10 @@
 <p class="text-danger">@Message</p>
 
 @code{
+
+    [Parameter]
+    public string DeviceId { get; set; }
+
     IncidentEntity oIncident = new IncidentEntity();
     List<DeviceEntity> Devices = new List<DeviceEntity>();
     List<TechnicianEntity> technicians = new List<TechnicianEntity>(); 
@@ -99,6 +112,10 @@
     {
         try
         {
+            if (!string.IsNullOrEmpty(DeviceId))
+            {
+                oIncident.DeviceId = DeviceId;
+            }
             var tmp = await authStateProvider.GetAuthenticationStateAsync();
             oIncident.lastEdition = DateTime.Today;
             oIncident.Author = tmp.User.Identity.Name;

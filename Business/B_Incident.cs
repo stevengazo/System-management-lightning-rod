@@ -109,7 +109,7 @@ namespace Business
         {
             using (var DB = new RayosNoDataContext())
             {
-                return (from incidents in DB.Incidents select incidents.ReportDate.Year).Distinct().ToArray();
+                return (from incidents in DB.Incidents select incidents.IncidentDate.Year).Distinct().ToArray();
             }
         }
 
@@ -117,6 +117,7 @@ namespace Business
         {
             using(var DB = new RayosNoDataContext())
             {
+                oIncident.Device = null;
                 DB.Incidents.Update(oIncident);
                 DB.SaveChanges();
             }

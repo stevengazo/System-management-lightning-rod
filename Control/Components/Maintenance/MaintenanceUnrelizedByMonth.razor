@@ -21,8 +21,8 @@
     Mes - @MonthToSelect
 </h4>
 <hr />
-<table class="table table-sm table-hover table-borderless">
-    <thead>
+<table class="table table-sm table-hover table-striped table-bordered table-light">
+    <thead class="table-dark">
         <tr>
             <th>
                 Serie
@@ -51,21 +51,22 @@
                </td>
                 <td>
                     @{
-                        TimeSpan time = item.RecomendedDateOfMaintenance.Date - DateTime.Today.Date;
+                        TimeSpan time = item.RecomendedDateOfMaintenance.Date - DateTime.Today;
                     }
                     @if (time.Days < 1)
                     {
-                        <h6 class="text-danger">Horas @time.Hours.ToString();
+                        <h6 class="text-danger">
+                            Horas @time.Hours.ToString()
                         </h6>
                         
 
                     }else{
-                        <h6 class="text-warning">Dias @time.Days.ToString();</h6>                        
+                        <h6 class="text-warning">Dias @time.Days.ToString()</h6>
                     }  
                    
                 </td>
                 <td>
-                    @item.RecomendedDateOfMaintenance.ToString("dd-MMM-yyyy");
+                    @item.RecomendedDateOfMaintenance.ToString("dd-MMM-yyyy")
                 </td>
                <td>
                    @item.Client.Name
@@ -99,7 +100,7 @@
 
 
     private async void onchangeHandle( ChangeEventArgs eventArgs)
-    {
+    {        
         MonthToSelect = int.Parse(eventArgs.Value.ToString());
         devices = await CheckDevices();
     }

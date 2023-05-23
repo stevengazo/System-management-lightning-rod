@@ -1,4 +1,4 @@
-﻿@page "/incident/create" 
+﻿@page "/incident/create/{DeviceId?}" 
 
 
 
@@ -14,11 +14,32 @@
                 <a href="incident/list" class="btn btn-info"> Lista de incidentes</a>
             </div>
             <hr />
-            <IncidentCreateComponent />
+                @if (string.IsNullOrEmpty(DeviceId))
+                {
+                    <IncidentCreateComponent />
+                }
+                else
+                {
+                    <IncidentCreateComponent DeviceId="@DeviceId" />
+                }
+
         </div>
     </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>
 </AuthorizeView>
+
+
+
+@code {
+    [Parameter]
+    public string DeviceId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+}
+
+
 
