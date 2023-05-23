@@ -7,7 +7,7 @@
     if(lastMaintenance.MaintenanceDate.AddYears(1) < DateTime.Today)
     {
         <div class="d-flex flex-column">
-            <label>Ultimo Mantenimiento: @lastMaintenance.MaintenanceDate.ToShortDateString()</label>
+            <label>Ultimo Mantenimiento: @lastMaintenance.MaintenanceDate.ToString("dddd dd MMM yyyy")</label>
             <label class="text-danger font-weight-bold">El ultimó mantenimiento fue realizado hace más de un año</label>
         </div>
     }
@@ -43,7 +43,7 @@ else
         {
             <tr>
                 <td> @obj.DeviceId </td>
-                <td> @obj.MaintenanceDate.ToShortDateString()</td>
+                <td> @obj.MaintenanceDate.ToString("dd-MMM-yyyy")</td>
                 <td> @obj.Technician.TechnicianName</td>
                 <td> <a class="btn btn-primary" href="maintenance/view/@obj.MaintenanceId" @onclick="@(() => toastService.ShowInfo("Buscando recurso solicitado...","Información"))"> Ver </a></td>
                 <td> <a class="btn btn-secondary" href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>

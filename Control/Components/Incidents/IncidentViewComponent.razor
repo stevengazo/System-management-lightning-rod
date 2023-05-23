@@ -3,9 +3,6 @@
 @inject NavigationManager Nav;
 
 
-
-
-
 <table class="table table-light table-responsive-sm table-bordered">
     <thead>
         <tr>
@@ -64,7 +61,9 @@
         </tr>
     </tbody>
 </table>
-
+<a href="device/view/@oIncident.DeviceId" class="btn btn-sm btn-outline-info">
+    Ver Información del Equipo
+</a>
 @if (oIncident.IsClosed== true)
 {
     <p class="text-success">

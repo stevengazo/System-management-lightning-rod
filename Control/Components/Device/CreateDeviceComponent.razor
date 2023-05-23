@@ -124,6 +124,7 @@
     string Message;
     protected override async Task OnInitializedAsync()
     {
+        oDevice.InstallationDate = DateTime.Today;
         Clients = B_Client.ListOfClients();
         SaleMans = B_SaleMan.ListOfSaleMans();
         Countries = B_Country.ListOfCountries();

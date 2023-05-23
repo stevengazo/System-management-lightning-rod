@@ -88,11 +88,11 @@
                 {
                     <tr>
                         <td> @obj.DeviceId </td>
-                        <td> @obj.MaintenanceDate.Date</td>
+                        <td> @obj.MaintenanceDate.Date.ToString("dd-MMM-yyyy")</td>
                         <td> @obj.Technician.TechnicianName</td>
-                        <td> <a class="btn btn-primary"   href="maintenance/view/@obj.MaintenanceId"  @onclick="@(() => toastService.ShowInfo("Buscando recurso solicitado...","Información"))" > Ver </a></td>
-                        <td> <a class="btn btn-secondary" href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
-                        <td> <a class="btn btn-danger" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
+                        <td> <a class="btn btn-primary" target="_blank" href="maintenance/view/@obj.MaintenanceId" @onclick="@(() => toastService.ShowInfo("Buscando recurso solicitado...","Información"))"> Ver </a></td>
+                        <td> <a class="btn btn-secondary" target="_blank" href="maintenance/update/@obj.MaintenanceId"> Modificar </a></td>
+                        <td> <a class="btn btn-danger" target="_blank" href="maintenance/delete/@obj.MaintenanceId"> Eliminar </a></td>
                     </tr>
                 }
             </tbody>

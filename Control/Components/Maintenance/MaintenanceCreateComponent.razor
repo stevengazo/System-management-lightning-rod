@@ -6,88 +6,94 @@
 
 
 <div>
-<EditForm Model="oMaintenance" OnValidSubmit="HandleValidSubmit"> 
-    <DataAnnotationsValidator />  
-    <ValidationSummary />  
-    <p class="text-danger">@Message</p>
-    <div class="form-group">
-        <label class="h5"><strong>Fecha de Mantenimiento</strong></label>
-        <InputDate class="form-control" @bind-Value="oMaintenance.MaintenanceDate"></InputDate>
-        <p><i>Coloque la fecha en la cual se realizó el mantenimiento.</i></p>
-        <ValidationMessage For="@(()=> oMaintenance.MaintenanceDate)"/>
-    </div>      
-    <div class="form-group">
-        <label class="h5"><strong>Estado del dispositivo</strong></label>
-        <InputTextArea class="form-control" @bind-Value="oMaintenance.StatusOfDevice"></InputTextArea>
-        
-        <p><i>Escriba las notas referentes al mantenimiento y al dispositivo. Resumen del mantenimiento (no mayor a 300 caracteres).</i></p>
-    </div>
-    <div class="form-group">
-        <label class="h5"><strong> Resistencia de la malla</strong></label>
-        <InputNumber class="form-control" @bind-Value="oMaintenance.SpatOhms"></InputNumber>
-        <p><i>Coloque el valor de resistencia de la malla dado en <span>&#8486;</span>.</i></p>
-    </div>
-    <div class="form-group">
-        <label class="h5"><strong>Resistencia de las Semiesferas del Dispositivo</strong></label>
-        <InputNumber class="form-control" @bind-Value="oMaintenance.DeviceOhms"></InputNumber>
-        <p><i>Coloque el valor de resistencia entre las semiesferas del dispositivo G<span>&#8486;</span>.</i></p>
-    </div>
-    <div class="form-group">
-        <label class="h5"><strong>Transferencia de Cargas</strong></label>
-        <InputNumber class="form-control" @bind-Value="oMaintenance.Ampers"></InputNumber>
-        <p><i>Coloque el valor de transferencia de cargas entre el equipo y la malla. Valor dado en mA (mili Amperios).</i></p>
-    </div>
-    <div class="form-group">
-        <label class="h5"><strong>Numero de Informe</strong></label>
-        <InputText class="form-control" @bind-Value="oMaintenance.ReportId"></InputText>
-    </div>
-    <div class="form-group">
-        <label class="h5"><strong>Recomendaciones</strong></label>
-        <InputTextArea class="form-control" @bind-Value="oMaintenance.Recomendations"></InputTextArea>
-        <p><i>Recomendaciones a tomar en cuenta para futuros trabajos.</i></p>
-        <ValidationMessage For="@(()=> oMaintenance.Recomendations)"/>
-    </div>
-    <div class="form-group">
-        <label class="h5"><strong>Numero de Serie</strong></label>
-        <input type="text" list="sample" @bind-value="@oMaintenance.DeviceId" class="form-control" placeholder="Seleccione un número de serie" />
-        <datalist id="sample">
-              @if (devicesDict.Count != 0)
-            {                
-                @foreach (var Device in devicesDict)
-                {
-                    <option value="@Device.Key">@Device.Value- @Device.Key </option>
-                }
-            }
-            else
-            {
-                <option value="">No hay dispositivos activos</option>
-            }
-        </datalist>
-        <p><i>Numero de serie del dispositivo existente.</i></p>
-    </div>
-    <div class="form-group">
-        <label class="h5"><strong>Tecnico encargado</strong></label>
-        <InputSelect class="form-control" @bind-Value="oMaintenance.TechnicianId">
-            @if (technicians.Count != 0)
-            {
-                <option value="0"> Seleccione un Tecnico...</option>
-                @foreach (TechnicianEntity technician in technicians)
-                {
-                    <option value="@technician.TechnicianId">@technician.TechnicianName </option>
-                }
-            }
-            else
-            {
-                <option value="0">No hay tecnicos disponibles</option>
-            }
-        </InputSelect>
-    </div>
-    <div>
-        <label>¿Numero de serie no visble?</label>
-        <a href="device/create" target="_blank"> Crear dispositivo</a>
-    </div>
+    <EditForm Model="oMaintenance" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <p class="text-danger">@Message</p>
+        <div class="form-group">
+            <label class="h5"><strong>Fecha de Mantenimiento</strong></label>
+            <InputDate class="form-control" @bind-Value="oMaintenance.MaintenanceDate"></InputDate>
+            <p><i>Coloque la fecha en la cual se realizó el mantenimiento.</i></p>
+            <ValidationMessage For="@(()=> oMaintenance.MaintenanceDate)" />
+        </div>
+        <div class="form-group">
+            <label class="h5"><strong>Estado del dispositivo</strong></label>
+            <InputTextArea class="form-control" @bind-Value="oMaintenance.StatusOfDevice"></InputTextArea>
 
-</EditForm>
+            <p><i>Escriba las notas referentes al mantenimiento y al dispositivo. Resumen del mantenimiento (no mayor a 300 caracteres).</i></p>
+        </div>
+        <div class="form-group">
+            <label class="h5"><strong> Resistencia de la malla</strong></label>
+            <InputNumber class="form-control" @bind-Value="oMaintenance.SpatOhms"></InputNumber>
+            <p><i>Coloque el valor de resistencia de la malla dado en <span>&#8486;</span>.</i></p>
+        </div>
+        <div class="form-group">
+            <label class="h5"><strong>Resistencia de las Semiesferas del Dispositivo</strong></label>
+            <InputNumber class="form-control" @bind-Value="oMaintenance.DeviceOhms"></InputNumber>
+            <p><i>Coloque el valor de resistencia entre las semiesferas del dispositivo G<span>&#8486;</span>.</i></p>
+        </div>
+        <div class="form-group">
+            <label class="h5"><strong>Transferencia de Cargas</strong></label>
+            <InputNumber class="form-control" @bind-Value="oMaintenance.Ampers"></InputNumber>
+            <p><i>Coloque el valor de transferencia de cargas entre el equipo y la malla. Valor dado en mA (mili Amperios).</i></p>
+        </div>
+        <div class="form-group">
+            <label class="h5"><strong>Numero de Informe</strong></label>
+            <InputText class="form-control" @bind-Value="oMaintenance.ReportId"></InputText>
+        </div>
+        <div class="form-group">
+            <label class="h5"><strong>Recomendaciones</strong></label>
+            <InputTextArea class="form-control" @bind-Value="oMaintenance.Recomendations"></InputTextArea>
+            <p><i>Recomendaciones a tomar en cuenta para futuros trabajos.</i></p>
+            <ValidationMessage For="@(()=> oMaintenance.Recomendations)" />
+        </div>
+        <div class="form-group">
+            <label class="h5"><strong>Numero de Serie</strong></label>
+            @if (!string.IsNullOrEmpty(DeviceID))
+            {
+                <input type="text" list="sample" @bind-value="@DeviceID" class="form-control" placeholder="Seleccione un número de serie" readonly />
+            }
+            else
+            {
+                <input type="text" list="sample" @bind-value="@oMaintenance.DeviceId" class="form-control" placeholder="Seleccione un número de serie" />
+                <datalist id="sample">
+                    @if (devicesDict.Count != 0)
+                    {
+                        @foreach (var Device in devicesDict)
+                        {
+                            <option value="@Device.Key">@Device.Value- @Device.Key </option>
+                        }
+                    }
+                    <option value="">No hay dispositivos activos</option>
+                    }
+                </datalist>
+            }
+
+            <p><i>Numero de serie del dispositivo existente.</i></p>
+        </div>
+        <div class="form-group">
+            <label class="h5"><strong>Tecnico encargado</strong></label>
+            <InputSelect class="form-control" @bind-Value="oMaintenance.TechnicianId">
+                @if (technicians.Count != 0)
+                {
+                    <option value="0"> Seleccione un Tecnico...</option>
+                    @foreach (TechnicianEntity technician in technicians)
+                    {
+                        <option value="@technician.TechnicianId">@technician.TechnicianName </option>
+                    }
+                }
+                else
+                {
+                    <option value="0">No hay tecnicos disponibles</option>
+                }
+            </InputSelect>
+        </div>
+        <div>
+            <label>¿Numero de serie no visble?</label>
+            <a href="device/create" target="_blank"> Crear dispositivo</a>
+        </div>
+
+    </EditForm>
 </div>
 
 
@@ -98,38 +104,44 @@
 <p class="text-danger">@Message</p>
 
 
-@code{
+@code {
+
     List<TechnicianEntity> technicians = new List<TechnicianEntity>();
     Dictionary<string, string> devicesDict = new Dictionary<string, string>();
+    [Parameter]
+    public string DeviceID { get; set; }
     bool BandExistDevice { get; set; }
-    string Message="";
+    string Message = "";
 
     MaintenanceEntity oMaintenance = new MaintenanceEntity();
     protected override async Task OnInitializedAsync()
     {
+        oMaintenance.MaintenanceDate = DateTime.Today;
         devicesDict = B_Device.GetDictonaryOfDevicesWithClient();
         technicians = B_Technician.GetListOftechnicians();
     }
 
 
 
-    private void HandleValidSubmit(){
+    private void HandleValidSubmit()
+    {
         Console.WriteLine("OnValidSubmint");
     }
 
     /// Check if the data in the object is ok
     private bool CheckValues(out string Message)
     {
-        if (oMaintenance.ReportId == null || oMaintenance.ReportId == "") {
+        if (oMaintenance.ReportId == null || oMaintenance.ReportId == "")
+        {
             Message = "Numero de reporte invalido, verifiquelo e intente de nuevo";
             return false;
         }
-        if(oMaintenance.StatusOfDevice == null || oMaintenance.StatusOfDevice == "")
+        if (oMaintenance.StatusOfDevice == null || oMaintenance.StatusOfDevice == "")
         {
             Message = "Verifique la información introducida en el estatus del equipo. No puede dejar el cambio en blanco.";
             return false;
         }
-        if(oMaintenance.Recomendations == null || oMaintenance.Recomendations == "")
+        if (oMaintenance.Recomendations == null || oMaintenance.Recomendations == "")
         {
             Message = "Verifique la información introducida en las recomendaciones del equipo. No puede dejar el cambio en blanco.";
             return false;
@@ -144,6 +156,9 @@
         try
         {
             oMaintenance.lastEdition = DateTime.Today;
+            if(!string.IsNullOrEmpty(DeviceID)){
+                oMaintenance.DeviceId = DeviceID;
+            }            
             var tmp = await authStateProvider.GetAuthenticationStateAsync();
             oMaintenance.Author = tmp.User.Identity.Name;
             oMaintenance.lastEditor = tmp.User.Identity.Name;
@@ -153,15 +168,15 @@
             if (bandCheck)
             {
                 B_Maintenance.Create(oMaintenance);
-                toastService.ShowInfo("Buscando recurso solicitado...","Información");
-                Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");                
+                toastService.ShowInfo("Buscando recurso solicitado...", "Información");
+                Nav.NavigateTo($"maintenance/view/{oMaintenance.MaintenanceId}");
             }
         }
-        catch(Exception f)
+        catch (Exception f)
         {
             Message = $"Error: {f.Message}. Intentelo de nuevo";
         }
-   
+
     }
 
 

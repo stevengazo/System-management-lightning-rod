@@ -87,6 +87,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        oIncident.IncidentDate = DateTime.Today;
+        oIncident.SendReportDate = DateTime.Today;
+        oIncident.RevisionDate = DateTime.Today;
+        oIncident.ReportDate = DateTime.Today;
         Devices = B_Device.ListOfDevices().Where(D=>D.IsActive==true).OrderBy(D=>D.ClientId).ToList();
         technicians = B_Technician.GetListOftechnicians();
     }

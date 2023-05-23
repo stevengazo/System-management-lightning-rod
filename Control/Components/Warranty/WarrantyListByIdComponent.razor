@@ -14,12 +14,12 @@
         }
         @if(lastWarranty.DateReceived.AddYears(1) < DateTime.Today)
         {
-            <label>Ultima garantia emitida el @lastWarranty.DateReceived</label>
+            <label>Ultima garantia emitida el @lastWarranty.DateReceived.ToString("dddd dd MMM yyyy")</label>
             <label class="text-danger font-weight-bold">La última garantia fue emitida hace más de un año.</label>
         }
         else
         {
-            <label>Ultima garantia emitida el @lastWarranty.DateReceived</label>
+            <label>Ultima garantia emitida el @lastWarranty.DateReceived.ToString("dddd dd MMM yyyy")</label>
             <label class="text-success font-weight-bold">La ultima garantia fue emitida hace menos de un año.</label>
         }
     }else if(Warranties.Count == 0)
@@ -43,8 +43,8 @@
         {
             <tr>
                 <td> @obj.DeviceId </td>
-                <td> @obj.DateSend</td>
-                <td> @obj.DateReceived</td>
+                <td> @obj.DateSend.ToString("dd-MMM-yyyy")</td>
+                <td> @obj.DateReceived.ToString("dd-MMM-yyyy")</td>
                 <td> <a class="btn btn-primary" href="warranty/view/@obj.Id" @onclick="@(() => toastService.ShowInfo("Buscando recurso solicitado...","Información"))" >Ver</a></td>
                 <td> <a class="btn btn-secondary" href="warranty/update/@obj.Id">Modificar</a></td>
                 <td> <a class="btn btn-danger" href="warranty/delete/@obj.Id">Eliminar</a></td>

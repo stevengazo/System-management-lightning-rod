@@ -79,10 +79,10 @@
         {
             <tr>
                 <td> @obj.DeviceId </td>
-                <td> @obj.DateSend.ToShortDateString()</td>
-                <td> @obj.DateReceived.ToShortDateString()</td>
-                <td> <a class="btn btn-primary" href="warranty/view/@obj.Id">Ver</a></td>
-                <td> <a class="btn btn-secondary" href="warranty/update/@obj.Id">Modificar</a></td>
+                <td> @obj.DateSend.ToString("dd-MMM-yyyy")</td>
+                <td> @obj.DateReceived.ToString("dd-MMM-yyyy")</td>
+                <td> <a target="_blank" class="btn btn-primary" href="warranty/view/@obj.Id">Ver</a></td>
+                <td> <a target="_blank" class="btn btn-secondary" href="warranty/update/@obj.Id">Modificar</a></td>
                 <td> <a class="btn btn-danger" href="warranty/delete/@obj.Id">Eliminar</a></td>
             </tr>
         }

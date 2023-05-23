@@ -4,56 +4,56 @@
 
 
 <AuthorizeView Roles="Administrador,Editor,Lector">
-    <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-                    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-        <div >
+    <Authorized>
+        <Animate Animation="Animations.Fade" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
 
-            <h2 class="text-center">Información del Dispositivo</h2>
-            <hr />
-            <div class="d-flex flex-row justify-content-between">
-                <p>Esta sección muestra la información del dispositivo aqui se enlista lo siguiente:</p>
-            <a href="device/list" class="btn btn-info"> Lista de dispositivos</a>
-            </div>
-            
-            <hr />
-            <ViewDeviceComponent id="@DeviceId.ToString()"/>
-        </div>
-        <hr/>
-        <div>
-            <h3 class="text-center">Historia de Mantenimientos Registrados</h3>
-            <p>
-                A continuación se muestra la información correspondiente a todos los mantenimientos registrados de este equipo.<br />
-                Seleccione el registro para ver más información
+                <div class="border rounded p-2 mb-2" style="border: 1px solid gray">
+                    <h2 class="text-center">Información del Dispositivo</h2>
+                    <hr />
+                    <div class="d-flex flex-row justify-content-between">
+                        <p>Esta sección muestra la información del dispositivo aqui se enlista lo siguiente:</p>
+                        <a href="device/list" class="btn btn-info"> Lista de dispositivos</a>
+                    </div>
 
-            </p>
-            <MaintenanceListByIdComponent id="@DeviceId.ToString()" />
-        </div>
-        <hr/>
-        <div>
-            <h3 class="text-center">Historial de Garantias Registradas</h3>
-            <p>
-                Estas son todas la garantias tramitadas del dispositivo, con el fabricante. Si desea ver más información por favor<br />
-                seleccione el registro que aplique.
-            </p>
-            <WarrantyListByIdComponent id="@DeviceId.ToString()"  />
-        </div>
-        <hr/>
-        <div>
-            <h3 class="text-center">Historial de Incidentes del dispositivo</h3>
-            <p>
-                En esta sección se muestran todos los incidentes registrados del dispositivo.<br />
-                Seleccione el registro para ver más información.
-            </p>
-            <IncidentListComponent _DeviceId="@DeviceId.ToString()" />
-        </div>
-        <hr/>
-        <div>
-            <h4 class="text-center"> Reemplazos del dispositivo </h4>
-            <p><i>A continuación se muestran registros de algún reemplazo del dispositivo en el sistema</i></p>
-            <ReplacementListByDevice DeviceId="@DeviceId.ToString()" />
-        </div>
+                    <hr />
+                    <ViewDeviceComponent id="@DeviceId.ToString()" />
+                </div>
+                <div class="border rounded p-2 mb-2" style="border: 1px solid gray">
+                    <h3 class="text-center">Historia de Mantenimientos Registrados</h3>
+                    <div class="d-flex flex-column">
+                        <p>
+                            A continuación se muestra la información correspondiente a todos los mantenimientos registrados de este equipo.<br />
+                            Seleccione el registro para ver más información
+                        </p>
+                        <a class="btn btn-outline-success" href="maintenance/create/@DeviceId">Añadir mantenimiento</a>
+                    </div>
+                    <MaintenanceListByIdComponent id="@DeviceId.ToString()" />
+                </div>
+                <div class="border rounded p-2 mb-2" style="border: 1px solid gray">
+                    <h3 class="text-center">Historial de Garantias Registradas</h3>
+                    <p>
+                        Estas son todas la garantias tramitadas del dispositivo, con el fabricante. Si desea ver más información por favor<br />
+                        seleccione el registro que aplique.
+                    </p>
+                    <a href="/warranty/create/@DeviceId" class="btn btn-outline-success">Añadir Garantía</a>
+                    <WarrantyListByIdComponent id="@DeviceId.ToString()" />
+                </div>
+
+                <div class="border rounded p-2 mb-2" style="border: 1px solid gray">
+                    <h3 class="text-center">Historial de Incidentes del dispositivo</h3>
+                    <p>
+                        En esta sección se muestran todos los incidentes registrados del dispositivo.<br />
+                        Seleccione el registro para ver más información.
+                    </p>
+                    <IncidentListComponent _DeviceId="@DeviceId.ToString()" />
+                </div>
+                <div class="border rounded p-2 mb-2" style="border: 1px solid gray">
+                    <h4 class="text-center"> Reemplazos del dispositivo </h4>
+                    <p><i>A continuación se muestran registros de algún reemplazo del dispositivo en el sistema</i></p>
+                    <ReplacementListByDevice DeviceId="@DeviceId.ToString()" />
+                </div>
         </Animate>
-    </Animate></Authorized>
+    </Authorized>
     <NotAuthorized>
         <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>
@@ -61,7 +61,7 @@
 
 
 
-@code{
+@code {
     [Parameter]
     public string DeviceId { get; set; }
     protected override async Task OnInitializedAsync()

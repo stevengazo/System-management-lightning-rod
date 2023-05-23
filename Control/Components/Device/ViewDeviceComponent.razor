@@ -56,17 +56,17 @@
             </tr>
             <tr>
                 <td>Fecha de Instalación:</td>
-                <td>@oDevice.InstallationDate.ToShortDateString()</td>
+                <td>@oDevice.InstallationDate.ToString("dddd dd MMM yyyy")</td>
             </tr>
             <tr>
                 <td>Fecha limite próximo mantenimiento</td>
                 @if(@oDevice.RecomendedDateOfMaintenance <= DateTime.Today)
                 {
-                    <td class="text-danger">@oDevice.RecomendedDateOfMaintenance.ToShortDateString()  </td>
+                    <td class="text-danger">@oDevice.RecomendedDateOfMaintenance.ToString("dddd dd MMM yyyy")  </td>
                 }
                 else
                 {
-                    <td >@oDevice.RecomendedDateOfMaintenance.ToShortDateString()  </td>
+                    <td>@oDevice.RecomendedDateOfMaintenance.ToString("dddd dd MMM yyyy")  </td>
                 }
             </tr>
             <tr>
@@ -94,11 +94,6 @@
 </EditForm>
 
 <p>@Message</p>
-
-
-
-
-
 
 @code
 {

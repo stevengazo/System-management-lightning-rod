@@ -16,15 +16,15 @@
         </tr>
         <tr>
             <td>Numero de serie</td>
-            <td>@oWarranty.DeviceId</td>
+            <td> <a href="device/view/@oWarranty.DeviceId"> @oWarranty.DeviceId</a></td>
         </tr>
         <tr>
             <td>Fecha de envio a España</td>
-            <td>@oWarranty.DateSend.ToShortDateString()</td>
+            <td>@oWarranty.DateSend.ToString("dddd dd MMM yyyy")</td>
         </tr>
         <tr>
             <td>Fecha de recepción de España</td>
-            <td>@oWarranty.DateReceived.ToShortDateString()</td>
+            <td>@oWarranty.DateReceived.ToString("dddd dd MMM yyyy")</td>
         </tr>
         <tr>
             <td>Estatus de garantia</td>

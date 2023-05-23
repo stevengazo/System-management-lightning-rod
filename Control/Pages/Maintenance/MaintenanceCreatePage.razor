@@ -1,4 +1,4 @@
-﻿@page "/maintenance/Create" 
+﻿@page "/maintenance/Create/{DeviceId?}" 
 
 
 <AuthorizeView Roles="Administrador,Editor">
@@ -16,10 +16,31 @@
   
             </div>
             <hr />    
-            <MaintenanceCreateComponent></MaintenanceCreateComponent>
+                @if (string.IsNullOrEmpty(DeviceId))
+                {
+                    <MaintenanceCreateComponent ></MaintenanceCreateComponent>
+                }
+                else
+                {
+                    <MaintenanceCreateComponent DeviceID="@DeviceId"></MaintenanceCreateComponent>
+                }
+
         </div>
     </Animate></Authorized>
     <NotAuthorized>
         <NotAvariableComponent></NotAvariableComponent>
     </NotAuthorized>
 </AuthorizeView>
+
+
+
+@code {
+    [Parameter]
+    public string DeviceId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        
+
+    }
+}

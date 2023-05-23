@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <td>Número de serie</td>
-            <td>@oMaintenance.Device.DeviceId</td>
+            <td> <a href="device/view/@oMaintenance.Device.DeviceId" target="_blank"> @oMaintenance.Device.DeviceId</a></td>
         </tr>
         <tr>
             <td>Alias del dispositivo</td>
@@ -24,11 +24,11 @@
         </tr>
         <tr>
             <td>Fecha de instalación</td>
-            <td>@oMaintenance.Device.InstallationDate.ToShortDateString()</td>
+            <td>@oMaintenance.Device.InstallationDate.ToString("dddd dd MMM yyyy")</td>
         </tr>
         <tr>
             <td>Fecha de Mantenimiento</td>
-            <td>@oMaintenance.MaintenanceDate.ToShortDateString()</td>
+            <td>@oMaintenance.MaintenanceDate.ToString("dddd dd MMM yyyy")</td>
         </tr>
         <tr>
             <td>Estado del dispositivo</td>

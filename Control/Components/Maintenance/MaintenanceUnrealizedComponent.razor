@@ -56,10 +56,10 @@
                     <td>@i.Alias</td>
                     @if(@i.RecomendedDateOfMaintenance < DateTime.Today)
                     {
-                        <td class="text-danger font-weight-bold">@i.RecomendedDateOfMaintenance.ToShortDateString()</td>    
+                        <td class="text-danger font-weight-bold">@i.RecomendedDateOfMaintenance.ToString("dd-MMM-yyyy")</td>
                     }   
                     else{
-                        <td>@i.RecomendedDateOfMaintenance.ToShortDateString()</td>    
+                        <td>@i.RecomendedDateOfMaintenance.ToString("dd-MMM-yyyy")</td>
                     }
                     <td> <a href="device/view/@i.DeviceId"> Ver </a></td>
                     <td> <a href="device/update/@i.DeviceId"> Modificar</a></td>

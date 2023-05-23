@@ -6,10 +6,7 @@
 <AuthorizeView Roles="Administrador,Editor,Lector">
     <Authorized>
         <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.2)" Delay="TimeSpan.FromSeconds(0)">
-
-
-
-            <div>
+            <div class="border rounded p-2 mb-2" style="border: 1px solid gray">
                 <h2 class="text-center">Información del Mantenimiento</h2>
                 <div class="d-flex justify-content-between flex-row">
                     <p>
@@ -18,10 +15,6 @@
                     <a class="btn btn-info" href="maintenance/list">Lista de Mantenimientos</a>
                 </div>
                 <hr />
-
-                <hr />
-
-
                 <MaintenanceViewComponent id="@MaintenanceId.ToString()" />
             </div>
         </Animate>

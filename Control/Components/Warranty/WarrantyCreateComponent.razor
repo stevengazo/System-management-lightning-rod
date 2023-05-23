@@ -8,20 +8,28 @@
 <EditForm Model="oWarranty">
     <div class="form-group">
         <label class="h5"><strong>Seleccione el Dispositivo</strong></label>
-        <InputText @bind-Value="oWarranty.DeviceId" list="list-devices" class="form-control" ></InputText>
-        <datalist id="list-devices">
-            <option value="0">Seleccione...</option>
-            @foreach (var obj in Devices)
-            {
-                <option value="@obj.Key">@obj.Value  @obj.Key</option>
-            }
-        </datalist>
+        @if (string.IsNullOrEmpty(DeviceID))
+        {
+            <InputText @bind-Value="oWarranty.DeviceId" list="list-devices" class="form-control"></InputText>
+            <datalist id="list-devices">
+                <option value="0">Seleccione...</option>
+                @foreach (var obj in Devices)
+                {
+                    <option value="@obj.Key">@obj.Value  @obj.Key</option>
+                }
+            </datalist>
+        }
+        else
+        {
+            <InputText @bind-Value="DeviceID" class="form-control" readonly> </InputText>
+        }
+
         <p><i>Número de dispositivo </i></p>
     </div>
-    
+
     <div class="form-group">
         <label class="h5"><strong>Fecha envío Protocolo</strong></label>
-        <InputDate @bind-Value="oWarranty.DateSend" class="form-control" ></InputDate>
+        <InputDate @bind-Value="oWarranty.DateSend" class="form-control"></InputDate>
         <p><i>Fecha de envio del protocolo a España</i></p>
     </div>
     <div class="form-group">
@@ -47,18 +55,21 @@
     </div>
 </EditForm>
 
-<input type="button" value="Guardar Registro" class="btn btn-info" @onclick="SaveWarranty"/>
+<input type="button" value="Guardar Registro" class="btn btn-info" @onclick="SaveWarranty" />
 <p>@Message</p>
 
-@code{
-    WarrantyEntity oWarranty = new WarrantyEntity();    
+@code {
+    [Parameter]
+    public string DeviceID { get; set; }
+    WarrantyEntity oWarranty = new WarrantyEntity();
     Dictionary<string, string> Devices = new Dictionary<string, string>();
     List<StatusEntity> status = new List<StatusEntity>();
     string Message = "";
 
     protected override async Task OnInitializedAsync()
     {
-
+        oWarranty.DateSend = DateTime.Today;
+        oWarranty.DateReceived = DateTime.Today.AddDays(1);
         Devices = B_Device.GetDictonaryOfDevicesWithClient();
         status = B_Status.GetStatus();
     }
@@ -67,8 +78,12 @@
     {
         try
         {
+            if (!string.IsNullOrEmpty(DeviceID))
+            {
+                oWarranty.DeviceId = DeviceID;
+            }
             oWarranty.Id = Guid.NewGuid().ToString();
-            oWarranty.lastEdition= DateTime.Today;
+            oWarranty.lastEdition = DateTime.Today;
             var contextmp = await authStateProvider.GetAuthenticationStateAsync();
             oWarranty.Author = contextmp.User.Identity.Name;
             oWarranty.lastEditor = contextmp.User.Identity.Name;
@@ -82,7 +97,8 @@
                 toastService.ShowError("Error interno....", "Aviso");
             }
 
-        }catch(Exception f)
+        }
+        catch (Exception f)
         {
             Message = $"Error: {f.Message}. Intentelo de nuevo";
         }
