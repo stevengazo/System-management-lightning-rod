@@ -1,0 +1,42 @@
+﻿@using System.IO;
+@using System.Globalization;
+@using Entities;
+@using Business;
+@using CsvHelper;
+@using CsvHelper.Configuration;
+
+
+
+@foreach (var item in Categories)
+{
+    <div class="m-3" >
+        <h1 class="align-content-center"> @item.CategoryType </h1>
+        <div class="d-flex flex-wrap border border-1 rounded-1 gap-3 p-2 bg-primary" >
+            @foreach (var client in item.Clients)
+            {
+                <div class="card m-2" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@client.Name</h5>
+                        <a class="btn btn-primary" target="_blank" href="client/view/@client.Id">Ver</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    
+}
+
+
+
+
+
+@code {
+    private List<Category> Categories = B_Client.GetAllCategoriesWithClients();
+    private int counter = 0;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+    }
+}

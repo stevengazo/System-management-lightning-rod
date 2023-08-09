@@ -2,20 +2,26 @@
 
 
 
+
+
 <AuthorizeView Roles="Administrador,Lector">
     <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+
+
         <div class="text-center">
             <h2>Lista de Clientes</h2>
             <div class="flex-column">
 
                 <p>Información referente a los clientes registrados, poseedores de dispositivos RAYOS-NO</p>
                 <a href="client/Create" class="btn btn-sm btn-outline-success"> Agregar nuevo Cliente</a>
+                    <a href="client/categories" class="btn btn-sm btn-outline-success"> Ver Por Categorias</a>
             </div>
             
             <hr />
             <ClientSearchComponent />
         </div>
-    </Animate></Authorized>
+    </Animate>
+</Authorized>
     <NotAuthorized>
         <NotAvariableComponent />
     </NotAuthorized>

@@ -31,6 +31,7 @@ namespace DataAccess
         public DbSet<SaleManEntity> Salemans { get; set; }
         public DbSet<WarrantyEntity> Warranties { get; set; }
         public DbSet<IncidentEntity> Incidents { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public DbSet<TypeDeviceEntity> TypesDevices { get; set; }
         public DbSet<ModelDeviceEntity> ModelDevices { get; set; }
@@ -40,9 +41,9 @@ namespace DataAccess
         public DbSet<TechnicianEntity> Technicians {get;set;}
 
         public DbSet<InstallerEntity> Installers { get; set; }
-    #endregion
+        #endregion
 
-    #region Creating Model and seeding of data
+        #region Creating Model and seeding of data
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             GetConnectionString();

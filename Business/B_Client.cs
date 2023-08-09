@@ -14,6 +14,27 @@ namespace Business
     {
         #region CRUD
 
+        public static Dictionary<string,string> GetCategories()
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                var data = DB.Categories.ToDictionary(D => D.CategoryId, D => D.CategoryType);
+                return data;
+            }
+        }
+
+
+        public static List<Category> GetAllCategoriesWithClients()
+        {
+            using (var DB = new RayosNoDataContext())
+            {
+                var data = DB.Categories.Include(D=>D.Clients).ToList();
+                return data;
+            }
+        }
+
+
+
         /// <summary>
         /// Create a new Client in the table Clients
         /// </summary>

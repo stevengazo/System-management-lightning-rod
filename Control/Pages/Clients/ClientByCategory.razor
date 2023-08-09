@@ -1,0 +1,27 @@
+﻿@page "/client/categories"
+
+
+
+
+
+ 
+        <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+
+
+            <div class="text-center">
+                <h2>Lista de Clientes por Categorias</h2>
+                <div class="flex-column">
+                    <p>Información referente a los clientes registrados, poseedores de dispositivos RAYOS-NO</p>
+                    <a href="client/Create" class="btn btn-sm btn-outline-success"> Agregar nuevo Cliente</a>
+                    <a href="client/list" class="btn btn-sm btn-outline-success"> Buscar Cliente</a>
+                </div>
+
+                <hr />
+                <ClientListByCategory />
+            </div>
+        </Animate>
+
+        
+
+
+

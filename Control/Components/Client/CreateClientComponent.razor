@@ -41,27 +41,9 @@
     string Error = "";
     string tmpId = string.Empty;
 
-    Dictionary<string, string> sample = new Dictionary<string, string>()
-    {
-        { "Htl","Hotelera"},
-        { "Edu","Educación"},
-        { "Inds","Industrial"},
-        { "Red","Residencial"},
-        { "Com","Comercial"},
-        { "Muni","Municipalidades"},
-        { "Segu","Aseguradoras"},
-        { "Hosp","Hospitalario"},
-        { "Telco","Telecomunicaciones"},
-        { "Recr","Recreativo"},
-        { "Finan","Financiero"},
-        { "Serv","Servicios"},
-        { "Inst","Institucional"},
-        { "Aerop","Aeroportuario"},
-        { "Embar","Embarcaciones"},
-        { "Mari","Marinas"},
-        { "Const","Constructora"},
-        { "Otro","Otro"},
-    };
+    Dictionary<string, string> sample = B_Client.GetCategories();
+
+
 
     List<SectorEntity> Sectors = new List<SectorEntity>();
 
@@ -77,7 +59,8 @@
         {
             var tmpArray = tmp.Split('-');
             var num = int.Parse(tmpArray[1]);
-            tmpId = $"{tmpArray[0]}-{num + 1}";    
+            tmpId = $"{tmpArray[0]}-{num + 1}";
+            oClient.CategoryId = $"{tmpArray[0]}-{tmpArray[1]}";
         }
 
     }
