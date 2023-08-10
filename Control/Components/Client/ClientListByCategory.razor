@@ -6,25 +6,31 @@
 @using CsvHelper.Configuration;
 
 
-
-@foreach (var item in Categories)
-{
-    <div class="m-3" >
-        <h1 class="align-content-center"> @item.CategoryType </h1>
-        <div class="d-flex flex-wrap border border-1 rounded-1 gap-3 p-2 bg-primary" >
-            @foreach (var client in item.Clients)
-            {
-                <div class="card m-2" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">@client.Name</h5>
-                        <a class="btn btn-primary" target="_blank" href="client/view/@client.Id">Ver</a>
-                    </div>
+<div class="overflow-auto">
+    @foreach (var item in Categories)
+    {
+        counter = counter + 1;
+        if (item.Clients.Count > 0)
+        {
+            <div class="bg-light m-6">
+                <h1 class="align-content-center"> @item.CategoryType </h1>
+                <div class="d-flex flex-wrap border border-1 rounded-1 gap-3 p-2 bg-primary">
+                    @foreach (var client in item.Clients)
+                    {
+                        <div class="card m-2" style="width: 18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">@client.Name</h5>
+                                <a class="btn btn-primary" target="_blank" href="client/view/@client.Id">Ver</a>
+                                <a class="btn btn-secondary" href="client/update/@client.Id"> Modificar</a>
+                            </div>
+                        </div>
+                    }
                 </div>
-            }
-        </div>
-    </div>
-    
-}
+            </div>
+        }
+    }
+</div>
+
 
 
 

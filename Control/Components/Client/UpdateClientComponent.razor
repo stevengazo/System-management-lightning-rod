@@ -7,6 +7,15 @@
         <label>Nombre del cliente</label>
         <InputText @bind-Value="oClient.Name" class="form-control"></InputText>
     </div>
+    <div class="form-group">
+        <label>Categoría del Cliente</label>
+        <InputSelect @bind-Value="oClient.CategoryId" class="form-control">
+            @foreach(var i in Categories)
+            {
+               <option value="@i.Key">@i.Value</option>
+            }
+        </InputSelect>
+    </div>
     <input type="button" value="Actualizar Cliente" @onclick="UpdateClient" />
     <label style="color:red">@Message</label>
 </EditForm>
@@ -16,6 +25,8 @@
     public string id { get; set; }
     string Message;
     ClientEntity oClient = new ClientEntity();
+
+    Dictionary<string, string> Categories = B_Client.GetCategories();
 
     protected override async Task OnInitializedAsync()
     {

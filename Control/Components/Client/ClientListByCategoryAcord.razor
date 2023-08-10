@@ -1,0 +1,58 @@
+﻿@using System.IO;
+@using System.Globalization;
+@using Entities;
+@using Business;
+@using CsvHelper;
+@using CsvHelper.Configuration;
+
+
+
+
+
+<div class="accordion" id="accordionFlushExample">
+
+    @foreach (var item in Categories)
+    {
+        counter = counter + 1;
+        if (item.Clients.Count > 0)
+        {
+
+            <CollapsibleCard>
+                <CardHeader>
+                    @item.CategoryType
+                </CardHeader>
+                <CardBody>
+                    <div class="d-flex flex-wrap border border-1 rounded-1 gap-3 p-2 bg-primary">
+                        @foreach (var client in item.Clients)
+                        {
+                            <div class="card m-1" style="width: 12rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@client.Name</h5>
+                                    <a class="btn btn-primary" target="_blank" href="client/view/@client.Id">Ver</a>                    
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </CardBody>
+            </CollapsibleCard> 
+        }
+    }
+</div>
+
+
+
+
+
+
+
+
+@code {
+    private List<Category> Categories = B_Client.GetAllCategoriesWithClients();
+    private int counter = 0;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+    }
+}

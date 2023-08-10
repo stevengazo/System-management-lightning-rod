@@ -17,8 +17,20 @@
     <link href="Control.styles.css" rel="stylesheet" />
     <link href="_content/Blazored.Toast/blazored-toast.min.css" rel="stylesheet" />
     <script src="_content/BlazorAnimate/blazorAnimateInterop.js"></script>
+
 </head>
 <body>
+
+
+    <script>
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+
+    </script>
+
      <!-- Chart.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 

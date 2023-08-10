@@ -2,51 +2,64 @@
 
 
 
-<div class="row">
-    <div class="col">
-        <AuthorizeView Roles="Administrador,Editor,Lector">
-        <Authorized>    <Animate Animation="Animations.FadeLeft" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
-            <h3>
-                Bienvenido
-            </h3>
-            <GraphComponentDevicesByCountry/>
-                    <a href="client/categories" class="btn btn-sm btn-outline-success"> Ver Clientes</a>
+
+<AuthorizeView Roles="Administrador,Editor,Lector">
+    <Authorized>
+        <Animate Animation="Animations.FadeIn" Duration="TimeSpan.FromSeconds(0.1)" Delay="TimeSpan.FromSeconds(0)">
+            <div class="container w-100 gap-2">
+                <div class="row m-2">
+                    <div class="col border rounded border-info m-2 p-1 ">
+                        <h3>Distribución de Equipos</h3>
+                        <GraphComponentDevicesByCountry />
+                    </div>
+                </div>
+                <div class="row  m-2">
+                    <div class="col border rounded border-info m-2 p-1 ">
+                        <h3>Fechas Limite de mantenimiento - Período @DateTime.Today.Year</h3>
+                        <MaintenanceUnrelizedByMonth />
+                    </div>
+                    <div class="col border rounded border-info m-2 p-1 ">
+                        <h3>Clientes Registrados en el Sistema</h3>
+                        <ClientListByCategoryAcord />
+                    </div>
+                </div>
+            </div>
         </Animate>
-        
-    
     </Authorized>
-        <NotAuthorized>
-            <h2>Sistema Interno - Dispositivos Rayos NO</h2>
-            <p>
-                Sistema de control interno propiedad de Grupo Mecsa para la gestión interna de los
-                dispositivos RAYOS-NO.
-            </p>
-            <p>
-                Este sistema plantea el registro y control de los dispositivos instalados, así como
-                el mantenimiento, garantias y vendedores asignados para un mejor control de los equipos.
-            </p>
-        </NotAuthorized>
-        </AuthorizeView>
-        
-    </div>
-    <div class="col">
-        <AuthorizeView Roles="Administrador,Editor,Lector">
-            <Authorized>    
-                <h3>Fechas Limite de mantenimiento - Período @DateTime.Today.Year</h3>
-                <MaintenanceUnrelizedByMonth/>
-            </Authorized>
-            <NotAuthorized>
-                <h3>
-                    Inicia sesión
-                </h3>
-                <p>
-                    Debes iniciar sesión para acceder al sistema.
-                </p>
-                <p>
-                    Si no posees una cuenta, comunicate con el administrador del sistema.
-                </p>
-            </NotAuthorized>
-        </AuthorizeView>
-    </div>
-</div>
+    <NotAuthorized>
+        <h3>
+            Inicia sesión
+        </h3>
+        <p>
+            Debes iniciar sesión para acceder al sistema.
+        </p>
+        <p>
+            Si no posees una cuenta, comunicate con el administrador del sistema.
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
