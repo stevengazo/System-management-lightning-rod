@@ -54,13 +54,14 @@
 
     private void handleOnchange(ChangeEventArgs args)
     {
-        string tmp = B_Client.CheckLastId(args.Value.ToString());
+        var category = args.Value.ToString().Split('-')[0];
+        string tmp = B_Client.CheckLastId(category);
         if(tmp.Length != 0)
         {
             var tmpArray = tmp.Split('-');
             var num = int.Parse(tmpArray[1]);
             tmpId = $"{tmpArray[0]}-{num + 1}";
-            oClient.CategoryId = $"{tmpArray[0]}-{tmpArray[1]}";
+            oClient.CategoryId = args.Value.ToString();
         }
 
     }

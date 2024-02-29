@@ -96,7 +96,7 @@ namespace Business
         /// </summary>
         /// <param name="_id">Id to searh</param>
         /// <returns>ir present error, return a empty string</returns>
-        public static string CheckLastId(string _id)
+        public static string CheckLastId(string _category)
         {
             
             try
@@ -106,7 +106,7 @@ namespace Business
 
                     var resultObj = (from item
                                     in db.Clients
-                                     where item.Id.Contains(_id)
+                                     where item.Id.Contains(_category)
                                      orderby item.Id descending
                                      select item.Id).FirstOrDefault(); 
                     if(resultObj != null)
@@ -115,7 +115,7 @@ namespace Business
                     }
                     else
                     {
-                        return $"{_id}-{0}";
+                        return $"{_category}-{0}";
                     }
                 }
             }

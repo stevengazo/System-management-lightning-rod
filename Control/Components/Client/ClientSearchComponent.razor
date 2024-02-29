@@ -4,8 +4,8 @@
 
 
 <div class="align-center form-group row">
-    <div class="col">
-        <input type="text" class="rounded form-control" @bind="ClientIdToSearch" list="categories">           </input>
+    <div class="hide"style="display:none;" >
+        <input type="text"  class=" hide" @bind="ClientIdToSearch" list="categories">           </input>
         <datalist id="categories">
             @foreach (var item in sample)
             {
@@ -41,7 +41,6 @@
 <table class="table table-responsive-sm table-bordered table-hover table-light">
     <thead>
         <tr>
-            <td> Referencia</td>
             <td> Nombre</td>
             <td> </td>
         </tr>
@@ -50,7 +49,7 @@
         @foreach (var obj in Clients)
         {
             <tr>
-                <td> @obj.Id </td>
+       
                 <td> @obj.Name </td>
                 <td><a class="btn btn-primary" target="_blank" href="client/view/@obj.Id">Ver</a></td>
                 <td> <a class="btn btn-secondary" target="_blank" href="client/update/@obj.Id"> Modificar</a></td>
